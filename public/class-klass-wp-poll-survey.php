@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name.
+ * Klasse WP Poll Survey.
  *
- * @package   Plugin_Name
- * @author    Your Name <email@example.com>
+ * @package   Klasse_WP_Poll_Survey
+ * @author    Koen - AppSaloon <koen@appsaloon.be>
  * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2014 Your Name or Company Name
+ * @link      @TODO http://example.com
+ * @copyright 2014 Klasse
  */
 
 /**
@@ -18,13 +18,12 @@
  *
  * @TODO: Rename this class to a proper name for your plugin.
  *
- * @package Plugin_Name
- * @author  Your Name <email@example.com>
+ * @package Klasse_WP_Poll_Survey
+ * @author  Koen - AppSaloon <koen@appsaloon.be>
  */
-class Plugin_Name {
+class Klasse_WP_Poll_Survey {
 
 	/**
-	 * Plugin version, used for cache-busting of style and script file references.
 	 *
 	 * @since   1.0.0
 	 *
@@ -33,20 +32,12 @@ class Plugin_Name {
 	const VERSION = '1.0.0';
 
 	/**
-	 * @TODO - Rename "plugin-name" to the name your your plugin
-	 *
-	 * Unique identifier for your plugin.
-	 *
-	 *
-	 * The variable name is used as the text domain when internationalizing strings
-	 * of text. Its value should match the Text Domain file header in the main
-	 * plugin file.
 	 *
 	 * @since    1.0.0
 	 *
 	 * @var      string
 	 */
-	protected $plugin_slug = 'plugin-name';
+	protected $plugin_slug = 'klasse-wp-poll-survey';
 
 	/**
 	 * Instance of this class.
