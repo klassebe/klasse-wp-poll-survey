@@ -16,8 +16,6 @@
  * If you're interested in introducing administrative or dashboard
  * functionality, then refer to `class-plugin-name-admin.php`
  *
- * @TODO: Rename this class to a proper name for your plugin.
- *
  * @package Klasse_WP_Poll_Survey
  * @author  Koen - AppSaloon <koen@appsaloon.be>
  */
@@ -39,6 +37,8 @@ class Klasse_WP_Poll_Survey {
 	 */
 	protected $plugin_slug = 'klasse-wp-poll-survey';
 
+    private static $table_prefix = 'kwps';
+
 	/**
 	 * Instance of this class.
 	 *
@@ -54,7 +54,7 @@ class Klasse_WP_Poll_Survey {
 	 *
 	 * @since     1.0.0
 	 */
-	private function __construct() {
+	public function __construct() {
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -112,7 +112,7 @@ class Klasse_WP_Poll_Survey {
 	 *                                       WPMU is disabled or plugin is
 	 *                                       activated on an individual blog.
 	 */
-	public static function activate( $network_wide ) {
+	public static function activate( $network_wide = false ) {
 
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
@@ -225,7 +225,18 @@ class Klasse_WP_Poll_Survey {
 	 * @since    1.0.0
 	 */
 	private static function single_activate() {
-		// @TODO: Define activation functionality here
+
+        global $wpdb;
+
+		$query = 'CREATE TABLE ' . $wpdb->prefix . self::$table_prefix . '_status (
+		    id INT NOT NULL AUTO_INCREMENT,
+		    label VARCHAR(50) NOT NULL,
+		    PRIMARY KEY (id)
+		)';
+
+        $result = $wpdb->query($query);
+
+        return true;
 	}
 
 	/**
