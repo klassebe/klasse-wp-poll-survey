@@ -229,9 +229,9 @@ class Klasse_WP_Poll_Survey {
 
         global $wpdb;
 
-        $tablename = $wpdb->prefix . self::$table_prefix . 'status';
+        $fullPrefix = $wpdb->prefix . self::$table_prefix;
 
-        $query = "CREATE TABLE `$tablename`  (
+        $query = "CREATE TABLE `{$fullPrefix}status`  (
 		`id` mediumint(9) NOT NULL AUTO_INCREMENT,
 		`label` varchar(50) NOT NULL,
 		`entity` varchar(50) NOT NULL,
