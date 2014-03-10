@@ -17,17 +17,16 @@ class InstallTest extends Base_UnitTestCase {
         $this->assertFalse( null == $this->kwps );
     } // end testPluginInitialization
 
-    function testCrazyThing() {
-        $pluginTablePrefix = $this->wpdb->prefix . 'kwps_';
+    function testPluginActivation() {
+        $pluginTablePrefix = $this->wpdb->prefix . 'kwps_status';
 
         Klasse_WP_Poll_Survey::activate();
 
-        $tables = $this->wpdb->get_results('show tables like "' . $pluginTablePrefix . '%";');
-
+        // Stop here and mark this test as incomplete.
         $this->markTestIncomplete(
             'This test has not been implemented yet.'
         );
 
-        $this->assertTrue(count($tables) > 0);
+        $this->assertTrue($this->wpdb->get_var("SHOW TABLES LIKE '$pluginTablePrefix'") == $pluginTablePrefix);
     }
 }
