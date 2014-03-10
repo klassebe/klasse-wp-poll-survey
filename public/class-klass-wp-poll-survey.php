@@ -39,6 +39,16 @@ class Klasse_WP_Poll_Survey {
 	protected $plugin_slug = 'klasse-wp-poll-survey';
 
     private static $table_prefix = 'kwps_';
+    public static $tables = array(
+        'test',
+        'mode',
+        'version',
+        'question',
+        'response_option',
+        'entry',
+        'status',
+        'tro'
+    );
 
 	/**
 	 * Instance of this class.
@@ -231,16 +241,89 @@ class Klasse_WP_Poll_Survey {
 
         $fullPrefix = $wpdb->prefix . self::$table_prefix;
 
-        $query = "CREATE TABLE `{$fullPrefix}status`  (
-		`id` mediumint(9) NOT NULL AUTO_INCREMENT,
-		`label` varchar(50) NOT NULL,
-		`entity` varchar(50) NOT NULL,
-		PRIMARY KEY (`id`)
-		);";
+        $query = array(
+            //Status
+            "CREATE TABLE `{$fullPrefix}status`  (
+                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `label` varchar(50) NOT NULL,
+                `entity` varchar(50) NOT NULL,
+                PRIMARY KEY (`id`)
+            );",
+            //Test
+            "CREATE TABLE `{$fullPrefix}test`  (
+                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `name` varchar(50) NOT NULL,
+                `description` TEXT NOT NULL,
+                `view_count` mediumint(9) NOT NULL DEFAULT 0,
+                `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                `update_date` TIMESTAMP,
+                `publish_date` TIMESTAMP,
+                `close_date` TIMESTAMP,
+                `user_id` mediumint(9) NOT NULL,
+                `mode_id` mediumint(9),
+                `status_id` mediumint(9),
+                PRIMARY KEY (`id`)
+            );",
+            //Mode
+            "CREATE TABLE `{$fullPrefix}mode`  (
+                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `name` varchar(50) NOT NULL,
+                `description` TEXT NOT NULL,
+                `status_id` mediumint(9),
+                PRIMARY KEY (`id`)
+            );",
+            //Version
+            "CREATE TABLE `{$fullPrefix}version`  (
+                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `name` varchar(50) NOT NULL,
+                `api_key` varchar(50) NOT NULL,
+                `test_id` mediumint(9),
+                `intro_id` mediumint(9),
+                `outro_id` mediumint(9),
+                `status_id` mediumint(9),
+                PRIMARY KEY (`id`)
+            );",
+            //Question
+            "CREATE TABLE `{$fullPrefix}question`  (
+                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `version_id` mediumint(9),
+                `order` mediumint(9),
+                `description` TEXT NOT NULL,
+                `status_id` mediumint(9),
+                PRIMARY KEY (`id`)
+            );",
+            //Response Option
+            // field: order: Usefull? We have to randomize the order I think
+            "CREATE TABLE `{$fullPrefix}response_option`  (
+                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `question_id` mediumint(9),
+                `description` TEXT NOT NULL,
+                `value` varchar(255) NOT NULL,
+                `order` mediumint(9),
+                `status_id` mediumint(9),
+                PRIMARY KEY (`id`)
+            );",
+            //Entry
+            "CREATE TABLE `{$fullPrefix}entry`  (
+                `session_id` varchar(255) NOT NULL,
+                `response_option_id` mediumint(9),
+                `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                `update_date` TIMESTAMP,
+                PRIMARY KEY (`session_id`, `response_option_id`)
+            );",
+            //Tro
+            "CREATE TABLE `{$fullPrefix}tro`  (
+                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `html_text` TEXT,
+                PRIMARY KEY (`id`)
+            );",
+        );
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
         dbDelta($query);
+
+        //sleep(20);
 	}
 
 	/**

@@ -27,7 +27,15 @@ class InstallTest extends Base_UnitTestCase {
 
         Klasse_WP_Poll_Survey::activate();
 
-        $this->assertTrue(count($this->wpdb->get_results("SHOW TABLES LIKE '$pluginTablePrefix%'")) > 0);
+        foreach(Klasse_WP_Poll_Survey::$tables as $table) {
+            $tableName = $pluginTablePrefix . $table;
+            $result = $this->wpdb->get_var("SHOW TABLES LIKE '$tableName'");
+            if(!$result) {
+                echo 'Failed Table: ' . $result;
+            }
+
+            $this->assertTrue($result == $tableName);
+        }
     }
 
     /**
