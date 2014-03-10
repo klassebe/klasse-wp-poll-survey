@@ -150,7 +150,7 @@ class Klasse_WP_Poll_Survey {
 	 *                                       WPMU is disabled or plugin is
 	 *                                       deactivated on an individual blog.
 	 */
-	public static function deactivate( $network_wide ) {
+	public static function deactivate( $network_wide = false ) {
 
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
@@ -240,10 +240,7 @@ class Klasse_WP_Poll_Survey {
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-        $result = dbDelta($query);
-        var_dump($result);
-
-        return true;
+        dbDelta($query);
 	}
 
 	/**
@@ -252,7 +249,16 @@ class Klasse_WP_Poll_Survey {
 	 * @since    1.0.0
 	 */
 	private static function single_deactivate() {
-		// @TODO: Define deactivation functionality here
+        global $wpdb;
+
+        $tableDefaultPrefix = $wpdb->prefix . self::$table_prefix;
+
+        $query = "SHOW TABLES LIKE '{$tableDefaultPrefix}%'";
+        $tables = $wpdb->get_results($query, ARRAY_N);
+
+        foreach($tables as $table) {
+            $wpdb->query("DROP TABLE {$table[0]}");
+        }
 	}
 
 	/**

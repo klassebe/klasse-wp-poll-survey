@@ -3,30 +3,41 @@
 class InstallTest extends Base_UnitTestCase {
 
     private $kwps;
+    private $table_prefix = 'kwps_';
     public $pluginSlug = 'klasse-wp-poll-survey';
 
     function setUp() {
 
         parent::setUp();
+
+        remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
+        remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
+
         $this->kwps = new Klasse_WP_Poll_Survey();
 
     } // end setup
-
 
     function testPluginInitialization() {
         $this->assertFalse( null == $this->kwps );
     } // end testPluginInitialization
 
+
     function testPluginActivation() {
-        $pluginTablePrefix = $this->wpdb->prefix . 'kwps_status';
+        $pluginTablePrefix = $this->wpdb->prefix . $this->table_prefix;
 
         Klasse_WP_Poll_Survey::activate();
 
-        // Stop here and mark this test as incomplete.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertTrue(count($this->wpdb->get_results("SHOW TABLES LIKE '$pluginTablePrefix%'")) > 0);
+    }
 
-        $this->assertTrue($this->wpdb->get_var("SHOW TABLES LIKE '$pluginTablePrefix'") == $pluginTablePrefix);
+    /**
+     * @depends testPluginInitialization
+     */
+    function testPluginDeactivation() {
+        $pluginTablePrefix = $this->wpdb->prefix . $this->table_prefix;
+
+        Klasse_WP_Poll_Survey::deactivate();
+
+        $this->assertTrue(count($this->wpdb->get_results("SHOW TABLES LIKE '$pluginTablePrefix%'")) == 0);
     }
 }
