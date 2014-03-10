@@ -249,6 +249,15 @@ class Klasse_WP_Poll_Survey {
 	 * @since    1.0.0
 	 */
 	private static function single_deactivate() {
+        //@TODO Deactivate plugin;
+	}
+
+	/**
+	 * Fired for each blog when the plugin is uninstalled.
+	 *
+	 * @since    1.0.0
+	 */
+	public static function uninstall() {
         global $wpdb;
 
         $tableDefaultPrefix = $wpdb->prefix . self::$table_prefix;

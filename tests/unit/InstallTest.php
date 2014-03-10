@@ -36,7 +36,7 @@ class InstallTest extends Base_UnitTestCase {
     function testPluginDeactivation() {
         $pluginTablePrefix = $this->wpdb->prefix . $this->table_prefix;
 
-        Klasse_WP_Poll_Survey::deactivate();
+        Klasse_WP_Poll_Survey::uninstall();
 
         $this->assertTrue(count($this->wpdb->get_results("SHOW TABLES LIKE '$pluginTablePrefix%'")) == 0);
     }
