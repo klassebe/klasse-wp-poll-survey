@@ -40,14 +40,14 @@ class Klasse_WP_Poll_Survey {
 
     private static $table_prefix = 'kwps_';
     public static $tables = array(
-        'test',
-        'mode',
-        'version',
-        'question',
-        'response_option',
         'entry',
+        'response_option',
+        'question',
+        'version',
+        'test',
+        'tro',
+        'mode',
         'status',
-        'tro'
     );
 
 	/**
@@ -244,76 +244,76 @@ class Klasse_WP_Poll_Survey {
         $query = array(
             //Status
             "CREATE TABLE `{$fullPrefix}status`  (
-                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `id` INT NOT NULL AUTO_INCREMENT,
                 `label` varchar(50) NOT NULL,
                 `entity` varchar(50) NOT NULL,
                 PRIMARY KEY (`id`)
             );",
             //Test
             "CREATE TABLE `{$fullPrefix}test`  (
-                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `id` INT NOT NULL AUTO_INCREMENT,
                 `name` varchar(50) NOT NULL,
                 `description` TEXT NOT NULL,
-                `view_count` mediumint(9) NOT NULL DEFAULT 0,
+                `view_count` INT NOT NULL DEFAULT 0,
                 `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `update_date` TIMESTAMP,
                 `publish_date` TIMESTAMP,
                 `close_date` TIMESTAMP,
-                `user_id` mediumint(9) NOT NULL,
-                `mode_id` mediumint(9),
-                `status_id` mediumint(9),
+                `user_id` INT NOT NULL,
+                `mode_id` INT,
+                `status_id` INT,
                 PRIMARY KEY (`id`)
             );",
             //Mode
             "CREATE TABLE `{$fullPrefix}mode`  (
-                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `id` INT NOT NULL AUTO_INCREMENT,
                 `name` varchar(50) NOT NULL,
                 `description` TEXT NOT NULL,
-                `status_id` mediumint(9),
+                `status_id` INT,
                 PRIMARY KEY (`id`)
             );",
             //Version
             "CREATE TABLE `{$fullPrefix}version`  (
-                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `id` INT NOT NULL AUTO_INCREMENT,
                 `name` varchar(50) NOT NULL,
                 `api_key` varchar(50) NOT NULL,
-                `test_id` mediumint(9),
-                `intro_id` mediumint(9),
-                `outro_id` mediumint(9),
-                `status_id` mediumint(9),
+                `test_id` INT,
+                `intro_id` INT,
+                `outro_id` INT,
+                `status_id` INT,
                 PRIMARY KEY (`id`)
             );",
             //Question
             "CREATE TABLE `{$fullPrefix}question`  (
-                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-                `version_id` mediumint(9),
-                `order` mediumint(9),
+                `id` INT NOT NULL AUTO_INCREMENT,
+                `version_id` INT,
+                `order` INT,
                 `description` TEXT NOT NULL,
-                `status_id` mediumint(9),
+                `status_id` INT,
                 PRIMARY KEY (`id`)
             );",
             //Response Option
             // field: order: Usefull? We have to randomize the order I think
             "CREATE TABLE `{$fullPrefix}response_option`  (
-                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-                `question_id` mediumint(9),
+                `id` INT NOT NULL AUTO_INCREMENT,
+                `question_id` INT,
                 `description` TEXT NOT NULL,
                 `value` varchar(255) NOT NULL,
-                `order` mediumint(9),
-                `status_id` mediumint(9),
+                `order` INT,
+                `status_id` INT,
                 PRIMARY KEY (`id`)
             );",
             //Entry
             "CREATE TABLE `{$fullPrefix}entry`  (
                 `session_id` varchar(255) NOT NULL,
-                `response_option_id` mediumint(9),
+                `response_option_id` INT,
                 `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `update_date` TIMESTAMP,
                 PRIMARY KEY (`session_id`, `response_option_id`)
             );",
             //Tro
             "CREATE TABLE `{$fullPrefix}tro`  (
-                `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+                `id` INT NOT NULL AUTO_INCREMENT,
                 `html_text` TEXT,
                 PRIMARY KEY (`id`)
             );",
@@ -323,8 +323,40 @@ class Klasse_WP_Poll_Survey {
 
         dbDelta($query);
 
-        //sleep(20);
-	}
+        //Add indexes & Relations
+
+            //Test
+        $wpdb->query("ALTER TABLE `{$fullPrefix}test` ADD INDEX(`mode_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}test` ADD INDEX(`status_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}test` ADD CONSTRAINT fk_test_mode_id FOREIGN KEY (`mode_id`) REFERENCES `{$fullPrefix}mode` (`id`)"); //Ok
+        $wpdb->query("ALTER TABLE `{$fullPrefix}test` ADD CONSTRAINT fk_test_status_id FOREIGN KEY (`status_id`) REFERENCES `{$fullPrefix}status` (`id`)"); //Ok
+
+            //Mode
+        $wpdb->query("ALTER TABLE `{$fullPrefix}mode` ADD INDEX(`status_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}mode` ADD CONSTRAINT fk_mode_status_id FOREIGN KEY (`status_id`) REFERENCES `{$fullPrefix}status` (`id`)");
+
+            //Version
+        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`test_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`intro_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`outro_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`status_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_test_id FOREIGN KEY (`test_id`) REFERENCES `{$fullPrefix}test` (`id`)"); //Ok
+        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_intro_id FOREIGN KEY (`intro_id`) REFERENCES `{$fullPrefix}tro` (`id`)"); //Ok
+        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_outro_id FOREIGN KEY (`outro_id`) REFERENCES `{$fullPrefix}tro` (`id`)"); //Ok
+        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_status_id FOREIGN KEY (`status_id`) REFERENCES `{$fullPrefix}status` (`id`)");
+
+            //Question
+        $wpdb->query("ALTER TABLE `{$fullPrefix}question` ADD INDEX(`version_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}question` ADD INDEX(`status_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}question` ADD CONSTRAINT fk_question_version_id FOREIGN KEY (`version_id`) REFERENCES `{$fullPrefix}version` (`id`)"); //Ok
+        $wpdb->query("ALTER TABLE `{$fullPrefix}question` ADD CONSTRAINT fk_question_status_id FOREIGN KEY (`status_id`) REFERENCES `{$fullPrefix}status` (`id`)");
+
+            //Response Option
+        $wpdb->query("ALTER TABLE `{$fullPrefix}response_option` ADD INDEX(`question_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}response_option` ADD INDEX(`status_id`)");
+        $wpdb->query("ALTER TABLE `{$fullPrefix}response_option` ADD CONSTRAINT fk_response_option_question_id FOREIGN KEY (`question_id`) REFERENCES `{$fullPrefix}question` (`id`)"); //Ok
+        $wpdb->query("ALTER TABLE `{$fullPrefix}response_option` ADD CONSTRAINT fk_response_option_status_id FOREIGN KEY (`status_id`) REFERENCES `{$fullPrefix}status` (`id`)");
+    }
 
 	/**
 	 * Fired for each blog when the plugin is deactivated.
@@ -337,6 +369,9 @@ class Klasse_WP_Poll_Survey {
 
 	/**
 	 * Fired for each blog when the plugin is uninstalled.
+     *
+     * Loop over the list of tables, defined at the top of the class.
+     * We use this list, to prevent Foreign Key constraint issues.
 	 *
 	 * @since    1.0.0
 	 */
@@ -345,11 +380,9 @@ class Klasse_WP_Poll_Survey {
 
         $tableDefaultPrefix = $wpdb->prefix . self::$table_prefix;
 
-        $query = "SHOW TABLES LIKE '{$tableDefaultPrefix}%'";
-        $tables = $wpdb->get_results($query, ARRAY_N);
-
-        foreach($tables as $table) {
-            $wpdb->query("DROP TABLE {$table[0]}");
+        foreach(self::$tables as $table) {
+            $tableName = $tableDefaultPrefix . $table;
+            $wpdb->query("DROP TABLE {$tableName}");
         }
 	}
 
