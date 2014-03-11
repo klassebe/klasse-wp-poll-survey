@@ -253,15 +253,16 @@ class Klasse_WP_Poll_Survey {
                 `close_date` TIMESTAMP,
                 `user_id` INT NOT NULL,
                 `mode_id` INT,
-                `status_id` INT,
+                `status` VARCHAR(10),
                 PRIMARY KEY (`id`)
             );",
             //Mode
             "CREATE TABLE `{$fullPrefix}mode`  (
                 `id` INT NOT NULL AUTO_INCREMENT,
                 `name` varchar(50) NOT NULL,
+                `class` varchar(50) NOT NULL,
                 `description` TEXT NOT NULL,
-                `status_id` INT,
+                `status` VARCHAR(10),
                 PRIMARY KEY (`id`)
             );",
             //Version
@@ -272,7 +273,7 @@ class Klasse_WP_Poll_Survey {
                 `test_id` INT,
                 `intro_id` INT,
                 `outro_id` INT,
-                `status_id` INT,
+                `status` VARCHAR(10),
                 PRIMARY KEY (`id`)
             );",
             //Question
@@ -281,7 +282,7 @@ class Klasse_WP_Poll_Survey {
                 `version_id` INT,
                 `order` INT,
                 `description` TEXT NOT NULL,
-                `status_id` INT,
+                `status` VARCHAR(10),
                 PRIMARY KEY (`id`)
             );",
             //Response Option
@@ -292,7 +293,7 @@ class Klasse_WP_Poll_Survey {
                 `description` TEXT NOT NULL,
                 `value` varchar(255) NOT NULL,
                 `order` INT,
-                `status_id` INT,
+                `status` VARCHAR(10),
                 PRIMARY KEY (`id`)
             );",
             //Entry
