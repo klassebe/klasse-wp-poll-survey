@@ -260,7 +260,7 @@ class Klasse_WP_Poll_Survey {
             "CREATE TABLE `{$fullPrefix}mode`  (
                 `id` INT NOT NULL AUTO_INCREMENT,
                 `name` varchar(50) NOT NULL,
-                `class` varchar(50) NOT NULL,
+                `folder` varchar(50) NOT NULL,
                 `description` TEXT NOT NULL,
                 `status` VARCHAR(10),
                 PRIMARY KEY (`id`)
