@@ -46,8 +46,7 @@ class Klasse_WP_Poll_Survey {
         'version',
         'test',
         'tro',
-        'mode',
-        'status',
+        'mode'
     );
 
 	/**
@@ -242,13 +241,6 @@ class Klasse_WP_Poll_Survey {
         $fullPrefix = $wpdb->prefix . self::$table_prefix;
 
         $query = array(
-            //Status
-            "CREATE TABLE `{$fullPrefix}status`  (
-                `id` INT NOT NULL AUTO_INCREMENT,
-                `label` varchar(50) NOT NULL,
-                `entity` varchar(50) NOT NULL DEFAULT 'All',
-                PRIMARY KEY (`id`)
-            );",
             //Test
             "CREATE TABLE `{$fullPrefix}test`  (
                 `id` INT NOT NULL AUTO_INCREMENT,
@@ -327,35 +319,25 @@ class Klasse_WP_Poll_Survey {
 
             //Test
         $wpdb->query("ALTER TABLE `{$fullPrefix}test` ADD INDEX(`mode_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}test` ADD INDEX(`status_id`)");
         $wpdb->query("ALTER TABLE `{$fullPrefix}test` ADD CONSTRAINT fk_test_mode_id FOREIGN KEY (`mode_id`) REFERENCES `{$fullPrefix}mode` (`id`)"); //Ok
-        $wpdb->query("ALTER TABLE `{$fullPrefix}test` ADD CONSTRAINT fk_test_status_id FOREIGN KEY (`status_id`) REFERENCES `{$fullPrefix}status` (`id`)"); //Ok
 
             //Mode
-        $wpdb->query("ALTER TABLE `{$fullPrefix}mode` ADD INDEX(`status_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}mode` ADD CONSTRAINT fk_mode_status_id FOREIGN KEY (`status_id`) REFERENCES `{$fullPrefix}status` (`id`)");
 
             //Version
         $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`test_id`)");
         $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`intro_id`)");
         $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`outro_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`status_id`)");
         $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_test_id FOREIGN KEY (`test_id`) REFERENCES `{$fullPrefix}test` (`id`)"); //Ok
         $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_intro_id FOREIGN KEY (`intro_id`) REFERENCES `{$fullPrefix}tro` (`id`)"); //Ok
         $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_outro_id FOREIGN KEY (`outro_id`) REFERENCES `{$fullPrefix}tro` (`id`)"); //Ok
-        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_status_id FOREIGN KEY (`status_id`) REFERENCES `{$fullPrefix}status` (`id`)");
 
             //Question
         $wpdb->query("ALTER TABLE `{$fullPrefix}question` ADD INDEX(`version_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}question` ADD INDEX(`status_id`)");
         $wpdb->query("ALTER TABLE `{$fullPrefix}question` ADD CONSTRAINT fk_question_version_id FOREIGN KEY (`version_id`) REFERENCES `{$fullPrefix}version` (`id`)"); //Ok
-        $wpdb->query("ALTER TABLE `{$fullPrefix}question` ADD CONSTRAINT fk_question_status_id FOREIGN KEY (`status_id`) REFERENCES `{$fullPrefix}status` (`id`)");
 
             //Response Option
         $wpdb->query("ALTER TABLE `{$fullPrefix}response_option` ADD INDEX(`question_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}response_option` ADD INDEX(`status_id`)");
         $wpdb->query("ALTER TABLE `{$fullPrefix}response_option` ADD CONSTRAINT fk_response_option_question_id FOREIGN KEY (`question_id`) REFERENCES `{$fullPrefix}question` (`id`)"); //Ok
-        $wpdb->query("ALTER TABLE `{$fullPrefix}response_option` ADD CONSTRAINT fk_response_option_status_id FOREIGN KEY (`status_id`) REFERENCES `{$fullPrefix}status` (`id`)");
     }
 
 	/**
@@ -385,22 +367,6 @@ class Klasse_WP_Poll_Survey {
             $wpdb->query("DROP TABLE {$tableName}");
         }
 	}
-
-    public function addInitialData()  {
-        global $wpdb;
-        $tableDefaultPrefix = $wpdb->prefix . self::$table_prefix;
-
-        $statusses = array('Active', 'Delete');
-
-        foreach($statusses as $status) {
-            $wpdb->insert(
-                $tableDefaultPrefix . 'status',
-                array(
-                    'label' => $status
-                )
-            );
-        }
-    }
 
     public function getAvailableTestModi()
     {

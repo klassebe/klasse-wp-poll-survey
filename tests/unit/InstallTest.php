@@ -39,19 +39,6 @@ class InstallTest extends Base_UnitTestCase {
         }
     }
 
-    /**
-     * @depends testPluginInitialization
-     */
-    function testDefaultData() {
-        $pluginTablePrefix = $this->wpdb->prefix . $this->table_prefix;
-
-        $this->kwps->addInitialData();
-
-        $statuses = $this->wpdb->get_results("SELECT * FROM {$pluginTablePrefix}status");
-        $this->assertTrue(count($statuses) == 2);
-
-    }
-
     function testGetDefaultAvailableModi()
     {
         $testModi = $this->kwps->getAvailableTestModi();
@@ -60,7 +47,6 @@ class InstallTest extends Base_UnitTestCase {
 
     function testGetInstalledDefaultAvailableModi()
     {
-        $this->kwps->addInitialData();
         $this->kwps->addTestModi();
         $pluginTablePrefix = $this->wpdb->prefix . $this->table_prefix;
 
