@@ -12,7 +12,7 @@
 			<directory prefix="test-" suffix=".php">./tests/general/</directory>
 		</testsuite>
 		<testsuite name="unit">
-			<directory suffix="Test.php">./tests/unit/</directory>
+			<directory prefix="test-" suffix=".php">./tests/unit/</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>
