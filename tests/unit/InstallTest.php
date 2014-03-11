@@ -15,6 +15,7 @@ class InstallTest extends Base_UnitTestCase {
 
         $this->kwps = new Klasse_WP_Poll_Survey();
 
+
     } // end setup
 
     function testPluginInitialization() {
@@ -41,7 +42,38 @@ class InstallTest extends Base_UnitTestCase {
     /**
      * @depends testPluginInitialization
      */
-    function testPluginDeactivation() {
+    function testDefaultData() {
+        $pluginTablePrefix = $this->wpdb->prefix . $this->table_prefix;
+
+        $this->kwps->addInitialData();
+
+        $statuses = $this->wpdb->get_results("SELECT * FROM {$pluginTablePrefix}status");
+        $this->assertTrue(count($statuses) == 2);
+
+    }
+
+    function testGetDefaultAvailableModi()
+    {
+        $testModi = $this->kwps->getAvailableTestModi();
+        $this->assertTrue(count($testModi) == 2);
+    }
+
+    function testGetInstalledDefaultAvailableModi()
+    {
+        $this->kwps->addInitialData();
+        $this->kwps->addTestModi();
+        $pluginTablePrefix = $this->wpdb->prefix . $this->table_prefix;
+
+        $installedModi = $this->wpdb->get_results("SELECT * FROM {$pluginTablePrefix}mode");
+        $testModi = $this->kwps->getAvailableTestModi();
+
+        $this->assertTrue(count($testModi) == count($installedModi));
+    }
+
+    /**
+     * @depends testPluginInitialization
+     */
+    function testPluginUninstall() {
         $pluginTablePrefix = $this->wpdb->prefix . $this->table_prefix;
 
         Klasse_WP_Poll_Survey::uninstall();
