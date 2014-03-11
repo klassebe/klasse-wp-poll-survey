@@ -18,6 +18,16 @@ class InstallTest extends Base_UnitTestCase {
 
     } // end setup
 
+    function testGetPluginSlug()
+    {
+        $this->assertTrue('klasse-wp-poll-survey' == $this->kwps->get_plugin_slug());
+    }
+
+    function testGetInstance()
+    {
+        $this->assertTrue(Klasse_WP_Poll_Survey::get_instance() instanceof Klasse_WP_Poll_Survey);
+    }
+
     function testPluginInitialization() {
         $this->assertFalse( null == $this->kwps );
     } // end testPluginInitialization
@@ -43,6 +53,26 @@ class InstallTest extends Base_UnitTestCase {
     {
         $testModi = $this->kwps->getAvailableTestModi();
         $this->assertTrue(count($testModi) == 2);
+    }
+
+    function testLoadPluginTextDomain()
+    {
+        $this->assertNull($this->kwps->load_plugin_textdomain());
+    }
+
+    function testEnqueueStyles()
+    {
+        $this->assertNull($this->kwps->enqueue_styles());
+    }
+
+    function testEnqueueScripts()
+    {
+        $this->assertNull($this->kwps->enqueue_scripts());
+    }
+
+    function testActivateNewSite()
+    {
+        $this->assertNull($this->kwps->activate_new_site( rand()));
     }
 
     function testGetInstalledDefaultAvailableModi()
