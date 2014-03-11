@@ -15,4 +15,17 @@
 			<directory prefix="test-" suffix=".php">./tests/unit/</directory>
 		</testsuite>
 	</testsuites>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./</directory>
+            <exclude>
+                <directory>tests</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="build/coverage"/>
+    </logging>
 </phpunit>

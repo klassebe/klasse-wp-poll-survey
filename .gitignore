@@ -1,3 +1,4 @@
 .idea/
 phpmyadmin/
 .DS_Store
+build/
