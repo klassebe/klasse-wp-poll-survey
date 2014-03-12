@@ -6,7 +6,12 @@ class TestTest extends Base_UnitTestCase {
     protected $testModel;
     protected $testData = array(
         'validTest' => array(
-
+            'name' => 'A demo test',
+            'description' => '<h1>Description</h1><p>This is a description as HTML</p>',
+            'view_count' => 0,
+            'user_id' => 1,
+            'mode_id' => 4,
+            'status' => 'ACT'
         )
     );
 
@@ -44,8 +49,13 @@ class TestTest extends Base_UnitTestCase {
 
     function testCreateOnConstruct()
     {
-        $testModel = new Kwps_TestModel();
+        $data = $this->testData['validTest'];
+        $testModel = new Kwps_TestModel($data);
 
+        $this->markTestIncomplete(
+            'This test has not been implemented yet.'
+        );
+        $this->assertTrue($testModel->getName() == $data['name']);
     }
 
 }
