@@ -7,6 +7,3 @@ Build Statuses
 
 ### Description
 WordPress plugin to create polls, surveys, quizzes and personality tests.
-
-## Run tests
-bash bin/install-wp-tests.sh name_db root 'y0uRP@ssw0rd' localhost latest
