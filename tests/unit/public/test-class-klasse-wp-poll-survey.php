@@ -1,10 +1,16 @@
 <?php
 
-class ClassKlasseWpPollSurveyTest extends Base_UnitTestCase {
+class ClassKlasseWpPollSurveyTest extends WP_UnitTestCase {
 
+    protected $wpdb;
     private $kwps;
     private $table_prefix = 'kwps_';
     public $pluginSlug = 'klasse-wp-poll-survey';
+
+    public function __construct() {
+        global $wpdb;
+        $this->wpdb = $wpdb;
+    }
 
     function setUp() {
 
