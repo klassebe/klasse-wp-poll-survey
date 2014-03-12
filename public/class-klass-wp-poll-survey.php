@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Klasse WP Poll Survey.
  *
@@ -38,7 +37,7 @@ class Klasse_WP_Poll_Survey {
 	 */
 	protected $plugin_slug = 'klasse-wp-poll-survey';
 
-    private static $table_prefix = 'kwps_';
+    private static $table_prefix = 'kwps';
 
 	/**
 	 * Instance of this class.
@@ -229,19 +228,13 @@ class Klasse_WP_Poll_Survey {
 
         global $wpdb;
 
-        $tablename = $wpdb->prefix . self::$table_prefix . 'status';
+		$query = 'CREATE TABLE ' . $wpdb->prefix . self::$table_prefix . '_status (
+		    id INT NOT NULL AUTO_INCREMENT,
+		    label VARCHAR(50) NOT NULL,
+		    PRIMARY KEY (id)
+		)';
 
-        $query = "CREATE TABLE `$tablename`  (
-		`id` mediumint(9) NOT NULL AUTO_INCREMENT,
-		`label` varchar(50) NOT NULL,
-		`entity` varchar(50) NOT NULL,
-		PRIMARY KEY (`id`)
-		);";
-
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-        $result = dbDelta($query);
-        var_dump($result);
+        $result = $wpdb->query($query);
 
         return true;
 	}
