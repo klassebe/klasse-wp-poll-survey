@@ -130,4 +130,27 @@ class TestTest extends Base_UnitTestCase {
         $this->assertNotNull($testModel->getCreateDate());
     }
 
+    function testUpdateTest()
+    {
+        $testModel = new Kwps_TestModel($this->testData['validTest']);
+        $testModel->save();
+
+        $randomString = substr( "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", mt_rand(0, 50) , 1) .substr( md5( time() ), 1);
+
+        $testModel->setName($randomString);
+        $testModel->save();
+
+        $this->assertEquals($randomString, $testModel->getName());
+    }
+
+    function testDeleteTest()
+    {
+        $testModel = new Kwps_TestModel($this->testData['validTest']);
+
+        $this->assertTrue(method_exists($testModel, 'delete'));
+
+        $testModel->delete();
+
+        $this->assertEquals('DEL', $testModel->getStatus());
+    }
 }

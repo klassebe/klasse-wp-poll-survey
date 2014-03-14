@@ -75,6 +75,12 @@ class Kwps_TestModel
         }
     }
 
+    public function delete()
+    {
+        $this->setStatus('DEL');
+        $this->save();
+    }
+
     /**
      * @param mixed $close_date
      */
