@@ -55,6 +55,9 @@ class ClassKlasseWpPollSurveyTest extends WP_UnitTestCase {
         }
     }
 
+    /**
+     * @depends testPluginActivation
+     */
     function testGetDefaultAvailableModi()
     {
         $testModi = $this->kwps->getAvailableTestModi();
