@@ -72,7 +72,7 @@ add_action( 'plugins_loaded', array( 'Klasse_WP_Poll_Survey', 'get_instance' ) )
  */
 if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-klass-wp-poll-survey-admin.php' );
+	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-klasse-wp-poll-survey-admin.php' );
 	add_action( 'plugins_loaded', array( 'Klasse_WP_Poll_Survey_Admin', 'get_instance' ) );
 
 }

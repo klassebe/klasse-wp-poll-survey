@@ -52,10 +52,28 @@ class TestTest extends Base_UnitTestCase {
         $data = $this->testData['validTest'];
         $testModel = new Kwps_TestModel($data);
 
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
         $this->assertTrue($testModel->getName() == $data['name']);
+        $this->assertTrue($testModel->getDescription() == $data['description']);
+        $this->assertTrue($testModel->getViewCount() == $data['view_count']);
+        $this->assertTrue($testModel->getUserId() == $data['user_id']);
+        $this->assertTrue($testModel->getModeId() == $data['mode_id']);
+        $this->assertTrue($testModel->getStatus() == $data['status']);
+        $this->assertNull($testModel->getCloseDate());
     }
+
+    function testSaveTest()
+    {
+        $data = $this->testData['validTest'];
+        $testModel = new Kwps_TestModel($data);
+
+        $this->assertTrue(method_exists($testModel, 'save'));
+        $this->markTestIncomplete('Not ready');
+
+        $testModel->save();
+
+        $this->assertNotNull($testModel->getId());
+        $this->assertNotNull($testModel->getCreateDate());
+    }
+
 
 }

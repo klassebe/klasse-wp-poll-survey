@@ -7,8 +7,13 @@
  * @since 0.1
  */
 
+
+require_once dirname(__FILE__) . '/../general.php';
+
 class Kwps_TestModel
 {
+    private static $table_prefix = 'kwps_';
+
     private $id; //INT
     private $name; //VARCHAR
     private $description; //TEXT
@@ -22,7 +27,28 @@ class Kwps_TestModel
     private $status; //VARCHAR
 
     public function __construct($attributes = array()) {
+        if(count($attributes) == 0) {
+            return;
+        }
 
+        foreach($attributes as $attribute => $value) {
+            $attributeName = 'set' . General::camelCase($attribute);
+
+            $this->$attributeName($value);
+        }
+    }
+
+    public function save() {
+        global $wpdb;
+        $tableDefaultPrefix = $wpdb->prefix . self::$table_prefix;
+
+        $wpdb->insert(
+            $tableDefaultPrefix . 'test',
+            array(
+                'name' => 'Poll',
+                'description' => 'This is the poll'
+            )
+        );
     }
 
     /**
