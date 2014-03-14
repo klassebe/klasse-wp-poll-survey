@@ -5,8 +5,7 @@ php:
     - 5.4
 
 before_script:
-  - wget http://getcomposer.org/composer.phar
-  - php composer.phar install --dev --no-interaction
+  - composer install --dev --no-interaction
 
 env:
     - WP_VERSION=latest WP_MULTISITE=0
@@ -23,4 +22,4 @@ script:
 
 
 after_script:
-  - php vendor/bin/coveralls
+  - php vendor/bin/coveralls -v
