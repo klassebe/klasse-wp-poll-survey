@@ -2,6 +2,7 @@
 
 class Base_UnitTestCase extends WP_UnitTestCase {
     protected $wpdb;
+    protected $kwps;
 
     public function __construct() {
         global $wpdb;
@@ -14,6 +15,7 @@ class Base_UnitTestCase extends WP_UnitTestCase {
 
         remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
         remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
+        $this->kwps = new Klasse_WP_Poll_Survey();
 
     } // end setup
 

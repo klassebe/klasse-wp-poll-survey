@@ -24,7 +24,7 @@ class Kwps_TestModel
     private $close_date; //TIMESTAMP
     private $user_id; //INT
     private $mode_id; //INT
-    private $status; //VARCHAR
+    private $status = 'ACT'; //VARCHAR
 
     public function __construct($attributes = array()) {
         if(count($attributes) == 0) {
@@ -42,13 +42,37 @@ class Kwps_TestModel
         global $wpdb;
         $tableDefaultPrefix = $wpdb->prefix . self::$table_prefix;
 
-        $wpdb->insert(
+        $data = array();
+        foreach (get_object_vars($this) as $name => $value) {
+            if($value) {
+                $data[$name] = $value;
+            }
+        }
+
+        $id = $wpdb->replace(
             $tableDefaultPrefix . 'test',
-            array(
-                'name' => 'Poll',
-                'description' => 'This is the poll'
-            )
+            $data
         );
+
+        $this->setId($id);
+        $this->get();
+
+        return $id;
+    }
+
+    public function get()
+    {
+        global $wpdb;
+
+        $tableDefaultPrefix = $wpdb->prefix . self::$table_prefix;
+
+        $test = $wpdb->get_row("SELECT * FROM {$tableDefaultPrefix}test WHERE id = {$this->id}");
+
+        if(is_object($test)) {
+            foreach (get_object_vars($test) as $name => $value) {
+                $this->$name = $value;
+            }
+        }
     }
 
     /**
