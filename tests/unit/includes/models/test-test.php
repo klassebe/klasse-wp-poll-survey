@@ -28,7 +28,7 @@ class TestTest extends Base_UnitTestCase {
         $tableDefaultPrefix = $this->wpdb->prefix . self::$table_prefix;
 
         parent::setUp();
-        $this->classLocation = plugin_dir_path(__DIR__) . '../../includes/models/test.php';
+        $this->classLocation = plugin_dir_path(__DIR__) . '../../../includes/models/test.php';
 
         require_once $this->classLocation;
 
