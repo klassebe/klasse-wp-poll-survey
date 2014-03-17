@@ -7,6 +7,3 @@ Build Statuses
 [![Coverage Status](https://coveralls.io/repos/klassebe/klasse-wp-poll-survey/badge.png)](https://coveralls.io/r/klassebe/klasse-wp-poll-survey)
 ### Description
 WordPress plugin to create polls, surveys, quizzes and personality tests.
-
-## Run tests
-bash bin/install-wp-tests.sh name_db root 'y0uRP@ssw0rd' localhost latest
