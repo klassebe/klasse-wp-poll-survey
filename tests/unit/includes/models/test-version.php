@@ -77,6 +77,22 @@ class TestVersion extends Base_UnitTestCase {
         $this->assertTrue($versionModel instanceof Kwps_VersionModel);
     }
 
+    function testGetTablePrefix() {
+        $versionModel = new Kwps_VersionModel();
+        $this->assertEquals($versionModel->getTablePrefix(), 'kwps_');
+    }
+
+    function testSetTablePrefix() {
+        $versionModel = new Kwps_VersionModel();
+        $prefixOriginal = $versionModel->getTablePrefix();
+
+        $prefix = 'test';
+        $versionModel->setTablePrefix($prefix);
+        $this->assertEquals($versionModel->getTablePrefix(), $prefix);
+
+        $versionModel->setTablePrefix($prefixOriginal);
+    }
+
     function testCreateOnConstruct()
     {
         $data = $this->testData['validVersion'];
@@ -104,6 +120,25 @@ class TestVersion extends Base_UnitTestCase {
 
         $this->assertNotNull($versionModel->getId());
         $this->assertEquals($versionModel->getId(), $versionReference->id);
+    }
+
+    function testGetTestId()
+    {
+        $tableDefaultPrefix = $this->wpdb->prefix . self::$table_prefix;
+        $this->addTestId();
+        $this->wpdb->insert(
+            $tableDefaultPrefix . 'version',
+            $this->testData['validVersion']
+        );
+
+        $versionReference = $this->wpdb->get_row("SELECT * FROM {$tableDefaultPrefix}version");
+
+        $versionModel = new Kwps_VersionModel();
+        $versionModel->setId($versionReference->id);
+        $versionModel->get();
+
+        $this->assertNotNull($versionModel->getId());
+        $this->assertEquals($versionModel->getTestId(), $versionReference->test_id);
     }
 
     function testUpdateVersion()
