@@ -18,7 +18,6 @@ class TestTro extends Base_UnitTestCase {
         parent::setUp();
 
         require_once plugin_dir_path(__DIR__) . '../../../includes/models/tro.php';
-        require_once plugin_dir_path(__DIR__) . '../../../includes/models/test.php';
     } // end setup
 
     function tearDown() {

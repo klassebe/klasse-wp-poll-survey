@@ -29,7 +29,7 @@ install_wp() {
 	tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
 
 #	wget -nv -O $WP_CORE_DIR/wp-content/db.php https://raw.github.com/markoheijnen/wp-mysqli/master/db.php
-	wget -nv -O $WP_CORE_DIR/wp-content/db.php https://github.com/voceconnect/wp-mysqli/blob/master/db.php
+	wget -nv -O $WP_CORE_DIR/wp-content/db.php https://raw.githubusercontent.com/voceconnect/wp-mysqli/master/db.php
 
 }
 
