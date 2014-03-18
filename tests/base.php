@@ -12,9 +12,6 @@ class Base_UnitTestCase extends WP_UnitTestCase {
     function setUp() {
 
         parent::setUp();
-
-        remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
-        remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
         $this->kwps = new Klasse_WP_Poll_Survey();
 
     } // end setup

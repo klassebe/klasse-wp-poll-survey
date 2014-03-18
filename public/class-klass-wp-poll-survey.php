@@ -42,15 +42,6 @@ class Klasse_WP_Poll_Survey {
 	protected $plugin_slug = 'klasse-wp-poll-survey';
 
     private static $table_prefix = 'kwps_';
-    public static $tables = array(
-        'entry',
-        'response_option',
-        'question',
-        'version',
-        'test',
-        'tro',
-        'mode'
-    );
 
 	/**
 	 * Instance of this class.
@@ -239,109 +230,8 @@ class Klasse_WP_Poll_Survey {
 	 */
 	private static function single_activate() {
 
-        global $wpdb;
+        return;
 
-        $fullPrefix = $wpdb->prefix . self::$table_prefix;
-
-        $query = array(
-            //Test
-            "CREATE TABLE `{$fullPrefix}test`  (
-                `id` INT NOT NULL AUTO_INCREMENT,
-                `name` varchar(50) NOT NULL,
-                `description` TEXT NOT NULL,
-                `view_count` INT NOT NULL DEFAULT 0,
-                `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                `update_date` TIMESTAMP,
-                `publish_date` TIMESTAMP,
-                `close_date` TIMESTAMP,
-                `user_id` INT NOT NULL,
-                `mode_id` INT,
-                `status` VARCHAR(10),
-                PRIMARY KEY (`id`)
-            );",
-            //Mode
-            "CREATE TABLE `{$fullPrefix}mode`  (
-                `id` INT NOT NULL AUTO_INCREMENT,
-                `name` varchar(50) NOT NULL,
-                `folder` varchar(50) NOT NULL,
-                `description` TEXT NOT NULL,
-                `status` VARCHAR(10),
-                PRIMARY KEY (`id`)
-            );",
-            //Version
-            "CREATE TABLE `{$fullPrefix}version`  (
-                `id` INT NOT NULL AUTO_INCREMENT,
-                `name` varchar(50) NOT NULL,
-                `api_key` varchar(50) NOT NULL,
-                `test_id` INT,
-                `intro_id` INT,
-                `outro_id` INT,
-                `status` VARCHAR(10),
-                PRIMARY KEY (`id`)
-            );",
-            //Question
-            "CREATE TABLE `{$fullPrefix}question`  (
-                `id` INT NOT NULL AUTO_INCREMENT,
-                `version_id` INT,
-                `order` INT,
-                `description` TEXT NOT NULL,
-                `status` VARCHAR(10),
-                PRIMARY KEY (`id`)
-            );",
-            //Response Option
-            // field: order: Usefull? We have to randomize the order I think
-            "CREATE TABLE `{$fullPrefix}response_option`  (
-                `id` INT NOT NULL AUTO_INCREMENT,
-                `question_id` INT,
-                `description` TEXT NOT NULL,
-                `value` varchar(255) NOT NULL,
-                `order` INT,
-                `status` VARCHAR(10),
-                PRIMARY KEY (`id`)
-            );",
-            //Entry
-            "CREATE TABLE `{$fullPrefix}entry`  (
-                `session_id` varchar(255) NOT NULL,
-                `response_option_id` INT,
-                `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                `update_date` TIMESTAMP,
-                PRIMARY KEY (`session_id`, `response_option_id`)
-            );",
-            //Tro
-            "CREATE TABLE `{$fullPrefix}tro`  (
-                `id` INT NOT NULL AUTO_INCREMENT,
-                `html_text` TEXT,
-                PRIMARY KEY (`id`)
-            );",
-        );
-
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-        dbDelta($query);
-
-        //Add indexes & Relations
-
-            //Test
-        $wpdb->query("ALTER TABLE `{$fullPrefix}test` ADD INDEX(`mode_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}test` ADD CONSTRAINT fk_test_mode_id FOREIGN KEY (`mode_id`) REFERENCES `{$fullPrefix}mode` (`id`)"); //Ok
-
-            //Mode
-
-            //Version
-        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`test_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`intro_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD INDEX(`outro_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_test_id FOREIGN KEY (`test_id`) REFERENCES `{$fullPrefix}test` (`id`)"); //Ok
-        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_intro_id FOREIGN KEY (`intro_id`) REFERENCES `{$fullPrefix}tro` (`id`)"); //Ok
-        $wpdb->query("ALTER TABLE `{$fullPrefix}version` ADD CONSTRAINT fk_version_outro_id FOREIGN KEY (`outro_id`) REFERENCES `{$fullPrefix}tro` (`id`)"); //Ok
-
-            //Question
-        $wpdb->query("ALTER TABLE `{$fullPrefix}question` ADD INDEX(`version_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}question` ADD CONSTRAINT fk_question_version_id FOREIGN KEY (`version_id`) REFERENCES `{$fullPrefix}version` (`id`)"); //Ok
-
-            //Response Option
-        $wpdb->query("ALTER TABLE `{$fullPrefix}response_option` ADD INDEX(`question_id`)");
-        $wpdb->query("ALTER TABLE `{$fullPrefix}response_option` ADD CONSTRAINT fk_response_option_question_id FOREIGN KEY (`question_id`) REFERENCES `{$fullPrefix}question` (`id`)"); //Ok
     }
 
 	/**
@@ -363,13 +253,6 @@ class Klasse_WP_Poll_Survey {
 	 */
 	public static function uninstall() {
         global $wpdb;
-
-        $tableDefaultPrefix = $wpdb->prefix . self::$table_prefix;
-
-        foreach(self::$tables as $table) {
-            $tableName = $tableDefaultPrefix . $table;
-            $wpdb->query("DROP TABLE {$tableName}");
-        }
 	}
 
     public function getAvailableTestModi()
