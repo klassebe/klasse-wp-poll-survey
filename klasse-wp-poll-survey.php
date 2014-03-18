@@ -39,7 +39,8 @@ if ( ! defined( 'WPINC' ) ) {
  * - replace `class-plugin-name.php` with the name of the plugin's class file
  *
  */
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-klass-wp-poll-survey.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'public/class-klasse-wp-poll-survey.php' );
+require 'vendor/autoload.php';
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.

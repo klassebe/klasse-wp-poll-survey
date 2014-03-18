@@ -2,3 +2,4 @@
 phpmyadmin/
 .DS_Store
 build/
+/vendor/

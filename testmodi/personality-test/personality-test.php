@@ -1,21 +1,14 @@
 <?php
 
+use RedBean_Facade as R;
+
 class PersonalityTest
 {
-    private static $table_prefix = 'kwps_';
-
     public function install()
     {
-        global $wpdb;
-
-        $tableDefaultPrefix = $wpdb->prefix . self::$table_prefix;
-
-        $wpdb->insert(
-            $tableDefaultPrefix . 'mode',
-            array(
-                'name' => 'Personality Test',
-                'description' => 'This is the Personality Test'
-            )
-        );
+        $b = R::dispense( 'mode' );
+        $b->name = 'Personality Test';
+        $b->description = 'This is the Personality Test';
+        R::store($b);
     }
 }

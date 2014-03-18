@@ -23,6 +23,8 @@
 
 require_once dirname(__FILE__) . '/../includes/general.php';
 
+use RedBean_Facade as R;
+
 class Klasse_WP_Poll_Survey {
 
 	/**
@@ -62,6 +64,7 @@ class Klasse_WP_Poll_Survey {
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+		add_action( 'init', array( $this, 'wp_redbean_loadlibrary' ) );
 
 		// Activate plugin when new blog is added
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
@@ -301,6 +304,11 @@ class Klasse_WP_Poll_Survey {
 		load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
 
 	}
+
+    function wp_redbean_loadlibrary() {
+
+        R::setup("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASSWORD);
+    }
 
 	/**
 	 * Register and enqueue public-facing style sheet.

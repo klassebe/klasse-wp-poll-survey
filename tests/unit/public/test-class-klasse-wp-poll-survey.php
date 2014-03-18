@@ -1,4 +1,5 @@
 <?php
+use RedBean_Facade as R;
 
 class ClassKlasseWpPollSurveyTest extends WP_UnitTestCase {
 
@@ -76,11 +77,10 @@ class ClassKlasseWpPollSurveyTest extends WP_UnitTestCase {
 
     function testGetInstalledDefaultAvailableModi()
     {
-        $this->markTestIncomplete('');
+        R::wipe( 'mode' );
         $this->kwps->addTestModi();
-        $pluginTablePrefix = $this->wpdb->prefix . $this->table_prefix;
 
-        $installedModi = $this->wpdb->get_results("SELECT * FROM {$pluginTablePrefix}mode");
+        $installedModi = R::findAll( 'mode' );
         $testModi = $this->kwps->getAvailableTestModi();
 
         $this->assertTrue(count($testModi) == count($installedModi));

@@ -1,5 +1,6 @@
 {
-  "require-dev": {
-    "satooshi/php-coveralls": "dev-master"
-  }
+    "name": "root/klasse-wp-poll-survey",
+    "require": {
+      "gabordemooij/redbean": "dev-master"
+    }
 }
