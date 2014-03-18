@@ -2,8 +2,28 @@
 
 <project name="auto-importer" default="build">
     <target name="build"
-            depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpunit,phpcb"/>
+            depends="prepare, composer, lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpunit,phpcb"/>
     <!--depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>-->
+
+
+    <target name="composer" description="Installing dependencies">
+        <exec executable="wget" failonerror="true">
+            <arg value="-nc" />
+            <arg value="http://getcomposer.org/composer.phar" />
+        </exec>
+        <exec executable="php" failonerror="true">
+            <arg value="composer.phar" />
+            <arg value="install" /><!--
+        # Use the lockfile versions only, if it exists (fall back to .json) -->
+            <arg value="--dev" /><!-- includes mockery and all the other QA-tools -->
+            <arg value="--prefer-dist" /><!--
+            ## download/cache a local .zip file for use -->
+            <arg value="--no-progress" />
+            <!--arg value="- -install-suggests" /-->
+            <!--arg value="- -optimize-autoloader" /
+                  ## we don't usually optimise deployment -->
+        </exec>
+    </target>
 
     <target name="build-parallel"
             depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
@@ -44,11 +64,8 @@
 
             <fileset dir="${basedir}">
                 <include name="**/*.php" />
-                <modified />
-            </fileset>
-
-            <fileset dir="${basedir}/tests">
-                <include name="**/*.php" />
+                <exclude name="**/vendor/**" />
+                <exclude name="**/tests/**" />
                 <modified />
             </fileset>
         </apply>
@@ -58,6 +75,8 @@
         <exec executable="phploc">
             <arg value="--log-csv" />
             <arg value="${basedir}/build/logs/phploc.csv" />
+            <arg value="--exclude"/>
+            <arg value="${basedir}/vendor" />
             <arg path="${basedir}" />
         </exec>
     </target>
@@ -77,6 +96,8 @@
             <arg path="${basedir}" />
             <arg value="text" />
             <arg value="${basedir}/phpmd.xml" />
+            <arg value="--exclude"/>
+            <arg value="${basedir}/vendor" />
         </exec>
     </target>
 
@@ -87,6 +108,8 @@
             <arg value="${basedir}/phpmd.xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/build/logs/pmd.xml" />
+            <arg value="--exclude"/>
+            <arg value="${basedir}/vendor" />
         </exec>
     </target>
 
@@ -94,6 +117,8 @@
             description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpcs">
             <arg value="--standard=${basedir}/build/phpcs.xml" />
+            <arg value="--exclude"/>
+            <arg value="${basedir}/vendor" />
             <arg path="${basedir}" />
         </exec>
     </target>
@@ -103,6 +128,8 @@
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
             <arg value="--standard=${basedir}/build/phpcs.xml" />
+            <arg value="--exclude"/>
+            <arg value="${basedir}/vendor" />
             <arg path="${basedir}" />
         </exec>
     </target>
@@ -111,6 +138,8 @@
         <exec executable="phpcpd">
             <arg value="--log-pmd" />
             <arg value="${basedir}/build/logs/pmd-cpd.xml" />
+            <arg value="--exclude"/>
+            <arg value="vendor" />
             <arg path="${basedir}" />
         </exec>
     </target>
