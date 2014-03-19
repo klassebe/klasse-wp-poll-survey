@@ -161,6 +161,8 @@
             <arg path="${basedir}" />
             <arg value="--output" />
             <arg path="${basedir}/build/code-browser" />
+            <arg value="--exclude"/>
+            <arg value="${basedir}/vendor" />
         </exec>
     </target>
 </project>
