@@ -1,6 +1,7 @@
 {
     "name": "root/klasse-wp-poll-survey",
     "require": {
-      "gabordemooij/redbean": "dev-master"
+      "gabordemooij/redbean": "dev-master",
+      "codeception/codeception": "*"
     }
 }

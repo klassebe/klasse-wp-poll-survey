@@ -194,6 +194,8 @@ class Klasse_WP_Poll_Survey_Admin {
 			array( $this, 'display_plugin_admin_page' )
 		);
 
+        add_menu_page(__( 'Tests', $this->plugin_slug ), __( 'Poll & Survey', $this->plugin_slug ), "edit_posts", $this->plugin_slug . '_tests', array( $this, 'display_tests' ));
+        //add_submenu_page( $this->plugin_slug . '_tests', __( 'Tests', $this->plugin_slug ), __( 'Tests', $this->plugin_slug ), "edit_posts", $this->plugin_slug . '_tests2', 'display_plugin_admin_page');
 	}
 
 	/**
@@ -204,6 +206,15 @@ class Klasse_WP_Poll_Survey_Admin {
 	public function display_plugin_admin_page() {
 		include_once( 'views/admin.php' );
 	}
+
+    public function display_tests()
+    {
+        require_once 'controllers/TestController.php';
+
+        $testController = new TestController();
+
+        $testController->IndexAction();
+    }
 
 	/**
 	 * Add settings action link to the plugins page.
