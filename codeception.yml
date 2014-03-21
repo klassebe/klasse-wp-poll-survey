@@ -16,6 +16,6 @@ modules:
         Db:
             dsn: 'mysql:host=localhost;dbname=wordpress_test'
             user: 'root'
-            password: ''
+            password: 'root'
             dump: tests/_data/dump.sql
             cleanup: false

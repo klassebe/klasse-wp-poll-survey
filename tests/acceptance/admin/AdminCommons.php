@@ -4,7 +4,7 @@ namespace admin;
 class AdminCommons
 {
     public static $username = 'admin';
-    public static $password = '';
+    public static $password = 'qbcdef';
 
     public static function logMeIn($I)
     {
