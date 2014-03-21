@@ -17,3 +17,9 @@ modules:
     config:
         PhpBrowser:
             url: 'http://localhost/'
+env:
+    macosx:
+        modules:
+            config:
+                PhpBrowser:
+                    url: 'http://localhost/klasse-dev/wordpress/'
