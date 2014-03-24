@@ -51,6 +51,37 @@ register_deactivation_hook( __FILE__, array( 'Klasse_WP_Poll_Survey', 'deactivat
 
 add_action( 'plugins_loaded', array( 'Klasse_WP_Poll_Survey', 'get_instance' ) );
 
+add_action('init', 'klwps_register_post_types');
+
+function klwps_register_post_types(){
+    $poll_args = array(
+        'public' => true,
+        'query_var' => 'klwps_poll',
+        'rewrite' => array(
+            'slug' => 'polls',
+            'with_front' => false,
+        ),
+        'supports' => array(
+            'title',
+            'editor',
+        ),
+        'labels' => array(
+            'name' => 'Polls',
+            'singular_name' => 'Poll',
+            'add_new' => 'Add New Poll',
+            'add_new_item' => 'Add New Poll',
+            'edit_item' => 'Edit Poll',
+            'new_item' => 'New Poll',
+            'view_item' => 'View Poll',
+            'search_items' => 'Search Polls',
+            'not_found' => 'No Polls Found',
+            'not_found_in_trash' => 'No Polls Found In Trash',
+        ),
+    );
+
+    register_post_type('klwps_poll', $poll_args);
+}
+
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
