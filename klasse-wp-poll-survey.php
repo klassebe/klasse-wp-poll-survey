@@ -52,11 +52,11 @@ register_deactivation_hook( __FILE__, array( 'Klasse_WP_Poll_Survey', 'deactivat
 add_action( 'plugins_loaded', array( 'Klasse_WP_Poll_Survey', 'get_instance' ) );
 
 add_action('init', 'klwps_register_post_types');
+add_action('add_meta_boxes', 'klwps_add_metaboxes');
 
 function klwps_register_post_types(){
     $poll_args = array(
         'public' => true,
-        'query_var' => 'klwps_poll',
         'rewrite' => array(
             'slug' => 'polls',
             'with_front' => false,
@@ -77,9 +77,24 @@ function klwps_register_post_types(){
             'not_found' => 'No Polls Found',
             'not_found_in_trash' => 'No Polls Found In Trash',
         ),
+//        'show_in_menu' => false,
+        'show_in_menu' => 'klasse-wp-poll-survey_tests',
     );
 
     register_post_type('klwps_poll', $poll_args);
+
+}
+
+function klwps_add_metaboxes() {
+    add_meta_box('klwps_intro_and_outro', 'Intro en Outro', 'klwps_display_intro_and_outro_metabox', 'klwps_poll', 'normal', 'high');
+}
+
+function klwps_display_intro_and_outro_metabox($post) {
+    $intro = get_post_meta($post->ID, '_klwps_intro', true);
+    ?>
+    <label for="klwps_intro">Intro</label>
+    <input type="text" name="klwps_intro" value="<?php echo $intro?>" />
+<?php
 }
 
 /*----------------------------------------------------------------------------*
