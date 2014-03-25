@@ -63,7 +63,6 @@ function klwps_register_post_types(){
         ),
         'supports' => array(
             'title',
-            'editor',
         ),
         'labels' => array(
             'name' => 'Polls',
@@ -87,6 +86,7 @@ function klwps_register_post_types(){
 
 function klwps_add_metaboxes() {
     add_meta_box('klwps_intro_and_outro', 'Intro en Outro', 'klwps_display_intro_and_outro_metabox', 'klwps_poll', 'normal', 'high');
+    add_meta_box('klwps_questions', 'Question', 'klwps_display_questions_metabox', 'klwps_poll', 'normal', 'high');
 }
 
 function klwps_display_intro_and_outro_metabox($post) {
@@ -94,12 +94,49 @@ function klwps_display_intro_and_outro_metabox($post) {
 
     $intro = get_post_meta($post->ID, '_klwps_intro', true);
     $outro = get_post_meta($post->ID, '_klwps_outro', true);
+
     ?>
     <label for="_klwps_intro">Intro</label>
     <textarea name="_klwps_intro"><?php echo $intro; ?></textarea>
+
     <label for="_klwps_outro">Outro</label>
     <textarea name="_klwps_outro"><?php echo $outro; ?></textarea>
+
 <?php
+}
+
+function klwps_display_questions_metabox($post){
+    $saved_custom_fields = get_post_custom_keys($post->ID);
+
+    $answer_options = array();
+
+    foreach($saved_custom_fields as $custom_field){
+        if (strpos($custom_field, '_klwps_answer_') !== false) {
+            array_push($answer_options, $custom_field);
+        }
+    }
+    ?>
+
+    <label for="_klwps_question">Question</label>
+    <textarea name="_klwps_question"><?php echo get_post_meta($post->ID, '_klwps_question', true); ?></textarea>
+
+    <?php
+    if(count($answer_options) < 2 ){
+        ?>
+        <label for="_klwps_answer_1">Answer 1</label>
+        <textarea name="_klwps_answer_1"><?php echo get_post_meta($post->ID, '_klwps_answer_1', true); ?></textarea>
+
+        <label for="_klwps_answer_2">Answer 2</label>
+        <textarea name="_klwps_answer_2"><?php echo get_post_meta($post->ID, '_klwps_answer_2', true); ?></textarea>
+    <?php
+    }
+    foreach($answer_options as $key){
+        $label = substr(strrchr($key, "_"), 1);
+    ?>
+        <label for="<?php echo $key; ?>">Answer <?php echo $label;?></label>
+        <textarea name="<?php echo $key; ?>"><?php echo get_post_meta($post->ID, $key, true); ?></textarea>
+    <?php
+    }
 }
 
 /**
@@ -137,6 +174,30 @@ function klwps_meta_save( $post_id ) {
     if( isset( $_POST[ '_klwps_outro' ] ) ) {
         update_post_meta( $post_id, '_klwps_outro', wp_kses( $_POST[ '_klwps_outro' ], $allowdHtmlTags ) );
     }
+
+    if( isset( $_POST[ '_klwps_question' ] ) ) {
+        update_post_meta( $post_id, '_klwps_question', wp_kses( $_POST[ '_klwps_question' ], $allowdHtmlTags ) );
+    }
+
+    $field_prefix = '_klwps_answer_';
+    $saved_custom_fields = get_post_custom_keys($post_id);
+    $form_fields = array_keys($_POST);
+
+    foreach($saved_custom_fields as $custom_field){
+        if(! in_array($custom_field, $form_fields)){
+            delete_post_meta($post_id, $custom_field);
+        }
+    }
+
+    foreach($form_fields as $form_field){
+        if (strpos($form_field, $field_prefix) !== false) {
+            update_post_meta( $post_id, $form_field, wp_kses( $_POST[ $form_field ], $allowdHtmlTags ) );
+        }
+    }
+
+
+
+
 
 }
 add_action( 'save_post', 'klwps_meta_save' );
