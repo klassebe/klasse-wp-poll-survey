@@ -46,15 +46,18 @@ require 'vendor/autoload.php';
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
-register_activation_hook( __FILE__, array( 'Klasse_WP_Poll_Survey', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'Klasse_WP_Poll_Survey', 'deactivate' ) );
 
-add_action( 'plugins_loaded', array( 'Klasse_WP_Poll_Survey', 'get_instance' ) );
 
-add_action('init', 'klwps_register_post_types');
-add_action('add_meta_boxes', 'klwps_add_metaboxes');
+// Load public-facing style sheet and JavaScript.
+add_action( 'wp_enqueue_scripts', 'enqueue_styles' );
+add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 
-function klwps_register_post_types(){
+add_action('init', 'kwps_register_post_types');
+add_action('add_meta_boxes', 'kwps_add_metaboxes');
+
+add_action('admin_menu', 'add_plugin_admin_menu');
+
+function kwps_register_post_types(){
     $poll_args = array(
         'public' => true,
         'rewrite' => array(
@@ -80,7 +83,7 @@ function klwps_register_post_types(){
         'show_in_menu' => 'klasse-wp-poll-survey_tests',
     );
 
-    register_post_type('klwps_poll', $poll_args);
+    register_post_type('kwps_poll', $poll_args);
 
 }
 
@@ -142,7 +145,7 @@ function klwps_display_questions_metabox($post){
 /**
  * Saves the custom meta input
  */
-function klwps_meta_save( $post_id ) {
+function kwps_meta_save( $post_id ) {
 
     $allowdHtmlTags = array(
         'a' => array(
@@ -159,7 +162,7 @@ function klwps_meta_save( $post_id ) {
     // Checks save status
     $is_autosave = wp_is_post_autosave( $post_id );
     $is_revision = wp_is_post_revision( $post_id );
-    $is_valid_nonce = ( isset( $_POST[ 'klwps_nonce' ] ) && wp_verify_nonce( $_POST[ 'klwps_nonce' ], basename( __FILE__ ) ) ) ? 'true' : 'false';
+    $is_valid_nonce = ( isset( $_POST[ 'kwps_nonce' ] ) && wp_verify_nonce( $_POST[ 'kwps_nonce' ], basename( __FILE__ ) ) ) ? 'true' : 'false';
 
     // Exits script depending on save status
     if ( $is_autosave || $is_revision || !$is_valid_nonce ) {
@@ -167,12 +170,12 @@ function klwps_meta_save( $post_id ) {
     }
 
     // Checks for input and sanitizes/saves if needed
-    if( isset( $_POST[ '_klwps_intro' ] ) ) {
-        update_post_meta( $post_id, '_klwps_intro', wp_kses( $_POST[ '_klwps_intro' ], $allowdHtmlTags ) );
+    if( isset( $_POST[ '_kwps_intro' ] ) ) {
+        update_post_meta( $post_id, '_kwps_intro', wp_kses( $_POST[ '_kwps_intro' ], $allowdHtmlTags ) );
     }
 
-    if( isset( $_POST[ '_klwps_outro' ] ) ) {
-        update_post_meta( $post_id, '_klwps_outro', wp_kses( $_POST[ '_klwps_outro' ], $allowdHtmlTags ) );
+    if( isset( $_POST[ '_kwps_outro' ] ) ) {
+        update_post_meta( $post_id, '_kwps_outro', wp_kses( $_POST[ '_kwps_outro' ], $allowdHtmlTags ) );
     }
 
     if( isset( $_POST[ '_klwps_question' ] ) ) {
@@ -200,7 +203,37 @@ function klwps_meta_save( $post_id ) {
 
 
 }
-add_action( 'save_post', 'klwps_meta_save' );
+add_action( 'save_post', 'kwps_meta_save' );
+
+/**
+ * Register and enqueue public-facing style sheet.
+ *
+ * @since    1.0.0
+ */
+function enqueue_styles() {
+    wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
+}
+
+/**
+ * Register and enqueues public-facing JavaScript files.
+ *
+ * @since    1.0.0
+ */
+function enqueue_scripts() {
+    wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
+}
+
+
+/**
+ * Register the administration menu for this plugin into the WordPress Dashboard menu.
+ *
+ * @since    1.0.0
+ */
+function add_plugin_admin_menu() {
+
+    add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array( $this, 'display_tests' ));
+    //add_submenu_page( $this->plugin_slug . '_tests', __( 'Tests', $this->plugin_slug ), __( 'Tests', $this->plugin_slug ), "edit_posts", $this->plugin_slug . '_tests2', 'display_plugin_admin_page');
+}
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
