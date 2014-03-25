@@ -90,12 +90,56 @@ function klwps_add_metaboxes() {
 }
 
 function klwps_display_intro_and_outro_metabox($post) {
+    wp_nonce_field( basename( __FILE__ ), 'klwps_nonce' );
+
     $intro = get_post_meta($post->ID, '_klwps_intro', true);
+    $outro = get_post_meta($post->ID, '_klwps_outro', true);
     ?>
-    <label for="klwps_intro">Intro</label>
-    <input type="text" name="klwps_intro" value="<?php echo $intro?>" />
+    <label for="_klwps_intro">Intro</label>
+    <textarea name="_klwps_intro"><?php echo $intro; ?></textarea>
+    <label for="_klwps_outro">Outro</label>
+    <textarea name="_klwps_outro"><?php echo $outro; ?></textarea>
 <?php
 }
+
+/**
+ * Saves the custom meta input
+ */
+function klwps_meta_save( $post_id ) {
+
+    $allowdHtmlTags = array(
+        'a' => array(
+            'href' => array(),
+            'title' => array()
+        ),
+        'br' => array(),
+        'em' => array(),
+        'strong' => array(),
+        'h1' => array(),
+        'p' => array(),
+    );
+
+    // Checks save status
+    $is_autosave = wp_is_post_autosave( $post_id );
+    $is_revision = wp_is_post_revision( $post_id );
+    $is_valid_nonce = ( isset( $_POST[ 'klwps_nonce' ] ) && wp_verify_nonce( $_POST[ 'klwps_nonce' ], basename( __FILE__ ) ) ) ? 'true' : 'false';
+
+    // Exits script depending on save status
+    if ( $is_autosave || $is_revision || !$is_valid_nonce ) {
+        return;
+    }
+
+    // Checks for input and sanitizes/saves if needed
+    if( isset( $_POST[ '_klwps_intro' ] ) ) {
+        update_post_meta( $post_id, '_klwps_intro', wp_kses( $_POST[ '_klwps_intro' ], $allowdHtmlTags ) );
+    }
+
+    if( isset( $_POST[ '_klwps_outro' ] ) ) {
+        update_post_meta( $post_id, '_klwps_outro', wp_kses( $_POST[ '_klwps_outro' ], $allowdHtmlTags ) );
+    }
+
+}
+add_action( 'save_post', 'klwps_meta_save' );
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
