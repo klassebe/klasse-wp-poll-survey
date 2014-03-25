@@ -92,22 +92,22 @@ function kwps_add_metaboxes() {
 }
 
 function kwps_display_intro_and_outro_metabox($post) {
-    wp_nonce_field( basename( __FILE__ ), 'klwps_nonce' );
+    wp_nonce_field( basename( __FILE__ ), 'kwps_nonce' );
 
-    $intro = get_post_meta($post->ID, '_klwps_intro', true);
-    $outro = get_post_meta($post->ID, '_klwps_outro', true);
+    $intro = get_post_meta($post->ID, '_kwps_intro', true);
+    $outro = get_post_meta($post->ID, '_kwps_outro', true);
     ?>
-    <label for="_klwps_intro">Intro</label>
-    <textarea name="_klwps_intro"><?php echo $intro; ?></textarea>
-    <label for="_klwps_outro">Outro</label>
-    <textarea name="_klwps_outro"><?php echo $outro; ?></textarea>
+    <label for="_kwps_intro">Intro</label>
+    <textarea name="_kwps_intro"><?php echo $intro; ?></textarea>
+    <label for="_kwps_outro">Outro</label>
+    <textarea name="_kwps_outro"><?php echo $outro; ?></textarea>
 <?php
 }
 
 /**
  * Saves the custom meta input
  */
-function klwps_meta_save( $post_id ) {
+function kwps_meta_save( $post_id ) {
 
     $allowdHtmlTags = array(
         'a' => array(
@@ -124,7 +124,7 @@ function klwps_meta_save( $post_id ) {
     // Checks save status
     $is_autosave = wp_is_post_autosave( $post_id );
     $is_revision = wp_is_post_revision( $post_id );
-    $is_valid_nonce = ( isset( $_POST[ 'klwps_nonce' ] ) && wp_verify_nonce( $_POST[ 'klwps_nonce' ], basename( __FILE__ ) ) ) ? 'true' : 'false';
+    $is_valid_nonce = ( isset( $_POST[ 'kwps_nonce' ] ) && wp_verify_nonce( $_POST[ 'kwps_nonce' ], basename( __FILE__ ) ) ) ? 'true' : 'false';
 
     // Exits script depending on save status
     if ( $is_autosave || $is_revision || !$is_valid_nonce ) {
@@ -132,16 +132,16 @@ function klwps_meta_save( $post_id ) {
     }
 
     // Checks for input and sanitizes/saves if needed
-    if( isset( $_POST[ '_klwps_intro' ] ) ) {
-        update_post_meta( $post_id, '_klwps_intro', wp_kses( $_POST[ '_klwps_intro' ], $allowdHtmlTags ) );
+    if( isset( $_POST[ '_kwps_intro' ] ) ) {
+        update_post_meta( $post_id, '_kwps_intro', wp_kses( $_POST[ '_kwps_intro' ], $allowdHtmlTags ) );
     }
 
-    if( isset( $_POST[ '_klwps_outro' ] ) ) {
-        update_post_meta( $post_id, '_klwps_outro', wp_kses( $_POST[ '_klwps_outro' ], $allowdHtmlTags ) );
+    if( isset( $_POST[ '_kwps_outro' ] ) ) {
+        update_post_meta( $post_id, '_kwps_outro', wp_kses( $_POST[ '_kwps_outro' ], $allowdHtmlTags ) );
     }
 
 }
-add_action( 'save_post', 'klwps_meta_save' );
+add_action( 'save_post', 'kwps_meta_save' );
 
 /**
  * Register and enqueue public-facing style sheet.
