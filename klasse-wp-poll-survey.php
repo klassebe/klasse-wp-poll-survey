@@ -29,6 +29,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+require_once __DIR__ . '/includes/admin_section.php';
+
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
@@ -39,7 +41,7 @@ if ( ! defined( 'WPINC' ) ) {
  * - replace `class-plugin-name.php` with the name of the plugin's class file
  *
  */
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-klasse-wp-poll-survey.php' );
+//require_once( plugin_dir_path( __FILE__ ) . 'public/class-klasse-wp-poll-survey.php' );
 require 'vendor/autoload.php';
 
 /*
@@ -79,8 +81,10 @@ function kwps_register_post_types(){
             'not_found' => 'No Polls Found',
             'not_found_in_trash' => 'No Polls Found In Trash',
         ),
-//        'show_in_menu' => false,
+        'show_in_menu' => false,
         'show_in_menu' => 'klasse-wp-poll-survey_tests',
+//            'show_ui' => false,
+        'hierarchical' => true,
     );
 
     register_post_type('kwps_poll', $poll_args);
@@ -125,13 +129,7 @@ function kwps_display_questions_metabox($post){
 
     <?php
     if(count($answer_options) < 2 ){
-        ?>
-        <label for="_kwps_answer_1">Answer 1</label>
-        <textarea name="_kwps_answer_1"><?php echo get_post_meta($post->ID, '_kwps_answer_1', true); ?></textarea>
-
-        <label for="_kwps_answer_2">Answer 2</label>
-        <textarea name="_kwps_answer_2"><?php echo get_post_meta($post->ID, '_kwps_answer_2', true); ?></textarea>
-    <?php
+        $answer_options = array('_kwps_answer_1', '_kwps_answer_2');
     }
     foreach($answer_options as $key){
         $label = substr(strrchr($key, "_"), 1);
@@ -197,11 +195,6 @@ function kwps_meta_save( $post_id ) {
             update_post_meta( $post_id, $form_field, wp_kses( $_POST[ $form_field ], $allowdHtmlTags ) );
         }
     }
-
-
-
-
-
 }
 add_action( 'save_post', 'kwps_meta_save' );
 
@@ -231,7 +224,8 @@ function enqueue_scripts() {
  */
 function add_plugin_admin_menu() {
 
-    add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array( $this, 'display_tests' ));
+    add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array('\includes\admin_section', 'display_tests'));
+//    add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array($this, 'display_tests'));
     //add_submenu_page( $this->plugin_slug . '_tests', __( 'Tests', $this->plugin_slug ), __( 'Tests', $this->plugin_slug ), "edit_posts", $this->plugin_slug . '_tests2', 'display_plugin_admin_page');
 }
 
@@ -257,7 +251,7 @@ function add_plugin_admin_menu() {
  */
 if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-klasse-wp-poll-survey-admin.php' );
+	//require_once( plugin_dir_path( __FILE__ ) . 'admin/class-klasse-wp-poll-survey-admin.php' );
 	add_action( 'plugins_loaded', array( 'Klasse_WP_Poll_Survey_Admin', 'get_instance' ) );
 
 }
