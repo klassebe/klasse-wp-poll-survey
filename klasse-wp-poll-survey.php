@@ -87,50 +87,50 @@ function kwps_register_post_types(){
 
 }
 
-function klwps_add_metaboxes() {
-    add_meta_box('klwps_intro_and_outro', 'Intro en Outro', 'klwps_display_intro_and_outro_metabox', 'klwps_poll', 'normal', 'high');
-    add_meta_box('klwps_questions', 'Question', 'klwps_display_questions_metabox', 'klwps_poll', 'normal', 'high');
+function kwps_add_metaboxes() {
+    add_meta_box('kwps_intro_and_outro', 'Intro en Outro', 'kwps_display_intro_and_outro_metabox', 'kwps_poll', 'normal', 'high');
+    add_meta_box('kwps_questions', 'Question', 'kwps_display_questions_metabox', 'kwps_poll', 'normal', 'high');
 }
 
-function klwps_display_intro_and_outro_metabox($post) {
-    wp_nonce_field( basename( __FILE__ ), 'klwps_nonce' );
+function kwps_display_intro_and_outro_metabox($post) {
+    wp_nonce_field( basename( __FILE__ ), 'kwps_nonce' );
 
-    $intro = get_post_meta($post->ID, '_klwps_intro', true);
-    $outro = get_post_meta($post->ID, '_klwps_outro', true);
+    $intro = get_post_meta($post->ID, '_kwps_intro', true);
+    $outro = get_post_meta($post->ID, '_kwps_outro', true);
 
     ?>
-    <label for="_klwps_intro">Intro</label>
-    <textarea name="_klwps_intro"><?php echo $intro; ?></textarea>
+    <label for="_kwps_intro">Intro</label>
+    <textarea name="_kwps_intro"><?php echo $intro; ?></textarea>
 
-    <label for="_klwps_outro">Outro</label>
-    <textarea name="_klwps_outro"><?php echo $outro; ?></textarea>
+    <label for="_kwps_outro">Outro</label>
+    <textarea name="_kwps_outro"><?php echo $outro; ?></textarea>
 
 <?php
 }
 
-function klwps_display_questions_metabox($post){
+function kwps_display_questions_metabox($post){
     $saved_custom_fields = get_post_custom_keys($post->ID);
 
     $answer_options = array();
 
     foreach($saved_custom_fields as $custom_field){
-        if (strpos($custom_field, '_klwps_answer_') !== false) {
+        if (strpos($custom_field, '_kwps_answer_') !== false) {
             array_push($answer_options, $custom_field);
         }
     }
     ?>
 
-    <label for="_klwps_question">Question</label>
-    <textarea name="_klwps_question"><?php echo get_post_meta($post->ID, '_klwps_question', true); ?></textarea>
+    <label for="_kwps_question">Question</label>
+    <textarea name="_kwps_question"><?php echo get_post_meta($post->ID, '_kwps_question', true); ?></textarea>
 
     <?php
     if(count($answer_options) < 2 ){
         ?>
-        <label for="_klwps_answer_1">Answer 1</label>
-        <textarea name="_klwps_answer_1"><?php echo get_post_meta($post->ID, '_klwps_answer_1', true); ?></textarea>
+        <label for="_kwps_answer_1">Answer 1</label>
+        <textarea name="_kwps_answer_1"><?php echo get_post_meta($post->ID, '_kwps_answer_1', true); ?></textarea>
 
-        <label for="_klwps_answer_2">Answer 2</label>
-        <textarea name="_klwps_answer_2"><?php echo get_post_meta($post->ID, '_klwps_answer_2', true); ?></textarea>
+        <label for="_kwps_answer_2">Answer 2</label>
+        <textarea name="_kwps_answer_2"><?php echo get_post_meta($post->ID, '_kwps_answer_2', true); ?></textarea>
     <?php
     }
     foreach($answer_options as $key){
@@ -178,11 +178,11 @@ function kwps_meta_save( $post_id ) {
         update_post_meta( $post_id, '_kwps_outro', wp_kses( $_POST[ '_kwps_outro' ], $allowdHtmlTags ) );
     }
 
-    if( isset( $_POST[ '_klwps_question' ] ) ) {
-        update_post_meta( $post_id, '_klwps_question', wp_kses( $_POST[ '_klwps_question' ], $allowdHtmlTags ) );
+    if( isset( $_POST[ '_kwps_question' ] ) ) {
+        update_post_meta( $post_id, '_kwps_question', wp_kses( $_POST[ '_kwps_question' ], $allowdHtmlTags ) );
     }
 
-    $field_prefix = '_klwps_answer_';
+    $field_prefix = '_kwps_answer_';
     $saved_custom_fields = get_post_custom_keys($post_id);
     $form_fields = array_keys($_POST);
 
