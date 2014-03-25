@@ -39,22 +39,24 @@ if ( ! defined( 'WPINC' ) ) {
  * - replace `class-plugin-name.php` with the name of the plugin's class file
  *
  */
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-klasse-wp-poll-survey.php' );
 require 'vendor/autoload.php';
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
-register_activation_hook( __FILE__, array( 'Klasse_WP_Poll_Survey', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'Klasse_WP_Poll_Survey', 'deactivate' ) );
 
-add_action( 'plugins_loaded', array( 'Klasse_WP_Poll_Survey', 'get_instance' ) );
 
-add_action('init', 'klwps_register_post_types');
-add_action('add_meta_boxes', 'klwps_add_metaboxes');
+// Load public-facing style sheet and JavaScript.
+add_action( 'wp_enqueue_scripts', 'enqueue_styles' );
+add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 
-function klwps_register_post_types(){
+add_action('init', 'kwps_register_post_types');
+add_action('add_meta_boxes', 'kwps_add_metaboxes');
+
+add_action('admin_menu', 'add_plugin_admin_menu');
+
+function kwps_register_post_types(){
     $poll_args = array(
         'public' => true,
         'rewrite' => array(
@@ -81,20 +83,50 @@ function klwps_register_post_types(){
         'show_in_menu' => 'klasse-wp-poll-survey_tests',
     );
 
-    register_post_type('klwps_poll', $poll_args);
+    register_post_type('kwps_poll', $poll_args);
 
 }
 
-function klwps_add_metaboxes() {
-    add_meta_box('klwps_intro_and_outro', 'Intro en Outro', 'klwps_display_intro_and_outro_metabox', 'klwps_poll', 'normal', 'high');
+function kwps_add_metaboxes() {
+    add_meta_box('kwps_intro_and_outro', 'Intro en Outro', 'kwps_display_intro_and_outro_metabox', 'kwps_poll', 'normal', 'high');
 }
 
-function klwps_display_intro_and_outro_metabox($post) {
-    $intro = get_post_meta($post->ID, '_klwps_intro', true);
+function kwps_display_intro_and_outro_metabox($post) {
+    $intro = get_post_meta($post->ID, '_kwps_intro', true);
     ?>
-    <label for="klwps_intro">Intro</label>
-    <input type="text" name="klwps_intro" value="<?php echo $intro?>" />
+    <label for="kwps_intro">Intro</label>
+    <input type="text" name="kwps_intro" value="<?php echo $intro?>" />
 <?php
+}
+
+/**
+ * Register and enqueue public-facing style sheet.
+ *
+ * @since    1.0.0
+ */
+function enqueue_styles() {
+    wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
+}
+
+/**
+ * Register and enqueues public-facing JavaScript files.
+ *
+ * @since    1.0.0
+ */
+function enqueue_scripts() {
+    wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
+}
+
+
+/**
+ * Register the administration menu for this plugin into the WordPress Dashboard menu.
+ *
+ * @since    1.0.0
+ */
+function add_plugin_admin_menu() {
+
+    add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array( $this, 'display_tests' ));
+    //add_submenu_page( $this->plugin_slug . '_tests', __( 'Tests', $this->plugin_slug ), __( 'Tests', $this->plugin_slug ), "edit_posts", $this->plugin_slug . '_tests2', 'display_plugin_admin_page');
 }
 
 /*----------------------------------------------------------------------------*
@@ -119,7 +151,8 @@ function klwps_display_intro_and_outro_metabox($post) {
  */
 if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-klasse-wp-poll-survey-admin.php' );
-	add_action( 'plugins_loaded', array( 'Klasse_WP_Poll_Survey_Admin', 'get_instance' ) );
 
 }
+
+
+
