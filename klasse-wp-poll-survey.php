@@ -80,8 +80,8 @@ function kwps_register_post_types(){
             'not_found' => 'No Polls Found',
             'not_found_in_trash' => 'No Polls Found In Trash',
         ),
-        'show_in_menu' => false,
-        'show_in_menu' => 'klasse-wp-poll-survey_tests',
+        'show_in_menu' => true,
+//        'show_in_menu' => 'klasse-wp-poll-survey_tests',
 //            'show_ui' => false,
         'hierarchical' => true,
     );
@@ -193,6 +193,11 @@ function kwps_meta_save( $post_id ) {
         if (strpos($form_field, $field_prefix) !== false) {
             update_post_meta( $post_id, $form_field, wp_kses( $_POST[ $form_field ], $allowdHtmlTags ) );
         }
+    }
+
+    $saved_view_count = get_post_meta($post_id, '_kwps_view_count', true);
+    if(strlen($saved_view_count) == 0) {
+        update_post_meta($post_id, '_kwps_view_count', 0);
     }
 }
 add_action( 'save_post', 'kwps_meta_save' );
