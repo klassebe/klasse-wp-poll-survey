@@ -61,6 +61,41 @@ add_action('admin_menu', 'add_plugin_admin_menu');
 
 add_action( 'save_post', array('\includes\poll', 'kwps_meta_save'));
 
+add_filter('init', 'kwps_add_api_rewrite_rules');
+
+register_activation_hook(__FILE__, 'kwps_activate');
+register_deactivation_hook(__FILE__, 'kwps_deactivate');
+
+function kwps_activate(){
+    kwps_add_api_rewrite_rules();
+    flush_rewrite_rules();
+}
+
+function kwps_deactivate(){
+    flush_rewrite_rules();
+}
+
+function kwps_add_api_rewrite_rules(){
+    add_rewrite_endpoint('format', EP_PERMALINK);
+}
+
+add_filter('template_include', 'kwps_template_include', 99);
+
+function kwps_template_include($template){
+    var_dump($_REQUEST); die;
+    var_dump($template); die;
+    if(get_query_var('format') == 'json'){
+        kwps_display_json();
+        exit;
+    }
+
+    return $template;
+}
+
+function kwps_display_json(){
+    var_dump($_REQUEST);
+}
+
 /**
  * Register and enqueue public-facing style sheet.
  *
