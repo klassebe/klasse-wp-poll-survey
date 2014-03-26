@@ -249,6 +249,17 @@ class Poll_List_Table extends Base_List_Table {
      * @uses $this->set_pagination_args()
      **************************************************************************/
     function prepare_items() {
+        if(isset($_REQUEST['orderby']) ){
+            $order_by = $_REQUEST['orderby'];
+        } else {
+            $order_by = 'post_modified';
+        }
+
+        if(isset($_REQUEST['order']) ){
+            $order = $_REQUEST['order'];
+        } else {
+            $order = 'desc';
+        }
 
          /**
          * First, lets decide how many records per page to show
@@ -295,6 +306,8 @@ class Poll_List_Table extends Base_List_Table {
          */
         $arguments = array(
             'post_type' => 'kwps_poll',
+            'orderby' => $order_by,
+            'order' => $order,
 //            'post_parent' => 1,
         );
 //        $data = get_posts($arguments);
