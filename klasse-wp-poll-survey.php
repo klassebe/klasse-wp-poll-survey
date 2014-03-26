@@ -82,9 +82,7 @@ function kwps_add_api_rewrite_rules(){
 add_filter('template_include', 'kwps_template_include', 99);
 
 function kwps_template_include($template){
-    var_dump($_REQUEST); die;
-    var_dump($template); die;
-    if(get_query_var('format') == 'json'){
+    if(get_query_var('format') == 'json' && is_singular()){
         kwps_display_json();
         exit;
     }
@@ -93,7 +91,32 @@ function kwps_template_include($template){
 }
 
 function kwps_display_json(){
-    var_dump($_REQUEST);
+    global $post;
+
+    $post_as_array = (array) $post;
+    foreach(get_post_custom_keys($post_as_array['ID']) as $custom_field){
+        $meta_data = get_post_meta($post_as_array['ID'], $custom_field, true);
+        $post_as_array[$custom_field] = $meta_data;
+    }
+
+//    retrieve children of this post aka versions
+    $args = array('post_type' => 'kwps_poll', 'post_parent' => $post_as_array['ID']);
+    $versions = get_posts($args);
+
+    $versions_array = array();
+
+    foreach($versions as $version){
+        $version_as_array = (array) $version;
+        foreach(get_post_custom_keys($version_as_array['ID']) as $custom_field){
+            $meta_data = get_post_meta($version_as_array['ID'], $custom_field, true);
+            $version_as_array[$custom_field] = $meta_data;
+        }
+        array_push($versions_array, $version_as_array);
+    }
+
+    $post_as_array['versions'] = $versions_array;
+
+    wp_send_json($post_as_array);
 }
 
 /**
