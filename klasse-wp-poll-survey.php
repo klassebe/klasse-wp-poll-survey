@@ -147,10 +147,11 @@ function enqueue_scripts() {
  */
 function enqueue_scripts_admin() {
     wp_enqueue_script( 'jquery' );
+    wp_enqueue_script( 'backbone' );
     wp_enqueue_script( 'jquery-ui-core' );
     wp_enqueue_script( 'jquery-ui-tabs' );
+    wp_enqueue_script( 'klasse-wp-poll-survey-handlebars', plugins_url( 'js/lib/handlebars.js', __FILE__ ), array( 'jquery' ));
     wp_enqueue_script( 'klasse-wp-poll-survey-plugin-script', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ));
-
 }
 
 function enqueue_styles_admin() {

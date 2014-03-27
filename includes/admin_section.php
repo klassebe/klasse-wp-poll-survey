@@ -7,7 +7,7 @@ require_once __DIR__ . '/poll_list_table.php';
 class admin_section {
     public static function display_form()
     {
-//        include_once dirname(__FILE__) . '/../views/add.php';
+        include_once __DIR__ . '/../views/add.php';
 
     }
 
