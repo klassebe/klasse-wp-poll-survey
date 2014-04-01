@@ -7,6 +7,27 @@ require_once __DIR__ . '/poll_list_table.php';
 class admin_section {
     public static function display_form()
     {
+        if( isset($_GET['action']) && 'edit' === $_GET['action']){
+            if( isset($_GET['id']) ) {
+                $current_post = get_post($_GET['id']);
+
+                if( null === $current_post ) {
+                    echo 'post not found';
+                } elseif ( 'kwps_poll' !== $current_post->post_type ) {
+                    echo 'post not of type kwps_poll';
+                } else {
+                    $post_as_array = (array) $current_post;
+
+                    $post_as_array = kwps_get_post_with_versions($post_as_array);
+                ?>
+                    <script>var parentPost=<?php echo json_encode($post_as_array); ?></script>
+                <?php
+                }
+            } else {
+                echo 'No post id given!';
+            }
+        }
+
         include_once __DIR__ . '/../views/add.php';
 
     }

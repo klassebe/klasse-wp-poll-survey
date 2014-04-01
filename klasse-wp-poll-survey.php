@@ -31,6 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 require_once __DIR__ . '/includes/admin_section.php';
 require_once __DIR__ . '/includes/poll.php';
+require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
@@ -58,6 +59,7 @@ add_action('init', array('\includes\poll','kwps_register_post_types'));
 add_action('add_meta_boxes', array('\includes\poll', 'kwps_add_metaboxes'));
 
 add_action('admin_menu', 'add_plugin_admin_menu');
+add_action( 'wp_ajax_kwps_save_poll', 'kwps_save_poll' );
 
 add_action( 'save_post', array('\includes\poll', 'kwps_meta_save'));
 
@@ -82,7 +84,9 @@ function kwps_add_api_rewrite_rules(){
 add_filter('template_include', 'kwps_template_include', 99);
 
 function kwps_template_include($template){
-    if(get_query_var('format') == 'json' && is_singular()){
+    global $post;
+
+    if('kwps_poll' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
         kwps_display_json();
         exit;
     }
@@ -94,6 +98,15 @@ function kwps_display_json(){
     global $post;
 
     $post_as_array = (array) $post;
+
+    $post_as_array = kwps_get_post_with_versions($post_as_array);
+
+    wp_send_json($post_as_array);
+}
+
+function kwps_get_post_with_versions($post_as_array) {
+    var_dump(get_post_custom_keys($post_as_array['ID']));
+
     foreach(get_post_custom_keys($post_as_array['ID']) as $custom_field){
         $meta_data = get_post_meta($post_as_array['ID'], $custom_field, true);
         $post_as_array[$custom_field] = $meta_data;
@@ -116,9 +129,62 @@ function kwps_display_json(){
 
     $post_as_array['versions'] = $versions_array;
 
-    wp_send_json($post_as_array);
+    return $post_as_array;
 }
 
+function kwps_save_poll(){
+    if( kwps_validate_new_poll($_POST) ) {
+        echo 'validated';
+    }
+
+    kwps_save_post($_POST);
+
+    die();
+}
+
+function kwps_validate_new_poll($post) {
+    $required_fields = array(
+        'post_title',
+        'post_status',
+        'post_type',
+        '_kwps_intro',
+        '_kwps_outro',
+        '_kwps_question',
+        '_kwps_answers',
+    );
+
+    foreach($required_fields as $field)
+    if(! isset($post[$field])) {
+        return false;
+    } else {
+        if( is_string($post[$field])){
+            if( strlen($post[$field]) == 0 ) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+function kwps_save_post($post){
+    $post_id = wp_insert_post($post);
+    var_dump($post_id);
+
+    if( $post_id != 0 ){
+        foreach($post as $field => $value){
+            if( strpos($field, 'kwps') ) {
+                echo 'trying to save field: ' . $field . "<br>";
+                if( update_post_meta($post_id, $field, $value) ){
+                    echo 'saved ' . $field;
+                } else {
+                    echo 'failed ' . $field;
+                }
+            }
+        }
+    } else {
+        echo 'post could not be saved';
+    }
+}
 /**
  * Register and enqueue public-facing style sheet.
  *

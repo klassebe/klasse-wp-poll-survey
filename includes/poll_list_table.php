@@ -107,7 +107,8 @@ class Poll_List_Table extends Base_List_Table {
         $actions = array(
 //            http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=edit
 
-            'edit'      => sprintf('<a href="%spost.php?post=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
+            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
+//            'edit'      => sprintf('<a href="%spost.php?post=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
 //            'edit'      => sprintf('<a href="?page=%s&action=%s&id=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
 
 //        http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=trash&_wpnonce=25ff8209c2
@@ -308,7 +309,9 @@ class Poll_List_Table extends Base_List_Table {
             'post_type' => 'kwps_poll',
             'orderby' => $order_by,
             'order' => $order,
-//            'post_parent' => 1,
+            'post_per_page' => 5,
+            'numberposts' => -1,
+            'post_parent' => 0,
         );
 //        $data = get_posts($arguments);
         $post_data = get_posts($arguments);
@@ -324,22 +327,7 @@ class Poll_List_Table extends Base_List_Table {
             array_push($data, $row_data);
         }
 
-
-        /**
-         * This checks for sorting input and sorts the data in our array accordingly.
-         *
-         * In a real-world situation involving a database, you would probably want
-         * to handle sorting by passing the 'orderby' and 'order' values directly
-         * to a custom query. The returned data will be pre-sorted, and this array
-         * sorting technique would be unnecessary.
-         */
-        function usort_reorder($a,$b){
-            $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'post_modified'; //If no sort, default to post_modified
-            $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
-            $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
-            return ($order==='asc') ? $result : -$result; //Send final sort direction to usort
-        }
-        usort($data, 'usort_reorder');
+        usort($data, 'self::usort_reorder');
 
 
         /**
@@ -382,6 +370,21 @@ class Poll_List_Table extends Base_List_Table {
             'per_page'    => $per_page,                     //WE have to determine how many items to show on a page
             'total_pages' => ceil($total_items/$per_page)   //WE have to calculate the total number of pages
         ) );
+    }
+
+    /**
+     * This checks for sorting input and sorts the data in our array accordingly.
+     *
+     * In a real-world situation involving a database, you would probably want
+     * to handle sorting by passing the 'orderby' and 'order' values directly
+     * to a custom query. The returned data will be pre-sorted, and this array
+     * sorting technique would be unnecessary.
+     */
+    static function usort_reorder($a,$b){
+        $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'post_modified'; //If no sort, default to post_modified
+        $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
+        $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
+        return ($order==='asc') ? $result : -$result; //Send final sort direction to usort
     }
 
 
