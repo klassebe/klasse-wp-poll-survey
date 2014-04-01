@@ -41,28 +41,59 @@
                             <th class="no-delete">&nbsp;</th>
                             <td>&nbsp;</td>
                             {{#each versions}}
-                            <td>{{post_title}}</td>
+                            <td>
+                                <div>{{post_title}}</div>
+                                <div class="actions" style="display: none">edit | preview</div>
+                            </td>
                             {{/each}}
                         </tr>
                         <tr>
                             <th class="no-delete"><?php _e('Intro', 'klasse-wp-poll-survey') ?></th>
-                            <td id="_kwps_intro">{{_kwps_intro}}</td>
+                            <td id="_kwps_intro">
+                                <div>
+                                    {{_kwps_intro}}
+                                </div>
+                                <div class="actions" style="display: none">edit | preview</div>
+                            </td>
                             {{#each versions}}
-                            <td>{{_kwps_intro}}</td>
+                            <td id="_kwps_intro_{{ID}}">
+                                <div>{{_kwps_intro}}</div>
+                                <div class="actions" style="display: none">edit | preview</div>
+                            </td>
                             {{/each}}
                         </tr>
                         <tr>
-                            <th class="no-delete">Vraag 1</th>
-                            <td id="_kwps_question">{{_kwps_question}}</td>
+                            <th class="no-delete toggle-details">Vraag 1</th>
+                            <td id="_kwps_question">
+                                <div>
+                                    {{_kwps_question}}
+                                </div>
+                                <div class="actions" style="display: none">edit | preview</div>
+                            </td>
                             {{#each versions}}
-                            <td>{{_kwps_question}}</td>
+                            <td id="_kwps_question_{{ID}}">
+                                <div>
+                                    {{_kwps_question}}
+                                </div>
+                                <div class="actions" style="display: none">edit | preview</div>
+                            </td>
                             {{/each}}
                         </tr>
                         <tr>
                             <th class="no-delete"><?php _e('Outro', 'klasse-wp-poll-survey') ?></th>
-                            <td id="_kwps_outro">{{_kwps_outro}}</td>
+                            <td id="_kwps_outro">
+                                <div>
+                                    {{_kwps_outro}}
+                                </div>
+                                <div class="actions" style="display: none">edit | preview</div>
+                            </td>
                             {{#each versions}}
-                            <td>{{_kwps_outro}}</td>
+                            <td id="_kwps_outro_{{ID}}">
+                                <div>
+                                    {{_kwps_outro}}
+                                </div>
+                                <div class="actions" style="display: none">edit | preview</div>
+                            </td>
                             {{/each}}
                         </tr>
                     </table>
@@ -88,6 +119,5 @@
                 felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
         </div>
     </div>
-    <div id="cell-actions" style="display: none">edit | preview</div>
 
 </script>
