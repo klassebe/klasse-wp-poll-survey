@@ -28,11 +28,29 @@ jQuery(function ($) {
         key: 'fromTest',
         includeInJSON: true
       }
+    },
+    {
+      type: Backbone.HasMany,
+      key: 'answers',
+      relatedModel: 'AnswerModel',
+      collectionType: 'AnswerCollection',
+      reverseRelation: {
+        key: 'fromTest',
+        includeInJSON: true
+      }
     }]
+  });
+
+  AnswerModel = Backbone.RelationalModel.extend({
+
   });
 
   VersionCollection = Backbone.Collection.extend({
     model: TestModel
+  });
+
+  AnswerCollection = Backbone.Collection.extend({
+    model: AnswerModel
   });
 
   app.TestView = Backbone.View.extend({
@@ -71,14 +89,36 @@ jQuery(function ($) {
       $(event.target).find(".actions").hide();
     },
     toggleDetails: function(event) {
-       conbso
+       console.log($(event.target).parent());
+
+      var template = Handlebars.compile($('#anwser_template').html());
+      $(this.el).html(template(this.model.toJSON()));
     }
   });
   app.test = new TestModel(testData);
+
   $.each(versions, function(index, version) {
     version.fromTest = app.test;
     app.index = new TestModel(version);
   });
+
+  $.each(answers, function(index, answer) {
+    if(answer.post_id == app.test.get('ID')) {
+      answer.fromTest = app.test;
+      app.index = new AnswerModel(answer);
+    }
+  });
+
+  $.each(app.test.get('versions').models, function(index, version) {
+    var post_id = version.get('ID');
+    $.each(answers, function(index, answer) {
+      if(answer.post_id == post_id) {
+        answer.fromTest = version;
+        app.index = new AnswerModel(answer);
+      }
+    });
+  });
+
   app.view = new app.TestView({model: app.test});
 });
 
@@ -95,16 +135,12 @@ var testData =
   "_kwps_intro": "Dit is een intro",
   "_kwps_outro": "Dit is een outro",
   "_kwps_question": "Hier staat de vraag",
-  "_kwps_answers": [
-    "antwoord optie 1",
-    "antwoord optie 2"
-  ],
   "_kwps_view_count": "0"
 }
 
 var versions = [
   {
-    "ID": "18",
+    "ID": "19",
     "post_author": 1,
     "post_date": "2014-03-24 16:01:35",
     "post_title": "Dit is een poll",
@@ -115,14 +151,10 @@ var versions = [
     "_kwps_intro": "Dit is een intro",
     "_kwps_outro": "Dit is een outro",
     "_kwps_question": "Hier staat de vraag",
-    "_kwps_answers": [
-      "antwoord optie 1",
-      "antwoord optie 2"
-    ],
     "_kwps_view_count": "0"
   },
   {
-    "ID": "18",
+    "ID": "20",
     "post_author": 1,
     "post_date": "2014-03-24 16:01:35",
     "post_title": "Dit is een poll",
@@ -133,10 +165,25 @@ var versions = [
     "_kwps_intro": "Dit is een intro",
     "_kwps_outro": "Dit is een outro",
     "_kwps_question": "Hier staat de vraag",
-    "_kwps_answers": [
-      "antwoord optie 1",
-      "antwoord optie 2"
-    ],
     "_kwps_view_count": "0"
   }
 ];
+
+var answers = [
+  {
+    "post_id": 18,
+    "answer_option": "Yes"
+  },
+  {
+    "post_id": 18,
+    "answer_option": "No"
+  },
+  {
+    "post_id": 19,
+    "answer_option": "Sure"
+  },
+  {
+    "post_id": 19,
+    "answer_option": "Maybe"
+  }
+]

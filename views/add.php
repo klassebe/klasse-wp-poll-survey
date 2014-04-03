@@ -5,6 +5,13 @@
 <script id="cell_template" type="text/x-handlebars-template">
     <td>Dit is er eentje</td>
 </script>
+<script id="answer_template" type="text/x-handlebars-template">
+    <tr>
+        <th>
+            <?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?>
+        </th>
+    </tr>
+</script>
 
 <script id="version_template" type="text/x-handlebars-template">
     <div id="icon-tests" class="icon32"><br/></div>
