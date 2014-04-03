@@ -104,8 +104,20 @@ function kwps_display_json(){
     wp_send_json($post_as_array);
 }
 
+function kwps_get_poll($post_id){
+    $post =get_post($post_id,ARRAY_A);
+
+    $post['_kwps_intro'] = get_post_meta($post_id, '_kwps_intro', true);
+    $post['_kwps_outro'] = get_post_meta($post_id, '_kwps_outro', true);
+    $post['_kwps_question'] = get_post_meta($post_id, '_kwps_question', true);
+    $post['_kwps_view_count'] = get_post_meta($post_id, '_kwps_view_count', true);
+
+    return $post;
+}
+
 function kwps_get_post_with_versions($post_as_array) {
-    var_dump(get_post_custom_keys($post_as_array['ID']));
+
+//    var_dump(kwps_get_answer_options_of_poll($post_as_array['ID']));
 
     foreach(get_post_custom_keys($post_as_array['ID']) as $custom_field){
         $meta_data = get_post_meta($post_as_array['ID'], $custom_field, true);
@@ -130,6 +142,44 @@ function kwps_get_post_with_versions($post_as_array) {
     $post_as_array['versions'] = $versions_array;
 
     return $post_as_array;
+}
+
+function kwps_get_versions_of_poll($post_id){
+    $versions_as_objects = get_children(array('post_parent' => $post_id));
+    $versions = array();
+
+    foreach($versions_as_objects as $version_object){
+        $version = kwps_get_poll($version_object->ID);
+        array_push($versions, (array) $version);
+    }
+
+    return $versions;
+}
+
+function kwps_get_answer_options_of_poll($post_id){
+    $answer_options = get_post_meta($post_id, '_kwps_answers', true);
+
+    $return_array = array();
+
+    foreach($answer_options as $answer_option){
+        $answer_object = array();
+        $answer_object['postId'] = $post_id;
+        $answer_object['answerOption'] = $answer_option;
+        array_push($return_array, $answer_object);
+    }
+
+    return $return_array;
+}
+
+function kwps_get_answer_options_of_versions($versions){
+    $answer_options = array();
+    foreach($versions as $version){
+        $answer_option = kwps_get_answer_options_of_poll($version['ID']);
+
+        $answer_options = array_merge($answer_options, $answer_option);
+    }
+
+    return $answer_options;
 }
 
 function kwps_save_poll(){
