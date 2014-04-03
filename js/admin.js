@@ -1,6 +1,28 @@
 jQuery(function ($) {
+  // debug helper
+  // usage: {{debug}} or {{debug someValue}}
+  // from: @commondream (http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/)
+  Handlebars.registerHelper("debug", function(optionalValue) {
+    console.log("Current Context");
+    console.log("====================");
+    console.log(this);
 
+    if (optionalValue) {
+      console.log("Value");
+      console.log("====================");
+      console.log(optionalValue);
+    }
+  });
 
+  Handlebars.registerHelper("getColumnCount", function(versions) {
+    versions = parseInt(versions);
+    return versions + 2;
+  });
+
+  Handlebars.registerHelper('setIndex', function(value){
+    console.log(this);
+    this.index = Number(value + 1); //I needed human readable index, not zero based
+  });
 
   var app = {};
 
@@ -17,7 +39,8 @@ jQuery(function ($) {
       post_type: "kwps_poll",
       _kwps_intro: "",
       _kwps_outro: "",
-      _kwps_question: ""
+      _kwps_question: "",
+      open: false
     },
     relations: [{
       type: Backbone.HasMany,
@@ -69,13 +92,31 @@ jQuery(function ($) {
     },
     render: function () {
       this.inputPostTitle.val(this.model.get('post_title'));
-      this.renderParentMatrix();
-    },
-    renderParentMatrix: function() {
-      var template = Handlebars.compile($('#version_template').html());
-      $(this.el).html(template(this.model.toJSON()));
-      $('#tabs').tabs();
 
+      var template = Handlebars.compile($('#version_template').html());
+      var data = this.model.toJSON();
+      data.table = this.prepareTable();
+      $(this.el).html(template(data));
+      $('#tabs').tabs();
+    },
+    prepareTable: function() {
+      var tableData = new Array();
+      this.model.get('answers').each(function(answer) {
+        var row = new Array(answer.toJSON());
+        tableData.push(row);
+      });
+
+      var versions = this.model.get('versions');
+      versions.each(function(version) {
+        var index = versions.indexOf(version);
+        var answers = version.get('answers');
+        answers.each(function(answer) {
+          var indexAnswer = answers.indexOf(answer);
+          tableData[indexAnswer].push(answer.toJSON());
+        });
+      });
+
+      return tableData;
     },
     addVersion: function (event) {
       var newVersion = new TestModel(testData);
@@ -89,10 +130,8 @@ jQuery(function ($) {
       $(event.target).find(".actions").hide();
     },
     toggleDetails: function(event) {
-       console.log($(event.target).parent());
-
-      var template = Handlebars.compile($('#anwser_template').html());
-      $(this.el).html(template(this.model.toJSON()));
+      this.model.set('open', true);
+       console.log(this.model);
     }
   });
   app.test = new TestModel(testData);
@@ -185,5 +224,13 @@ var answers = [
   {
     "post_id": 19,
     "answer_option": "Maybe"
+  },
+  {
+    "post_id": 20,
+    "answer_option": "Ok my way or the highway"
+  },
+  {
+    "post_id": 20,
+    "answer_option": "Highway please"
   }
 ]

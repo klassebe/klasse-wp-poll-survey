@@ -2,17 +2,6 @@
 
 </div> <!-- .wrap -->
 
-<script id="cell_template" type="text/x-handlebars-template">
-    <td>Dit is er eentje</td>
-</script>
-<script id="answer_template" type="text/x-handlebars-template">
-    <tr>
-        <th>
-            <?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?>
-        </th>
-    </tr>
-</script>
-
 <script id="version_template" type="text/x-handlebars-template">
     <div id="icon-tests" class="icon32"><br/></div>
     <h2><?php echo get_admin_page_title() ?></h2>
@@ -46,7 +35,6 @@
                     <table border="1px" id="matrix">
                         <tr>
                             <th class="no-delete">&nbsp;</th>
-                            <td>&nbsp;</td>
                             {{#each versions}}
                             <td>
                                 <div>{{post_title}}</div>
@@ -55,7 +43,9 @@
                             {{/each}}
                         </tr>
                         <tr>
-                            <th class="no-delete"><?php _e('Intro', 'klasse-wp-poll-survey') ?></th>
+                            <th class="no-delete"><?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?></th>
+                        </tr>
+                        <tr>
                             <td id="_kwps_intro">
                                 <div>
                                     {{_kwps_intro}}
@@ -70,7 +60,9 @@
                             {{/each}}
                         </tr>
                         <tr>
-                            <th class="no-delete toggle-details">Vraag 1</th>
+                            <th class="no-delete"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?></th>
+                        </tr>
+                        <tr class="toggle-details">
                             <td id="_kwps_question">
                                 <div>
                                     {{_kwps_question}}
@@ -86,8 +78,27 @@
                             </td>
                             {{/each}}
                         </tr>
+                        {{#if open}}
                         <tr>
-                            <th class="no-delete"><?php _e('Outro', 'klasse-wp-poll-survey') ?></th>
+                            <th class="no-delete"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?></th>
+                        </tr>
+                            {{#each table}}
+                                <tr>
+                                    {{#each this}}
+                                            <td class="answer">
+                                                <div>
+                                                    {{answer_option}}
+                                                </div>
+                                                <div class="actions" style="display: none">edit | preview</div>
+                                            </td>
+                                    {{/each}}
+                                </tr>
+                            {{/each}}
+                        {{/if}}
+                        <tr>
+                            <th class="no-delete"><?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?></th>
+                        </tr>
+                        <tr>
                             <td id="_kwps_outro">
                                 <div>
                                     {{_kwps_outro}}
