@@ -6,7 +6,7 @@ class AdminCommons
     public static $username = 'admin';
     public static $password = 'qbcdef';
 
-    public static function logMeIn($I)
+    public static function logMeIn(\WebGuy $I)
     {
         $I->amOnPage('/wp-admin');
         $I->fillField('Username', self::$username);
@@ -14,7 +14,7 @@ class AdminCommons
         $I->click('Log In');
     }
 
-    public static function activate($I)
+    public static function activate(\WebGuy $I)
     {
         self::logMeIn($I);
         $I->click('Plugins');
