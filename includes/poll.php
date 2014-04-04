@@ -10,7 +10,10 @@ namespace includes;
 
 
 class poll {
-    static function kwps_register_post_types(){
+    /**
+     *
+     */
+    static function register_post_type(){
         $poll_args = array(
             'public' => true,
             'rewrite' => array(
@@ -42,12 +45,18 @@ class poll {
 
     }
 
-    static function kwps_add_metaboxes() {
-        add_meta_box('kwps_intro_and_outro', 'Intro en Outro', array('\includes\poll', 'kwps_display_intro_and_outro_metabox'), 'kwps_poll', 'normal', 'high');
-        add_meta_box('kwps_questions', 'Question', array('\includes\poll', 'kwps_display_questions_metabox'), 'kwps_poll', 'normal', 'high');
+    /**
+     *
+     */
+    static function add_metaboxes() {
+        add_meta_box('kwps_intro_and_outro', 'Intro en Outro', array('\includes\poll', 'display_intro_and_outro_metabox'), 'kwps_poll', 'normal', 'high');
+        add_meta_box('kwps_questions', 'Question', array('\includes\poll', 'display_questions_metabox'), 'kwps_poll', 'normal', 'high');
     }
 
-    static function kwps_display_intro_and_outro_metabox($post) {
+    /**
+     * @param $post
+     */
+    static function display_intro_and_outro_metabox($post) {
         wp_nonce_field( basename( __FILE__ ), 'kwps_nonce' );
 
         $intro = get_post_meta($post->ID, '_kwps_intro', true);
@@ -63,7 +72,10 @@ class poll {
     <?php
     }
 
-    static function kwps_display_questions_metabox($post){
+    /**
+     * @param $post
+     */
+    static function display_questions_metabox($post){
         $saved_custom_fields = get_post_custom_keys($post->ID);
 
         $answer_options = array();
@@ -94,7 +106,7 @@ class poll {
     /**
      * Saves the custom meta input
      */
-    static function kwps_meta_save( $post_id ) {
+    static function meta_save( $post_id ) {
 
         $allowdHtmlTags = array(
             'a' => array(
@@ -135,9 +147,11 @@ class poll {
         $saved_custom_fields = get_post_custom_keys($post_id);
         $form_fields = array_keys($_POST);
 
-        foreach($saved_custom_fields as $custom_field){
-            if(! in_array($custom_field, $form_fields)){
-                delete_post_meta($post_id, $custom_field);
+        if(is_array($saved_custom_fields)){
+            foreach($saved_custom_fields as $custom_field){
+                if(! in_array($custom_field, $form_fields)){
+                    delete_post_meta($post_id, $custom_field);
+                }
             }
         }
 
@@ -153,4 +167,167 @@ class poll {
         }
     }
 
-} 
+    /**
+     * This function displays the current poll as json
+     * Can only be used inside the WP loop!
+     *
+     */
+    static function display_poll_as_json(){
+        global $post;
+
+        $post_as_array = self::get_poll($post->ID);
+        $answer_options = self::get_answer_options_of_poll($post->ID);
+        $post_as_array['_kwps_answer_options'] = $answer_options;
+
+        wp_send_json($post_as_array);
+    }
+
+    /**
+     * This function returns the poll with the corresponding post_id as an associative array.
+     * Returns null when no poll found.
+     * Other versions of the poll are not retrieved.
+     *
+     * @param $post_id
+     * @return null|array
+     */
+    static function get_poll($post_id){
+        $post_as_array =get_post($post_id,ARRAY_A);
+
+        $post_as_array['_kwps_intro'] = get_post_meta($post_id, '_kwps_intro', true);
+        $post_as_array['_kwps_outro'] = get_post_meta($post_id, '_kwps_outro', true);
+        $post_as_array['_kwps_question'] = get_post_meta($post_id, '_kwps_question', true);
+        $post_as_array['_kwps_view_count'] = get_post_meta($post_id, '_kwps_view_count', true);
+
+        return $post_as_array;
+    }
+
+    /**
+     * @param $post_id
+     * @return array|null
+     */
+    static function get_poll_with_versions($post_id) {
+
+        $parent_poll = self::get_poll($post_id);
+
+//    retrieve children of this post aka versions
+        $versions_array = self::get_versions_of_poll($post_id);
+
+        $parent_poll['versions'] = $versions_array;
+
+        return $parent_poll;
+    }
+
+    /**
+     * @param $post_id
+     * @return array
+     */
+    static function get_versions_of_poll($post_id){
+        $versions_as_objects = get_children(array('post_parent' => $post_id));
+        $versions = array();
+
+        foreach($versions_as_objects as $version_object){
+            $version = self::get_poll($version_object->ID);
+            array_push($versions, (array) $version);
+        }
+
+        return $versions;
+    }
+
+    /**
+     * @param $post_id
+     * @return array
+     */
+    static function get_answer_options_of_poll($post_id){
+        $answer_options = get_post_meta($post_id, '_kwps_answers', true);
+
+        $return_array = array();
+
+        foreach($answer_options as $answer_option){
+            $answer_object = array();
+            $answer_object['postId'] = $post_id;
+            $answer_object['answerOption'] = $answer_option;
+            array_push($return_array, $answer_object);
+        }
+
+        return $return_array;
+    }
+
+    /**
+     * @param $versions
+     * @return array
+     */
+    static function get_answer_options_of_versions($versions){
+        $answer_options = array();
+        foreach($versions as $version){
+            $answer_option = self::get_answer_options_of_poll($version['ID']);
+
+            $answer_options = array_merge($answer_options, $answer_option);
+        }
+
+        return $answer_options;
+    }
+
+    /**
+     *
+     */
+    static function save_poll(){
+        if( self::validate_new_poll($_POST) ) {
+            echo 'validated';
+        }
+
+        self::save_post($_POST);
+
+        die();
+    }
+
+    /**
+     * @param $post
+     * @return bool
+     */
+    static function validate_new_poll($post) {
+        $required_fields = array(
+            'post_title',
+            'post_status',
+            'post_type',
+            '_kwps_intro',
+            '_kwps_outro',
+            '_kwps_question',
+            '_kwps_answers',
+        );
+
+        foreach($required_fields as $field)
+            if(! isset($post[$field])) {
+                return false;
+            } else {
+                if( is_string($post[$field])){
+                    if( strlen($post[$field]) == 0 ) {
+                        return false;
+                    }
+                }
+            }
+        return true;
+    }
+
+    /**
+     * @param $post
+     */
+    static function save_post($post){
+        $post_id = wp_insert_post($post);
+        var_dump($post_id);
+
+        if( $post_id != 0 ){
+            foreach($post as $field => $value){
+                if( strpos($field, 'kwps') ) {
+                    echo 'trying to save field: ' . $field . "<br>";
+                    if( update_post_meta($post_id, $field, $value) ){
+                        echo 'saved ' . $field;
+                    } else {
+                        echo 'failed ' . $field;
+                    }
+                }
+            }
+        } else {
+            echo 'post could not be saved';
+        }
+    }
+}
