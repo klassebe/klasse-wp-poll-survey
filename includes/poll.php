@@ -9,7 +9,7 @@
 namespace includes;
 
 
-class poll {
+class Poll {
     /**
      *
      */

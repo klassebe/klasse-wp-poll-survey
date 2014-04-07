@@ -3,4 +3,5 @@ phpmyadmin/
 .DS_Store
 build/
 /vendor/
+codecept.phar
 _log/
