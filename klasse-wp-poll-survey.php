@@ -124,13 +124,13 @@ function enqueue_scripts_admin() {
     wp_register_script( 'klasse-wp-poll-survey-underscore', plugins_url( 'js/bower_components/underscore/underscore.js', __FILE__ ), array( 'jquery' ));
     wp_register_script( 'klasse-wp-poll-survey-backbone', plugins_url( 'js/bower_components/backbone/backbone.js', __FILE__ ), array( 'klasse-wp-poll-survey-underscore' ));
     wp_register_script( 'klasse-wp-poll-survey-handlebars', plugins_url( 'js/bower_components/handlebars/handlebars.js', __FILE__ ), array( 'jquery' ));
-    wp_register_script( 'klasse-wp-poll-survey-backbone-relational', plugins_url( 'js/bower_components/backbone-relational/backbone-relational.js', __FILE__ ), array( 'klasse-wp-poll-survey-backbone' ));
+    wp_register_script( 'klasse-wp-poll-survey-backbone-associations', plugins_url( 'js/bower_components/backbone-associations/backbone-associations.js', __FILE__ ), array( 'klasse-wp-poll-survey-backbone' ));
 
     wp_enqueue_script( 'jquery' );
     wp_enqueue_script( 'jquery-ui-core' );
     wp_enqueue_script( 'jquery-ui-tabs' );
     wp_enqueue_script( 'klasse-wp-poll-survey-handlebars');
-    wp_enqueue_script( 'klasse-wp-poll-survey-backbone-relational');
+    wp_enqueue_script( 'klasse-wp-poll-survey-backbone-associations');
     //wp_enqueue_script( 'klasse-wp-poll-survey-handlebars', plugins_url( 'js/bower_components/handlebars/handlebars.js', __FILE__ ), array( 'jquery' ));
     //wp_enqueue_script( 'klasse-wp-poll-survey-backbone-relational', plugins_url( 'js/bower_components/backbone-relational/backbone-relational.js', __FILE__ ), array( 'backbone' ));
     wp_enqueue_script( 'klasse-wp-poll-survey-plugin-script', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ));
