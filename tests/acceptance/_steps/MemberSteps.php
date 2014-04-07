@@ -1,31 +1,35 @@
 <?php
-namespace admin;
+namespace WebGuy;
 
-class AdminCommons
+class MemberSteps extends \WebGuy
 {
     public static $username = 'admin';
     public static $password = 'qbcdef';
 
-    public static function logMeIn(\WebGuy $I)
+    function login()
     {
+        $I = $this;
         $I->amOnPage('/wp-admin');
         $I->fillField('Username', self::$username);
         $I->fillField('Password',self::$password);
         $I->click('Log In');
+
     }
 
-    public static function activate(\WebGuy $I)
+    public function activate_kwps()
     {
-        self::logMeIn($I);
+        $I = $this;
+        $I->login();
         $I->click('Plugins');
         $I->click('#klasse-wordpress-poll-survey span.activate a');
     }
 
-    public static function deactivate(\WebGuy $I)
+    public function deactivate_kwps()
     {
-        self::logMeIn($I);
+        $I = $this;
+        $I->login();
         $I->click('Plugins');
         $I->click('#klasse-wordpress-poll-survey span.deactivate a');
     }
+
 }
-?>

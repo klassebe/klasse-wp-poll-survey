@@ -16,13 +16,13 @@ class admin_section {
                 } elseif ( 'kwps_poll' !== $current_post->post_type ) {
                     echo 'post not of type kwps_poll';
                 } else {
-                    $post_as_array = poll::get_poll_with_versions($current_post->ID);
+                    $post_as_array = Poll::get_poll_with_versions($current_post->ID);
 
-                    $versions = poll::get_versions_of_poll($current_post->ID);
-                    $answer_option_of_parent = poll::get_answer_options_of_poll($current_post->ID);
+                    $versions = Poll::get_versions_of_poll($current_post->ID);
+                    $answer_option_of_parent = Poll::get_answer_options_of_poll($current_post->ID);
 
 
-                    $answer_options = poll::get_answer_options_of_versions($versions);
+                    $answer_options = Poll::get_answer_options_of_versions($versions);
 
                     $answer_options = array_merge($answer_options, $answer_option_of_parent);
                 ?>

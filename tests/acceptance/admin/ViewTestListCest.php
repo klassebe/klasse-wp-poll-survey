@@ -2,6 +2,9 @@
 namespace admin;
 use \WebGuy;
 
+/**
+ * @guy WebGuy\MemberSteps
+ */
 class ViewTestListCest
 {
 
@@ -14,12 +17,16 @@ class ViewTestListCest
     }
 
     // tests
-    public function tryToTest(WebGuy $I)
+    public function tryToTest(WebGuy\MemberSteps $I)
     {
-        AdminCommons::logMeIn($I);
+        $I->activate_kwps();
         $I->wantTo('see an overview of the tests');
         $I->click('Poll & Survey', '#toplevel_page_klasse-wp-poll-survey_tests');
-        $I->see('Tests', '.wrap');
+        $I->see('No items found.');
+        $I->see('Title');
+        $I->see('Views');
+        $I->see('Date');
+        $I->see('Tests', 'h2');
     }
 
 }
