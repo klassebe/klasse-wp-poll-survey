@@ -1,6 +1,7 @@
 <?php
 namespace admin;
 use \WebGuy;
+use pages\AdminMenuPage as AdminMenuPage;
 
 /**
  * @guy WebGuy\MemberSteps
@@ -19,7 +20,7 @@ class MenuCest
     {
         $I->activate_kwps();
         $I->wantTo('see the menu item');
-        $I->see('Poll & Survey', '#adminmenuwrap');
+        $I->see(AdminMenuPage::$kwps_full_name, AdminMenuPage::$kwps_full_name_selector);
     }
 
 }

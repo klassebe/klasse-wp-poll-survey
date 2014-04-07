@@ -1,6 +1,7 @@
 <?php
 namespace admin;
 use \WebGuy;
+use pages\AdminMenuPage as AdminMenuPage;
 
 /**
  * @guy WebGuy\MemberSteps

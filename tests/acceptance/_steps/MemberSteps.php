@@ -1,5 +1,7 @@
 <?php
 namespace WebGuy;
+use pages\AdminMenuPage as AdminMenuPage;
+
 
 class MemberSteps extends \WebGuy
 {
@@ -20,7 +22,7 @@ class MemberSteps extends \WebGuy
     {
         $I = $this;
         $I->login();
-        $I->click('Plugins');
+        $I->click(AdminMenuPage::$plugins);
         $I->click('#klasse-wordpress-poll-survey span.activate a');
     }
 
@@ -28,7 +30,7 @@ class MemberSteps extends \WebGuy
     {
         $I = $this;
         $I->login();
-        $I->click('Plugins');
+        $I->click(AdminMenuPage::$plugins);
         $I->click('#klasse-wordpress-poll-survey span.deactivate a');
     }
 
