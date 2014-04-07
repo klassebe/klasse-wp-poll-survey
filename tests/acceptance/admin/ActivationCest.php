@@ -2,6 +2,9 @@
 namespace admin;
 use \WebGuy;
 
+/**
+ * @guy WebGuy\MemberSteps
+ */
 class ActivationCest
 {
 
@@ -12,21 +15,21 @@ class ActivationCest
     public function _after()
     {
     }
-    function activatePlugin(WebGuy $I)
+    function activatePlugin(WebGuy\MemberSteps $I)
     {
-        AdminCommons::logMeIn($I);
+        $I->login();
         $I->wantTo('activate the plugin');
         $I->click('Plugins');
         $I->click('#klasse-wordpress-poll-survey span.activate a');
-        $I->see('Deactivate');
+        $I->see('Deactivate', '#klasse-wordpress-poll-survey span.deactivate a');
     }
 
-    function deactivatePlugin(WebGuy $I)
+    function deactivatePlugin(WebGuy\MemberSteps $I)
     {
-        AdminCommons::logMeIn($I);
+        $I->login();
         $I->wantTo('de-activate the plugin');
         $I->click('Plugins');
         $I->click('#klasse-wordpress-poll-survey span.deactivate a');
-        $I->see('Activate');
+        $I->see('Activate','#klasse-wordpress-poll-survey span.activate a');
     }
 }

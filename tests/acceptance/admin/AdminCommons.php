@@ -20,5 +20,12 @@ class AdminCommons
         $I->click('Plugins');
         $I->click('#klasse-wordpress-poll-survey span.activate a');
     }
+
+    public static function deactivate(\WebGuy $I)
+    {
+        self::logMeIn($I);
+        $I->click('Plugins');
+        $I->click('#klasse-wordpress-poll-survey span.deactivate a');
+    }
 }
 ?>

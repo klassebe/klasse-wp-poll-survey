@@ -87,7 +87,7 @@ function kwps_template_include($template){
     global $post;
 
     if('kwps_poll' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
-        \includes\poll::display_poll_as_json();
+        \includes\Poll::display_poll_as_json();
         exit;
     }
 
