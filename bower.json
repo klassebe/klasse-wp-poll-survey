@@ -1,7 +1,7 @@
 {
   "name": "Klasse WordPress Poll & Survey",
   "dependencies": {
+    "backbone-associations": "~0.6.1"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

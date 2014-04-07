@@ -80,7 +80,7 @@
                         </tr>
                         {{#if open}}
                         <tr>
-                            <th class="no-delete"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?></th>
+                            <th class="no-delete"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <span class="add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></span></th>
                         </tr>
                             {{#each table}}
                                 <tr>
