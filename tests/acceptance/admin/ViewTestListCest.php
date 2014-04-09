@@ -23,6 +23,9 @@ class ViewTestListCest
         $I->activate_kwps();
         $I->wantTo('see an overview of the tests');
         $I->click('Poll & Survey', '#toplevel_page_klasse-wp-poll-survey_tests');
+//        $I->see('Bulk Actions', 'option');
+        $I->see('Bulk Actions', 'option[value=-1]');
+        $I->see('Delete', 'option[value=delete]');
         $I->see('No items found.');
         $I->see('Title');
         $I->see('Views');
