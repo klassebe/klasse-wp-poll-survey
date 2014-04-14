@@ -6,19 +6,10 @@
     <div id="icon-tests" class="icon32"><br/></div>
     <h2><?php echo get_admin_page_title() ?></h2>
 
+    <div class="test-input">
+        <input type="text" name="post_title" id="post_title" value="{{post_title}}" placeholder="<?php _e('New Test') ?>"/>
+    </div>
 
-    <table class="form-table">
-        <tbody>
-        <tr>
-            <th>
-                <label for="input-text">Text input</label>
-            </th>
-            <td>
-                <input type="text" name="post_title" id="post_title" value="{{post_title}}" placeholder="<?php _e('New Test') ?>"/><br/>
-            </td>
-        </tr>
-        </tbody>
-    </table>
     <div id="tabs">
         <ul>
             <li><a href="#tabs-add"><?php _e( 'Edit content', 'klasse-wp-poll-survey' ) ?></a></li>
@@ -27,13 +18,16 @@
         </ul>
         <div id="tabs-add">
             <div>
-                <div>
+                <div id="buttons">
                     <button id="add-question"><?php _e('Add Question', 'klasse-wp-poll-survey') ?></button>
                     <button id="add-version"><?php _e('Add Version', 'klasse-wp-poll-survey') ?></button>
                 </div>
                 <div>
                     <table border="1px" id="matrix">
                         <tr>
+                            <td>
+
+                            </td>
                             <th class="no-delete">&nbsp;</th>
                             {{#each versions}}
                             <td>
@@ -42,10 +36,17 @@
                             </td>
                             {{/each}}
                         </tr>
-                        <tr>
-                            <th class="no-delete"><?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?></th>
+                        <tr class="title">
+                            <th class="no-delete" colspan="4"><?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?></th>
                         </tr>
                         <tr>
+                            <td class="delete">
+                                <span class="del">Delete</span>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down"></span>
+                                </div>
+                            </td>
                             <td id="_kwps_intro">
                                 <div>
                                     {{_kwps_intro}}
@@ -59,10 +60,17 @@
                             </td>
                             {{/each}}
                         </tr>
-                        <tr>
-                            <th class="no-delete"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?></th>
+                        <tr class="title">
+                            <th class="no-delete"  colspan="4"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?></th>
                         </tr>
                         <tr class="toggle-details">
+                            <td class="delete">
+                                <span class="del">Delete</span>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down"></span>
+                                </div>
+                            </td>
                             <td id="_kwps_question">
                                 <div>
                                     {{_kwps_question}}
@@ -79,8 +87,8 @@
                             {{/each}}
                         </tr>
                         {{#if open}}
-                        <tr>
-                            <th class="no-delete"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <span class="add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></span></th>
+                        <tr class="title">
+                            <th class="no-delete answers" colspan="4"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <button class="add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
                         </tr>
                             {{#each table}}
                                 <tr>
@@ -95,10 +103,17 @@
                                 </tr>
                             {{/each}}
                         {{/if}}
-                        <tr>
-                            <th class="no-delete"><?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?></th>
+                        <tr class="title">
+                            <th class="no-delete" colspan="4"><?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?></th>
                         </tr>
                         <tr>
+                            <td class="delete">
+                                <span class="del">Delete</span>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down"></span>
+                                </div>
+                            </td>
                             <td id="_kwps_outro">
                                 <div>
                                     {{_kwps_outro}}
