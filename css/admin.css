@@ -1,4 +1,5 @@
 #kwps_test span.edit, #kwps_test span.preview {
+    float: none;
     cursor: pointer;
 }
 #kwps_test .test-input {
