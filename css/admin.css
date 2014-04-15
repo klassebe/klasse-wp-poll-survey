@@ -1,3 +1,6 @@
+#kwps_test span.edit, #kwps_test span.preview {
+    cursor: pointer;
+}
 #kwps_test .test-input {
     margin: 10px 0 15px;
 }
@@ -5,6 +8,7 @@
     padding: 3px 8px;
     width: 100%;
     font-size: 20px;
+    line-height: 26px;
 }
 #kwps_test #buttons {
     margin: 25px 25px 5px;
@@ -103,4 +107,10 @@
     font-size: 13px;
     font-weight: normal;
     margin: 0 0 0 10px;
+}
+#update-model textarea {
+    margin: 10px 0 15px;
+    padding: 10px;
+    width: 100%;
+    max-width: 100%;
 }
