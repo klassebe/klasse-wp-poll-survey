@@ -23,3 +23,12 @@ env:
             config:
                 PhpBrowser:
                     url: 'http://localhost/klasse-dev/wordpress/'
+    martin:
+        modules:
+            config:
+                Db:
+                    password: 'qbcdef'
+                    dump: tests/_data/dump.sql
+                    cleanup: true
+                PhpBrowser:
+                    url: 'http://localhost/~martin/klasse_be/'
