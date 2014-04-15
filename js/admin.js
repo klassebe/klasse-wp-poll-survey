@@ -15,12 +15,12 @@ jQuery(function ($) {
   });
 
   Handlebars.registerHelper("getColumnCount", function(versions) {
-    versions = parseInt(versions);
+    versions = parseInt(versions.length);
     return versions + 2;
   });
 
   Handlebars.registerHelper('setIndex', function(value){
-    this.index = Number(value + 1); //I needed human readable index, not zero based
+    this.index = Number(value + 1);
   });
 
   var app = {};
@@ -31,8 +31,22 @@ jQuery(function ($) {
   });
 
   TestModel = Backbone.AssociatedModel.extend({
+    methodToURL: {
+      'read': '/user/get',
+      'create': '/user/create',
+      'update': '/user/update',
+      'delete': '/wp-admin/admin-ajax.php?action=kwps_version_delete'
+    },
+
+    sync: function(method, model, options) {
+      options = options || {};
+      options.url = model.methodToURL[method.toLowerCase()] + (this.has("ID") ? "&id=" + this.get("ID") : "");
+
+      return Backbone.sync.apply(this, arguments);
+    },
+    idAttribute: 'ID',
     defaults: {
-      ID: '',
+      ID: 0,
       post_author: 0,
       post_date: "",
       post_title: "",
@@ -88,7 +102,10 @@ jQuery(function ($) {
       'mouseenter td': 'showActions',
       'mouseleave td': 'hideActions',
       'click .toggle-details': 'toggleDetails',
-      'click .add-answer': 'addAnswer'
+      'click .add-answer': 'addAnswer',
+      'click .delete-version': 'deleteVersion',
+      'click .preview': 'preview',
+      'click .edit': 'edit'
     },
     render: function () {
       this.inputPostTitle.val(this.model.get('post_title'));
@@ -124,6 +141,12 @@ jQuery(function ($) {
       });
       app.test.set('versions', newVersion, {remove: false});
     },
+    deleteVersion: function(event) {
+      event.preventDefault();
+      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+      var toDelete = this.model.get('versions').get(kwpdId);
+      toDelete.destroy();
+    },
     addAnswer: function(event) {
       var answer = new app.AnswerModel();
       app.test.get('answers').add(answer);
@@ -143,9 +166,40 @@ jQuery(function ($) {
     },
     toggleDetails: function(event) {
       this.model.set('open', true);
+    },
+    preview: function(event) {
+      console.log(event);
+    },
+    edit: function(event) {
+      var kwpsAttribute = $(event.target).closest('div.actions').data('kwps-attribute');
+      var kwpsId = $(event.target).closest('div.actions').data('kwps-id');
+
+      if(typeof kwpsId === 'undefined') {
+        new app.TestViewEdit({model: app.test, attribute: kwpsAttribute});
+      }
     }
   });
-  app.test = new TestModel(testData);
+
+  app.TestViewEdit = Backbone.View.extend({
+    el: '#kwps_test',
+
+    initialize: function (options) {
+      this.options = options || {};
+      console.log(this.options.attribute);
+      console.log(this.model);
+      this.render();
+    },
+    events: {
+
+    },
+    render: function() {
+      var template = Handlebars.compile($('#edit_template').html());
+      var data = this.model.toJSON();
+      $(this.el).html(template(data));
+    }
+  });
+
+  app.test = new TestModel(parentPost);
 
   app.view = new app.TestView({model: app.test});
 });

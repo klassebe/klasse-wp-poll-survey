@@ -33,6 +33,11 @@ class admin_section {
             } else {
                 echo 'No post id given!';
             }
+        } else {
+        ?>
+            <script>var parentPost={}</script>
+            <script>var answerOptions=[]</script>
+        <?php
         }
 
         include_once __DIR__ . '/../views/add.php';
