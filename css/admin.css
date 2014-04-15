@@ -1,0 +1,117 @@
+#kwps_test span.edit, #kwps_test span.preview {
+    float: none;
+    cursor: pointer;
+}
+#kwps_test .test-input {
+    margin: 10px 0 15px;
+}
+#kwps_test .test-input input {
+    padding: 3px 8px;
+    width: 100%;
+    font-size: 20px;
+    line-height: 26px;
+}
+#kwps_test #buttons {
+    margin: 25px 25px 5px;
+}
+#kwps_test button {
+    margin: 0 5px 10px 0;
+    cursor: pointer;
+}
+#kwps_test .delete {
+    width: 80px;
+}
+#kwps_test .delete .del {
+    line-height: 40px;
+}
+#kwps_test .move {
+    float: right;
+}
+#kwps_test .move .up:after {
+    content: '\f142';
+    font-family: dashicons;
+    font-size: 16px;
+    display: block;
+}
+#kwps_test .move .down:after {
+    content: '\f140';
+    font-family: dashicons;
+    font-size: 16px;
+}
+#kwps_test .form-table {
+    width: 100%;
+}
+#kwps_test #tabs-results, #kwps_test #tabs-entries {
+    padding: 25px;
+}
+#kwps_test .ui-tabs-panel {
+    padding: 0;
+    background: #fff;
+    border: 1px solid #dedede;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+#kwps_test .ui-tabs .ui-tabs-nav {
+    margin-bottom: -1px;
+    padding: 0;
+}
+#kwps_test #tabs p {
+    margin: 0 0 15px;
+}
+#kwps_test #tabs li {
+    margin-right: 0;
+}
+#kwps_test #tabs li a {
+    width: 120px;
+    background: #ebebeb;
+    color: #000;
+    font-size: 13px;
+    text-align: center;
+    border: 1px solid #dedede;
+    border-bottom: 0;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-right: 3px;
+}
+#kwps_test #tabs .ui-state-active a {
+    background: #fff;
+}
+#kwps_test #matrix {
+    width: 100%;
+    border: 0;
+}
+/*
+#kwps_test table {
+    border-collapse: collapse;
+}
+#kwps_test tr {
+    border-top: 1px solid #dedede;
+}
+*/
+#kwps_test tr.title {
+    background: #f9f9f9;
+    text-align: left;
+    font-size: 16px;
+}
+#kwps_test td, #kwps_test th {
+    padding: 10px;
+    height: 40px;
+    border: 0;
+}
+#kwps_test th.answers {
+    border-left: 20px solid #dedede;
+}
+#kwps_test tr td.answer:first-child {
+    border-left: 20px solid #dedede;
+}
+#kwps_test .add-answer {
+    font-size: 13px;
+    font-weight: normal;
+    margin: 0 0 0 10px;
+}
+#update-model textarea {
+    margin: 10px 0 15px;
+    padding: 10px;
+    width: 100%;
+    max-width: 100%;
+}

@@ -2,23 +2,24 @@
 
 </div> <!-- .wrap -->
 
+<script id="edit_template" type="text/x-handlebars-template">
+<h2>{{attribute}}</h2>
+<div>
+    <form id="update-model">
+        <textarea name='text' rows="20">{{text}}</textarea>
+        <button id="update"><?php _e( 'Update', 'klasse-wp-poll-survey' ) ?></button>
+    </form>
+</div>
+</script>
+
 <script id="version_template" type="text/x-handlebars-template">
     <div id="icon-tests" class="icon32"><br/></div>
     <h2><?php echo get_admin_page_title() ?></h2>
 
+    <div class="test-input">
+        <input type="text" name="post_title" id="post_title" value="{{post_title}}" placeholder="<?php _e('New Test') ?>"/>
+    </div>
 
-    <table class="form-table">
-        <tbody>
-        <tr>
-            <th>
-                <label for="input-text">Text input</label>
-            </th>
-            <td>
-                <input type="text" name="post_title" id="post_title" value="{{post_title}}" placeholder="<?php _e('New Test') ?>"/><br/>
-            </td>
-        </tr>
-        </tbody>
-    </table>
     <div id="tabs">
         <ul>
             <li><a href="#tabs-add"><?php _e( 'Edit content', 'klasse-wp-poll-survey' ) ?></a></li>
@@ -27,60 +28,77 @@
         </ul>
         <div id="tabs-add">
             <div>
-                <div>
+                <div id="buttons">
                     <button id="add-question"><?php _e('Add Question', 'klasse-wp-poll-survey') ?></button>
                     <button id="add-version"><?php _e('Add Version', 'klasse-wp-poll-survey') ?></button>
                 </div>
                 <div>
                     <table border="1px" id="matrix">
                         <tr>
+                            <td>
+
+                            </td>
                             <th class="no-delete">&nbsp;</th>
                             {{#each versions}}
                             <td>
                                 <div>{{post_title}}</div>
-                                <div class="actions" style="display: none">edit | preview</div>
+                                <div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a class="delete-version">delete</a></div>
                             </td>
                             {{/each}}
                         </tr>
-                        <tr>
-                            <th class="no-delete"><?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?></th>
+                        <tr class="title">
+                            <th class="no-delete" colspan="{{getColumnCount versions}}"><?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?></th>
                         </tr>
                         <tr>
+                            <td class="delete">
+                                <span class="del">Delete</span>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down"></span>
+                                </div>
+                            </td>
                             <td id="_kwps_intro">
                                 <div>
                                     {{_kwps_intro}}
                                 </div>
-                                <div class="actions" style="display: none">edit | preview</div>
+                                <div class="actions" style="display: none" data-kwps-attribute="_kwps_intro"><span class="edit">edit</span> | <span class="preview">preview</span></div>
                             </td>
                             {{#each versions}}
                             <td id="_kwps_intro_{{ID}}">
                                 <div>{{_kwps_intro}}</div>
-                                <div class="actions" style="display: none">edit | preview</div>
+                                <div class="actions" style="display: none"><span class="edit">edit</span> | <span class="preview">preview</span></div>
                             </td>
                             {{/each}}
                         </tr>
-                        <tr>
-                            <th class="no-delete"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?></th>
+                        <tr class="title">
+                            <th class="no-delete"  colspan="{{getColumnCount versions}}"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?></th>
                         </tr>
                         <tr class="toggle-details">
+                            <td class="delete">
+                                <span class="del">Delete</span>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down"></span>
+                                </div>
+                            </td>
                             <td id="_kwps_question">
                                 <div>
                                     {{_kwps_question}}
                                 </div>
-                                <div class="actions" style="display: none">edit | preview</div>
+                                <div class="actions" style="display: none"><span class="edit">edit</span> | <span class="preview">preview</span></div>
                             </td>
                             {{#each versions}}
                             <td id="_kwps_question_{{ID}}">
                                 <div>
                                     {{_kwps_question}}
                                 </div>
-                                <div class="actions" style="display: none">edit | preview</div>
+                                <div class="actions" style="display: none"><span class="edit">edit</span> | <span class="preview">preview</span></div>
                             </td>
                             {{/each}}
                         </tr>
                         {{#if open}}
-                        <tr>
-                            <th class="no-delete"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <span class="add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></span></th>
+                        <tr class="title">
+                            <th class="no-delete answers" colspan="{{getColumnCount versions}}"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <button class="add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
                         </tr>
                             {{#each table}}
                                 <tr>
@@ -89,28 +107,35 @@
                                                 <div>
                                                     {{answer_option}}
                                                 </div>
-                                                <div class="actions" style="display: none">edit | preview</div>
+                                                <div class="actions" style="display: none">edit | <span class="preview">preview</span></div>
                                             </td>
                                     {{/each}}
                                 </tr>
                             {{/each}}
                         {{/if}}
-                        <tr>
-                            <th class="no-delete"><?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?></th>
+                        <tr class="title">
+                            <th class="no-delete" colspan="{{getColumnCount versions}}"><?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?></th>
                         </tr>
                         <tr>
+                            <td class="delete">
+                                <span class="del">Delete</span>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down"></span>
+                                </div>
+                            </td>
                             <td id="_kwps_outro">
                                 <div>
                                     {{_kwps_outro}}
                                 </div>
-                                <div class="actions" style="display: none">edit | preview</div>
+                                <div class="actions" style="display: none">edit | <span class="preview">preview</span></div>
                             </td>
                             {{#each versions}}
                             <td id="_kwps_outro_{{ID}}">
                                 <div>
                                     {{_kwps_outro}}
                                 </div>
-                                <div class="actions" style="display: none">edit | preview</div>
+                                <div class="actions" style="display: none">edit | <span class="preview">preview</span></div>
                             </td>
                             {{/each}}
                         </tr>
