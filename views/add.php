@@ -6,7 +6,7 @@
 <h2>{{attribute}}</h2>
 <div>
     <form id="update-model">
-        <textarea name='text'>{{text}}</textarea>
+        <textarea name='text' rows="20">{{text}}</textarea>
         <button id="update"><?php _e( 'Update', 'klasse-wp-poll-survey' ) ?></button>
     </form>
 </div>
