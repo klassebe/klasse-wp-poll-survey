@@ -203,11 +203,12 @@ jQuery(function ($) {
 
       var value = $(event.target).closest('form').find('textarea').val();
 
-      console.log(this.model);
-
       this.model.set(this.options.attribute, value);
 
       console.log(this.model);
+      console.log(this.options.attribute);
+
+      this.model.save();
 
       app.view.render();
     }
