@@ -3,7 +3,13 @@
 </div> <!-- .wrap -->
 
 <script id="edit_template" type="text/x-handlebars-template">
-De nieuwe template
+<h2>{{attribute}}</h2>
+<div>
+    <form id="update-model">
+        <textarea name='text'>{{text}}</textarea>
+        <button id="update"><?php _e( 'Update', 'klasse-wp-poll-survey' ) ?></button>
+    </form>
+</div>
 </script>
 
 <script id="version_template" type="text/x-handlebars-template">

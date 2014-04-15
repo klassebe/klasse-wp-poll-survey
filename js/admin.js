@@ -185,17 +185,31 @@ jQuery(function ($) {
 
     initialize: function (options) {
       this.options = options || {};
-      console.log(this.options.attribute);
-      console.log(this.model);
       this.render();
     },
     events: {
-
+      'click button#update': 'updateData'
     },
     render: function() {
       var template = Handlebars.compile($('#edit_template').html());
-      var data = this.model.toJSON();
+      var data = {
+        attribute: this.options.attribute,
+        text: this.model.get(this.options.attribute)
+      };
       $(this.el).html(template(data));
+    },
+    updateData: function(event) {
+      event.preventDefault();
+
+      var value = $(event.target).closest('form').find('textarea').val();
+
+      console.log(this.model);
+
+      this.model.set(this.options.attribute, value);
+
+      console.log(this.model);
+
+      app.view.render();
     }
   });
 
