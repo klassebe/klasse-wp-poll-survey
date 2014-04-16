@@ -24,6 +24,16 @@ jQuery(function ($) {
     this.index = Number(value + 1);
   });
 
+  Backbone.Model.prototype.parse = function(resp, xhr) {
+    if(resp.type && (resp.type =="create")){
+      return {
+        "id": resp.data.id
+      }
+    }else if(resp.type && (resp.type =="update")){ }else{
+      return resp;
+    }
+  }
+
   var app = {};
   app.url = '/wp-admin/admin-ajax.php?action=';
 
@@ -51,12 +61,20 @@ jQuery(function ($) {
 
       return Backbone.sync.apply(this, arguments);
     },
+    initialize: function() {
+      this.bind("change", this.changeHandler);
+
+    },
+    changeHandler: function() {
+      console.log('change handlers dingeds');
+      this.save();
+    },
     idAttribute: 'ID',
     defaults: {
       post_author: 0,
       post_date: "",
       post_title: "",
-      post_status: "publish",
+      post_status: "draft",
       post_modified: "",
       post_parent: 0,
       post_type: "kwps_poll",
@@ -95,7 +113,7 @@ jQuery(function ($) {
     initialize: function () {
       this.inputPostTitle = $('#post_title');
       this.render();
-      _.bindAll(this, 'render');
+      this.listenTo(this.model, 'change', this.render);
       this.model
         .on('add:answers', this.render)
         .on('change:answers', this.render)
@@ -110,7 +128,8 @@ jQuery(function ($) {
       'click .add-answer': 'addAnswer',
       'click .delete-version': 'deleteVersion',
       'click .preview': 'preview',
-      'click .edit': 'edit'
+      'click .edit': 'edit',
+      'change #post_title': 'changeTitle'
     },
     render: function () {
       this.inputPostTitle.val(this.model.get('post_title'));
@@ -182,6 +201,9 @@ jQuery(function ($) {
       if(typeof kwpsId === 'undefined') {
         new app.TestViewEdit({model: app.test, attribute: kwpsAttribute});
       }
+    },
+    changeTitle: function(event) {
+      this.model.set('post_title', $(event.target).val());
     }
   });
 

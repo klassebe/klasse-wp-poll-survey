@@ -314,10 +314,15 @@ class Poll {
     /**
      * @param $post
      */
-    static function save_post($post){
-        $post_id = wp_insert_post($post);
-        var_dump($post);
+    static function save_post($postData){
+        $post_id = wp_insert_post($postData);
+        //var_dump($post_id);
 
+        $post = get_post($post_id);
+
+        echo json_encode($post);
+
+        /*
         if( $post_id != 0 ){
             foreach($post as $field => $value){
                 if( strpos($field, 'kwps') ) {
@@ -331,11 +336,14 @@ class Poll {
             }
         } else {
             echo 'post could not be saved';
-        }
+        }*/
     }
 
     static function update_poll(){
-        $post = get_post($_POST['ID'], ARRAY_A);
+        $json = file_get_contents("php://input");
+        $postData = json_decode($json, true);
+
+        $post = get_post($postData['ID'], ARRAY_A);
         if(null != $post){
             if($post['post_status'] == 'publish'){
                 wp_die('not allowed');
