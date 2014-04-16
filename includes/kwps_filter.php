@@ -17,19 +17,24 @@ class Kwps_Filter
 
 		$dump = '';
 
+
 		if ($version !== 'all') {
 			$mypost = get_post( $id );
 		} else {
 			$mypost = get_post( $id );
 		}
-
-		$dump .= '<div class="well pull-left">';
-		$dump .= get_the_title( $mypost->ID, 'medium' );
-		$dump .= get_the_post_thumbnail( $mypost->ID, 'medium' );
-		$dump .= '</div>';
+		if ( wp_post_status( $id ) === 'publish' ) {
+			$dump .= '<div class="kwps_poll">';
+			$dump .= get_the_title( $mypost->ID );
+			$dump .= get_post_meta( $id, '_kwps_intro', true);
+			$dump .= get_post_meta( $id, '_kwps_outro', true);
+			$dump .= get_post_meta( $id, '', true);
+			$dump .= get_post_meta( $id, '', true);
+			$dump .= '</div>';
+		}
 
 		return $dump;
 	}
 }
 
-?>
+/* EOF */
