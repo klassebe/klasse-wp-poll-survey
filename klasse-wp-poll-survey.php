@@ -60,7 +60,11 @@ add_action('init', array('\includes\poll','register_post_type'));
 add_action('add_meta_boxes', array('\includes\poll', 'add_metaboxes'));
 
 add_action('admin_menu', 'add_plugin_admin_menu');
+
 add_action( 'wp_ajax_kwps_save_poll', array('\includes\poll','save_poll'));
+add_action( 'wp_ajax_kwps_update_poll', array('\includes\poll','update_poll'));
+add_action( 'wp_ajax_kwps_delete_poll', array('\includes\poll','delete_poll'));
+
 
 add_action( 'save_post', array('\includes\poll', 'meta_save'));
 

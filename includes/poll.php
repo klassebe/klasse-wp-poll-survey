@@ -313,7 +313,7 @@ class Poll {
      */
     static function save_post($post){
         $post_id = wp_insert_post($post);
-        var_dump($post_id);
+        var_dump($post);
 
         if( $post_id != 0 ){
             foreach($post as $field => $value){
@@ -329,5 +329,26 @@ class Poll {
         } else {
             echo 'post could not be saved';
         }
+    }
+
+    static function update_poll(){
+        $post = get_post($_POST['ID'], ARRAY_A);
+        if(null != $post){
+            if($post['post_status'] == 'publish'){
+                wp_die('not allowed');
+            } else {
+                self::save_post($_POST);
+            }
+        } else {
+            wp_die('post does not exist');
+        }
+    }
+
+    static function delete_poll(){
+        delete_post_meta($_POST['ID'], '_kwps_intro');
+        delete_post_meta($_POST['ID'], '_kwps_outro');
+        delete_post_meta($_POST['ID'], '_kwps_question');
+
+        wp_delete_post($_POST['ID']);
     }
 }
