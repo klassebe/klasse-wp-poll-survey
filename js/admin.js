@@ -1,4 +1,5 @@
 jQuery(function ($) {
+  // $("a[href^='plugins.php?action=deactivate&plugin=klasse-wp-poll-survey']").addClass('klasse-wp-poll-survey');
   // debug helper
   // usage: {{debug}} or {{debug someValue}}
   // from: @commondream (http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/)

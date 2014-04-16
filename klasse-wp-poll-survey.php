@@ -31,6 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 require_once __DIR__ . '/includes/admin_section.php';
 require_once __DIR__ . '/includes/poll.php';
+require_once __DIR__ . '/includes/kwps_filter.php';
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
 /*----------------------------------------------------------------------------*
@@ -67,6 +68,10 @@ add_filter('init', 'kwps_add_api_rewrite_rules');
 
 register_activation_hook(__FILE__, 'kwps_activate');
 register_deactivation_hook(__FILE__, 'kwps_deactivate');
+
+// shortcode -> use feip_form_posts template in front end for vote function!
+add_shortcode('kwps_poll', array('Kwps_Filter', 'poll_shortcode') );
+
 
 function kwps_activate(){
     kwps_add_api_rewrite_rules();
@@ -176,7 +181,6 @@ function add_plugin_admin_menu() {
  * The code below is intended to to give the lightest footprint possible.
  */
 if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-
     add_action('admin_init', 'enqueue_scripts_admin');
     add_action('admin_init', 'enqueue_styles_admin');
 }
