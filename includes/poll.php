@@ -271,11 +271,14 @@ class Poll {
      *
      */
     static function save_poll(){
-        if( self::validate_new_poll($_POST) ) {
+        $json = file_get_contents("php://input");
+        $post = json_decode($json, true);
+
+        if( self::validate_new_poll($post) ) {
             echo 'validated';
         }
 
-        self::save_post($_POST);
+        self::save_post($post);
 
         die();
     }
@@ -320,9 +323,9 @@ class Poll {
                 if( strpos($field, 'kwps') ) {
                     echo 'trying to save field: ' . $field . "<br>";
                     if( update_post_meta($post_id, $field, $value) ){
-                        echo 'saved ' . $field;
+                        echo 'saved ' . $field . "<br>";
                     } else {
-                        echo 'failed ' . $field;
+                        echo 'failed ' . $field . "<br>";
                     }
                 }
             }

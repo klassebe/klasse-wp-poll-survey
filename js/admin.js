@@ -25,6 +25,7 @@ jQuery(function ($) {
   });
 
   var app = {};
+  app.url = '/wp-admin/admin-ajax.php?action=';
 
 
   app.AnswerModel = Backbone.AssociatedModel.extend({
@@ -38,16 +39,20 @@ jQuery(function ($) {
       'update': '/user/update',
       'delete': '/wp-admin/admin-ajax.php?action=kwps_version_delete'
     },
+    action: {
+      create: 'kwps_save_poll',
+      update: 'kwps_update_poll',
+      delete: 'kwps_delete_poll'
+    },
 
     sync: function(method, model, options) {
       options = options || {};
-      options.url = model.methodToURL[method.toLowerCase()] + (this.has("ID") ? "&id=" + this.get("ID") : "");
+      options.url = app.url + model.action[method.toLowerCase()]
 
       return Backbone.sync.apply(this, arguments);
     },
     idAttribute: 'ID',
     defaults: {
-      ID: 0,
       post_author: 0,
       post_date: "",
       post_title: "",
@@ -91,7 +96,6 @@ jQuery(function ($) {
       this.inputPostTitle = $('#post_title');
       this.render();
       _.bindAll(this, 'render');
-      this.model.bind('change', this.render);
       this.model
         .on('add:answers', this.render)
         .on('change:answers', this.render)
