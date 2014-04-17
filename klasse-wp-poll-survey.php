@@ -74,7 +74,7 @@ register_activation_hook(__FILE__, 'kwps_activate');
 register_deactivation_hook(__FILE__, 'kwps_deactivate');
 
 // shortcode -> use feip_form_posts template in front end for vote function!
-add_shortcode('kwps_poll', array('Kwps_Filter', 'poll_shortcode') );
+add_shortcode('kwps_poll', array('Kwps_Filter', 'kwps_shortcode') );
 
 
 function kwps_activate(){
