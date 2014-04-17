@@ -212,7 +212,12 @@ jQuery(function ($) {
 
     initialize: function (options) {
       this.options = options || {};
+      _.bindAll(this, 'cleanup');
       this.render();
+    },
+    cleanup: function() {
+      this.undelegateEvents();
+      $(this.el).empty();
     },
     events: {
       'click button#update': 'updateData'
@@ -232,11 +237,6 @@ jQuery(function ($) {
 
       this.model.set(this.options.attribute, value);
 
-      console.log(this.model);
-      console.log(this.options.attribute);
-
-      this.model.save();
-
       app.view.render();
     }
   });
@@ -245,79 +245,3 @@ jQuery(function ($) {
 
   app.view = new app.TestView({model: app.test});
 });
-
-var testData =
-{
-  ID: "18",
-  post_author: 1,
-  post_date: "2014-03-24 16:01:35",
-  post_title: "Dit is een poll",
-  post_status: "publish",
-  post_modified: "2014-03-25 9:14:36",
-  post_parent: 0,
-  post_type: "kwps_poll",
-  _kwps_intro: "Dit is een intro",
-  _kwps_outro: "Dit is een outro",
-  _kwps_question: "Hier staat de vraag",
-  _kwps_view_count: "0",
-  versions: [
-    {
-      "ID": "19",
-      "post_author": 1,
-      "post_date": "2014-03-24 16:01:35",
-      "post_title": "Dit is een poll",
-      "post_status": "publish",
-      "post_modified": "2014-03-25 9:14:36",
-      "post_parent": 0,
-      "post_type": "kwps_poll",
-      "_kwps_intro": "Dit is een intro",
-      "_kwps_outro": "Dit is een outro",
-      "_kwps_question": "Hier staat de vraag",
-      "_kwps_view_count": "0",
-      answers: [
-        {
-          "post_id": 19,
-          "answer_option": "Sure"
-        },
-        {
-          "post_id": 19,
-          "answer_option": "Maybe"
-        }
-      ]
-    },
-    {
-      "ID": "20",
-      "post_author": 1,
-      "post_date": "2014-03-24 16:01:35",
-      "post_title": "Dit is een poll",
-      "post_status": "publish",
-      "post_modified": "2014-03-25 9:14:36",
-      "post_parent": 0,
-      "post_type": "kwps_poll",
-      "_kwps_intro": "Dit is een intro",
-      "_kwps_outro": "Dit is een outro",
-      "_kwps_question": "Hier staat de vraag",
-      "_kwps_view_count": "0",
-      answers: [
-        {
-          "post_id": 20,
-          "answer_option": "Ok my way or the highway"
-        },
-        {
-          "post_id": 20,
-          "answer_option": "Highway please"
-        }
-      ]
-    }
-  ],
-  answers: [
-    {
-      "post_id": 18,
-      "answer_option": "Yes"
-    },
-    {
-      "post_id": 18,
-      "answer_option": "No"
-    }
-  ]
-};
