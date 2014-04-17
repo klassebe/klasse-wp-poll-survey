@@ -113,6 +113,7 @@ jQuery(function ($) {
   app.TestView = Backbone.View.extend({
     el: '#kwps_test',
     initialize: function () {
+      _.bindAll(this, 'cleanup');
       this.render();
       this.listenTo(this.model, 'change', this.render);
       this.model
@@ -132,8 +133,11 @@ jQuery(function ($) {
       'click .edit': 'edit',
       'change #post_title': 'changeTitle'
     },
+    cleanup: function() {
+      this.undelegateEvents();
+      $(this.el).empty();
+    },
     render: function () {
-      console.log(this.model);
       $('#post_title').val(this.model.get('post_title'));
       var data = this.model.toJSON();
       data.table = this.prepareTable();
@@ -226,6 +230,7 @@ jQuery(function ($) {
     render: function() {
       var data = {
         attribute: this.options.attribute,
+        label: kwps_translations[this.options.attribute],
         text: this.model.get(this.options.attribute)
       };
       $(this.el).html(app.templates.edit(data));

@@ -3,7 +3,7 @@
 </div> <!-- .wrap -->
 
 <script id="edit_template" type="text/x-handlebars-template">
-<h2>{{attribute}}</h2>
+<h2>{{label}}</h2>
 <div>
     <form id="update-model">
         <textarea name='text' rows="20">{{text}}</textarea>
@@ -29,7 +29,6 @@
         <div id="tabs-add">
             <div>
                 <div id="buttons">
-                    <button id="add-question"><?php _e('Add Question', 'klasse-wp-poll-survey') ?></button>
                     <button id="add-version"><?php _e('Add Version', 'klasse-wp-poll-survey') ?></button>
                 </div>
                 <div>
@@ -73,8 +72,9 @@
                         <tr class="title">
                             <th class="no-delete"  colspan="{{getColumnCount versions}}"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?></th>
                         </tr>
-                        <tr class="toggle-details">
+                        <tr>
                             <td class="delete">
+                                <span class="toggle-details">Toggle</span>
                                 <span class="del">Delete</span>
                                 <div class="move">
                                     <span class="up"></span>
