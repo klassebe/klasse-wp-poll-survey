@@ -63,10 +63,8 @@ jQuery(function ($) {
     },
     initialize: function() {
       this.bind("change", this.changeHandler);
-
     },
     changeHandler: function() {
-      console.log('change handlers dingeds');
       this.save();
     },
     idAttribute: 'ID',
