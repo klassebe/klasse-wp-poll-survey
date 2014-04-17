@@ -36,6 +36,10 @@ jQuery(function ($) {
 
   var app = {};
   app.url = '/wp-admin/admin-ajax.php?action=';
+  app.templates = {
+    version: Handlebars.compile($('#version_template').html()),
+    edit: Handlebars.compile($('#edit_template').html())
+  };
 
 
   app.AnswerModel = Backbone.AssociatedModel.extend({
@@ -109,7 +113,6 @@ jQuery(function ($) {
   app.TestView = Backbone.View.extend({
     el: '#kwps_test',
     initialize: function () {
-      this.inputPostTitle = $('#post_title');
       this.render();
       this.listenTo(this.model, 'change', this.render);
       this.model
@@ -130,11 +133,11 @@ jQuery(function ($) {
       'change #post_title': 'changeTitle'
     },
     render: function () {
-      this.inputPostTitle.val(this.model.get('post_title'));
-      var template = Handlebars.compile($('#version_template').html());
+      console.log(this.model);
+      $('#post_title').val(this.model.get('post_title'));
       var data = this.model.toJSON();
       data.table = this.prepareTable();
-      $(this.el).html(template(data));
+      $(this.el).html(app.templates.version(data));
       $('#tabs').tabs();
     },
     prepareTable: function() {
@@ -221,12 +224,11 @@ jQuery(function ($) {
       'click button#update': 'updateData'
     },
     render: function() {
-      var template = Handlebars.compile($('#edit_template').html());
       var data = {
         attribute: this.options.attribute,
         text: this.model.get(this.options.attribute)
       };
-      $(this.el).html(template(data));
+      $(this.el).html(app.templates.edit(data));
     },
     updateData: function(event) {
       event.preventDefault();
