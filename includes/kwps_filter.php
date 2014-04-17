@@ -36,7 +36,7 @@ class Kwps_Filter
 				'post_type'   => 'kwps_answer_option', 
 				'numberposts' => -1,
 				'post_status' => 'publish' );
-			$dump .= '<form name="form' . $id . '" method="POST" action="save_answers.php">'
+			$dump .= '<form name="form' . $id . '" method="POST" action="save_answers.php">';
 			foreach( $answers as $answer) { 
 				$dump .= '<div class="kwps-single-answer kwps-answer-' . $i . '"><input type="radio" name="kwps-answer-' . $id .'" value="'. $answer .'">'. $answer . '</div>';
 			}
