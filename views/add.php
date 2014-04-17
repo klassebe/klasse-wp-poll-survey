@@ -85,14 +85,14 @@
                                 <div>
                                     {{_kwps_question}}
                                 </div>
-                                <div class="actions" style="display: none"><span class="edit">edit</span> | <span class="preview">preview</span></div>
+                                <div class="actions" style="display: none" data-kwps-attribute="_kwps_question"><span class="edit">edit</span> | <span class="preview">preview</span></div>
                             </td>
                             {{#each versions}}
                             <td id="_kwps_question_{{ID}}">
                                 <div>
                                     {{_kwps_question}}
                                 </div>
-                                <div class="actions" style="display: none"><span class="edit">edit</span> | <span class="preview">preview</span></div>
+                                <div class="actions" style="display: none" data-kwps-attribute="_kwps_question"><span class="edit">edit</span> | <span class="preview">preview</span></div>
                             </td>
                             {{/each}}
                         </tr>
@@ -128,7 +128,7 @@
                                 <div>
                                     {{_kwps_outro}}
                                 </div>
-                                <div class="actions" style="display: none">edit | <span class="preview">preview</span></div>
+                                <div class="actions" style="display: none" data-kwps-attribute="_kwps_outro"><span class="edit">edit</span> | <span class="preview">preview</span></div>
                             </td>
                             {{#each versions}}
                             <td id="_kwps_outro_{{ID}}">

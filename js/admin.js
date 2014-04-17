@@ -24,7 +24,18 @@ jQuery(function ($) {
     this.index = Number(value + 1);
   });
 
+  Backbone.Model.prototype.parse = function(resp, xhr) {
+    if(resp.type && (resp.type =="create")){
+      return {
+        "id": resp.data.id
+      }
+    }else if(resp.type && (resp.type =="update")){ }else{
+      return resp;
+    }
+  }
+
   var app = {};
+  app.url = '/wp-admin/admin-ajax.php?action=';
 
 
   app.AnswerModel = Backbone.AssociatedModel.extend({
@@ -38,20 +49,30 @@ jQuery(function ($) {
       'update': '/user/update',
       'delete': '/wp-admin/admin-ajax.php?action=kwps_version_delete'
     },
+    action: {
+      create: 'kwps_save_poll',
+      update: 'kwps_update_poll',
+      delete: 'kwps_delete_poll'
+    },
 
     sync: function(method, model, options) {
       options = options || {};
-      options.url = model.methodToURL[method.toLowerCase()] + (this.has("ID") ? "&id=" + this.get("ID") : "");
+      options.url = app.url + model.action[method.toLowerCase()]
 
       return Backbone.sync.apply(this, arguments);
     },
+    initialize: function() {
+      this.bind("change", this.changeHandler);
+    },
+    changeHandler: function() {
+      this.save();
+    },
     idAttribute: 'ID',
     defaults: {
-      ID: 0,
       post_author: 0,
       post_date: "",
       post_title: "",
-      post_status: "publish",
+      post_status: "draft",
       post_modified: "",
       post_parent: 0,
       post_type: "kwps_poll",
@@ -90,8 +111,7 @@ jQuery(function ($) {
     initialize: function () {
       this.inputPostTitle = $('#post_title');
       this.render();
-      _.bindAll(this, 'render');
-      this.model.bind('change', this.render);
+      this.listenTo(this.model, 'change', this.render);
       this.model
         .on('add:answers', this.render)
         .on('change:answers', this.render)
@@ -106,7 +126,8 @@ jQuery(function ($) {
       'click .add-answer': 'addAnswer',
       'click .delete-version': 'deleteVersion',
       'click .preview': 'preview',
-      'click .edit': 'edit'
+      'click .edit': 'edit',
+      'change #post_title': 'changeTitle'
     },
     render: function () {
       this.inputPostTitle.val(this.model.get('post_title'));
@@ -178,6 +199,9 @@ jQuery(function ($) {
       if(typeof kwpsId === 'undefined') {
         new app.TestViewEdit({model: app.test, attribute: kwpsAttribute});
       }
+    },
+    changeTitle: function(event) {
+      this.model.set('post_title', $(event.target).val());
     }
   });
 
@@ -186,7 +210,12 @@ jQuery(function ($) {
 
     initialize: function (options) {
       this.options = options || {};
+      _.bindAll(this, 'cleanup');
       this.render();
+    },
+    cleanup: function() {
+      this.undelegateEvents();
+      $(this.el).empty();
     },
     events: {
       'click button#update': 'updateData'
@@ -204,11 +233,7 @@ jQuery(function ($) {
 
       var value = $(event.target).closest('form').find('textarea').val();
 
-      console.log(this.model);
-
       this.model.set(this.options.attribute, value);
-
-      console.log(this.model);
 
       app.view.render();
     }
@@ -218,79 +243,3 @@ jQuery(function ($) {
 
   app.view = new app.TestView({model: app.test});
 });
-
-var testData =
-{
-  ID: "18",
-  post_author: 1,
-  post_date: "2014-03-24 16:01:35",
-  post_title: "Dit is een poll",
-  post_status: "publish",
-  post_modified: "2014-03-25 9:14:36",
-  post_parent: 0,
-  post_type: "kwps_poll",
-  _kwps_intro: "Dit is een intro",
-  _kwps_outro: "Dit is een outro",
-  _kwps_question: "Hier staat de vraag",
-  _kwps_view_count: "0",
-  versions: [
-    {
-      "ID": "19",
-      "post_author": 1,
-      "post_date": "2014-03-24 16:01:35",
-      "post_title": "Dit is een poll",
-      "post_status": "publish",
-      "post_modified": "2014-03-25 9:14:36",
-      "post_parent": 0,
-      "post_type": "kwps_poll",
-      "_kwps_intro": "Dit is een intro",
-      "_kwps_outro": "Dit is een outro",
-      "_kwps_question": "Hier staat de vraag",
-      "_kwps_view_count": "0",
-      answers: [
-        {
-          "post_id": 19,
-          "answer_option": "Sure"
-        },
-        {
-          "post_id": 19,
-          "answer_option": "Maybe"
-        }
-      ]
-    },
-    {
-      "ID": "20",
-      "post_author": 1,
-      "post_date": "2014-03-24 16:01:35",
-      "post_title": "Dit is een poll",
-      "post_status": "publish",
-      "post_modified": "2014-03-25 9:14:36",
-      "post_parent": 0,
-      "post_type": "kwps_poll",
-      "_kwps_intro": "Dit is een intro",
-      "_kwps_outro": "Dit is een outro",
-      "_kwps_question": "Hier staat de vraag",
-      "_kwps_view_count": "0",
-      answers: [
-        {
-          "post_id": 20,
-          "answer_option": "Ok my way or the highway"
-        },
-        {
-          "post_id": 20,
-          "answer_option": "Highway please"
-        }
-      ]
-    }
-  ],
-  answers: [
-    {
-      "post_id": 18,
-      "answer_option": "Yes"
-    },
-    {
-      "post_id": 18,
-      "answer_option": "No"
-    }
-  ]
-};
