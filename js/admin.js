@@ -35,7 +35,7 @@ jQuery(function ($) {
   }
 
   var app = {};
-  app.url = '/wp-admin/admin-ajax.php?action=';
+  app.url = 'admin-ajax.php?action=';
   app.templates = {
     version: Handlebars.compile($('#version_template').html()),
     edit: Handlebars.compile($('#edit_template').html())
