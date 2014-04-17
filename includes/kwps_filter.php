@@ -31,11 +31,12 @@ class Kwps_Filter
 			$dump .= '<div class="kwps-question">' . get_post_meta( $id, '_kwps_question', true) . '</div>';
 			$dump .= '<div class="kwps-answers">';
 
-			$answers = array(
+			$args = array(
 				'post_parent' => $id,
 				'post_type'   => 'kwps_answer_option', 
 				'numberposts' => -1,
 				'post_status' => 'publish' );
+			$answers = get_children( $args );
 			$dump .= '<form name="form' . $id . '" method="POST" action="save_answers.php">';
 			foreach( $answers as $answer) { 
 				$dump .= '<div class="kwps-single-answer kwps-answer-' . $i . '"><input type="radio" name="kwps-answer-' . $id .'" value="'. $answer .'">'. $answer . '</div>';
