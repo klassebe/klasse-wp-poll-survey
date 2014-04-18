@@ -32,11 +32,8 @@ if ( ! defined( 'WPINC' ) ) {
 require_once __DIR__ . '/includes/admin_section.php';
 require_once __DIR__ . '/includes/poll.php';
 require_once __DIR__ . '/includes/question.php';
-<<<<<<< HEAD
 require_once __DIR__ . '/includes/entry.php';
-=======
 require_once __DIR__ . '/includes/answer_option.php';
->>>>>>> daca7a3129a610aed4b532b5985d9067f9675326
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
 /*----------------------------------------------------------------------------*
@@ -74,10 +71,6 @@ add_action( 'wp_ajax_kwps_delete_poll', array('\includes\poll','delete'));
 add_action( 'wp_ajax_kwps_save_question', array('\includes\question','save'));
 add_action( 'wp_ajax_kwps_update_question', array('\includes\question','update'));
 add_action( 'wp_ajax_kwps_delete_question', array('\includes\question','delete'));
-
-add_action( 'wp_ajax_kwps_save_answer_option', array('\includes\answer_option','save'));
-add_action( 'wp_ajax_kwps_update_answer_option', array('\includes\answer_option','update'));
-add_action( 'wp_ajax_kwps_delete_answer_option', array('\includes\answer_option','delete'));
 
 
 
