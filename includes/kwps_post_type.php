@@ -10,9 +10,16 @@ abstract class Kwps_Post_Type{
 
 
 
-    public abstract static function validate_for_update($post_as_array);
-    public abstract static function delete_meta();
-    public abstract static function get_html($id);
+    public static function validate_for_update($post_as_array){
+        return true;
+    }
+
+    public static function delete_meta(){
+//           do stuff
+    }
+    public static function get_html($id){
+        return '';
+    }
 
     public static function register_post_type(){
         register_post_type(static::$post_type, static::$post_type_args);
