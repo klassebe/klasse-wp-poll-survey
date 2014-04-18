@@ -31,6 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 require_once __DIR__ . '/includes/admin_section.php';
 require_once __DIR__ . '/includes/poll.php';
+require_once __DIR__ . '/includes/question.php';
 require_once __DIR__ . '/includes/kwps_filter.php';
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -63,6 +64,11 @@ add_action('admin_menu', 'add_plugin_admin_menu');
 add_action( 'wp_ajax_kwps_save_poll', array('\includes\poll','save'));
 add_action( 'wp_ajax_kwps_update_poll', array('\includes\poll','update'));
 add_action( 'wp_ajax_kwps_delete_poll', array('\includes\poll','delete'));
+
+add_action( 'wp_ajax_kwps_save_question', array('\includes\question','save'));
+add_action( 'wp_ajax_kwps_update_question', array('\includes\question','update'));
+add_action( 'wp_ajax_kwps_delete_question', array('\includes\question','delete'));
+
 
 
 add_filter('init', 'kwps_add_api_rewrite_rules');
