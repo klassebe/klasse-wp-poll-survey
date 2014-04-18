@@ -312,6 +312,7 @@ class Poll_List_Table extends Base_List_Table {
             'post_per_page' => 5,
             'numberposts' => -1,
             'post_parent' => 0,
+            'post_status' => array('draft', 'publish'),
         );
 //        $data = get_posts($arguments);
         $post_data = get_posts($arguments);

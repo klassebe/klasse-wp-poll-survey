@@ -70,7 +70,7 @@
                             {{/each}}
                         </tr>
                         <tr class="title">
-                            <th class="no-delete"  colspan="{{getColumnCount versions}}"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?></th>
+                            <th class="no-delete"  colspan="{{getColumnCount versions}}"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?> <button class="add-question"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
                         </tr>
                         <tr>
                             <td class="delete">
