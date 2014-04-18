@@ -59,11 +59,11 @@ abstract class Kwps_Post_Type{
         $json = file_get_contents("php://input");
         $post = json_decode($json, true);
 
-        if( static::validate_for_insert($post) ) {
-//            echo 'validated';
-        }
+        $post['post_type'] = static::$post_type;
 
-        static::save_post($post);
+        if( static::validate_for_insert($post) ) {
+            static::save_post($post);
+        }
 
         die();
     }
@@ -95,8 +95,10 @@ abstract class Kwps_Post_Type{
         $json = file_get_contents("php://input");
         $post_data = json_decode($json, true);
 
+        $post_data['post_type'] = static::$post_type;
+
         if(static::validate_for_update($post_data)){
-            static::save_post($_POST);
+            static::save_post($post_data);
         }
     }
 
