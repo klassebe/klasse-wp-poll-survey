@@ -40,6 +40,7 @@ class Question extends Kwps_Post_Type{
             'post_title',
             'post_status',
             'post_type',
+            'post_parent'
         );
 
         foreach($required_fields as $field)
@@ -65,6 +66,7 @@ class Question extends Kwps_Post_Type{
             'post_title',
             'post_status',
             'post_type',
+            'post_parent'
         );
 
         foreach($required_fields as $field)
