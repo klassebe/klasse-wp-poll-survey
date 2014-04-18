@@ -3,14 +3,14 @@ namespace includes;
 
 require_once 'kwps_post_type.php';
 
-class Question extends Kwps_Post_Type{
+class Entry extends Kwps_Post_Type{
 
-    public static $post_type = 'kwps_question';
+    public static $post_type = 'kwps_entry';
 
     public static $post_type_args = array(
         'public' => false,
         'rewrite' => array(
-            'slug' => 'questions',
+            'slug' => 'entries',
             'with_front' => false,
         ),
         'supports' => false,
@@ -22,13 +22,13 @@ class Question extends Kwps_Post_Type{
     );
 
     public static function get_meta_data($post_id){
-        return array('test question');
+        return array('test entry');
     }
 
-    public static function get_html($question_id){
-        $question = static::get_as_array($question_id);
+    public static function get_html($entry_id){
+        $entry = static::get_as_array($entry_id);
 
-        return '<div class="kwps-question">' . $question['post_title'] . '</div>';
+        return '<div class="kwps-entry">' . $entry['post_title'] . '</div>';
     }
 
     /**
@@ -55,3 +55,5 @@ class Question extends Kwps_Post_Type{
         return true;
     }
 }
+
+/* EOF */

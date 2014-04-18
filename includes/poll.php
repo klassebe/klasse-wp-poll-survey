@@ -106,24 +106,30 @@ class Poll extends Kwps_Post_Type{
 
         if($test_exists = $post_as_array['post_status'] === 'publish'){
             $dump .= '<div class="kwps-' . get_post_type( $id ) . ' kwps-' . $id . '" >';
-            $dump .= '<div class="kwps-title">' . get_the_title( $post_as_array->ID ) . '</div>';
+            $dump .= '<div class="kwps-title">' . get_the_title( $id ) . '</div>';
             $dump .= '<div class="kwps-intro">' . get_post_meta( $id, '_kwps_intro', true) . '</div>';
             $dump .= '<div class="kwps-outro">' .get_post_meta( $id, '_kwps_outro', true) . '</div>';
             $dump .= '<div class="kwps-content">';
 
             $questions = Question::get_all($id);
+            // var_dump($questions); die;
             $question = $questions[0];
-
+            $dump .= '<div class="kwps-question">';
             $dump .= Question::get_html($question['ID']);
-
+            $dump .= '</div>';
             $dump .= '<div class="kwps-answers">';
 
             $dump .= '<form name="form' . $id . '" method="POST" action="save_answers.php">';
             $dump .= Answer_Option::get_all_html($question['ID']);
+            // test data voor antwoord
+            $dump .= '<input type="text" name="veld1">';
+            $dump .= '<input type="submit" name="submit">';
             $dump .= '</form>';
             $dump .= '</div>'; // kwps-answers
             $dump .= '</div>'; // kwps-content
             $dump .= '</div>'; // kwps full wrapper
+        } else {
+            $dump .= "Poll kan niet getoond worden.";
         }
 
         return $dump;
