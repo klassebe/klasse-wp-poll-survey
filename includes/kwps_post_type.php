@@ -96,7 +96,7 @@ abstract class Kwps_Post_Type{
         $post_data = json_decode($json, true);
 
         if(static::validate_for_update($post_data)){
-            static::save_post($_POST);
+            static::save_post($post_data);
         }
     }
 
