@@ -22,7 +22,7 @@ class Question extends Kwps_Post_Type{
     );
 
     public static function get_meta_data($post_id){
-
+        return array('test question');
     }
 
     public static function get_html($question_id){

@@ -3,6 +3,8 @@
 namespace includes;
 
 require_once 'kwps_post_type.php';
+require_once 'question.php';
+require_once 'answer_option.php';
 
 class Poll extends Kwps_Post_Type{
 

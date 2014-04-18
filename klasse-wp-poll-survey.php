@@ -57,6 +57,8 @@ add_action( 'wp_enqueue_scripts', 'enqueue_styles' );
 add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 
 add_action('init', array('\includes\poll','register_post_type'));
+add_action('init', array('\includes\answer_option','register_post_type'));
+add_action('init', array('\includes\question','register_post_type'));
 
 add_action('admin_menu', 'add_plugin_admin_menu');
 
