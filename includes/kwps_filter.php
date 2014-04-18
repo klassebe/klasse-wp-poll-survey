@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Class KWPS_FILTER
 * Author: Martin
@@ -10,19 +11,24 @@ class Kwps_Filter
 {
 	function kwps_shortcode( $atts ) {
 
+
 		extract( shortcode_atts( array(
 			'id' => 0,
 			'version' => 'all',
 			), $atts ) );
 
-		$dump = '';
+
+        $dump = '';
 
 		if ($version !== 'all') {
 			$mypost = get_post( $id );
 		} else {
 			$mypost = get_post( $id );
 		}
-		if ( (get_post_status( $id ) ) === 'publish' ) {
+
+
+
+        if ( (get_post_status( $id ) ) === 'publish' ) {
 			$dump .= '<div class="kwps-' . get_post_type( $id ) . ' kwps-' . $id . '" >';
 			$dump .= '<div class="kwps-title">' . get_the_title( $mypost->ID ) . '</div>';
 			$dump .= '<div class="kwps-intro">' . get_post_meta( $id, '_kwps_intro', true) . '</div>';

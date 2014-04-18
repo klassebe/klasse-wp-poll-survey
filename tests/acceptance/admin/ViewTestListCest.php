@@ -37,7 +37,7 @@ class ViewTestListCest
         $I->see(TestListView::$show_trash, TestListView::$show_trash_selector);
 
 //        bulk actions (above list)
-        $I->see(TestListView::$dropdown_bulk_actions_selector)
+//        $I->see(TestListView::$dropdown_bulk_actions_selector)
 
         $I->see('Delete', 'option[value=delete]');
         $I->see('No items found.');

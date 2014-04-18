@@ -57,16 +57,13 @@ add_action( 'wp_enqueue_scripts', 'enqueue_styles' );
 add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 
 add_action('init', array('\includes\poll','register_post_type'));
-add_action('add_meta_boxes', array('\includes\poll', 'add_metaboxes'));
 
 add_action('admin_menu', 'add_plugin_admin_menu');
 
-add_action( 'wp_ajax_kwps_save_poll', array('\includes\poll','save_poll'));
-add_action( 'wp_ajax_kwps_update_poll', array('\includes\poll','update_poll'));
-add_action( 'wp_ajax_kwps_delete_poll', array('\includes\poll','delete_poll'));
+add_action( 'wp_ajax_kwps_save_poll', array('\includes\poll','save'));
+add_action( 'wp_ajax_kwps_update_poll', array('\includes\poll','update'));
+add_action( 'wp_ajax_kwps_delete_poll', array('\includes\poll','delete'));
 
-
-add_action( 'save_post', array('\includes\poll', 'meta_save'));
 
 add_filter('init', 'kwps_add_api_rewrite_rules');
 
@@ -74,7 +71,7 @@ register_activation_hook(__FILE__, 'kwps_activate');
 register_deactivation_hook(__FILE__, 'kwps_deactivate');
 
 // shortcode -> use feip_form_posts template in front end for vote function!
-add_shortcode('kwps_poll', array('Kwps_Filter', 'kwps_shortcode') );
+add_shortcode('kwps_poll', array('\includes\poll', 'shortcode') );
 
 
 function kwps_activate(){

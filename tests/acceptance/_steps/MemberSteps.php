@@ -1,6 +1,7 @@
 <?php
 namespace WebGuy;
 use pages\AdminMenuPage as AdminMenuPage;
+use pages\PluginsPage;
 
 
 class MemberSteps extends \WebGuy
@@ -23,7 +24,7 @@ class MemberSteps extends \WebGuy
         $I = $this;
         $I->login();
         $I->click(AdminMenuPage::$plugins);
-        $I->click('#klasse-wordpress-poll-survey span.activate a');
+        $I->click(PluginsPage::$activate_kwps_selector);
     }
 
     public function deactivate_kwps()
