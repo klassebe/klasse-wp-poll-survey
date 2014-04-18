@@ -32,7 +32,6 @@ if ( ! defined( 'WPINC' ) ) {
 require_once __DIR__ . '/includes/admin_section.php';
 require_once __DIR__ . '/includes/poll.php';
 require_once __DIR__ . '/includes/question.php';
-require_once __DIR__ . '/includes/kwps_filter.php';
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
 /*----------------------------------------------------------------------------*
