@@ -72,6 +72,9 @@ add_action( 'wp_ajax_kwps_save_question', array('\includes\question','save'));
 add_action( 'wp_ajax_kwps_update_question', array('\includes\question','update'));
 add_action( 'wp_ajax_kwps_delete_question', array('\includes\question','delete'));
 
+add_action( 'wp_ajax_kwps_save_answer_option', array('\includes\answer_option','save'));
+add_action( 'wp_ajax_kwps_update_answer_option', array('\includes\answer_option','update'));
+add_action( 'wp_ajax_kwps_delete_answer_option', array('\includes\answer_option','delete'));
 
 
 add_filter('init', 'kwps_add_api_rewrite_rules');
