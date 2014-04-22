@@ -23,7 +23,7 @@ class Answer_Option extends Kwps_Post_Type{
     );
 
     public static function get_meta_data($post_id){
-
+        return array();
     }
 
     public static function get_all_html($question_id)
@@ -31,8 +31,10 @@ class Answer_Option extends Kwps_Post_Type{
         $i = 0;
         $dump = '';
         foreach(static::get_all($question_id) as $answer_option){
-            $dump .= '<div class="kwps-single-answer kwps-answer-' . $i++ . '"><input type="radio" name="kwps-answer-';
-            $dump .= $answer_option['post_parent'] .'" value="'. $answer_option['ID'] .'">'. $answer_option['post_content'] . '</div>               ';
+            $dump .= '<div class="kwps-single-answer kwps-answer-' . $i++ . '">';
+            $dump .= '<input type="radio" name="kwps-answer"';
+            $dump .= $answer_option['post_parent'];
+            $dump .= ' value="'. $answer_option['ID'] .'">'. $answer_option['post_title'] . '</div>';
         }
 
         return $dump;

@@ -61,6 +61,7 @@ add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 add_action('init', array('\includes\poll','register_post_type'));
 add_action('init', array('\includes\answer_option','register_post_type'));
 add_action('init', array('\includes\question','register_post_type'));
+add_action('init', array('\includes\entry','register_post_type'));
 
 add_action('admin_menu', 'add_plugin_admin_menu');
 
@@ -76,6 +77,8 @@ add_action( 'wp_ajax_kwps_save_answer_option', array('\includes\answer_option','
 add_action( 'wp_ajax_kwps_update_answer_option', array('\includes\answer_option','update'));
 add_action( 'wp_ajax_kwps_delete_answer_option', array('\includes\answer_option','delete'));
 
+add_action( 'wp_ajax_kwps_save_entry', array('\includes\entry','save'));
+add_action( 'wp_ajax_kwps_update_answer_option', array('\includes\answer_option','update'));
 
 add_filter('init', 'kwps_add_api_rewrite_rules');
 
