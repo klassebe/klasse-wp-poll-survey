@@ -50,15 +50,16 @@ abstract class Kwps_Post_Type{
         foreach($child_objects as $object){
             array_push($children, static::get_as_array($object->ID));
         }
-
         return $children;
     }
 
 
     public static function save(){
+
         $json = file_get_contents("php://input");
         $post = json_decode($json, true);
 
+        var_dump($json); die;
         $post['post_type'] = static::$post_type;
 
         if( static::validate_for_insert($post) ) {
