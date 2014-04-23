@@ -70,8 +70,9 @@
                             {{/each}}
                         </tr>
                         <tr class="title">
-                            <th class="no-delete"  colspan="{{getColumnCount versions}}"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?> <button class="add-question"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
+                            <th class="no-delete"  colspan="{{getColumnCount versions}}"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?> <button class="button add" id="add-question"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
                         </tr>
+                        {{#each questions}}
                         <tr>
                             <td class="delete">
                                 <span class="toggle-details">Toggle</span>
@@ -87,7 +88,7 @@
                                 </div>
                                 <div class="actions" style="display: none" data-kwps-attribute="_kwps_question"><span class="edit">edit</span> | <span class="preview">preview</span></div>
                             </td>
-                            {{#each versions}}
+                            {{#each ../versions}}
                             <td id="_kwps_question_{{ID}}">
                                 <div>
                                     {{_kwps_question}}
@@ -113,6 +114,7 @@
                                 </tr>
                             {{/each}}
                         {{/if}}
+                        {{/each}}
                         <tr class="title">
                             <th class="no-delete" colspan="{{getColumnCount versions}}"><?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?></th>
                         </tr>
