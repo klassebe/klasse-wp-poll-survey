@@ -36,7 +36,7 @@ class Answer_Option extends Kwps_Post_Type{
         $dump = '<div class="kwps-single-answer kwps-answer-' . static::get_sort_order($answer_option_id) . '">';
         $dump .= '<input type="radio" name="kwps-answer"';
         $dump .= $answer_option['post_parent'];
-        $dump .= ' value="'. $answer_option['ID'] .'">'. $answer_option['post_title'] . '</div>';
+        $dump .= ' value="'. $answer_option['ID'] .'">'. $answer_option['post_content'] . '</div>';
 
         return $dump;
     }
@@ -72,6 +72,7 @@ class Answer_Option extends Kwps_Post_Type{
         $required_fields = array(
             'post_content',
             'post_status',
+            'post_type',
             'post_parent'
         );
 
@@ -97,6 +98,7 @@ class Answer_Option extends Kwps_Post_Type{
             'ID',
             'post_content',
             'post_status',
+            'post_type',
             'post_parent'
         );
 
