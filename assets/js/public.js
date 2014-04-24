@@ -42,7 +42,7 @@ jQuery(function($) {
 						    }
 						});
 				  // Send the data using post
-				  // var posting = $.post( url, { 
+				  // var posting = $.post( url, {  
 				  	
 				  	
 				  // } );

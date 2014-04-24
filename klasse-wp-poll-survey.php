@@ -77,7 +77,8 @@ add_action( 'wp_ajax_kwps_save_answer_option', array('\includes\answer_option','
 add_action( 'wp_ajax_kwps_update_answer_option', array('\includes\answer_option','update_from_request'));
 add_action( 'wp_ajax_kwps_delete_answer_option', array('\includes\answer_option','delete_from_request'));
 
-add_action( 'wp_ajax_kwps_save_entry', array('\includes\entry','save_from_request'));
+// nopriv prefix to make sure this function is callable for unregistered users
+add_action( 'wp_ajax_nopriv_kwps_save_entry', array('\includes\entry','save_from_request'));
 add_action( 'wp_ajax_kwps_update_entry', array('\includes\entry','update_from_request'));
 add_action( 'wp_ajax_kwps_delete_entry', array('\includes\entry','delete_from_request'));
 
