@@ -28,7 +28,7 @@ class Question extends Kwps_Post_Type{
     public static function get_html($question_id){
         $question = static::get_as_array($question_id);
 
-        return '<div class="kwps-question">' . $question['post_title'] . '</div>';
+        return '<div class="kwps-question">' . $question['post_content'] . '</div>';
     }
 
     public static function delete_meta()
@@ -74,7 +74,7 @@ class Question extends Kwps_Post_Type{
     static function validate_for_update($post_as_array = array()) {
         $required_fields = array(
             'ID',
-            'post_title',
+            'post_content',
             'post_status',
             'post_type',
             'post_parent'
