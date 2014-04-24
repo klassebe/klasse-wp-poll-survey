@@ -51,7 +51,8 @@ class Question extends Kwps_Post_Type{
         $required_fields = array(
             'post_status',
             'post_type',
-            'post_parent'
+            'post_parent',
+            '_kwps_sort_order',
         );
 
         foreach($required_fields as $field)
