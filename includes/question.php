@@ -49,7 +49,6 @@ class Question extends Kwps_Post_Type{
      */
     static function validate_for_insert($post_as_array = array()) {
         $required_fields = array(
-            'post_title',
             'post_status',
             'post_type',
             'post_parent'

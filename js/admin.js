@@ -24,16 +24,6 @@ jQuery(function ($) {
     this.index = Number(value + 1);
   });
 
-  Backbone.Model.prototype.parse = function(resp, xhr) {
-    if(resp.type && (resp.type =="create")){
-      return {
-        "id": resp.data.id
-      }
-    }else if(resp.type && (resp.type =="update")){ }else{
-      return resp;
-    }
-  }
-
   var app = {};
   app.url = 'admin-ajax.php?action=';
   app.templates = {
@@ -82,8 +72,8 @@ jQuery(function ($) {
       post_type: "kwps_poll",
       _kwps_intro: "",
       _kwps_outro: "",
-      _kwps_question: "",
       open: false,
+      questions: [],
       versions: [],
       answers: []
     },
@@ -98,9 +88,44 @@ jQuery(function ($) {
       key: 'answers',
       relatedModel: app.AnswerModel,
       collectionType: 'AnswerCollection'
+    },
+    {
+      type: Backbone.Many,
+      key: 'questions',
+      relatedModel: app.QuestionModel,
+      collectionType: 'QuestionCollection'
     }]
   });
 
+  app.QuestionModel = Backbone.AssociatedModel.extend({
+
+    action: {
+      create: 'kwps_save_question',
+      update: 'kwps_update_question',
+      delete: 'kwps_delete_question'
+    },
+
+    sync: function (method, model, options) {
+      options = options || {};
+      options.url = app.url + model.action[method.toLowerCase()];
+
+      return Backbone.sync.apply(this, arguments);
+    },
+    initialize: function () {
+      this.bind("change", this.changeHandler);
+    },
+    changeHandler: function () {
+      this.save();
+    },
+    idAttribute: 'ID',
+    defaults: {
+      post_title: "",
+      post_status: "draft",
+      post_parent: null,
+      test: null
+    }
+
+  });
 
   VersionCollection = Backbone.Collection.extend({
     model: TestModel
@@ -108,6 +133,10 @@ jQuery(function ($) {
 
   AnswerCollection = Backbone.Collection.extend({
     model: app.AnswerModel
+  });
+
+  QuestionCollection = Backbone.Collection.extend({
+    model: app.QuestionModel
   });
 
   app.TestView = Backbone.View.extend({
@@ -128,6 +157,7 @@ jQuery(function ($) {
       'mouseleave td': 'hideActions',
       'click .toggle-details': 'toggleDetails',
       'click .add-answer': 'addAnswer',
+      'click #add-question': 'addQuestion',
       'click .delete-version': 'deleteVersion',
       'click .preview': 'preview',
       'click .edit': 'edit',
@@ -186,6 +216,13 @@ jQuery(function ($) {
       });
 
       this.render();
+    },
+    addQuestion: function(event) {
+      var question = new app.QuestionModel();
+      question.set('post_parent', app.test.get('ID'));
+      app.test.get('questions').add(question);
+      console.log(question);
+      console.log(app.test);
     },
     showActions: function(event) {
       $(event.target).find(".actions").show();
