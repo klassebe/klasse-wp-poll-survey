@@ -31,15 +31,19 @@ class Question extends Kwps_Post_Type{
         return '<div class="kwps-question">' . $question['post_content'] . '</div>';
     }
 
-    public static function delete_meta()
+    public static function validate_for_delete($question_id = 0)
     {
-        // TODO: Implement delete_meta() method.
-    }
+/*        A question is not allowed to be deleted when:
+            - The test is not in draft anymore
+*/
+        $test_id = wp_get_post_parent_id($question_id);
+        $test_status = get_post_status($test_id);
 
-    public static function validate_for_delete($post_id = 0)
-    {
-        // TODO: Implement validate_for_delete() method.
-        return true;
+        if('draft' != $test_status){
+            return false;
+        } else {
+            return true;
+        }
     }
 
 

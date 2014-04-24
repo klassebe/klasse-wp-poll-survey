@@ -41,11 +41,6 @@ class Answer_Option extends Kwps_Post_Type{
         return $dump;
     }
 
-    public static function delete_meta()
-    {
-        // TODO: Implement delete_meta() method.
-    }
-
     public static function validate_for_delete($post_id = 0)
     {
         // TODO: Implement validate_for_delete() method.

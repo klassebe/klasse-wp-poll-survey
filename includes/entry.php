@@ -41,11 +41,6 @@ class Entry extends Kwps_Post_Type{
         return true;
     }
 
-    public static function delete_meta()
-    {
-        // TODO: Implement delete_meta() method.
-    }
-
 
     /**
      * @param $post_as_array
