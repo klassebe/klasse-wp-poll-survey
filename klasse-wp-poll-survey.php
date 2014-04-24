@@ -65,20 +65,21 @@ add_action('init', array('\includes\entry','register_post_type'));
 
 add_action('admin_menu', 'add_plugin_admin_menu');
 
-add_action( 'wp_ajax_kwps_save_poll', array('\includes\poll','save'));
-add_action( 'wp_ajax_kwps_update_poll', array('\includes\poll','update'));
-add_action( 'wp_ajax_kwps_delete_poll', array('\includes\poll','delete'));
+add_action( 'wp_ajax_kwps_save_poll', array('\includes\poll','save_from_request'));
+add_action( 'wp_ajax_kwps_update_poll', array('\includes\poll','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_poll', array('\includes\poll','delete_from_request'));
 
-add_action( 'wp_ajax_kwps_save_question', array('\includes\question','save'));
-add_action( 'wp_ajax_kwps_update_question', array('\includes\question','update'));
-add_action( 'wp_ajax_kwps_delete_question', array('\includes\question','delete'));
+add_action( 'wp_ajax_kwps_save_question', array('\includes\question','save_from_request'));
+add_action( 'wp_ajax_kwps_update_question', array('\includes\question','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_question', array('\includes\question','delete_from_request'));
 
-add_action( 'wp_ajax_kwps_save_answer_option', array('\includes\answer_option','save'));
-add_action( 'wp_ajax_kwps_update_answer_option', array('\includes\answer_option','update'));
-add_action( 'wp_ajax_kwps_delete_answer_option', array('\includes\answer_option','delete'));
+add_action( 'wp_ajax_kwps_save_answer_option', array('\includes\answer_option','save_from_request'));
+add_action( 'wp_ajax_kwps_update_answer_option', array('\includes\answer_option','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_answer_option', array('\includes\answer_option','delete_from_request'));
 
-add_action( 'wp_ajax_kwps_save_entry', array('\includes\entry','save'));
-add_action( 'wp_ajax_kwps_update_answer_option', array('\includes\answer_option','update'));
+add_action( 'wp_ajax_kwps_save_entry', array('\includes\entry','save_from_request'));
+add_action( 'wp_ajax_kwps_update_entry', array('\includes\entry','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_entry', array('\includes\entry','delete_from_request'));
 
 add_filter('init', 'kwps_add_api_rewrite_rules');
 

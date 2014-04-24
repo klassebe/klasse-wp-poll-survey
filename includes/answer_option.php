@@ -23,18 +23,42 @@ class Answer_Option extends Kwps_Post_Type{
     );
 
     public static function get_meta_data($post_id){
-        return array();
+        return get_post_meta($post_id);
     }
+
+    public static function get_sort_order($answer_option_id){
+        return get_post_meta($answer_option_id, '_kwps_sort_order', true);
+    }
+
+    public static function get_html($answer_option_id){
+        $answer_option = static::get_as_array($answer_option_id);
+
+        $dump = '<div class="kwps-single-answer kwps-answer-' . static::get_sort_order($answer_option_id) . '">';
+        $dump .= '<input type="radio" name="kwps-answer"';
+        $dump .= $answer_option['post_parent'];
+        $dump .= ' value="'. $answer_option['ID'] .'">'. $answer_option['post_title'] . '</div>';
+
+        return $dump;
+    }
+
+    public static function delete_meta()
+    {
+        // TODO: Implement delete_meta() method.
+    }
+
+    public static function validate_for_delete($post_id = 0)
+    {
+        // TODO: Implement validate_for_delete() method.
+        return true;
+    }
+
 
     public static function get_all_html($question_id)
     {
         $i = 0;
         $dump = '';
-        foreach(static::get_all($question_id) as $answer_option){
-            $dump .= '<div class="kwps-single-answer kwps-answer-' . $i++ . '">';
-            $dump .= '<input type="radio" name="kwps-answer"';
-            $dump .= $answer_option['post_parent'];
-            $dump .= ' value="'. $answer_option['ID'] .'">'. $answer_option['post_title'] . '</div>';
+        foreach(static::get_all_children($question_id) as $answer_option){
+            $dump .= static::get_html($answer_option['ID']);
         }
 
         return $dump;

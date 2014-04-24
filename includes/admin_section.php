@@ -17,7 +17,7 @@ class admin_section {
                     echo 'post not of type kwps_poll';
                 } else {
                     $post_as_array = Poll::get_as_array($current_post->ID);
-                    $versions = Poll::get_all($current_post->ID);
+                    $versions = Poll::get_all_children($current_post->ID);
 
                 ?>
                     <script>var parentPost=<?php echo json_encode($post_as_array); ?></script>

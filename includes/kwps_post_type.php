@@ -2,24 +2,13 @@
 
 namespace includes;
 
-abstract class Kwps_Post_Type{
+require_once __DIR__ . '/post_type_interface.php';
 
-    public static $post_type = 'kwps_post_type';
+abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
+
+    public static $post_type = '';
 
     public static $post_type_args = array();
-
-
-
-    public static function validate_for_update($post_as_array){
-        return true;
-    }
-
-    public static function delete_meta(){
-//           do stuff
-    }
-    public static function get_html($id){
-        return '';
-    }
 
     public static function register_post_type(){
         register_post_type(static::$post_type, static::$post_type_args);
@@ -38,12 +27,13 @@ abstract class Kwps_Post_Type{
         return $post_as_array;
     }
 
-    public static function get_meta_data($post_id){
-        return array('test');
-    }
 
-    public static function get_all($test_id){
-        $child_objects = get_posts(array('post_type' => static::$post_type, 'post_parent' => $test_id));
+    public static function get_all_children($test_id){
+        $child_objects = get_posts( array('post_type' => static::$post_type,
+            'post_parent' => $test_id,
+            'orderby' => 'meta_value_num',
+            'meta_key' => '_kwps_sort_order',
+        ) );
 
         $children = array();
 
@@ -54,27 +44,29 @@ abstract class Kwps_Post_Type{
     }
 
 
-    public static function save(){
+    public final static function save_from_request(){
 
-        $json = file_get_contents("php://input");
-        $post = json_decode($json, true);
+        $request_data = static::get_post_data_from_request();
 
-        var_dump($json); die;
-        $post['post_type'] = static::$post_type;
-
-        if( static::validate_for_insert($post) ) {
-            static::save_post($post);
+        if( static::validate_for_insert($request_data) ) {
+            static::save_post($request_data);
         }
 
         die();
     }
 
-    public static function validate_for_insert($post_as_array = array()){
-        return true;
+    public static function get_post_data_from_request(){
+        $json = file_get_contents("php://input");
+        $request_data = json_decode($json, true);
+
+        $request_data['post_type'] = static::$post_type;
+
+        return $request_data;
     }
 
 
-    public static function save_post($post_data){
+
+    public final static function save_post($post_data){
         $post_id = wp_insert_post($post_data);
 
         $post = get_post($post_id);
@@ -92,22 +84,22 @@ abstract class Kwps_Post_Type{
         wp_send_json($post);
     }
 
-    public static function update(){
-        $json = file_get_contents("php://input");
-        $post_data = json_decode($json, true);
+    public final static function update_from_request(){
+        $request_data = static::get_post_data_from_request();
 
-        $post_data['post_type'] = static::$post_type;
-
-        if(static::validate_for_update($post_data)){
-            static::save_post($post_data);
+        if(static::validate_for_update($request_data)){
+            static::save_post($request_data);
         }
     }
 
 
-    public static function delete_poll(){
-        static::delete_meta();
+    public final static function delete_from_request(){
+        $request_data = static::get_post_data_from_request();
 
-        wp_delete_post($_POST['ID']);
+        if(static::validate_for_delete()){
+            wp_delete_post($request_data['ID']);
+        }
+        static::delete_meta();
     }
 
 

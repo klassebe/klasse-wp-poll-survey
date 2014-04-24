@@ -70,6 +70,13 @@ class Poll extends Kwps_Post_Type{
         return true;
     }
 
+    public static function validate_for_delete($post_id = 0)
+    {
+        // TODO: Implement validate_for_delete() method.
+        return true;
+    }
+
+
     public static function validate_for_update($post_as_array){
         $post = get_post($post_as_array['ID'], ARRAY_A);
 
@@ -111,8 +118,7 @@ class Poll extends Kwps_Post_Type{
             $dump .= '<div class="kwps-intro"><p>' . get_post_meta( $id, '_kwps_intro', true) . '</p><input type="button" class="kwps-next" value="Volgende"></div>';
             $dump .= '<div class="kwps-content">';
 
-            $questions = Question::get_all($id);
-            // var_dump($questions); die;
+            $questions = Question::get_all_children($id);
             $question = $questions[0];
             $dump .= '<div class="kwps-question">';
             $dump .= Question::get_html($question['ID']);
