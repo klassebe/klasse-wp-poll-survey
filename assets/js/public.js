@@ -25,8 +25,8 @@ jQuery(function($) {
 
 			    var entry = {
 				  		"post_parent": selected,
-					  	"post_type": "kwps_entry",
-					  	"post_status": "publish" 
+					  	"post_status": "publish",
+					  	"post_title": "Entry"
 				  	}
 
 				  	$.ajax({
