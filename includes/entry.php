@@ -37,13 +37,9 @@ class Entry extends Kwps_Post_Type{
         return true;
     }
 
-    public static function validate_for_delete($post_id = 0){
-        return true;
-    }
-
-    public static function delete_meta()
-    {
-        // TODO: Implement delete_meta() method.
+    public static function validate_for_delete($entry_id = 0){
+        $answer_option_id = wp_get_post_parent_id($entry_id);
+        return Answer_Option::validate_for_delete($answer_option_id);
     }
 
 

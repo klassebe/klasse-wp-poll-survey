@@ -104,5 +104,12 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
         static::delete_meta();
     }
 
+    public static final function delete_meta($post_id = 0){
+
+        foreach(get_post_meta($post_id) as $meta_key => $meta_value){
+            delete_post_meta($post_id, $meta_key);
+        }
+    }
+
 
 }

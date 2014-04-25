@@ -88,12 +88,6 @@ class Poll extends Kwps_Post_Type{
         }
     }
 
-    public static function delete_meta(){
-        delete_post_meta($_POST['ID'], '_kwps_intro');
-        delete_post_meta($_POST['ID'], '_kwps_outro');
-        delete_post_meta($_POST['ID'], '_kwps_question');
-    }
-
     public static function shortcode($atts){
         extract( shortcode_atts( array(
             'id' => 0,

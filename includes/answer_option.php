@@ -41,15 +41,10 @@ class Answer_Option extends Kwps_Post_Type{
         return $dump;
     }
 
-    public static function delete_meta()
+    public static function validate_for_delete($answer_option_id = 0)
     {
-        // TODO: Implement delete_meta() method.
-    }
-
-    public static function validate_for_delete($post_id = 0)
-    {
-        // TODO: Implement validate_for_delete() method.
-        return true;
+        $question_id = wp_get_post_parent_id($answer_option_id);
+        return Question::validate_for_delete($question_id);
     }
 
 
