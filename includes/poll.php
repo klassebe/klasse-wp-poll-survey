@@ -7,6 +7,7 @@ require_once 'question.php';
 require_once 'answer_option.php';
 
 class Poll extends Kwps_Post_Type{
+    public static $label = 'kwps-poll';
 
     public static $post_type = 'kwps_poll';
 
@@ -104,10 +105,13 @@ class Poll extends Kwps_Post_Type{
         $post_as_array = static::get_as_array($id);
 
         if($test_exists = $post_as_array['post_status'] === 'publish'){
-            $dump .= '<div class="' . get_post_type( $id ) . '" id="kwps-' . $id . '" >';
+            $intros = Intro::get_all_children($id);
+            $intro = $intros[0];
+
+            $dump .= '<div class="' . static::$label . '" id="kwps-' . $id . '" >';
             // $dump .= '<input type="hidden">'
             $dump .= '<div class="kwps-title">' . get_the_title( $id ) . '</div>';
-            $dump .= '<div class="kwps-intro"><p>' . get_post_meta( $id, '_kwps_intro', true) . '</p><input type="button" class="kwps-next" value="Volgende"></div>';
+            $dump .= '<div class="kwps-intro">' . Intro::get_html($intro['ID']) . '<input type="button" class="kwps-next" value="Volgende"></div>';
             $dump .= '<div class="kwps-content">';
 
             $questions = Question::get_all_children($id);
@@ -123,7 +127,10 @@ class Poll extends Kwps_Post_Type{
             $dump .= '</form>';
             $dump .= '</div>'; // kwps-answers
             $dump .= '</div>'; // kwps-content
-            $dump .= '<div class="kwps-outro"><p>' . get_post_meta( $id, '_kwps_outro', true) . '</p><div class="kwps-outro-inside"></div></div>';
+
+            $outros = Outro::get_all_children($id);
+            $outro = $outros[0];
+            $dump .= '<div class="kwps-outro">' . Outro::get_html($outro['ID']) . '<div class="kwps-outro-inside"></div></div>';
             $dump .= '</div>'; // kwps full wrapper
         } else {
             $dump .= "Poll kan niet getoond worden.";

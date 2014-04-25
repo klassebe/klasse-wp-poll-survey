@@ -37,7 +37,12 @@ jQuery(function($) {
 						    success: function(data){
 						    	// alert(data);
 						    	// console.log(entry);
-						    	// console.log(data);
+						    	console.log(data);
+						    	$.each(data.entries, function(index, value) {
+						    		// console.log(value);
+
+						    		elem.find('.kwps-chart').append(value.answer_option_content + '<br><progress value="' + value.entry_count + '" max="' + data[0].total_entries + '"></progress><br>');
+						    	});
 						    },
 						    failure: function(errMsg) {
 						        alert(errMsg);
@@ -53,5 +58,6 @@ jQuery(function($) {
 
 	};
 
-	$('.kwps_poll').pollPlugin();
+	// TODO: Has to be attached to the id of every class 'kwps_poll'
+	$('.kwps-poll').pollPlugin();
 });

@@ -25,11 +25,11 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
     public static function get_as_array($post_id){
         $post_as_array = get_post($post_id,ARRAY_A);
 
-        if(null == $post_as_array){
-            $post_as_array = false;
-        } else {
-            $post_as_array = array_merge($post_as_array, static::get_meta_data($post_id));
-        }
+        // if(null == $post_as_array){
+        //     $post_as_array = false;
+        // } else {
+        //     $post_as_array = array_merge($post_as_array, static::get_meta_data($post_id));
+        // }
 
 
         return $post_as_array;
@@ -52,12 +52,11 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
     }
 
 
-    public final static function save_from_request(){
+    public static function save_from_request(){
 
         $request_data = static::get_post_data_from_request();
-        var_dump($request_data);
         if( static::validate_for_insert($request_data) ) {
-            static::save_post($request_data);
+            wp_send_json( static::save_post($request_data) );
         } else {
             wp_send_json(null);
         }
@@ -68,7 +67,6 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
     public static function get_post_data_from_request(){
         $json = file_get_contents("php://input");
         $request_data = json_decode($json, true);
-        var_dump($request_data);
         $request_data['post_type'] = static::$post_type;
 
         return $request_data;
@@ -88,10 +86,10 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
                 }
             }
         } else {
-            wp_send_json(null);
+            return null;
         }
 
-        wp_send_json($post);
+        return $post;
     }
 
     public final static function update_from_request(){
