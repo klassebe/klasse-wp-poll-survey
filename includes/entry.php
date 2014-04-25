@@ -52,22 +52,20 @@ class Entry extends Kwps_Post_Type{
      * @return bool
      */
     static function validate_for_insert($post_as_array = array()) {
-        $required_fields = array(
-            'post_status',
-            'post_type',
-            'post_parent'
-        );
+        // $required_fields = array(
+        //     'post_parent'
+        // );
 
-        foreach($required_fields as $field)
-            if(! isset($post_as_array[$field])) {
-                return false;
-            } else {
-                if( is_string($post_as_array[$field])){
-                    if( strlen($post_as_array[$field]) == 0 ) {
-                        return false;
-                    }
-                }
-            }
+        // foreach($required_fields as $field)
+        //     if(! isset($post_as_array[$field])) {
+        //         return false;
+        //     } else {
+        //         if( is_string($post_as_array[$field])){
+        //             if( strlen($post_as_array[$field]) == 0 ) {
+        //                 return false;
+        //             }
+        //         }
+        //     }
         return true;
     }
 }

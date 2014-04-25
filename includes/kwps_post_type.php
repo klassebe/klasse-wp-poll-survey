@@ -45,7 +45,9 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
 
 
     public final static function save_from_request(){
+
         $request_data = static::get_post_data_from_request();
+        var_dump($request_data);
         if( static::validate_for_insert($request_data) ) {
             static::save_post($request_data);
         } else {
@@ -58,7 +60,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
     public static function get_post_data_from_request(){
         $json = file_get_contents("php://input");
         $request_data = json_decode($json, true);
-
+        var_dump($request_data);
         $request_data['post_type'] = static::$post_type;
 
         return $request_data;

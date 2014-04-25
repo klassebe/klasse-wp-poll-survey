@@ -25,46 +25,30 @@ jQuery(function($) {
 
 			    var entry = {
 				  		"post_parent": selected,
-					  	"post_status": "publish",
-					  	"post_title": "Entry"
+				  		"_kwps_sort_order": 0
 				  	}
 
 				  	$.ajax({
 						    type: "POST",
 						    url: "wp-admin/admin-ajax.php?action=kwps_save_entry",
-						    // The key needs to match your method's input parameter (case-sensitive).
-						    data: JSON.stringify({ Entries: entry }),
+						    data: JSON.stringify(entry),
 						    contentType: "application/json; charset=utf-8",
 						    dataType: "json",
-						    success: function(data){alert(data);},
+						    success: function(data){
+						    	// alert(data);
+						    	// console.log(entry);
+						    	// console.log(data);
+						    },
 						    failure: function(errMsg) {
 						        alert(errMsg);
 						    }
 						});
-				  // Send the data using post
-				  // var posting = $.post( url, {  
-				  	
-				  	
-				  // } );
-				 
-				  // // Put the results in a div
-				  // posting.done(function( data ) {
-				  //   elem.find('.kwps-content').hide();
-						// elem.find('.kwps-outro-inside').html(data);
-						// elem.find('.kwps-outro').show();
 
-						// console.log('verzonden data');
-						// console.log(data);
-				  // });
-
-				// $('.kwps-intro').hide();
-				// $('.kwps-outro').show();
-				// $('.kwps-content').hide();
+				$('.kwps-intro').hide();
+				$('.kwps-outro').show();
+				$('.kwps-content').hide();
 			});
 			
-
-
-
 		});
 
 	};
