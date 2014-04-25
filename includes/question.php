@@ -7,15 +7,16 @@ class Question extends Kwps_Post_Type{
 
     public static $post_type = 'kwps_question';
 
-    public static $post_type_args = array(
-        'public' => false,
-        'rewrite' => array(
+    public static $rewrite = array(
             'slug' => 'questions',
             'with_front' => false,
-        ),
-        'supports' => false,
+        );
+
+    public static $post_type_args = array(
+        'public' => false,
+        'supports' => array('editor'),
         'show_in_menu' => false,
-        'show_ui' => false,
+        'show_ui' => true,
         'hierarchical' => true,
         'exclude_from_search' => true,
         'publicly_queryable' => false,

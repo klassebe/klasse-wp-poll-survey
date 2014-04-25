@@ -33,6 +33,8 @@ require_once __DIR__ . '/includes/admin_section.php';
 require_once __DIR__ . '/includes/poll.php';
 require_once __DIR__ . '/includes/question.php';
 require_once __DIR__ . '/includes/entry.php';
+require_once __DIR__ . '/includes/intro.php';
+require_once __DIR__ . '/includes/outro.php';
 require_once __DIR__ . '/includes/answer_option.php';
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -62,6 +64,8 @@ add_action('init', array('\includes\poll','register_post_type'));
 add_action('init', array('\includes\answer_option','register_post_type'));
 add_action('init', array('\includes\question','register_post_type'));
 add_action('init', array('\includes\entry','register_post_type'));
+add_action('init', array('\includes\intro','register_post_type'));
+add_action('init', array('\includes\outro','register_post_type'));
 
 add_action('admin_menu', 'add_plugin_admin_menu');
 
@@ -76,6 +80,14 @@ add_action( 'wp_ajax_kwps_delete_question', array('\includes\question','delete_f
 add_action( 'wp_ajax_kwps_save_answer_option', array('\includes\answer_option','save_from_request'));
 add_action( 'wp_ajax_kwps_update_answer_option', array('\includes\answer_option','update_from_request'));
 add_action( 'wp_ajax_kwps_delete_answer_option', array('\includes\answer_option','delete_from_request'));
+
+add_action( 'wp_ajax_kwps_save_intro', array('\includes\intro','save_from_request'));
+add_action( 'wp_ajax_kwps_update_intro', array('\includes\intro','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_intro', array('\includes\intro','delete_from_request'));
+
+add_action( 'wp_ajax_kwps_save_outro', array('\includes\outro','save_from_request'));
+add_action( 'wp_ajax_kwps_update_outro', array('\includes\outro','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_outro', array('\includes\outro','delete_from_request'));
 
 // nopriv prefix to make sure this function is callable for unregistered users
 add_action( 'wp_ajax_nopriv_kwps_save_entry', array('\includes\entry','save_from_request'));

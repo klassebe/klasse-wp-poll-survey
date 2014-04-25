@@ -7,12 +7,13 @@ class Entry extends Kwps_Post_Type{
 
     public static $post_type = 'kwps_entry';
 
-    public static $post_type_args = array(
-        'public' => false,
-        'rewrite' => array(
+    public static $rewrite = array(
             'slug' => 'entries',
             'with_front' => false,
-        ),
+        );
+
+    public static $post_type_args = array(
+        'public' => false,
         'supports' => false,
         'show_in_menu' => false,
         'show_ui' => false,

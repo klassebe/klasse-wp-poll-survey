@@ -8,12 +8,13 @@ class Answer_Option extends Kwps_Post_Type{
 
     public static $post_type = 'kwps_answer_option';
 
-    public static $post_type_args = array(
-        'public' => false,
-        'rewrite' => array(
+    public static $rewrite = array(
             'slug' => 'answer_options',
             'with_front' => false,
-        ),
+        );
+
+    public static $post_type_args = array(
+        'public' => false,
         'supports' => false,
         'show_in_menu' => false,
         'show_ui' => false,
@@ -67,7 +68,6 @@ class Answer_Option extends Kwps_Post_Type{
         $required_fields = array(
             'post_content',
             'post_status',
-            'post_type',
             'post_parent'
         );
 
@@ -93,7 +93,6 @@ class Answer_Option extends Kwps_Post_Type{
             'ID',
             'post_content',
             'post_status',
-            'post_type',
             'post_parent'
         );
 

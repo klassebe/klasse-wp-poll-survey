@@ -8,10 +8,18 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
 
     public static $post_type = '';
 
+    public static $rewrite = array(
+            'slug' => '',
+            'with_front' => false,
+        );
+
     public static $post_type_args = array();
 
     public static function register_post_type(){
-        register_post_type(static::$post_type, static::$post_type_args);
+        $post_type_args = static::$post_type_args;
+        $post_type_args['rewrite'] = static::$rewrite;
+
+        register_post_type(static::$post_type, $post_type_args);
     }
 
     public static function get_as_array($post_id){

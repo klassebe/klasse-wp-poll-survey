@@ -10,12 +10,13 @@ class Poll extends Kwps_Post_Type{
 
     public static $post_type = 'kwps_poll';
 
+    public static $rewrite = array(
+            'slug' => 'polls',
+            'with_front' => false,
+        );
+
     public static $post_type_args = array(
             'public' => true,
-            'rewrite' => array(
-                'slug' => 'polls',
-                'with_front' => false,
-            ),
             'supports' => array(
                 'title',
             ),
