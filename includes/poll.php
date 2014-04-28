@@ -130,7 +130,7 @@ class Poll extends Kwps_Post_Type{
 
             $outros = Outro::get_all_children($id);
             $outro = $outros[0];
-            $dump .= '<div class="kwps-outro">' . Outro::get_html($outro['ID']) . '<div class="kwps-outro-inside" style="min-width:300px; max-width: 800px; height: 100px; margin: 0 auto"></div></div>';
+            $dump .= '<div class="kwps-outro">' . Outro::get_html($outro['ID']) . '<div class="kwps-outro-inside"></div></div>';
             $dump .= '</div>'; // kwps full wrapper
         } else {
             $dump .= "Poll kan niet getoond worden.";
