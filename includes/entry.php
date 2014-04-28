@@ -85,8 +85,15 @@ class Entry extends Kwps_Post_Type{
             $totalEntries += count($entries);
         }
 
+        $content_post = get_post($question_id);
+        $content = $content_post->post_content;
+        $content = apply_filters('the_content', $content);
+        $content = str_replace(']]>', ']]&gt;', $content);
+        
+        $poll_question = $content;
         // var_dump($results);
         array_push($results, array( 'total_entries' => $totalEntries));
+        array_push($results, array( 'poll_question' => $poll_question));
         return $results;
     }
 

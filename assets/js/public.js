@@ -38,11 +38,64 @@ jQuery(function($) {
 						    	// alert(data);
 						    	// console.log(entry);
 						    	console.log(data);
+						    	var graphCategories = [];
+						    	var graphData = [];
 						    	$.each(data.entries, function(index, value) {
 						    		// console.log(value);
+						    		graphCategories.push(value.answer_option_content);
 
-						    		elem.find('.kwps-chart').append(value.answer_option_content + '<br><progress value="' + value.entry_count + '" max="' + data[0].total_entries + '"></progress><br>');
+						    		graphData.push(Math.round((value.entry_count/data[0].total_entries)*100));
 						    	});
+
+						    	// BAR CHART CODE
+						    	elem.find('.kwps-chart').highcharts({
+						            chart: {
+						                type: 'bar'
+						            },
+						            title: {
+						                text: data[1].poll_question
+						            },
+						            xAxis: {
+						                categories: graphCategories,
+						                title: {
+						                    text: null
+						                }
+						            },
+						            yAxis: {
+						            	max: 100,
+						                min: 0,
+						                title: {
+						                    text: 'percent',
+						                    align: 'high'
+						                },
+						                labels: {
+						                    overflow: 'justify'
+						                }
+						            },
+						            tooltip: {
+						                valueSuffix: ' %'
+						            },
+						            plotOptions: {
+						                bar: {
+						                    dataLabels: {
+						                        enabled: true
+						                    }
+						                }
+						            },
+						            exporting: {
+												    enabled: false
+												},
+						            legend: {
+						                enabled: false
+						            },
+						            credits: {
+						                enabled: false
+						            },
+						            series: [{
+						            		name: 'Votes',
+						                data: graphData
+						            }]
+						        });
 						    },
 						    failure: function(errMsg) {
 						        alert(errMsg);
