@@ -15,9 +15,21 @@ class Answer_Option extends Kwps_Post_Type{
 
     public static $post_type_args = array(
         'public' => false,
-        'supports' => false,
+        'supports' => array('editor'),
+        'labels' => array(
+            'name' => 'Answer Options',
+            'singular_name' => 'Answer',
+            'add_new' => 'Add New Answer',
+            'add_new_item' => 'Add New Answer',
+            'edit_item' => 'Edit Answer',
+            'new_item' => 'New Answer',
+            'view_item' => 'View Answer',
+            'search_items' => 'Search Answers',
+            'not_found' => 'No Answers Found',
+            'not_found_in_trash' => 'No Answers Found In Trash',
+        ),
         'show_in_menu' => false,
-        'show_ui' => false,
+        'show_ui' => true,
         'hierarchical' => true,
         'exclude_from_search' => true,
         'publicly_queryable' => false,

@@ -41,9 +41,7 @@ jQuery(function($) {
 						    	var graphCategories = [];
 						    	var graphData = [];
 						    	$.each(data.entries, function(index, value) {
-						    		// console.log(value);
 						    		graphCategories.push(value.answer_option_content);
-
 						    		graphData.push(Math.round((value.entry_count/data[0].total_entries)*100));
 						    	});
 

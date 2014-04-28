@@ -15,6 +15,18 @@ class Question extends Kwps_Post_Type{
     public static $post_type_args = array(
         'public' => false,
         'supports' => array('editor'),
+        'labels' => array(
+            'name' => 'Questions',
+            'singular_name' => 'Question',
+            'add_new' => 'Add New Question',
+            'add_new_item' => 'Add New Question',
+            'edit_item' => 'Edit Question',
+            'new_item' => 'New Question',
+            'view_item' => 'View Question',
+            'search_items' => 'Search Questions',
+            'not_found' => 'No Questions Found',
+            'not_found_in_trash' => 'No Questions Found In Trash',
+        ),
         'show_in_menu' => false,
         'show_ui' => true,
         'hierarchical' => true,

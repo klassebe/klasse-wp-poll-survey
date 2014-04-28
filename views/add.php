@@ -12,6 +12,11 @@
 </div>
 </script>
 
+<script id="iframe_template" type="text/x-handlebars-template">
+    <iframe src="<?php echo admin_url('/post-new.php?post_type=kwps_question'); ?>" width="100%" height="600px" scrolling="no"></iframe>
+    <div id="load-data" width="100%" height="400px"></div>
+</script>
+
 <script id="version_template" type="text/x-handlebars-template">
     <div id="icon-tests" class="icon32"><br/></div>
     <h2><?php echo get_admin_page_title() ?></h2>

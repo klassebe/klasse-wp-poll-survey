@@ -1,8 +1,8 @@
 jQuery(function ($) {
-  // $("a[href^='plugins.php?action=deactivate&plugin=klasse-wp-poll-survey']").addClass('klasse-wp-poll-survey');
   // debug helper
   // usage: {{debug}} or {{debug someValue}}
   // from: @commondream (http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/)
+  Backbone.history.start();
   Handlebars.registerHelper("debug", function(optionalValue) {
     console.log("Current Context");
     console.log("====================");
@@ -26,17 +26,21 @@ jQuery(function ($) {
 
   var app = {};
   app.url = 'admin-ajax.php?action=';
-  app.templates = {
-    version: Handlebars.compile($('#version_template').html()),
-    edit: Handlebars.compile($('#edit_template').html())
-  };
 
+  if(typeof $('#version_template').html() !== 'undefined') {
+    app.templates = {
+      version: Handlebars.compile($('#version_template').html()),
+      edit: Handlebars.compile($('#edit_template').html()),
+      iframe: Handlebars.compile($('#iframe_template').html())
+  };
+  }
+  
 
   app.AnswerModel = Backbone.AssociatedModel.extend({
 
   });
 
-  TestModel = Backbone.AssociatedModel.extend({
+  KwpsModel = Backbone.AssociatedModel.extend({
     methodToURL: {
       'read': '/user/get',
       'create': '/user/create',
@@ -128,7 +132,7 @@ jQuery(function ($) {
   });
 
   VersionCollection = Backbone.Collection.extend({
-    model: TestModel
+    model: KwpsModel
   });
 
   AnswerCollection = Backbone.Collection.extend({
@@ -139,7 +143,7 @@ jQuery(function ($) {
     model: app.QuestionModel
   });
 
-  app.TestView = Backbone.View.extend({
+  app.KwpsView = Backbone.View.extend({
     el: '#kwps_test',
     initialize: function () {
       _.bindAll(this, 'cleanup');
@@ -218,11 +222,13 @@ jQuery(function ($) {
       this.render();
     },
     addQuestion: function(event) {
-      var question = new app.QuestionModel();
-      question.set('post_parent', app.test.get('ID'));
-      app.test.get('questions').add(question);
-      console.log(question);
-      console.log(app.test);
+      // var question = new app.QuestionModel();
+      // question.set('post_parent', app.test.get('ID'));
+      // app.test.get('questions').add(question);
+      // console.log(question);
+      // console.log(app.test);
+      // /**/$(this.el).html(app.templates.iframe(data));
+      new app.KwpsViewQuestion();
     },
     showActions: function(event) {
       $(event.target).find(".actions").show();
@@ -241,7 +247,7 @@ jQuery(function ($) {
       var kwpsId = $(event.target).closest('div.actions').data('kwps-id');
 
       if(typeof kwpsId === 'undefined') {
-        new app.TestViewEdit({model: app.test, attribute: kwpsAttribute});
+        new app.KwpsViewEdit({model: app.test, attribute: kwpsAttribute});
       }
     },
     changeTitle: function(event) {
@@ -249,7 +255,7 @@ jQuery(function ($) {
     }
   });
 
-  app.TestViewEdit = Backbone.View.extend({
+  app.KwpsViewEdit = Backbone.View.extend({
     el: '#kwps_test',
 
     initialize: function (options) {
@@ -283,7 +289,40 @@ jQuery(function ($) {
     }
   });
 
-  app.test = new TestModel(parentPost);
+  app.KwpsViewQuestion = Backbone.View.extend({
+    el: '#kwps_test',
 
-  app.view = new app.TestView({model: app.test});
+    initialize: function (options) {
+      this.options = options || {};
+      _.bindAll(this, 'cleanup');
+      this.render();
+    },
+    cleanup: function() {
+      this.undelegateEvents();
+      $(this.el).empty();
+    },
+    events: {
+      'click button#update': 'updateData'
+    },
+    render: function() {
+      // $('#load-data').load('/post-new.php?post_type=kwps_question #post-body-content');
+      $(this.el).html(app.templates.iframe());
+      // $('#load-data').load('post-new.php?post_type=kwps_question #post-body-content');
+      // $('#load-data').load('post-new.php?post_type=kwps_question #wpbody-content');
+      $('#load-data').load('post-new.php?post_type=kwps_question #wp-content-wrap');
+    },
+    updateData: function(event) {
+      app.view.render();
+    }
+  });
+
+
+  if (typeof parentPost !== 'undefined') {
+    app.test = new KwpsModel(parentPost);
+  }
+  console.log(app.test);
+  if (app.test !== undefined) {
+    app.view = new app.KwpsView({model: app.test});
+  }
+  
 });

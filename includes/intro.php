@@ -16,6 +16,18 @@ class Intro extends Kwps_Post_Type{
     public static $post_type_args = array(
         'public' => false,
         'supports' => array('editor'),
+        'labels' => array(
+            'name' => 'Intros',
+            'singular_name' => 'Intro',
+            'add_new' => 'Add New Intro',
+            'add_new_item' => 'Add New Intro',
+            'edit_item' => 'Edit Intro',
+            'new_item' => 'New Intro',
+            'view_item' => 'View Intro',
+            'search_items' => 'Search Intros',
+            'not_found' => 'No Intros Found',
+            'not_found_in_trash' => 'No Intros Found In Trash',
+        ),
         'show_in_menu' => false,
         'show_ui' => true,
         'hierarchical' => true,

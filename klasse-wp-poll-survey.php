@@ -57,7 +57,7 @@ require 'vendor/autoload.php';
 
 
 // Load public-facing style sheet and JavaScript.
-add_action( 'wp_enqueue_scripts', 'enqueue_styles' );
+add_action( 'wp_enqueue_styles', 'enqueue_styles' );
 add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 
 add_action('init', array('\includes\poll','register_post_type'));
