@@ -57,8 +57,7 @@ class admin_section {
             }
         } else {
         ?>
-            <script>var parentPost={}</script>
-            <script>var answerOptions=[]</script>
+            <script>var kwpsPolls=[]</script>
         <?php
         }
 
