@@ -1,5 +1,5 @@
 <div class="wrap" id="kwps_test">
-
+<?php echo '<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>'; ?>
 </div> <!-- .wrap -->
 
 <script id="edit_template" type="text/x-handlebars-template">
@@ -10,11 +10,18 @@
         <button id="update"><?php _e( 'Update', 'klasse-wp-poll-survey' ) ?></button>
     </form>
 </div>
+<?php
+    echo '<script>jQuery(function($){
+                        tinymce.init({
+                            selector: "textarea"
+                        });
+                }); console.log("testje")</script>'; ?>
 </script>
 
 <script id="iframe_template" type="text/x-handlebars-template">
     <iframe src="<?php echo admin_url('/post-new.php?post_type=kwps_question'); ?>" width="100%" height="600px" scrolling="no"></iframe>
     <div id="load-data" width="100%" height="400px"></div>
+    <textarea></textarea>
 </script>
 
 <script id="version_template" type="text/x-handlebars-template">
