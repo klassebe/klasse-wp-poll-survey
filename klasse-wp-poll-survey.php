@@ -103,6 +103,15 @@ register_deactivation_hook(__FILE__, 'kwps_deactivate');
 // shortcode -> use feip_form_posts template in front end for vote function!
 add_shortcode('kwps_poll', array('\includes\poll', 'shortcode') );
 
+// add_action('shutdown', function() {
+//  echo '<script>jQuery(function($){
+//                     setTimeout(function() {
+//                         tinymce.init({
+//                             selector: "textarea"
+//                         });
+//                     }, 5000);
+//                 }); console.log("testje")</script>';
+// });
 
 function kwps_activate(){
     kwps_add_api_rewrite_rules();
@@ -174,6 +183,10 @@ function enqueue_scripts_admin() {
     wp_enqueue_script( 'jquery' );
     wp_enqueue_script( 'jquery-ui-core' );
     wp_enqueue_script( 'jquery-ui-tabs' );
+    // wp_enqueue_script( 'tiny_mce' );
+    // wp_enqueue_script( 'editorremov' );
+    // wp_enqueue_script( 'editor-functions' );
+    // wp_enqueue_script( 'media-upload' );
     wp_enqueue_script( 'klasse-wp-poll-survey-handlebars');
     wp_enqueue_script( 'klasse-wp-poll-survey-backbone-associations');
     wp_enqueue_script( 'klasse-wp-poll-survey-admin');
@@ -222,3 +235,7 @@ if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
     add_action('admin_init', 'enqueue_scripts_admin');
     add_action('admin_init', 'enqueue_styles_admin');
 }
+//  else {
+    // add_action('admin_enqueue_scripts', 'enqueue_scripts_admin');
+    // add_action('admin_enqueue_styles', 'enqueue_styles_admin');
+// }

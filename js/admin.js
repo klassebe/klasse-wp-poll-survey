@@ -2,7 +2,7 @@ jQuery(function ($) {
   // debug helper
   // usage: {{debug}} or {{debug someValue}}
   // from: @commondream (http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/)
-  Backbone.history.start();
+  
   Handlebars.registerHelper("debug", function(optionalValue) {
     console.log("Current Context");
     console.log("====================");
@@ -35,12 +35,30 @@ jQuery(function ($) {
   };
   }
   
-
-  app.AnswerModel = Backbone.AssociatedModel.extend({
-
+  // Routing
+   var router = Backbone.Router.extend({
+    routes: {
+      '' : 'home',
+      'edit/:type/:parentId' : 'edit'
+    },
+    home : function () {
+      console.log("ROUTING TO: home");
+      if (app.kwpsPollsCollection !== undefined) {
+        app.view = new app.KwpsView({model: app.kwpsPollsCollection});
+      } 
+      app.view.initialize();
+    },
+    edit :  function (type, parentId) {
+      console.log("ROUTING TO: edit");
+      // controleren of er nog een edit view in steekt en alle events unbinden
+      app.views.edit = new KwpsViewEdit({
+        type:type, 
+        parentId : parentId
+      });
+    }
   });
 
-  KwpsModel = Backbone.AssociatedModel.extend({
+  KwpsModel = Backbone.Model.extend({
     methodToURL: {
       'read': '/user/get',
       'create': '/user/create',
@@ -80,28 +98,10 @@ jQuery(function ($) {
       questions: [],
       versions: [],
       answers: []
-    },
-    relations: [{
-      type: Backbone.Many,
-      key: 'versions',
-      relatedModel: this,
-      collectionType: 'VersionCollection'
-    },
-    {
-      type: Backbone.Many,
-      key: 'answers',
-      relatedModel: app.AnswerModel,
-      collectionType: 'AnswerCollection'
-    },
-    {
-      type: Backbone.Many,
-      key: 'questions',
-      relatedModel: app.QuestionModel,
-      collectionType: 'QuestionCollection'
-    }]
-  });
+    }
+  }); 
 
-  app.QuestionModel = Backbone.AssociatedModel.extend({
+  /*app.QuestionModel = Backbone.AssociatedModel.extend({
 
     action: {
       create: 'kwps_save_question',
@@ -141,7 +141,7 @@ jQuery(function ($) {
 
   QuestionCollection = Backbone.Collection.extend({
     model: app.QuestionModel
-  });
+  });*/
 
   app.KwpsView = Backbone.View.extend({
     el: '#kwps_test',
@@ -174,6 +174,7 @@ jQuery(function ($) {
     render: function () {
       $('#post_title').val(this.model.get('post_title'));
       var data = this.model.toJSON();
+      console.log(data);
       data.table = this.prepareTable();
       $(this.el).html(app.templates.version(data));
       $('#tabs').tabs();
@@ -243,6 +244,7 @@ jQuery(function ($) {
       console.log(event);
     },
     edit: function(event) {
+
       var kwpsAttribute = $(event.target).closest('div.actions').data('kwps-attribute');
       var kwpsId = $(event.target).closest('div.actions').data('kwps-id');
 
@@ -284,7 +286,7 @@ jQuery(function ($) {
       var value = $(event.target).closest('form').find('textarea').val();
 
       this.model.set(this.options.attribute, value);
-
+      this.cleanup();
       app.view.render();
     }
   });
@@ -308,21 +310,31 @@ jQuery(function ($) {
       // $('#load-data').load('/post-new.php?post_type=kwps_question #post-body-content');
       $(this.el).html(app.templates.iframe());
       // $('#load-data').load('post-new.php?post_type=kwps_question #post-body-content');
-      // $('#load-data').load('post-new.php?post_type=kwps_question #wpbody-content');
-      $('#load-data').load('post-new.php?post_type=kwps_question #wp-content-wrap');
+      // $('#load-data').load('post-new.php?post_type=kwps_question #post-body-content', function (response, status, xhr) {
+      //   if (status === 'error') {
+      //     var msg =  "Sorry but there was an error: ";
+      //     console.log(msg + xhr.status + " " + xhr.statusText);
+      //   }
+
+       //  tinymce.init({
+       //    selector: "textarea"
+       // });
+      // });
+      // $('#load-data').load('post-new.php?post_type=kwps_question html');
+
     },
     updateData: function(event) {
       app.view.render();
     }
   });
 
-
-  if (typeof parentPost !== 'undefined') {
-    app.test = new KwpsModel(parentPost);
+  if (typeof kwpsPolls !== 'undefined') {
+    app.kwpsPollsCollection = new Backbone.Collection(kwpsPolls, {
+      model: KwpsModel
+    });
+    app.router = new router;
+    Backbone.history.start();
   }
-  console.log(app.test);
-  if (app.test !== undefined) {
-    app.view = new app.KwpsView({model: app.test});
-  }
+  
   
 });
