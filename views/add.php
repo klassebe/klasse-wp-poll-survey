@@ -10,12 +10,6 @@
         <button id="update"><?php _e( 'Update', 'klasse-wp-poll-survey' ) ?></button>
     </form>
 </div>
-<?php
-    echo '<script>jQuery(function($){
-                        tinymce.init({
-                            selector: "textarea"
-                        });
-                }); console.log("testje")</script>'; ?>
 </script>
 
 <script id="iframe_template" type="text/x-handlebars-template">
@@ -29,7 +23,7 @@
     <h2><?php echo get_admin_page_title() ?></h2>
 
     <div class="test-input">
-        <input type="text" name="post_title" id="post_title" value="{{post_title}}" placeholder="<?php _e('New Test') ?>"/>
+        <input type="text" name="post_title" id="post_title" value="{{title}}" placeholder="<?php _e('New Test') ?>"/>
     </div>
 
     <div id="tabs">
@@ -46,9 +40,6 @@
                 <div>
                     <table border="1px" id="matrix">
                         <tr>
-                            <td>
-
-                            </td>
                             <th class="no-delete">&nbsp;</th>
                             {{#each versions}}
                             <td>
@@ -71,7 +62,7 @@
                             {{#each versions}}
                             <td id="_kwps_intro_{{ID}}">
                                 <div>{{kwpsIntro.post_content}}</div>
-                                <div class="actions" style="display: none"><span class="edit">edit</span> | <span class="preview">preview</span></div>
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a> | <span class="preview">preview</span></div>
                             </td>
                             {{/each}}
                         </tr>
@@ -80,24 +71,19 @@
                         </tr>
                         {{#each questions}}
                         <tr>
+
                             <td class="delete">
-                                <span class="toggle-details">Toggle</span>
+                                <span class="toggle-details" data-questionRow ="{{@index}}">Toggle</span>
                                 <span class="del">Delete</span>
                                 <div class="move">
                                     <span class="up"></span>
                                     <span class="down"></span>
                                 </div>
                             </td>
+                            {{#each this}}
                             <td id="_kwps_question">
                                 <div>
-                                    {{_kwps_question}}
-                                </div>
-                                <div class="actions" style="display: none" data-kwps-attribute="_kwps_question"><span class="edit">edit</span> | <span class="preview">preview</span></div>
-                            </td>
-                            {{#each ../versions}}
-                            <td id="_kwps_question_{{ID}}">
-                                <div>
-                                    {{_kwps_question}}
+                                    {{post_content}}
                                 </div>
                                 <div class="actions" style="display: none" data-kwps-attribute="_kwps_question"><span class="edit">edit</span> | <span class="preview">preview</span></div>
                             </td>
@@ -105,9 +91,9 @@
                         </tr>
                         {{#if open}}
                         <tr class="title">
-                            <th class="no-delete answers" colspan="{{getColumnCount versions}}"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <button class="add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
+                            <th class="no-delete answers" colspan="{{getColumnCount ../../versions}}"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <button class="add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
                         </tr>
-                            {{#each table}}
+                            {{#each ../../answers}}
                                 <tr>
                                     {{#each this}}
                                             <td class="answer">
