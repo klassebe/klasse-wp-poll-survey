@@ -16,14 +16,40 @@ class admin_section {
                 } elseif ( 'kwps_poll' !== $current_post->post_type ) {
                     echo 'post not of type kwps_poll';
                 } else {
-                    $post_as_array = Poll::get_as_array($current_post->ID);
+                    $main_poll_as_array = Poll::get_as_array($current_post->ID);
+                    $main_poll_questions = Question::get_all_children($current_post->ID);
+
+                    $intros = Intro::get_all_children($current_post->ID);
+                    $outros = Outro::get_all_children($current_post->ID);
+
+                    $polls = array($main_poll_as_array);
+                    $polls = array_merge($polls, $main_poll_questions, $intros, $outros);
+
+                    foreach($main_poll_questions as $question){
+                        $answer_options = Answer_Option::get_all_children($question['ID']);
+                        $polls = array_merge($polls, $answer_options);
+                    }
+
+
                     $versions = Poll::get_all_children($current_post->ID);
 
+                    foreach($versions as $version){
+                        $version_as_array = Poll::get_as_array($version['ID']);
+                        $version_questions = Question::get_all_children($version['ID']);
+
+                        $version_intros = Intro::get_all_children($current_post->ID);
+                        $version_outros = Outro::get_all_children($current_post->ID);
+
+                        $polls = array_merge($polls, array($version_as_array), $version_questions, $version_intros, $version_outros);
+
+                        foreach($version_questions as $question){
+                            $version_answer_options = Answer_Option::get_all_children($question['ID']);
+                            $polls = array_merge($polls, $version_answer_options);
+                        }
+                    }
+
                 ?>
-                    <script>var parentPost=<?php echo json_encode($post_as_array); ?></script>
-                    <script>var versions=<?php echo json_encode($versions); ?></script>
-                    <script>var answerOptions=[]</script>
-<!--                    <script>var answerOptions=--><?php //echo json_encode($answer_options); ?><!--</script>-->
+                    <script>var polls=<?php echo json_encode($polls); ?></script>
                 <?php
                 }
             } else {
