@@ -49,7 +49,7 @@ class admin_section {
                     }
 
                 ?>
-                    <script>var polls=<?php echo json_encode($polls); ?></script>
+                    <script>var kwpsPolls=<?php echo json_encode($polls); ?></script>
                 <?php
                 }
             } else {
