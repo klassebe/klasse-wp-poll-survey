@@ -68,15 +68,9 @@
                                     <span class="down"></span>
                                 </div>
                             </td>
-                            <td id="_kwps_intro">
-                                <div>
-                                    {{_kwps_intro}}
-                                </div>
-                                <div class="actions" style="display: none" data-kwps-attribute="_kwps_intro"><span class="edit">edit</span> | <span class="preview">preview</span></div>
-                            </td>
                             {{#each versions}}
                             <td id="_kwps_intro_{{ID}}">
-                                <div>{{_kwps_intro}}</div>
+                                <div>{{kwpsIntro.post_content}}</div>
                                 <div class="actions" style="display: none"><span class="edit">edit</span> | <span class="preview">preview</span></div>
                             </td>
                             {{/each}}
@@ -138,16 +132,10 @@
                                     <span class="down"></span>
                                 </div>
                             </td>
-                            <td id="_kwps_outro">
-                                <div>
-                                    {{_kwps_outro}}
-                                </div>
-                                <div class="actions" style="display: none" data-kwps-attribute="_kwps_outro"><span class="edit">edit</span> | <span class="preview">preview</span></div>
-                            </td>
                             {{#each versions}}
-                            <td id="_kwps_outro_{{ID}}">
+                            <td id="kwpsOutro_{{ID}}">
                                 <div>
-                                    {{_kwps_outro}}
+                                    {{kwpsOutro.post_content}}
                                 </div>
                                 <div class="actions" style="display: none">edit | <span class="preview">preview</span></div>
                             </td>

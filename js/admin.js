@@ -44,7 +44,7 @@ jQuery(function ($) {
     home : function () {
       console.log("ROUTING TO: home");
       if (app.kwpsPollsCollection !== undefined) {
-        app.view = new app.KwpsView({model: app.kwpsPollsCollection});
+        app.view = new app.KwpsView({collection: app.kwpsPollsCollection});
       } 
       app.view.initialize();
     },
@@ -148,12 +148,7 @@ jQuery(function ($) {
     initialize: function () {
       _.bindAll(this, 'cleanup');
       this.render();
-      this.listenTo(this.model, 'change', this.render);
-      this.model
-        .on('add:answers', this.render)
-        .on('change:answers', this.render)
-        .on('add:versions', this.render)
-        .on('change:versions', this.render)
+      this.listenTo(this.collection, 'change', this.render);
     },
     events: {
       'click #add-version': 'addVersion',
@@ -172,30 +167,35 @@ jQuery(function ($) {
       $(this.el).empty();
     },
     render: function () {
-      $('#post_title').val(this.model.get('post_title'));
-      var data = this.model.toJSON();
-      console.log(data);
-      data.table = this.prepareTable();
+      //$('#post_title').val(this.model.get('post_title'));
+      var data = this.prepareData();
       $(this.el).html(app.templates.version(data));
       $('#tabs').tabs();
     },
-    prepareTable: function() {
-      var tableData = new Array();
-      this.model.get('answers').each(function(answer) {
-        var row = new Array(answer.toJSON());
-        tableData.push(row);
-      });
-
-      var versions = this.model.get('versions');
-      versions.each(function(version) {
-        var index = versions.indexOf(version);
-        var answers = version.get('answers');
-        answers.each(function(answer) {
-          var indexAnswer = answers.indexOf(answer);
-          tableData[indexAnswer].push(answer.toJSON());
-        });
-      });
-      return tableData;
+    prepareData: function() {
+      var data = {};
+      console.log(data);
+      data.versions = this.collection.where({post_type: "kwps_poll"});
+      for (var i = 0; i < data.versions.length; i++) {
+        console.log(data.versions[i]);
+        data.versions[i] = data.versions[i].toJSON();
+        console.log(data.versions[i]);
+        data.versions[i].kwpsIntro = this.collection.findWhere({post_type: "kwps_intro", post_parent : data.versions[i].ID});
+        data.versions[i].kwpsIntro = data.versions[i].kwpsIntro.toJSON();
+        data.versions[i].kwpsOutro = this.collection.findWhere({post_type: "kwps_outro", post_parent : data.versions[i].ID});
+        data.versions[i].kwpsOutro = data.versions[i].kwpsOutro.toJSON();
+        data.versions[i].kwpsQuestions = this.collection.where({post_type: "kwps_question", post_parent : data.versions[i].ID});
+        for (var j = 0; j < data.versions[i].kwpsQuestions.length; j++) {
+          data.versions[i].kwpsQuestions[j] = data.versions[i].kwpsQuestions[j].toJSON();
+          data.versions[i].kwpsQuestions[j].answers = this.collection.where({post_type: "kwps_answer_option", post_parent : data.versions[i].kwpsQuestions[j].ID});
+          for (var k = 0; k < data.versions[i].kwpsQuestions[j].answers.length; k++) {
+            data.versions[i].kwpsQuestions[j].answers[k] = data.versions[i].kwpsQuestions[j].answers[k].toJSON();
+          };
+        };
+      };
+      data.questions = 
+      console.log(data);
+      return data;
     },
     addVersion: function (event) {
       var newVersion = this.model.clone();
@@ -328,8 +328,8 @@ jQuery(function ($) {
     }
   });
 
-  if (typeof kwpsPolls !== 'undefined') {
-    app.kwpsPollsCollection = new Backbone.Collection(kwpsPolls, {
+  if (typeof polls !== 'undefined') {
+    app.kwpsPollsCollection = new Backbone.Collection(polls, {
       model: KwpsModel
     });
     app.router = new router;
