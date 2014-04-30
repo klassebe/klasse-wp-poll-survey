@@ -4,14 +4,14 @@ jQuery(function ($) {
   // from: @commondream (http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/)
   
   Handlebars.registerHelper("debug", function(optionalValue) {
-    console.log("Current Context");
-    console.log("====================");
-    console.log(this);
+    // console.log("Current Context");
+    // console.log("====================");
+    // console.log(this);
 
     if (optionalValue) {
-      console.log("Value");
-      console.log("====================");
-      console.log(optionalValue);
+      // console.log("Value");
+      // console.log("====================");
+      // console.log(optionalValue);
     }
   });
 
@@ -75,14 +75,14 @@ jQuery(function ($) {
       'new/:type/:parentId' : 'new'
     },
     home : function () {
-      console.log("ROUTING TO: home");
+      // console.log("ROUTING TO: home");
       if (app.kwpsPollsCollection !== undefined) {
         app.views.index = new app.KwpsView({collection: app.kwpsPollsCollection});
       } 
       app.views.index.initialize();
     },
     edit :  function (id) {
-      console.log("ROUTING TO: edit");
+      // console.log("ROUTING TO: edit");
       // controleren of er nog een edit view in steekt en alle events unbinden
       app.views.edit = new app.KwpsViewEdit({
         action : "edit",
@@ -90,13 +90,13 @@ jQuery(function ($) {
       });
     },
     editQuestion : function (id) {
-      console.log("ROUTING TO: editQuestion");
+      // console.log("ROUTING TO: editQuestion");
       app.views.edit = new app.KwpsViewQuestion({
         model : app.kwpsPollsCollection.get(id)
       })
     },
     new : function (type, parentId) {
-      console.log("ROUTING TO: new");
+      // console.log("ROUTING TO: new");
       app.views.edit = new app.KwpsViewEdit({
         type:type, 
         id : id,
@@ -121,7 +121,6 @@ jQuery(function ($) {
     sync: function(method, model, options) {
       options = options || {};
       options.url = app.url + model.action[method.toLowerCase()] + (model.attributes.post_type).substring(4);
-      console.log(options.url);
 
       return Backbone.sync.apply(this, arguments);
     },
@@ -174,7 +173,7 @@ jQuery(function ($) {
     },
     prepareData: function() {
       var data = {};
-      console.log(data);
+      // console.log(data);
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');
       data.versions = this.collection.where({post_type: "kwps_poll"});
@@ -207,7 +206,7 @@ jQuery(function ($) {
           
           for (var i = 0; i < question.length; i++) {
             var answers = that.collection.where({post_type: "kwps_answer_option", post_parent : question[i].ID});
-            console.log(answers);
+            // console.log(answers);
             _.each(answers, function (answer, index, list) {
               answers[index] = answer.toJSON();
             });
@@ -220,7 +219,7 @@ jQuery(function ($) {
       data.answers = _.groupBy(data.answers, "post_parent");
       //TODO Group answers by _kwps_sort_order
       data.questions = questions;
-      console.log(data);
+      // console.log(data);
       return data;
     },
     addVersion: function (event) {
@@ -273,7 +272,7 @@ jQuery(function ($) {
       this.render();
     },
     preview: function(event) {
-      console.log(event);
+      // console.log(event);
     },
     edit: function(event) {
 
@@ -344,6 +343,7 @@ jQuery(function ($) {
       'click button#update': 'updateData'
     },
     render: function() {
+      console.log(this.model);
       var answers = app.kwpsPollsCollection.where({post_type : "kwps_answer_option", post_parent : this.model.id});
       // console.log(answers);
       answers = _.each(answers, function (answer){
