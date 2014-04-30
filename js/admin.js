@@ -95,36 +95,37 @@ jQuery(function ($) {
       '' : 'home',
       'edit/:id' : 'edit',
       'edit/question/:id' : 'editQuestion',
-      'new/:type/:parentId' : 'new'
+      'new/:type/:parentId' : 'new',
+      'new': 'newKwpsTest'
     },
     home : function () {
       // console.log("ROUTING TO: home")
       if (app.kwpsPollsCollection !== undefined) {
         app.views.index = new app.KwpsView({collection: app.kwpsPollsCollection});
+        app.views.index.initialize();
       } 
-      app.views.index.initialize();
     },
     edit :  function (id) {
       // console.log("ROUTING TO: edit");
       // controleren of er nog een edit view in steekt en alle events unbinden
-      app.views.edit = new app.KwpsViewEdit({
-        action : "edit",
-        model : app.kwpsPollsCollection.get(id)
-      });
+      if (app.kwpsPollsCollection !== undefined) {
+        app.views.edit = new app.KwpsViewEdit({
+          model : app.kwpsPollsCollection.get(id)
+        });
+      }
     },
     editQuestion : function (id) {
       // console.log("ROUTING TO: editQuestion");
-      app.views.edit = new app.KwpsViewQuestion({
-        model : app.kwpsPollsCollection.get(id)
-      })
+      if (app.kwpsPollsCollection !== undefined) {
+        app.views.edit = new app.KwpsViewQuestion({
+          model : app.kwpsPollsCollection.get(id)
+        })
+      }
     },
-    new : function (type, parentId) {
-      // console.log("ROUTING TO: new");
-      app.views.edit = new app.KwpsViewEdit({
-        type:type, 
-        id : id,
-        action : "new"
-      });
+    newKwpsTest : function () {
+      // toon keuze options tussen verschillende testmodi
+      // Nu vooral één knop met de keuze poll en invulveld
+      // indien opties worden de opties getoond en kan men test aanmaken
     }
   });
 
@@ -391,13 +392,12 @@ jQuery(function ($) {
     }
   });
 
-  if (typeof kwpsPolls !== 'undefined') {
-    app.kwpsPollsCollection = new Backbone.Collection(kwpsPolls, {
+  if (typeof kwpsTests !== 'undefined') {
+    app.kwpsPollsCollection = new Backbone.Collection(kwpsTests, {
       model: KwpsModel
     });
-    app.router = new router;
-    Backbone.history.start();
   }
-  
+  app.router = new router;
+  Backbone.history.start();
   
 });

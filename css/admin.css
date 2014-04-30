@@ -102,6 +102,9 @@
 #kwps_test tr.title .row-title .button{
     margin: -5px 5px -5px 0;
 }
+#kwps_test .button .dashicons{
+    vertical-align: middle;
+}
 #kwps_test td, #kwps_test th {
     padding: 10px;
     height: 40px;
@@ -125,8 +128,9 @@
     border-bottom: 1px solid #e9e9e9;
 }
 #kwps_test th.answers {
-    border-left: 10px solid #e9e9e9;
+    border-left: 1px solid #e9e9e9;
     background-color: #e9e9e9;
+    border-top: 1px solid #d5d5d5;
 }
 #kwps_test tr td.answer:first-child {
     border-left: 20px solid #dedede;
