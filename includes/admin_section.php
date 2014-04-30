@@ -51,8 +51,8 @@ class admin_section {
                     $global_settings = array('kwps_question' => array('min' => 1, 'max' => 1));
 
                 ?>
-                    <script>var kwpsPolls=<?php echo json_encode($polls); ?></script>
-                    <script>var globalSettings=<?php echo  $global_settings?></script>
+                    <script>var tests=<?php echo json_encode($polls); ?></script>
+                    <script>var kwpsSettings=<?php echo  $global_settings?></script>
                 <?php
                 }
             } else {
