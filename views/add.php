@@ -64,7 +64,7 @@
                             {{#each versions}}
                             <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
                                 <strong>
-                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}" title="Edit “{{kwpsIntro.post_content}}”">{{kwpsIntro.post_content}}</a>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}" title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">{{subStringStripper kwpsIntro.post_content 100}}</a>
                                 </strong>
                                 <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
                             </td>
@@ -75,9 +75,12 @@
                         </tr>
                         {{#each questions}}
                         <tr>
-
-                            <td class="delete column-action">
-                                <span class="toggle-details" data-question-row ="{{@index}}">Toggle</span>
+                            <td class="delete column-action {{#if open}} extra {{/if}}">
+                                {{#if open}} 
+                                    <span data-code="f343" class="dashicons dashicons-arrow-up-alt2 toggle-details" data-question-row ="{{@index}}"></span> 
+                                {{else}} 
+                                    <span data-code="f347" class="dashicons dashicons-arrow-down-alt2 toggle-details" data-question-row ="{{@index}}"></span> 
+                                {{/if}}
                                 <span class="del">Delete</span>
                                 <div class="move">
                                     {{{sorter @index ../questions}}}
@@ -86,7 +89,7 @@
                             {{#each this}}
                             <td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
                                 <strong>
-                                    <a class="row-title" href="#edit/{{ID}}" title="Edit “{{post_content}}”">{{post_content}}</a>
+                                    <a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
                                 </strong>
                                 <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
                             </td>
@@ -100,9 +103,8 @@
                                 </th>
                         </tr>
                             {{#each ../../answers}}
-                                <tr class="{{lastItem "bottomborder" @index ../../../answers}}">
+                                <tr class="{{lastItem "bottomborder" @index ../../../answers}} answer-row">
                                     <td class="delete column-action column-answer">
-                                        <span class="toggle-details" data-questionRow ="{{@index}}">Toggle</span>
                                         <span class="del">Delete</span>
                                         <div class="move">
                                             {{{sorter @index}}}

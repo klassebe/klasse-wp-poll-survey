@@ -24,14 +24,26 @@ jQuery(function ($) {
     this.index = Number(value + 1);
   });
 
+  Handlebars.registerHelper('subStringStripper', function (html, length){
+    var tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    var result = tmp.textContent || tmp.innerText || "";
+    return  result.substring(0, length) + " ...";
+  })
+
   Handlebars.registerHelper('sorter', function (index, obj) {
+    var size = 0,
+        key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
     var result;
     if(index == 0) {
       result = '<span class="up passive"></span>'
     } else {
       result = '<span class="up"></span>'
     }
-    if (index == obj.length) {
+    if (index == size-1) {
       result = result + '<span class="down passive"></span>'
     } else {
       result = result + '<span class="down"></span>'
@@ -66,7 +78,7 @@ jQuery(function ($) {
   var app = {};
   app.url = 'admin-ajax.php?action=';
   //TODO: set back to empty after developing
-  app.openAnswer = 0;
+  app.openAnswer;
   app.views = {}
 
   if(typeof $('#version_template').html() !== 'undefined') {
@@ -228,7 +240,7 @@ jQuery(function ($) {
       data.answers = _.flatten(data.answers);
       data.answers = _.groupBy(data.answers, "_kwps_sort_order");
       data.questions = questions;
-      // console.log(data);
+      console.log(data);
       return data;
     },
     addVersion: function (event) {

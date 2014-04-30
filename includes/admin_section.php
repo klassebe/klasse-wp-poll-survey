@@ -37,8 +37,8 @@ class admin_section {
                         $version_as_array = Poll::get_as_array($version['ID']);
                         $version_questions = Question::get_all_children($version['ID']);
 
-                        $version_intros = Intro::get_all_children($current_post->ID);
-                        $version_outros = Outro::get_all_children($current_post->ID);
+                        $version_intros = Intro::get_all_children($version['ID']);
+                        $version_outros = Outro::get_all_children($version['ID']);
 
                         $polls = array_merge($polls, array($version_as_array), $version_questions, $version_intros, $version_outros);
 
