@@ -25,13 +25,18 @@ jQuery(function ($) {
   });
 
   Handlebars.registerHelper('sorter', function (index, obj) {
+    var size = 0,
+        key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
     var result;
     if(index == 0) {
       result = '<span class="up passive"></span>'
     } else {
       result = '<span class="up"></span>'
     }
-    if (index == obj.length) {
+    if (index == size-1) {
       result = result + '<span class="down passive"></span>'
     } else {
       result = result + '<span class="down"></span>'
