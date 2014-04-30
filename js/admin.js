@@ -86,7 +86,7 @@ jQuery(function ($) {
       'new/:type/:parentId' : 'new'
     },
     home : function () {
-      // console.log("ROUTING TO: home");
+      // console.log("ROUTING TO: home")
       if (app.kwpsPollsCollection !== undefined) {
         app.views.index = new app.KwpsView({collection: app.kwpsPollsCollection});
       } 

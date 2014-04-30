@@ -131,6 +131,7 @@ class Poll extends Kwps_Post_Type{
             $outro = $outros[0];
             $dump .= '<div class="kwps-outro">' . Outro::get_html($outro['ID']) . '<div class="kwps-outro-inside"></div></div>';
             $dump .= '</div>'; // kwps full wrapper
+            $dump .= '<input type=hidden id=adminUrl value='. admin_url() .'>';
         } else {
             $dump .= "Poll kan niet getoond worden.";
         }

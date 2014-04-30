@@ -21,7 +21,7 @@ jQuery(function($) {
 			elem.find('input:radio').click( function () {
 
 				var selected = $(this).val();
-			    var url = "wp-admin/admin-ajax.php?action=kwps_save_entry";
+			    var url = $('#adminUrl').val() + "admin-ajax.php?action=kwps_save_entry";
 
 			    var entry = {
 				  		"post_parent": selected,
@@ -30,7 +30,7 @@ jQuery(function($) {
 
 				  	$.ajax({
 						    type: "POST",
-						    url: "wp-admin/admin-ajax.php?action=kwps_save_entry",
+						    url: url,
 						    data: JSON.stringify(entry),
 						    contentType: "application/json; charset=utf-8",
 						    dataType: "json",
