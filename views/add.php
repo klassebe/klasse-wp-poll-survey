@@ -12,10 +12,15 @@
 </div>
 </script>
 
-<script id="iframe_template" type="text/x-handlebars-template">
-    <iframe src="<?php echo admin_url('/post-new.php?post_type=kwps_question'); ?>" width="100%" height="600px" scrolling="no"></iframe>
-    <div id="load-data" width="100%" height="400px"></div>
-    <textarea></textarea>
+<script id="question_template" type="text/x-handlebars-template">
+    <div>
+        {{question}}
+    </div>
+    <div>
+        {{#each answers}}
+            <div>{{post_content}}</div>
+        {{/each}}
+    </div>
 </script>
 
 <script id="version_template" type="text/x-handlebars-template">
@@ -34,50 +39,48 @@
         </ul>
         <div id="tabs-add">
             <div>
-                <div id="buttons">
-                    <button id="add-version"><?php _e('Add Version', 'klasse-wp-poll-survey') ?></button>
-                </div>
                 <div>
-                    <table border="1px" id="matrix">
+                    <table id="matrix" class="wp-list-table widefat fixed">
                         <tr>
-                            <th class="no-delete">&nbsp;</th>
+                            <th class="no-delete column-action">&nbsp;</th>
                             {{#each versions}}
-                            <td>
-                                <div>{{post_title}}</div>
-                                <div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a class="delete-version">delete</a></div>
-                            </td>
+                                <td class=" column-title">
+                                    {{#unless main}}
+                                        <div>{{post_title}}</div>
+                                        <div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a class="delete-version">delete</a></div>
+                                    {{else}}
+                                        <div id="buttons">
+                                            <button id="add-version" class="button"><?php _e('Add Version', 'klasse-wp-poll-survey') ?></button>
+                                        </div>
+                                    {{/unless}}
+                                </td>
                             {{/each}}
                         </tr>
                         <tr class="title">
-                            <th class="no-delete" colspan="{{getColumnCount versions}}"><?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?></th>
+                            <th class="no-delete row-title" colspan="{{getColumnCount versions}}"><?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?></th>
                         </tr>
-                        <tr>
-                            <td class="delete">
-                                <span class="del">Delete</span>
-                                <div class="move">
-                                    <span class="up"></span>
-                                    <span class="down"></span>
-                                </div>
-                            </td>
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
+                            <td class="column-action"></td>
                             {{#each versions}}
-                            <td id="_kwps_intro_{{ID}}">
-                                <div>{{kwpsIntro.post_content}}</div>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}" title="Edit “{{kwpsIntro.post_content}}”">{{kwpsIntro.post_content}}</a>
+                                </strong>
                                 <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a> | <span class="preview">preview</span></div>
                             </td>
                             {{/each}}
                         </tr>
                         <tr class="title">
-                            <th class="no-delete"  colspan="{{getColumnCount versions}}"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?> <button class="button add" id="add-question"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
+                            <th class="no-delete row-title"  colspan="{{getColumnCount versions}}"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?> <button class="button add" id="add-question"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
                         </tr>
                         {{#each questions}}
                         <tr>
 
-                            <td class="delete">
+                            <td class="delete column-action">
                                 <span class="toggle-details" data-questionRow ="{{@index}}">Toggle</span>
                                 <span class="del">Delete</span>
                                 <div class="move">
-                                    <span class="up"></span>
-                                    <span class="down"></span>
+                                    {{{sorter @index}}}
                                 </div>
                             </td>
                             {{#each this}}
@@ -85,13 +88,13 @@
                                 <div>
                                     {{post_content}}
                                 </div>
-                                <div class="actions" style="display: none" data-kwps-attribute="_kwps_question"><span class="edit">edit</span> | <span class="preview">preview</span></div>
+                                <div class="actions" style="display: none" data-kwps-attribute="_kwps_question"><a href="#edit/question/{{ID}}">edit</a> | <span class="preview">preview</span></div>
                             </td>
                             {{/each}}
                         </tr>
                         {{#if open}}
                         <tr class="title">
-                            <th class="no-delete answers" colspan="{{getColumnCount ../../versions}}"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <button class="add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
+                            <th class="no-delete answers" colspan="{{getColumnCount ../../versions}}"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <button class="button add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
                         </tr>
                             {{#each ../../answers}}
                                 <tr>
@@ -111,12 +114,8 @@
                             <th class="no-delete" colspan="{{getColumnCount versions}}"><?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?></th>
                         </tr>
                         <tr>
-                            <td class="delete">
+                            <td class="delete column-action">
                                 <span class="del">Delete</span>
-                                <div class="move">
-                                    <span class="up"></span>
-                                    <span class="down"></span>
-                                </div>
                             </td>
                             {{#each versions}}
                             <td id="kwpsOutro_{{ID}}">
