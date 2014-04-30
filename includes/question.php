@@ -34,10 +34,6 @@ class Question extends Kwps_Post_Type{
         'publicly_queryable' => false,
     );
 
-    public static function get_meta_data($post_id){
-        return array('test question');
-    }
-
     public static function get_html($question_id){
         $question = static::get_as_array($question_id);
 

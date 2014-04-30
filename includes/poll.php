@@ -40,8 +40,7 @@ class Poll extends Kwps_Post_Type{
 
     public static function get_meta_data($post_id){
         $meta_as_array = array();
-        $meta_as_array['_kwps_intro'] = get_post_meta($post_id, '_kwps_intro', true);
-        $meta_as_array['_kwps_outro'] = get_post_meta($post_id, '_kwps_outro', true);
+        $meta_as_array['_kwps_sort_order'] = get_post_meta($post_id, '_kwps_sort_order', true);
         $meta_as_array['_kwps_view_count'] = get_post_meta($post_id, '_kwps_view_count', true);
         return $meta_as_array;
     }

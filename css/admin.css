@@ -112,7 +112,7 @@
     border-left: 10px solid #f9f9f9;
 }
 #kwps_test th.answers {
-    border-left: 20px solid #dedede;
+    border-left: 20px solid #f9f9f9;
 }
 #kwps_test tr td.answer:first-child {
     border-left: 20px solid #dedede;

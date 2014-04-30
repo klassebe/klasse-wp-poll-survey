@@ -25,14 +25,21 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
     public static function get_as_array($post_id){
         $post_as_array = get_post($post_id,ARRAY_A);
 
-        // if(null == $post_as_array){
-        //     $post_as_array = false;
-        // } else {
-        //     $post_as_array = array_merge($post_as_array, static::get_meta_data($post_id));
-        // }
+         if(null == $post_as_array){
+             $post_as_array = false;
+         } else {
+             $post_as_array = array_merge($post_as_array, static::get_meta_data($post_id));
+         }
 
 
         return $post_as_array;
+    }
+
+    public static function get_meta_data($post_id)
+    {
+        $meta_as_array = array();
+        $meta_as_array['_kwps_sort_order'] = get_post_meta($post_id, '_kwps_sort_order', true);
+        return $meta_as_array;
     }
 
 
