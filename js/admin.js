@@ -28,7 +28,7 @@ jQuery(function ($) {
     var tmp = document.createElement("DIV");
     tmp.innerHTML = html;
     var result = tmp.textContent || tmp.innerText || "";
-    return  result.substring(0, length);
+    return  result.substring(0, length) + " ...";
   })
 
   Handlebars.registerHelper('sorter', function (index, obj) {
@@ -78,7 +78,7 @@ jQuery(function ($) {
   var app = {};
   app.url = 'admin-ajax.php?action=';
   //TODO: set back to empty after developing
-  app.openAnswer = 0;
+  app.openAnswer;
   app.views = {}
 
   if(typeof $('#version_template').html() !== 'undefined') {

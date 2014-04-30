@@ -89,7 +89,7 @@
                             {{#each this}}
                             <td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
                                 <strong>
-                                    <a class="row-title" href="#edit/{{ID}}" title="Edit “{{post_content}}”">{{post_content}}</a>
+                                    <a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
                                 </strong>
                                 <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
                             </td>
