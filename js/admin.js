@@ -317,15 +317,12 @@ jQuery(function ($) {
       event.preventDefault();
       tinymce.triggerSave();
       var value = $(event.target).closest('form').find('textarea').val();
-      console.log('value: ' + value);
       this.model.save({"post_content": value});
 
       this.cleanup();
       window.location = '#';
     }
   });
-
-
 
 
   app.KwpsViewQuestion = Backbone.View.extend({
