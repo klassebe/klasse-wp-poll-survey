@@ -201,7 +201,6 @@ jQuery(function ($) {
       //TODO : questions = _.groupBy(questions, "_kwps_sort_order");
       questions = _.groupBy(questions, "post_parent");
 
-      
       var that = this;
       //TODO each ombouwen naar for (gaat nu nog niet wegens indexen liggen verschillend)
       _.each(questions, function(question, index, list) {
@@ -210,16 +209,20 @@ jQuery(function ($) {
           question.open = true;
           //add all opened answers to data.answers
           data.answers = [];
+          
           for (var i = 0; i < question.length; i++) {
             var answers = that.collection.where({post_type: "kwps_answer_option", post_parent : question[i].ID});
+            console.log(answers);
             _.each(answers, function (answer, index, list) {
               answers[index] = answer.toJSON();
             });
+
             data.answers.push(answers);
           };
         }
       });
       data.answers = _.flatten(data.answers);
+      data.answers = _.groupBy(data.answers, "post_parent");
       //TODO Group answers by _kwps_sort_order
       data.questions = questions;
       console.log(data);

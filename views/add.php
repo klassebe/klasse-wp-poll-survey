@@ -96,7 +96,7 @@
                         <tr class="title">
                             <th class="no-delete answers" colspan="{{getColumnCount ../../versions}}"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <button class="button add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
                         </tr>
-                            {{#each ../../answers}}
+                            {{#each ../answers}}
                                 <tr>
                                     {{#each this}}
                                             <td class="answer">
