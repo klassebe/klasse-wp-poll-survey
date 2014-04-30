@@ -78,7 +78,7 @@ jQuery(function ($) {
   var app = {};
   app.url = 'admin-ajax.php?action=';
   //TODO: set back to empty after developing
-  app.openAnswer;
+  app.openAnswer = 0;
   app.views = {}
 
   if(typeof $('#version_template').html() !== 'undefined') {
