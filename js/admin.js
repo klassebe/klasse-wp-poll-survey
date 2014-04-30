@@ -24,6 +24,13 @@ jQuery(function ($) {
     this.index = Number(value + 1);
   });
 
+  Handlebars.registerHelper('subStringStripper', function (html, length){
+    var tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    var result = tmp.textContent || tmp.innerText || "";
+    return  result.substring(0, length);
+  })
+
   Handlebars.registerHelper('sorter', function (index, obj) {
     var size = 0,
         key;
@@ -233,7 +240,7 @@ jQuery(function ($) {
       data.answers = _.flatten(data.answers);
       data.answers = _.groupBy(data.answers, "_kwps_sort_order");
       data.questions = questions;
-      // console.log(data);
+      console.log(data);
       return data;
     },
     addVersion: function (event) {

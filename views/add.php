@@ -64,7 +64,7 @@
                             {{#each versions}}
                             <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
                                 <strong>
-                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}" title="Edit “{{kwpsIntro.post_content}}”">{{kwpsIntro.post_content}}</a>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}" title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">{{subStringStripper kwpsIntro.post_content 100}}</a>
                                 </strong>
                                 <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
                             </td>
