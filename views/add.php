@@ -66,7 +66,7 @@
                                 <strong>
                                     <a class="row-title" href="#edit/{{kwpsIntro.ID}}" title="Edit “{{kwpsIntro.post_content}}”">{{kwpsIntro.post_content}}</a>
                                 </strong>
-                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a> | <span class="preview">preview</span></div>
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
                             </td>
                             {{/each}}
                         </tr>
@@ -77,27 +77,37 @@
                         <tr>
 
                             <td class="delete column-action">
-                                <span class="toggle-details" data-questionRow ="{{@index}}">Toggle</span>
+                                <span class="toggle-details" data-question-row ="{{@index}}">Toggle</span>
                                 <span class="del">Delete</span>
                                 <div class="move">
-                                    {{{sorter @index}}}
+                                    {{{sorter @index ../questions}}}
                                 </div>
                             </td>
                             {{#each this}}
-                            <td id="_kwps_question">
-                                <div>
-                                    {{post_content}}
-                                </div>
-                                <div class="actions" style="display: none" data-kwps-attribute="_kwps_question"><a href="#edit/question/{{ID}}">edit</a> | <span class="preview">preview</span></div>
+                            <td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{ID}}" title="Edit “{{post_content}}”">{{post_content}}</a>
+                                </strong>
+                                <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
                             </td>
                             {{/each}}
                         </tr>
                         {{#if open}}
                         <tr class="title">
-                            <th class="no-delete answers" colspan="{{getColumnCount ../../versions}}"><?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> <button class="button add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
+                            <th class="no-delete answers row-title" colspan="{{getColumnCount ../../versions}}">
+                                <?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> 
+                                <button class="button add-answer"><?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button>
+                                </th>
                         </tr>
-                            {{#each ../answers}}
-                                <tr>
+                            {{#each ../../answers}}
+                                <tr class="{{lastItem "bottomborder" @index ../../../answers}}">
+                                    <td class="delete column-action column-answer">
+                                        <span class="toggle-details" data-questionRow ="{{@index}}">Toggle</span>
+                                        <span class="del">Delete</span>
+                                        <div class="move">
+                                            {{{sorter @index}}}
+                                        </div>
+                                    </td>
                                     {{#each this}}
                                             <td class="answer">
                                                 <div>
