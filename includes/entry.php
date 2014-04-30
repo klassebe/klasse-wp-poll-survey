@@ -34,10 +34,6 @@ class Entry extends Kwps_Post_Type{
         'publicly_queryable' => false,
     );
 
-    public static function get_meta_data($post_id){
-        return array('test entry');
-    }
-
     public static function get_html($entry_id){
         $entry = static::get_as_array($entry_id);
 
@@ -80,6 +76,7 @@ class Entry extends Kwps_Post_Type{
         $answer_options = get_children($args, ARRAY_A);
 
         $results = array('entries' => array());
+        $totalEntries = 0;
 
         foreach ($answer_options as $answer_option) {
             $args = array(

@@ -35,10 +35,6 @@ class Intro extends Kwps_Post_Type{
         'publicly_queryable' => false,
     );
 
-    public static function get_meta_data($post_id){
-        return get_post_meta($post_id);
-    }
-
     public static function get_sort_order($intro_id){
         return get_post_meta($intro_id, '_kwps_sort_order', true);
     }
