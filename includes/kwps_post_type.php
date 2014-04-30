@@ -114,7 +114,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
         if(static::validate_for_delete()){
             wp_delete_post($request_data['ID']);
         }
-        static::delete_meta();
+        static::delete_meta($request_data['ID']);
     }
 
     public static final function delete_meta($post_id = 0){
