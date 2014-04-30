@@ -24,20 +24,29 @@ jQuery(function ($) {
     this.index = Number(value + 1);
   });
 
-  Handlebars.registerHelper('sorter', function (index) {
+  Handlebars.registerHelper('sorter', function (index, obj) {
     var result;
     if(index == 0) {
       result = '<span class="up passive"></span>'
     } else {
       result = '<span class="up"></span>'
     }
-    if (index == this.length-1) {
+    if (index == obj.length) {
       result = result + '<span class="down passive"></span>'
     } else {
       result = result + '<span class="down"></span>'
     }
     return result;
-  })
+  });
+
+  Handlebars.registerHelper('lastItem', function ( className ,index, obj){
+    var size = 0,
+        key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return (index == size-1)? className: "";
+  });
 
   function GetURLParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
@@ -52,10 +61,12 @@ jQuery(function ($) {
     }
   };
 
+
+
   var app = {};
   app.url = 'admin-ajax.php?action=';
   //TODO: set back to empty after developing
-  app.openAnswer = 5;
+  app.openAnswer = 0;
   app.views = {}
 
   if(typeof $('#version_template').html() !== 'undefined') {
@@ -179,12 +190,10 @@ jQuery(function ($) {
     },
     prepareData: function() {
       var data = {};
-      console.log(data);
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');
       data.versions = this.collection.where({post_type: "kwps_poll"});
       for (var i = 0; i < data.versions.length; i++) {
-
         data.versions[i] = data.versions[i].toJSON();
         data.versions[i].kwpsIntro = this.collection.findWhere({post_type: "kwps_intro", post_parent : data.versions[i].ID});
         data.versions[i].kwpsIntro = (data.versions[i].kwpsIntro !== undefined)? data.versions[i].kwpsIntro.toJSON(): {};
@@ -198,20 +207,19 @@ jQuery(function ($) {
       _.each(questions, function (question, index, list) {
         questions[index] = question.toJSON();
       });
-      //TODO : questions = _.groupBy(questions, "_kwps_sort_order");
-      questions = _.groupBy(questions, "post_parent");
+      questions = _.groupBy(questions, "_kwps_sort_order");
 
-      var that = this;
-      //TODO each ombouwen naar for (gaat nu nog niet wegens indexen liggen verschillend)
-      _.each(questions, function(question, index, list) {
-        if (index == app.openAnswer) {
-          //add open true to opened question
-          question.open = true;
-          //add all opened answers to data.answers
+      console.log(questions);
+      for (var i in questions) {
+        // if sortorder is equal to openAnswer show all answers
+        if (i == app.openAnswer) {
+                  console.log(i);
+          questions[i].open = true;
           data.answers = [];
-          
-          for (var i = 0; i < question.length; i++) {
-            var answers = that.collection.where({post_type: "kwps_answer_option", post_parent : question[i].ID});
+          console.log(questions[i]);
+          for (var j = 0; j < questions[i].length; j++) {
+            console.log(questions[i][j].ID);
+            var answers = this.collection.where({post_type: "kwps_answer_option", post_parent : questions[i][j].ID});
             console.log(answers);
             _.each(answers, function (answer, index, list) {
               answers[index] = answer.toJSON();
@@ -220,10 +228,9 @@ jQuery(function ($) {
             data.answers.push(answers);
           };
         }
-      });
+      };
       data.answers = _.flatten(data.answers);
-      data.answers = _.groupBy(data.answers, "post_parent");
-      //TODO Group answers by _kwps_sort_order
+      data.answers = _.groupBy(data.answers, "_kwps_sort_order");
       data.questions = questions;
       console.log(data);
       return data;
@@ -273,7 +280,8 @@ jQuery(function ($) {
       $(event.target).find(".actions").hide();
     },
     toggleDetails: function(event) {
-      toggleOnRow = $(event.currentTarget).data('questionRow');
+      toggleOnRow = $(event.currentTarget).data('question-row');
+      console.log(toggleOnRow);
       app.openAnswer = (app.openAnswer !== toggleOnRow || app.openAnswer === "")? toggleOnRow:"";
       this.render();
     },

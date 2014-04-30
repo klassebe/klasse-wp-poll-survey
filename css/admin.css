@@ -111,8 +111,16 @@
     width: 15%;
     border-left: 10px solid #f9f9f9;
 }
+#kwps_test .fixed .column-answer{
+    width: 15%;
+    border-left: 30px solid #e9e9e9;
+}
+#kwps_test .fixed .bottomborder td{
+    border-bottom: 2px solid #e9e9e9;
+}
 #kwps_test th.answers {
-    border-left: 20px solid #f9f9f9;
+    border-left: 30px solid #e9e9e9;
+    background-color: #e9e9e9;
 }
 #kwps_test tr td.answer:first-child {
     border-left: 20px solid #dedede;
