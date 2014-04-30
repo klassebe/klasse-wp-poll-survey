@@ -113,14 +113,15 @@ jQuery(function ($) {
       'delete': '/wp-admin/admin-ajax.php?action=kwps_version_delete'
     },
     action: {
-      create: 'kwps_save_poll',
-      update: 'kwps_update_poll',
-      delete: 'kwps_delete_poll'
+      create: 'kwps_save',
+      update: 'kwps_update',
+      delete: 'kwps_delete'
     },
 
     sync: function(method, model, options) {
       options = options || {};
-      options.url = app.url + model.action[method.toLowerCase()]
+      options.url = app.url + model.action[method.toLowerCase()] + (model.attributes.post_type).substring(4);
+      console.log(options.url);
 
       return Backbone.sync.apply(this, arguments);
     },
@@ -138,13 +139,7 @@ jQuery(function ($) {
       post_status: "draft",
       post_modified: "",
       post_parent: 0,
-      post_type: "kwps_poll",
-      _kwps_intro: "",
-      _kwps_outro: "",
-      open: false,
-      questions: [],
-      versions: [],
-      answers: []
+      post_type: "",
     }
   }); 
 
@@ -320,12 +315,13 @@ jQuery(function ($) {
     },
     updateData: function(event) {
       event.preventDefault();
+      tinymce.triggerSave();
       var value = $(event.target).closest('form').find('textarea').val();
-
-      this.model.save("post_content", value);
+      console.log('value: ' + value);
+      this.model.save({"post_content": value});
 
       this.cleanup();
-      app.views.index.render();
+      window.location = '#';
     }
   });
 
@@ -349,7 +345,7 @@ jQuery(function ($) {
     },
     render: function() {
       var answers = app.kwpsPollsCollection.where({post_type : "kwps_answer_option", post_parent : this.model.id});
-      console.log(answers);
+      // console.log(answers);
       answers = _.each(answers, function (answer){
           return answer.toJSON();
       })
@@ -357,7 +353,7 @@ jQuery(function ($) {
         question: this.model.toJSON(),
         answers: answers
       };
-      console.log(data);
+      // console.log(data);
       $(this.el).html(app.templates.question(data));
       tinymce.remove();
     },
@@ -368,7 +364,8 @@ jQuery(function ($) {
       this.model.save("post_content", value);
 
       this.cleanup();
-      app.views.index.render();
+      // app.views.index.render();
+      window.location = '#';
     }
   });
 
