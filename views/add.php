@@ -59,7 +59,7 @@ opties
                                     <div class="column-tab">
                                         {{#unless main}}
                                             <div>{{post_title}}</div>
-                                            <div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a class="delete-version">delete</a></div>
+                                            <div class="actions kwps-id" style="display: none" data-kwps-id="{{ID}}">edit | <a class="delete-version">delete</a></div>
                                         {{else}}
                                             <div>{{../../title}}</div>
                                         {{/unless}}
@@ -68,7 +68,7 @@ opties
                             {{/each}}
                                 <td class="column-title" style="width:85px;">
                                     <div class="column-tab">
-                                        <button id="add-version" class="button">
+                                        <button class="add button" >
                                             <span data-code="f132" class="dashicons dashicons-plus"></span>
                                         </button>
                                     </div>
@@ -78,7 +78,7 @@ opties
                             <th class="no-delete row-title" colspan="{{getColumnCount versions}}">
                                 <?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?>
                                 {{#unless intro}}
-                                    <button class="button add" id="add-intro">
+                                    <button class="button add" data-post-type="kwps_intro">
                                         <span data-code="f132" class="dashicons dashicons-plus"></span> 
                                     </button>
                                 {{/unless}}
@@ -109,9 +109,9 @@ opties
                             <tr>
                                 <td class="delete column-action {{#if open}} extra {{/if}}">
                                     {{#if open}} 
-                                        <span data-code="f142" class="dashicons dashicons-arrow-up toggle-details" data-question-row ="{{@index}}"></span> 
-                                    {{else}} 
                                         <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-question-row ="{{@index}}"></span> 
+                                    {{else}} 
+                                        <span data-code="f139" class="dashicons dashicons-arrow-right toggle-details" data-question-row ="{{@index}}"></span> 
                                     {{/if}}
                                     <span class="del"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
                                     <div class="move">

@@ -162,3 +162,6 @@
     width: 100%;
     max-width: 100%;
 }
+.dashicons-trash:before {
+    content: "\f182";
+}

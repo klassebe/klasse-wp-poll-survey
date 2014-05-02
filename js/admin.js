@@ -203,7 +203,6 @@ jQuery(function ($) {
     },
     createKwpsTest : function (e) {
       e.preventDefault();
-      console.log('TEST KWPS :-)')
       var post_type = $(e.currentTarget).data('type');
       var that = this;
       var model = new KwpsModel({
@@ -213,7 +212,6 @@ jQuery(function ($) {
       });
       model.save({},{
         success: function (model, response, options) {
-          console.log(model);
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < kwpsConfig[post_type].onNew.questions; i++) {
             that.createQuestion(model.get('ID'), i, post_type);
@@ -235,7 +233,6 @@ jQuery(function ($) {
       });
       model.save({},{
         success: function (model, response, options) {
-          console.log(model);
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < kwpsConfig[post_type].onNew.answers; i++) {
             that.createAnswer(model.get('ID'), i, post_type);
@@ -276,6 +273,7 @@ jQuery(function ($) {
       'click .toggle-details': 'toggleDetails',
       'click .add-answer': 'addAnswer',
       'click #add-question': 'addQuestion',
+      'click button.add': 'createNew',
       'click .delete-version': 'deleteVersion',
       'click .preview': 'preview',
       'click .edit': 'edit',
@@ -318,19 +316,15 @@ jQuery(function ($) {
       });
       questions = _.groupBy(questions, "_kwps_sort_order");
 
-      console.log(questions);
       for (var i in questions) {
         // if sortorder is equal to openAnswer show all answers
         if (i == app.openAnswer) {
-                  console.log(i);
           questions[i].open = true;
           data.answers = [];
 
-          console.log(questions[i]);
           for (var j = 0; j < questions[i].length; j++) {
             console.log(questions[i][j].ID);
             var answers = this.collection.where({post_type: "kwps_answer_option", post_parent : questions[i][j].ID});
-            console.log(answers);
             _.each(answers, function (answer, index, list) {
               answers[index] = answer.toJSON();
             });
@@ -342,7 +336,6 @@ jQuery(function ($) {
       data.answers = _.flatten(data.answers);
       data.answers = _.groupBy(data.answers, "_kwps_sort_order");
       data.questions = questions;
-      console.log(data);
       return data;
     },
     addVersion: function (event) {
@@ -360,6 +353,45 @@ jQuery(function ($) {
       var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
       var toDelete = this.model.get('versions').get(kwpdId);
       toDelete.destroy();
+    },
+    createNew: function (e) {
+      e.preventDefault();
+      var postType = $(e.currentTarget).data('post-type');
+      var kwpsId = this.collection.where({post_type: 'kwps_poll'});
+      // get the id of the post parent(main version)
+      console.log('event model');
+      console.log(e);
+      console.log(kwpsId.id);
+      switch (postType) {
+        case 'kwps_intro':
+          this.createIntro(kwpsId.id);
+          break;
+        case 'kwps_outro':
+          this.createOutro();
+          break;
+        default:
+          console.log('no intro or outro was given');
+      }
+    },
+    createIntro: function (post_parent, edit) {
+      var that = this;
+      var model = new KwpsModel({
+        post_type: "kwps_intro",
+        post_status: "publish",
+        post_content : "intro ",
+        post_parent : post_parent,
+        _kwps_sort_order : 0
+      });
+      model.save({},{
+        success: function (model, response, options) {
+          app.kwpsPollsCollection.add(model);
+          console.log(model);
+          if (edit) {
+            app.router.navigate('edit/'+ model.id, {trigger: true});
+
+          }
+        }
+      });
     },
     addAnswer: function(event) {
       var answer = new app.AnswerModel();
