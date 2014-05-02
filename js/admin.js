@@ -357,17 +357,23 @@ jQuery(function ($) {
     createNew: function (e) {
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
-      var kwpsId = this.collection.where({post_type: 'kwps_poll'});
+      console.log(this.collection);
+      var kwpsPolls = this.collection.where({post_type: 'kwps_poll'});
       // get the id of the post parent(main version)
       console.log('event model');
       console.log(e);
-      console.log(kwpsId.id);
+      console.log(kwpsPolls[0].id);
+      var kwpsPollLen = kwpsPolls.length;
       switch (postType) {
         case 'kwps_intro':
-          this.createIntro(kwpsId.id);
+          for(var i = 0; i < kwpsPollLen; i++) {
+            this.createIntro(kwpsPolls[i].id, true);
+          }
           break;
         case 'kwps_outro':
-          this.createOutro();
+          for(var i = 0; i < kwpsPollLen; i++) {
+            this.createOutro(kwpsPolls[i].id, true);
+          }
           break;
         default:
           console.log('no intro or outro was given');
@@ -386,6 +392,26 @@ jQuery(function ($) {
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
           console.log(model);
+          if (edit) {
+            app.router.navigate('edit/'+ model.id, {trigger: true});
+
+          }
+        }
+      });
+    },
+    createOutro: function (post_parent, edit) {
+      var that = this;
+      var model = new KwpsModel({
+        post_type: "kwps_outro",
+        post_status: "publish",
+        post_content : "outro ",
+        post_parent : post_parent,
+        _kwps_sort_order : 0
+      });
+      model.save({},{
+        success: function (model, response, options) {
+          app.kwpsPollsCollection.add(model);
+          console.log('outro');
           if (edit) {
             app.router.navigate('edit/'+ model.id, {trigger: true});
 

@@ -59,7 +59,7 @@ opties
                                     <div class="column-tab">
                                         {{#unless main}}
                                             <div>{{post_title}}</div>
-                                            <div class="actions kwps-id" style="display: none" data-kwps-id="{{ID}}">edit | <a class="delete-version">delete</a></div>
+                                            <div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a class="delete-version">delete</a></div>
                                         {{else}}
                                             <div>{{../../title}}</div>
                                         {{/unless}}
@@ -158,15 +158,19 @@ opties
                         {{/each}}
                         <tr class="title">
                             <th class="no-delete row-title" colspan="{{getColumnCount versions}}">
-                                <?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?> 
-                                <span class="button">add</span>
+                                <?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?>
+                                {{#unless outro}}
+                                    <button class="button add" data-post-type="kwps_outro">
+                                        <span data-code="f132" class="dashicons dashicons-plus"></span> 
+                                    </button>
+                                {{/unless}}
                             </th>
                         </tr>
                         {{#if outro}}
                             <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
                                 <td class="column-action"></td>
                                 {{#each versions}}
-                                    <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                    <td id="_kwps_Outro_{{ID}}" class="post-title page-title column-title">
                                         <strong>
                                             <a class="row-title" href="#edit/{{kwpsOutro.ID}}" title="Edit “{{subStringStripper kwpsOutro.post_content 100}}”">{{subStringStripper kwpsOutro.post_content 100}}</a>
                                         </strong>
