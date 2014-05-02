@@ -1,8 +1,17 @@
+var kwpsConfig = {
+  kwps_poll : {
+    onNew : {
+      questions : 1,
+      answers : 2
+    }
+  }
+} 
+
 jQuery(function ($) {
+
   // debug helper
   // usage: {{debug}} or {{debug someValue}}
   // from: @commondream (http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/)
-  
   Handlebars.registerHelper("debug", function(optionalValue) {
     // console.log("Current Context");
     // console.log("====================");
@@ -17,7 +26,7 @@ jQuery(function ($) {
 
   Handlebars.registerHelper("getColumnCount", function(versions) {
     versions = parseInt(versions.length);
-    return versions + 1;
+    return versions + 2;
   });
 
   Handlebars.registerHelper('setIndex', function(value){
@@ -77,15 +86,15 @@ jQuery(function ($) {
 
   var app = {};
   app.url = 'admin-ajax.php?action=';
-  //TODO: set back to empty after developing
-  app.openAnswer = 0;
+  app.openAnswer = "";
   app.views = {}
 
   if(typeof $('#version_template').html() !== 'undefined') {
     app.templates = {
       version: Handlebars.compile($('#version_template').html()),
       edit: Handlebars.compile($('#edit_template').html()),
-      question: Handlebars.compile($('#question_template').html())
+      question: Handlebars.compile($('#question_template').html()),
+      newKwpsTest: Handlebars.compile($('#chooseTestModus_template').html())
   };
   }
   
@@ -126,6 +135,10 @@ jQuery(function ($) {
       // toon keuze options tussen verschillende testmodi
       // Nu vooral één knop met de keuze poll en invulveld
       // indien opties worden de opties getoond en kan men test aanmaken
+      app.kwpsPollsCollection = new Backbone.Collection([],{
+        model: KwpsModel
+      });
+      app.views.newKwpsTest = new app.KwpsViewNewKwpsTest({});
     }
   });
 
@@ -143,16 +156,21 @@ jQuery(function ($) {
     },
 
     sync: function(method, model, options) {
+      console.log(method);
       options = options || {};
       options.url = app.url + model.action[method.toLowerCase()] + (model.attributes.post_type).substring(4);
 
       return Backbone.sync.apply(this, arguments);
     },
     initialize: function() {
-      this.bind("change", this.changeHandler);
+      //this.bind("add", this.changeHandler);
     },
     changeHandler: function() {
-      this.save();
+      this.save({silent: true},{error : function (model, response, options) {
+        console.log(this);
+      }, success : function (model, response, options) {
+        console.log(this)
+      }});
     },
     idAttribute: 'ID',
     defaults: {
@@ -164,14 +182,92 @@ jQuery(function ($) {
       post_parent: 0,
       post_type: "",
     }
-  }); 
+  });
+
+  app.KwpsViewNewKwpsTest = Backbone.View.extend({
+    el: '#kwps_test',
+    initialize: function (options) {
+      this.options = options || {};
+      _.bindAll(this, 'cleanup');
+      this.render();
+    },
+    cleanup: function() {
+      this.undelegateEvents();
+      $(this.el).empty();
+    },
+    events: {
+      'click button': 'createKwpsTest'
+    },
+    render: function() {
+      $(this.el).html(app.templates.newKwpsTest());
+    },
+    createKwpsTest : function (e) {
+      e.preventDefault();
+      console.log('TEST KWPS :-)')
+      var post_type = $(e.currentTarget).data('type');
+      var that = this;
+      var model = new KwpsModel({
+        post_type: post_type,
+        post_status: "publish",
+        post_title : this.$("input").val()
+      });
+      model.save({},{
+        success: function (model, response, options) {
+          console.log(model);
+          app.kwpsPollsCollection.add(model);
+          for (var i = 0; i < kwpsConfig[post_type].onNew.questions; i++) {
+            that.createQuestion(model.get('ID'), i, post_type);
+          };
+          var url = window.location.pathname + window.location.search + "\&action=edit\&id=" + model.get('ID');
+          window.history.pushState( model.get('ID') , "Edit" , url);
+          app.router.navigate('', {trigger: true});
+        }
+      });
+    },
+    createQuestion: function (post_parent, index, post_type) {
+      var that = this;
+      var model = new KwpsModel({
+        post_type: "kwps_question",
+        post_status: "publish",
+        post_content : "question " + (index+1),
+        post_parent : post_parent,
+        _kwps_sort_order : index
+      });
+      model.save({},{
+        success: function (model, response, options) {
+          console.log(model);
+          app.kwpsPollsCollection.add(model);
+          for (var i = 0; i < kwpsConfig[post_type].onNew.answers; i++) {
+            that.createAnswer(model.get('ID'), i, post_type);
+          };
+        }
+      });
+    },
+    createAnswer: function (post_parent, index, post_type) {
+      var that = this;
+      var model = new KwpsModel({
+        post_type: "kwps_answer_option",
+        post_status: "publish",
+        post_content : "answer " + (index+1),
+        post_parent : post_parent,
+        _kwps_sort_order : index
+      });
+      model.save({},{
+        success: function (model, response, options) {
+          console.log(model);
+          app.kwpsPollsCollection.add(model);
+        }
+      });
+    }
+  })
 
   app.KwpsView = Backbone.View.extend({
     el: '#kwps_test',
     initialize: function () {
       //_.bindAll(this, 'cleanup');
       this.render();
-      this.listenTo(this.collection, 'change', this.render);
+      console.log(this.collection);
+      this.listenTo(this.collection, 'add', this.render);
     },
     events: {
       'click #add-version': 'addVersion',
@@ -190,7 +286,6 @@ jQuery(function ($) {
       $(this.el).empty();
     },
     render: function () {
-      //$('#post_title').val(this.model.get('post_title'));
       var data = this.prepareData();
       $(this.el).html(app.templates.version(data));
       $('#tabs').tabs();
@@ -203,10 +298,16 @@ jQuery(function ($) {
       data.versions = this.collection.where({post_type: "kwps_poll"});
       for (var i = 0; i < data.versions.length; i++) {
         data.versions[i] = data.versions[i].toJSON();
-        data.versions[i].kwpsIntro = this.collection.findWhere({post_type: "kwps_intro", post_parent : data.versions[i].ID});
-        data.versions[i].kwpsIntro = (data.versions[i].kwpsIntro !== undefined)? data.versions[i].kwpsIntro.toJSON(): {};
-        data.versions[i].kwpsOutro = this.collection.findWhere({post_type: "kwps_outro", post_parent : data.versions[i].ID});
-        data.versions[i].kwpsOutro = (data.versions[i].kwpsOutro !== undefined)? data.versions[i].kwpsOutro.toJSON(): {};
+        var kwpsIntro = this.collection.findWhere({post_type: "kwps_intro", post_parent : data.versions[i].ID});
+        if (kwpsIntro !== undefined) {
+          data.intro = true;
+          data.versions[i].kwpsIntro = kwpsIntro.toJSON();
+        }
+        var kwpsOutro = this.collection.findWhere({post_type: "kwps_outro", post_parent : data.versions[i].ID});
+        if (kwpsOutro !== undefined) {
+          data.outro = true;
+          data.versions[i].kwpsOutro = kwpsOutro.toJSON();
+        }
         if (i === 0) {
           data.versions[i].main = true;
         }
@@ -349,12 +450,11 @@ jQuery(function ($) {
     }
   });
 
-
   app.KwpsViewQuestion = Backbone.View.extend({
     el: '#kwps_test',
-
     initialize: function (options) {
       this.options = options || {};
+      
       _.bindAll(this, 'cleanup');
       this.render();
     },

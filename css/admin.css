@@ -91,6 +91,21 @@
     border-top: 1px solid #dedede;
 }
 */
+#kwps_test .column-title .column-tab{
+    margin: 5px 5px 0 5px;
+    border-top: 1px solid #D6D6D6;
+    border-left: 1px solid #D6D6D6;
+    border-right: 1px solid #D6D6D6;
+    height: 35px;
+    padding: 10px 5px 0 15px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #f9f9f9;
+    font-weight: 600;
+}
+#kwps_test .column-title{
+    padding-bottom: 0;
+}
 #kwps_test tr.title {
     background: #f9f9f9;
     text-align: left;
@@ -98,6 +113,7 @@
 }
 #kwps_test tr.title .row-title{
     font-weight: 600;
+    border-top: 1px solid #D6D6D6;
 }
 #kwps_test tr.title .row-title .button{
     margin: -5px 5px -5px 0;
@@ -112,7 +128,7 @@
 }
 #kwps_test .fixed .column-action{
     width: 15%;
-    border-left: 10px solid #f9f9f9;
+    border-left: 1px solid #f9f9f9;
 }
 #kwps_test .fixed .column-action .dashicons{
     vertical-align: middle;

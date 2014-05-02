@@ -2,6 +2,17 @@
 <?php echo '<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>'; ?>
 </div> <!-- .wrap -->
 
+<script id="chooseTestModus_template" type="text/x-handlebars-template">
+<label>Test name</label>
+<input>
+<div>
+<button data-type="kwps_poll">Poll</button>
+</div>
+<div>
+opties
+</div>
+</script>
+
 <script id="edit_template" type="text/x-handlebars-template">
 <h2>{{label}}</h2>
 <div>
@@ -44,99 +55,126 @@
                         <tr>
                             <th class="no-delete column-action">&nbsp;</th>
                             {{#each versions}}
-                                <td class=" column-title">
-                                    {{#unless main}}
-                                        <div>{{post_title}}</div>
-                                        <div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a class="delete-version">delete</a></div>
-                                    {{else}}
-                                        <div id="buttons">
-                                            <button id="add-version" class="button">
-                                                <span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e('Add Version', 'klasse-wp-poll-survey') ?></button>
-                                        </div>
-                                    {{/unless}}
-                                </td>
+                                <th class=" column-title">
+                                    <div class="column-tab">
+                                        {{#unless main}}
+                                            <div>{{post_title}}</div>
+                                            <div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a class="delete-version">delete</a></div>
+                                        {{else}}
+                                            <div>{{../../title}}</div>
+                                        {{/unless}}
+                                    </div>
+                                </th>
                             {{/each}}
+                                <td class="column-title" style="width:85px;">
+                                    <div class="column-tab">
+                                        <button id="add-version" class="button">
+                                            <span data-code="f132" class="dashicons dashicons-plus"></span>
+                                        </button>
+                                    </div>
+                                </td>
                         </tr>
                         <tr class="title">
-                            <th class="no-delete row-title" colspan="{{getColumnCount versions}}"><?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?></th>
+                            <th class="no-delete row-title" colspan="{{getColumnCount versions}}">
+                                <?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?>
+                                {{#unless intro}}
+                                    <button class="button add" id="add-intro">
+                                        <span data-code="f132" class="dashicons dashicons-plus"></span> 
+                                    </button>
+                                {{/unless}}
+                            </th>
                         </tr>
-                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
-                            <td class="column-action"></td>
-                            {{#each versions}}
-                                <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
-                                    <strong>
-                                        <a class="row-title" href="#edit/{{kwpsIntro.ID}}" title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">{{subStringStripper kwpsIntro.post_content 100}}</a>
-                                    </strong>
-                                    <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
-                                </td>
-                            {{/each}}
-                        </tr>
+                        {{#if intro}}
+                            <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
+                                <td class="column-action"></td>
+                                {{#each versions}}
+                                    <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                        <strong>
+                                            <a class="row-title" href="#edit/{{kwpsIntro.ID}}" title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">{{subStringStripper kwpsIntro.post_content 100}}</a>
+                                        </strong>
+                                        <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                                    </td>
+                                {{/each}}
+                            </tr>
+                        {{/if}}
                         <tr class="title">
-                            <th class="no-delete row-title"  colspan="{{getColumnCount versions}}"><?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?> <button class="button add" id="add-question"><span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button></th>
+                            <th class="no-delete row-title"  colspan="{{getColumnCount versions}}">
+                                <?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?> 
+                                <button class="button add" id="add-question">
+                                    <span data-code="f132" class="dashicons dashicons-plus"></span> 
+                                </button>
+                            </th>
                         </tr>
                         {{#each questions}}
-                        <tr>
-                            <td class="delete column-action {{#if open}} extra {{/if}}">
-                                {{#if open}} 
-                                    <span data-code="f343" class="dashicons dashicons-arrow-up-alt2 toggle-details" data-question-row ="{{@index}}"></span> 
-                                {{else}} 
-                                    <span data-code="f347" class="dashicons dashicons-arrow-down-alt2 toggle-details" data-question-row ="{{@index}}"></span> 
-                                {{/if}}
-                                <span class="del">Delete</span>
-                                <div class="move">
-                                    {{{sorter @index ../questions}}}
-                                </div>
-                            </td>
-                            {{#each this}}
-                            <td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
-                                <strong>
-                                    <a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
-                                </strong>
-                                <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
-                            </td>
-                            {{/each}}
-                        </tr>
-                        {{#if open}}
-                        <tr class="title">
-                            <th class="no-delete answers row-title" colspan="{{getColumnCount ../../versions}}">
-                                <?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> 
-                                <button class="button add-answer"><span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button>
-                                </th>
-                        </tr>
-                            {{#each ../../answers}}
-                                <tr class="{{lastItem "bottomborder" @index ../../../answers}} answer-row">
-                                    <td class="delete column-action column-answer">
-                                        <span class="del">Delete</span>
-                                        <div class="move">
-                                            {{{sorter @index}}}
-                                        </div>
-                                    </td>
-                                    {{#each this}}
-                                        <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
-                                            <strong>
-                                                <a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
-                                            </strong>
-                                            <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
-                                        </td>
-                                    {{/each}}
+                            <tr>
+                                <td class="delete column-action {{#if open}} extra {{/if}}">
+                                    {{#if open}} 
+                                        <span data-code="f142" class="dashicons dashicons-arrow-up toggle-details" data-question-row ="{{@index}}"></span> 
+                                    {{else}} 
+                                        <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-question-row ="{{@index}}"></span> 
+                                    {{/if}}
+                                    <span class="del"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
+                                    <div class="move">
+                                        {{{sorter @index ../questions}}}
+                                    </div>
+                                </td>
+                                {{#each this}}
+                                <td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
+                                    <strong>
+                                        <a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
+                                    </strong>
+                                    <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
+                                </td>
+                                {{/each}}
+                            </tr>
+                            {{#if open}}
+                                <tr class="title">
+                                    <th class="no-delete answers row-title" colspan="{{getColumnCount ../../versions}}">
+                                        <?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> 
+                                        <button class="button add-answer"><span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button>
+                                        </th>
                                 </tr>
-                            {{/each}}
-                        {{/if}}
+                                    {{#each ../../answers}}
+                                        <tr class="{{lastItem "bottomborder" @index ../../../answers}} answer-row">
+                                            <td class="delete column-action column-answer">
+                                                <span class="del"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
+                                                <div class="move">
+                                                    {{{sorter @index}}}
+                                                </div>
+                                            </td>
+                                            {{#each this}}
+                                                <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                                    <strong>
+                                                        <a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
+                                                    </strong>
+                                                    <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
+                                                </td>
+                                            {{/each}}
+                                            <td class="post-title page-title column-title">
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                            {{/if}}
                         {{/each}}
                         <tr class="title">
-                            <th class="no-delete row-title" colspan="{{getColumnCount versions}}"><?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?></th>
+                            <th class="no-delete row-title" colspan="{{getColumnCount versions}}">
+                                <?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?> 
+                                <span class="button">add</span>
+                            </th>
                         </tr>
-                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
-                            <td class="column-action"></td>
-                            {{#each versions}}
-                                <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
-                                    <strong>
-                                        <a class="row-title" href="#edit/{{kwpsOutro.ID}}" title="Edit “{{subStringStripper kwpsOutro.post_content 100}}”">{{subStringStripper kwpsOutro.post_content 100}}</a>
-                                    </strong>
-                                    <div class="actions" style="display: none"><a href="#edit/{{kwpsOutro.ID}}">edit</a></div>
-                                </td>
-                            {{/each}}
-                        </tr>
+                        {{#if outro}}
+                            <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
+                                <td class="column-action"></td>
+                                {{#each versions}}
+                                    <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                        <strong>
+                                            <a class="row-title" href="#edit/{{kwpsOutro.ID}}" title="Edit “{{subStringStripper kwpsOutro.post_content 100}}”">{{subStringStripper kwpsOutro.post_content 100}}</a>
+                                        </strong>
+                                        <div class="actions" style="display: none"><a href="#edit/{{kwpsOutro.ID}}">edit</a></div>
+                                    </td>
+                                {{/each}}
+                            </tr>
+                        {{/if}}
                     </table>
                 </div>
             </div>
