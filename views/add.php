@@ -86,7 +86,7 @@ opties
                         </tr>
                         {{#if intro}}
                             <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
-                                <td class="column-action"></td>
+                                <td class="column-action"><span class="del"><span data-code="f182" class="dashicons dashicons-trash"></span></span></td>
                                 {{#each versions}}
                                     <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
                                         <strong>
@@ -99,10 +99,12 @@ opties
                         {{/if}}
                         <tr class="title">
                             <th class="no-delete row-title"  colspan="{{getColumnCount versions}}">
-                                <?php _e( 'Questions', 'klasse-wp-poll-survey' ) ?> 
-                                <button class="button add" id="add-question">
-                                    <span data-code="f132" class="dashicons dashicons-plus"></span> 
-                                </button>
+                                <?php _e( 'Question', 'klasse-wp-poll-survey' ) ?>
+                                {{#unless question}}
+                                    <button class="button add" data-post-type="kwps_question">
+                                        <span data-code="f132" class="dashicons dashicons-plus"></span> 
+                                    </button>
+                                {{/unless}}
                             </th>
                         </tr>
                         {{#each questions}}
@@ -131,7 +133,7 @@ opties
                                 <tr class="title">
                                     <th class="no-delete answers row-title" colspan="{{getColumnCount ../../versions}}">
                                         <?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> 
-                                        <button class="button add-answer"><span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button>
+                                        <button class="button add-answer" data-post-type="kwps_answer_option"><span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button>
                                         </th>
                                 </tr>
                                     {{#each ../../answers}}
@@ -143,7 +145,7 @@ opties
                                                 </div>
                                             </td>
                                             {{#each this}}
-                                                <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                                <td id="_kwps_answer_option_{{ID}}" class="post-title page-title column-title">
                                                     <strong>
                                                         <a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
                                                     </strong>
@@ -168,7 +170,7 @@ opties
                         </tr>
                         {{#if outro}}
                             <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
-                                <td class="column-action"></td>
+                                <td class="column-action"><span class="del"><span data-code="f182" class="dashicons dashicons-trash"></span></span></td>
                                 {{#each versions}}
                                     <td id="_kwps_Outro_{{ID}}" class="post-title page-title column-title">
                                         <strong>

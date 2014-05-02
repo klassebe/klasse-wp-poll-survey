@@ -375,6 +375,16 @@ jQuery(function ($) {
             this.createOutro(kwpsPolls[i].id, true);
           }
           break;
+        case 'kwps_question':
+          for(var i = 0; i < kwpsPollLen; i++) {
+            this.addQuestion(kwpsPolls[i].id, true);
+          }
+          break;
+        case 'kwps_answer_option':
+          for(var i =0; i< kwpsPollLen; i++) {
+            this.addQuestion(kwpsPolls[i].id, true);
+          }
+          break;
         default:
           console.log('no intro or outro was given');
       }
@@ -440,6 +450,26 @@ jQuery(function ($) {
       // console.log(app.test);
       // /**/$(this.el).html(app.templates.iframe(data));
       new app.KwpsViewQuestion();
+    },
+    createAnswer: function (post_parent, edit) {
+      var that = this;
+      var model = new KwpsModel({
+        post_type: "kwps_answer_option",
+        post_status: "publish",
+        post_content : "question ",
+        post_parent : post_parent,
+        _kwps_sort_order : 0
+      });
+      model.save({},{
+        success: function (model, response, options) {
+          app.kwpsPollsCollection.add(model);
+          console.log('answer');
+          if (edit) {
+            app.router.navigate('edit/'+ model.id, {trigger: true});
+
+          }
+        }
+      });
     },
     showActions: function(event) {
       $(event.target).find(".actions").show();

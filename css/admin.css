@@ -165,3 +165,6 @@
 .dashicons-trash:before {
     content: "\f182";
 }
+.del {
+    cursor: pointer;
+}
