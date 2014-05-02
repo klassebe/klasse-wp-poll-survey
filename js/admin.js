@@ -271,9 +271,8 @@ jQuery(function ($) {
       'mouseenter td': 'showActions',
       'mouseleave td': 'hideActions',
       'click .toggle-details': 'toggleDetails',
-      'click .add-answer': 'addAnswer',
-      'click #add-question': 'addQuestion',
       'click button.add': 'createNew',
+      'click span.del': 'deletePostType',
       'click .delete-version': 'deleteVersion',
       'click .preview': 'preview',
       'click .edit': 'edit',
@@ -354,6 +353,36 @@ jQuery(function ($) {
       var toDelete = this.model.get('versions').get(kwpdId);
       toDelete.destroy();
     },
+    deletePostType: function(e) {
+      e.preventDefault();
+      var postType = $(e.currentTarget).data('post-type');
+      var kwpsPolls = this.collection.where({post_type: 'kwps_poll'});
+
+      switch (postType) {
+        case 'kwps_intro':
+          for(var i = 0; i < kwpsPollLen; i++) {
+            this.deleteIntro(kwpsPolls[i].id, true);
+          }
+          break;
+        case 'kwps_outro':
+          for(var i = 0; i < kwpsPollLen; i++) {
+            this.deleteOutro(kwpsPolls[i].id, true);
+          }
+          break;
+        case 'kwps_question':
+          for(var i = 0; i < kwpsPollLen; i++) {
+            this.deleteQuestion(kwpsPolls[i].id, true);
+          }
+          break;
+        case 'kwps_answer_option':
+          for(var i =0; i< kwpsPollLen; i++) {
+            this.deleteAnswer(kwpsPolls[i].id, true);
+          }
+          break;
+        default:
+          console.log('no post type was given');
+      }
+    },
     createNew: function (e) {
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
@@ -377,16 +406,16 @@ jQuery(function ($) {
           break;
         case 'kwps_question':
           for(var i = 0; i < kwpsPollLen; i++) {
-            this.addQuestion(kwpsPolls[i].id, true);
+            this.createQuestion(kwpsPolls[i].id, true);
           }
           break;
         case 'kwps_answer_option':
           for(var i =0; i< kwpsPollLen; i++) {
-            this.addQuestion(kwpsPolls[i].id, true);
+            this.createAnswer(kwpsPolls[i].id, true);
           }
           break;
         default:
-          console.log('no intro or outro was given');
+          console.log('no post type was given');
       }
     },
     createIntro: function (post_parent, edit) {
@@ -456,14 +485,13 @@ jQuery(function ($) {
       var model = new KwpsModel({
         post_type: "kwps_answer_option",
         post_status: "publish",
-        post_content : "question ",
+        post_content : "answer ",
         post_parent : post_parent,
         _kwps_sort_order : 0
       });
       model.save({},{
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
-          console.log('answer');
           if (edit) {
             app.router.navigate('edit/'+ model.id, {trigger: true});
 

@@ -115,7 +115,7 @@ opties
                                     {{else}} 
                                         <span data-code="f139" class="dashicons dashicons-arrow-right toggle-details" data-question-row ="{{@index}}"></span> 
                                     {{/if}}
-                                    <span class="del"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
+                                    <span class="del" data-post-type="kwps_question" data-post-id="{{ID}}"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
                                     <div class="move">
                                         {{{sorter @index ../questions}}}
                                     </div>
@@ -133,13 +133,13 @@ opties
                                 <tr class="title">
                                     <th class="no-delete answers row-title" colspan="{{getColumnCount ../../versions}}">
                                         <?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> 
-                                        <button class="button add-answer" data-post-type="kwps_answer_option"><span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button>
+                                        <button class="button add" data-post-type="kwps_answer_option"><span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button>
                                         </th>
                                 </tr>
                                     {{#each ../../answers}}
                                         <tr class="{{lastItem "bottomborder" @index ../../../answers}} answer-row">
                                             <td class="delete column-action column-answer">
-                                                <span class="del"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
+                                                <span class="del" data-post-type="kwps_answer_option"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
                                                 <div class="move">
                                                     {{{sorter @index}}}
                                                 </div>
@@ -170,7 +170,7 @@ opties
                         </tr>
                         {{#if outro}}
                             <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
-                                <td class="column-action"><span class="del"><span data-code="f182" class="dashicons dashicons-trash"></span></span></td>
+                                <td class="column-action"><span class="del" data-post-type="kwps_outro"><span data-code="f182" class="dashicons dashicons-trash"></span></span></td>
                                 {{#each versions}}
                                     <td id="_kwps_Outro_{{ID}}" class="post-title page-title column-title">
                                         <strong>
