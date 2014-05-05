@@ -383,6 +383,11 @@ jQuery(function ($) {
           console.log('no post type was given');
       }
     },
+    deleteIntro: function (post_parent) {
+      e.preventDefault();
+      var that = this;
+      var model = '';
+    },
     createNew: function (e) {
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
