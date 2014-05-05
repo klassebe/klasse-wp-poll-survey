@@ -105,7 +105,8 @@ jQuery(function ($) {
       'edit/:id' : 'edit',
       'edit/question/:id' : 'editQuestion',
       'new/:type/:parentId' : 'new',
-      'new': 'newKwpsTest'
+      'new': 'newKwpsTest',
+      'delete/:id': 'deletePostType'
     },
     home : function () {
       // console.log("ROUTING TO: home")
