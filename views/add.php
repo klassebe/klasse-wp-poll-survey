@@ -86,7 +86,7 @@ opties
                         </tr>
                         {{#if intro}}
                             <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
-                                <td class="column-action"><span class="del"><span data-code="f182" class="dashicons dashicons-trash"></span></span></td>
+                                <td class="column-action"><div class="actions" data-kwps-id="{{ID}}"><a class="delete-intro"><span data-code="f182" class="dashicons dashicons-trash"></span></a></div></td>
                                 {{#each versions}}
                                     <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
                                         <strong>

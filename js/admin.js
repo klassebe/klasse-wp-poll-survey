@@ -275,6 +275,7 @@ jQuery(function ($) {
       'click button.add': 'createNew',
       'click span.del': 'deletePostType',
       'click .delete-version': 'deleteVersion',
+      'click .delete-intro': 'deleteIntro',
       'click .preview': 'preview',
       'click .edit': 'edit',
       'change #post_title': 'changeTitle'
@@ -354,6 +355,12 @@ jQuery(function ($) {
       var toDelete = this.model.get('versions').get(kwpdId);
       toDelete.destroy();
     },
+    deleteIntro: function (event) {
+      event.preventDefault();
+      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+      var toDelete = this.model.get('kwps_intro').get(kwpsId);
+      toDelete.destroy();
+    },
     deletePostType: function(e) {
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
@@ -384,11 +391,11 @@ jQuery(function ($) {
           console.log('no post type was given');
       }
     },
-    deleteIntro: function (post_parent) {
-      e.preventDefault();
-      var that = this;
-      var model = '';
-    },
+    // deleteIntro: function (post_parent) {
+    //   e.preventDefault();
+    //   var that = this;
+    //   var model = '';
+    // },
     createNew: function (e) {
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
