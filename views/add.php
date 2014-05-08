@@ -86,7 +86,11 @@ opties
                         </tr>
                         {{#if intro}}
                             <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
-                                <td class="column-action"><div class="actions" data-kwps-id="{{ID}}"><a class="delete-intro"><span data-code="f182" class="dashicons dashicons-trash"></span></a></div></td>
+                                <td class="column-action">
+                                    <div class="action" data-post-type="kwps_intro" data-kwps-id="{{ID}}">
+                                        <a class="delete-intro"><span data-code="f182" class="dashicons dashicons-trash"></span></a>
+                                    </div>
+                                </td>
                                 {{#each versions}}
                                     <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
                                         <strong>
@@ -115,7 +119,11 @@ opties
                                     {{else}} 
                                         <span data-code="f139" class="dashicons dashicons-arrow-right toggle-details" data-question-row ="{{@index}}"></span> 
                                     {{/if}}
-                                    <span class="del" data-post-type="kwps_question" data-post-id="{{ID}}"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
+                                    <div class="action" data-post-type="kwps_question" data-kwps-id="{{ID}}">
+                                        <a class="delete-question">
+                                            <span class="del" data-post-type="kwps_question" data-post-id="{{ID}}"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
+                                        </a>
+                                    </div>
                                     <div class="move">
                                         {{{sorter @index ../questions}}}
                                     </div>

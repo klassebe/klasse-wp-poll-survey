@@ -276,8 +276,6 @@ jQuery(function ($) {
       'click span.del': 'deletePostType',
       'click .delete-version': 'deleteVersion',
       'click .delete-intro': 'deleteIntro',
-      'click .preview': 'preview',
-      'click .edit': 'edit',
       'change #post_title': 'changeTitle'
     },
     cleanup: function() {
@@ -349,7 +347,7 @@ jQuery(function ($) {
       app.test.set('versions', newVersion, {remove: false});
     },
     deleteVersion: function(event) {
-      //TODO php function delete poll with(id) en all child posts + child posts of questions
+      //TODO php function delete poll with(id) and all child posts + child posts of questions
       event.preventDefault();
       var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
       var toDelete = this.model.get('versions').get(kwpdId);
@@ -361,11 +359,29 @@ jQuery(function ($) {
       var toDelete = this.model.get('kwps_intro').get(kwpsId);
       toDelete.destroy();
     },
+    deleteOutro: function (event) {
+      event.preventDefault();
+      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+      var toDelete = this.model.get('kwps_outro').get(kwpsId);
+      toDelete.destroy();
+    },
+    deleteQuestion: function (event) {
+      event.preventDefault();
+      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+      var toDelete = this.model.get('kwps_question').get(kwpsId);
+      toDelete.destroy();
+    },
+    deleteAnswerOption: function (event) {
+      event.preventDefault();
+      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+      var toDelete = this.model.get('kwps_answer_option').get(kwpsId);
+      toDelete.destroy();
+    },
     deletePostType: function(e) {
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
       var kwpsPolls = this.collection.where({post_type: 'kwps_poll'});
-
+      var kwpsPollLen = kwpsPolls.length;
       switch (postType) {
         case 'kwps_intro':
           for(var i = 0; i < kwpsPollLen; i++) {
@@ -384,18 +400,13 @@ jQuery(function ($) {
           break;
         case 'kwps_answer_option':
           for(var i =0; i< kwpsPollLen; i++) {
-            this.deleteAnswer(kwpsPolls[i].id, true);
+            this.deleteAnswerOption(kwpsPolls[i].id, true);
           }
           break;
         default:
           console.log('no post type was given');
       }
     },
-    // deleteIntro: function (post_parent) {
-    //   e.preventDefault();
-    //   var that = this;
-    //   var model = '';
-    // },
     createNew: function (e) {
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
