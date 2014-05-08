@@ -274,8 +274,8 @@ jQuery(function ($) {
       'click .toggle-details': 'toggleDetails',
       'click button.add': 'createNew',
       'click span.del': 'deletePostType',
-      'click .delete-version': 'deleteVersion',
-      'click .delete-intro': 'deleteIntro',
+      // 'click .delete-version': 'deleteVersion',
+      // 'click .delete-intro': 'deleteIntro',
       'change #post_title': 'changeTitle'
     },
     cleanup: function() {
@@ -355,25 +355,28 @@ jQuery(function ($) {
     },
     deleteIntro: function (event) {
       event.preventDefault();
-      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
+      // var kwpdType = $(event.target).closest('div.action').data('kwps-type');
+      console.log(kwpsId);
       var toDelete = this.model.get('kwps_intro').get(kwpsId);
       toDelete.destroy();
     },
     deleteOutro: function (event) {
       event.preventDefault();
-      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
+      console.log(kwpsId);
       var toDelete = this.model.get('kwps_outro').get(kwpsId);
       toDelete.destroy();
     },
     deleteQuestion: function (event) {
       event.preventDefault();
-      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
       var toDelete = this.model.get('kwps_question').get(kwpsId);
       toDelete.destroy();
     },
     deleteAnswerOption: function (event) {
       event.preventDefault();
-      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
       var toDelete = this.model.get('kwps_answer_option').get(kwpsId);
       toDelete.destroy();
     },
@@ -384,14 +387,10 @@ jQuery(function ($) {
       var kwpsPollLen = kwpsPolls.length;
       switch (postType) {
         case 'kwps_intro':
-          for(var i = 0; i < kwpsPollLen; i++) {
             this.deleteIntro(kwpsPolls[i].id, true);
-          }
           break;
         case 'kwps_outro':
-          for(var i = 0; i < kwpsPollLen; i++) {
             this.deleteOutro(kwpsPolls[i].id, true);
-          }
           break;
         case 'kwps_question':
           for(var i = 0; i < kwpsPollLen; i++) {
