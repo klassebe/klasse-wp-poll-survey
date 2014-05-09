@@ -36,6 +36,7 @@ require_once __DIR__ . '/includes/entry.php';
 require_once __DIR__ . '/includes/intro.php';
 require_once __DIR__ . '/includes/outro.php';
 require_once __DIR__ . '/includes/answer_option.php';
+require_once __DIR__ . '/includes/test_modus.php';
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
 /*----------------------------------------------------------------------------*
@@ -66,6 +67,17 @@ add_action('init', array('\includes\question','register_post_type'));
 add_action('init', array('\includes\entry','register_post_type'));
 add_action('init', array('\includes\intro','register_post_type'));
 add_action('init', array('\includes\outro','register_post_type'));
+add_action('init', array('\includes\test_modus','register_post_type'));
+
+add_action( 'admin_notices', 'custom_error_notice' );
+function custom_error_notice(){
+    global $current_screen, $post;
+    if ( $current_screen->parent_base == 'edit' ){
+        if($post->post_title != 'kwps_survey'){
+            echo '<div class="error"><p>Error - Title should be kwps_survey</p></div>';
+        }
+    }
+}
 
 add_action('admin_menu', 'add_plugin_admin_menu');
 
