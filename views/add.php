@@ -89,9 +89,11 @@ opties
                                 
                                 {{#each versions}}
                                     <td class="column-action">
-                                        <div class="action" data-post-type="kwps_intro" data-kwps-post-id="{{kwpsIntro.ID}}">
-                                            <a class="delete-intro" data-kwps-post-id="{{kwpsIntro.ID}}">
-                                                <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        <div class="action">
+                                            <a class="delete-intro">
+                                                <span class="del" data-post-type="kwps_intro">
+                                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                                </span>
                                             </a>
                                         </div>
                                     </td>
@@ -122,9 +124,11 @@ opties
                                     {{else}} 
                                         <span data-code="f139" class="dashicons dashicons-arrow-right toggle-details" data-question-row ="{{@index}}"></span> 
                                     {{/if}}
-                                    <div class="action" data-post-type="kwps_question" data-kwps-post-id="{{kwpsQuestion.ID}}">
+                                    <div class="action">
                                         <a class="delete-question">
-                                            <span class="del" data-post-type="kwps_question" data-kwps-post-id="{{kwpsQuestion.ID}}"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
+                                            <span class="del" data-post-type="kwps_question">
+                                                <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                            </span>
                                         </a>
                                     </div>
                                     <div class="move">
@@ -150,9 +154,11 @@ opties
                                 {{#each ../../answers}}
                                     <tr class="{{lastItem "bottomborder" @index ../../../answers}} answer-row">
                                         <td class="delete column-action column-answer">
-                                            <div class="action" data-post-type="kwps_answer_option" data-kwps-post-id="{{kwpsAnswerOption.ID}}">
+                                            <div class="action">
                                                 <a class="delete-answer-option">
-                                                    <span class="del" data-post-type="kwps_answer_option"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
+                                                    <span class="del" data-post-type="kwps_answer_option" data-kwps-sort-order="{{_kwps_sort_order}}">
+                                                        <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                                    </span>
                                                 </a>
                                             </div>
                                             <div class="move">
@@ -187,9 +193,11 @@ opties
                             <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
                                 {{#each versions}}
                                     <td class="column-action">
-                                        <div class="action" data-post-type="kwps_outro" data-kwps-post-id="{{kwpsOutro.ID}}">
+                                        <div class="action">
                                             <a class="delete-outro">
-                                                <span class="del" data-post-type="kwps_outro"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
+                                                <span class="del" data-post-type="kwps_outro">
+                                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                                </span>
                                             </a>
                                         </div>
                                     </td>
