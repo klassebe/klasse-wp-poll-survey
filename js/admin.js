@@ -362,6 +362,8 @@ jQuery(function ($) {
       toDelete.destroy();
     },
     deleteOutro: function (event) {
+      console.log('function outro event');
+      console.log(event);
       event.preventDefault();
       var kwpdId = $(event.target).closest('div.action').data('kwps-id');
       console.log(kwpsId);
@@ -381,16 +383,19 @@ jQuery(function ($) {
       toDelete.destroy();
     },
     deletePostType: function(e) {
+      console.log($(e.currentTarget));
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
       var kwpsPolls = this.collection.where({post_type: 'kwps_poll'});
+            console.log(kwpsPolls);
+
       var kwpsPollLen = kwpsPolls.length;
       switch (postType) {
         case 'kwps_intro':
-            this.deleteIntro(kwpsPolls[i].id, true);
+            this.deleteIntro(kwpsPolls[0].id, true);
           break;
         case 'kwps_outro':
-            this.deleteOutro(kwpsPolls[i].id, true);
+            this.deleteOutro(kwpsPolls[0].id, true);
           break;
         case 'kwps_question':
           for(var i = 0; i < kwpsPollLen; i++) {
