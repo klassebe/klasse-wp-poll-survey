@@ -86,8 +86,17 @@ opties
                         </tr>
                         {{#if intro}}
                             <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
-                                <td class="column-action"><span class="del"><span data-code="f182" class="dashicons dashicons-trash"></span></span></td>
+                                
                                 {{#each versions}}
+                                    <td class="column-action">
+                                        <div class="action">
+                                            <a class="delete-intro">
+                                                <span class="del" data-post-type="kwps_intro">
+                                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </td>
                                     <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
                                         <strong>
                                             <a class="row-title" href="#edit/{{kwpsIntro.ID}}" title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">{{subStringStripper kwpsIntro.post_content 100}}</a>
@@ -115,7 +124,13 @@ opties
                                     {{else}} 
                                         <span data-code="f139" class="dashicons dashicons-arrow-right toggle-details" data-question-row ="{{@index}}"></span> 
                                     {{/if}}
-                                    <span class="del" data-post-type="kwps_question" data-post-id="{{ID}}"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
+                                    <div class="action">
+                                        <a class="delete-question">
+                                            <span class="del" data-post-type="kwps_question">
+                                                <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                            </span>
+                                        </a>
+                                    </div>
                                     <div class="move">
                                         {{{sorter @index ../questions}}}
                                     </div>
@@ -134,28 +149,34 @@ opties
                                     <th class="no-delete answers row-title" colspan="{{getColumnCount ../../versions}}">
                                         <?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> 
                                         <button class="button add" data-post-type="kwps_answer_option"><span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button>
-                                        </th>
+                                    </th>
                                 </tr>
-                                    {{#each ../../answers}}
-                                        <tr class="{{lastItem "bottomborder" @index ../../../answers}} answer-row">
-                                            <td class="delete column-action column-answer">
-                                                <span class="del" data-post-type="kwps_answer_option"><span data-code="f182" class="dashicons dashicons-trash"></span></span>
-                                                <div class="move">
-                                                    {{{sorter @index}}}
-                                                </div>
+                                {{#each ../../answers}}
+                                    <tr class="{{lastItem "bottomborder" @index ../../../answers}} answer-row">
+                                        <td class="delete column-action column-answer">
+                                            <div class="action">
+                                                <a class="delete-answer-option">
+                                                    <span class="del" data-post-type="kwps_answer_option" data-kwps-sort-order="{{_kwps_sort_order}}">
+                                                        <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            <div class="move">
+                                        {{{sorter @index}}}
+                                            </div>
+                                        </td>
+                                        {{#each this}}
+                                            <td id="_kwps_answer_option_{{ID}}" class="post-title page-title column-title">
+                                                <strong>
+                                                    <a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
+                                                </strong>
+                                                <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
                                             </td>
-                                            {{#each this}}
-                                                <td id="_kwps_answer_option_{{ID}}" class="post-title page-title column-title">
-                                                    <strong>
-                                                        <a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
-                                                    </strong>
-                                                    <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
-                                                </td>
-                                            {{/each}}
-                                            <td class="post-title page-title column-title">
-                                            </td>
-                                        </tr>
-                                    {{/each}}
+                                        {{/each}}
+                                        <td class="post-title page-title column-title">
+                                        </td>
+                                    </tr>
+                                {{/each}}
                             {{/if}}
                         {{/each}}
                         <tr class="title">
@@ -170,8 +191,16 @@ opties
                         </tr>
                         {{#if outro}}
                             <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
-                                <td class="column-action"><span class="del" data-post-type="kwps_outro"><span data-code="f182" class="dashicons dashicons-trash"></span></span></td>
                                 {{#each versions}}
+                                    <td class="column-action">
+                                        <div class="action">
+                                            <a class="delete-outro">
+                                                <span class="del" data-post-type="kwps_outro">
+                                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </td>
                                     <td id="_kwps_Outro_{{ID}}" class="post-title page-title column-title">
                                         <strong>
                                             <a class="row-title" href="#edit/{{kwpsOutro.ID}}" title="Edit “{{subStringStripper kwpsOutro.post_content 100}}”">{{subStringStripper kwpsOutro.post_content 100}}</a>

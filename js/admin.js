@@ -274,9 +274,6 @@ jQuery(function ($) {
       'click .toggle-details': 'toggleDetails',
       'click button.add': 'createNew',
       'click span.del': 'deletePostType',
-      'click .delete-version': 'deleteVersion',
-      'click .preview': 'preview',
-      'click .edit': 'edit',
       'change #post_title': 'changeTitle'
     },
     cleanup: function() {
@@ -347,47 +344,80 @@ jQuery(function ($) {
       });
       app.test.set('versions', newVersion, {remove: false});
     },
-    deleteVersion: function(event) {
-      //TODO php function delete poll with(id) en all child posts + child posts of questions
-      event.preventDefault();
-      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
-      var toDelete = this.model.get('versions').get(kwpdId);
-      toDelete.destroy();
-    },
+    // deleteVersion: function(event) {
+    //   //TODO php function delete poll with(id) and all child posts + child posts of questions
+    //   event.preventDefault();
+    //   var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+    //   var toDelete = this.model.get('versions').get(kwpdId);
+    //   toDelete.destroy();
+    // },
+    // deleteIntro: function (event) {
+    //   event.preventDefault();
+    //   var kwpdId = $(event.target).closest('div.action').data('kwps-post-id');
+    //   // var kwpdType = $(event.target).closest('div.action').data('kwps-type');
+    //   console.log(kwpsId);
+    //   var toDelete = this.model.get('kwps_intro').get(kwpsId);
+    //   toDelete.destroy();
+    // },
+    // deleteOutro: function (event) {
+    //   console.log('function outro event');
+    //   console.log(event);
+    //   event.preventDefault();
+    //   var kwpdId = $(event.target).closest('div.action').data('kwps-post-id');
+    //   console.log(kwpsId);
+    //   var toDelete = this.model.get('kwps_outro').get(kwpsId);
+    //   toDelete.destroy();
+    // },
+    // deleteQuestion: function (event) {
+    //   event.preventDefault();
+    //   var kwpdId = $(event.target).closest('div.action').data('kwps-post-id');
+    //   var toDelete = this.model.get('kwps_question').get(kwpsId);
+    //   toDelete.destroy();
+    // },
+    // deleteAnswerOption: function (event) {
+    //   event.preventDefault();
+    //   var kwpdId = $(event.target).closest('div.action').data('kwps-post-id');
+    //   var toDelete = this.model.get('kwps_answer_option').get(kwpsId);
+    //   toDelete.destroy();
+    // },
+    /* TODO: REWRITE FUNCTION TO MAKE IT MORE DYNAMIC, FIND POST TYPE AND DELETE ALL OF THEM IN CURRENT COLLECTION */
     deletePostType: function(e) {
+      console.log($(e.currentTarget));
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
-      var kwpsPolls = this.collection.where({post_type: 'kwps_poll'});
-
-      switch (postType) {
-        case 'kwps_intro':
-          for(var i = 0; i < kwpsPollLen; i++) {
-            this.deleteIntro(kwpsPolls[i].id, true);
-          }
-          break;
-        case 'kwps_outro':
-          for(var i = 0; i < kwpsPollLen; i++) {
-            this.deleteOutro(kwpsPolls[i].id, true);
-          }
-          break;
-        case 'kwps_question':
-          for(var i = 0; i < kwpsPollLen; i++) {
-            this.deleteQuestion(kwpsPolls[i].id, true);
-          }
-          break;
-        case 'kwps_answer_option':
-          for(var i =0; i< kwpsPollLen; i++) {
-            this.deleteAnswer(kwpsPolls[i].id, true);
-          }
-          break;
-        default:
-          console.log('no post type was given');
+      if (postType === 'kwps_answer_option') {
+        var sortOrder = $(e.currentTarget).data('kwps-sort-order');
+        sortOrder.toString();
+      } else {
+        var sortOrder = 'not a sortable post type';
       }
-    },
-    deleteIntro: function (post_parent) {
-      e.preventDefault();
-      var that = this;
-      var model = '';
+      var kwpsPolls = this.collection.where({post_type: postType});
+      console.log(postType);
+      console.log(sortOrder);
+      console.log(kwpsPolls[0].id);
+      var toDelete = this.model.get(postType).get(kwpsPolls[0].id);
+      toDelete.destroy();
+      var kwpsPollLen = kwpsPolls.length;
+      // switch (postType) {
+      //   case 'kwps_intro':
+      //       this.deleteIntro(kwpsPolls[0].id, true);
+      //     break;
+      //   case 'kwps_outro':
+      //       this.deleteOutro(kwpsPolls[0].id, true);
+      //     break;
+      //   case 'kwps_question':
+      //     for(var i = 0; i < kwpsPollLen; i++) {
+      //       this.deleteQuestion(kwpsPolls[i].id, true);
+      //     }
+      //     break;
+      //   case 'kwps_answer_option':
+      //     for(var i =0; i< kwpsPollLen; i++) {
+      //       this.deleteAnswerOption(kwpsPolls[i].id, true);
+      //     }
+      //     break;
+      //   default:
+      //     console.log('no post type was given');
+      // }
     },
     createNew: function (e) {
       e.preventDefault();
