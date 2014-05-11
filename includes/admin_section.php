@@ -1,7 +1,7 @@
 <?php
 
 namespace includes;
-require_once __DIR__ . '/version_list_table.php';
+require_once __DIR__ . '/testCollections_list_table.php';
 
 
 class admin_section {
@@ -13,8 +13,8 @@ class admin_section {
 
                 if( null === $current_post ) {
                     echo 'post not found';
-                } elseif ( 'kwps_version' !== $current_post->post_type ) {
-                    echo 'post not of type kwps_poll';
+                } elseif ( 'kwps_test_collection' !== $current_post->post_type ) {
+                    echo 'post not of type kwps_test_collection';
                 } else {
                     $main_poll_as_array = Version::get_as_array($current_post->ID);
                     $main_poll_questions = Question::get_all_children($current_post->ID);
@@ -69,7 +69,7 @@ class admin_section {
     }
 
     public static function display_tests() {
-        $poll_list = new Version_List_Table();
+        $poll_list = new Test_Collections_List_Table();
         $poll_list->prepare_items();
 
         include_once __DIR__ . '/../views/poll_list.php';

@@ -30,6 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 require_once __DIR__ . '/includes/admin_section.php';
+require_once __DIR__ . '/includes/test_collection.php';
 require_once __DIR__ . '/includes/version.php';
 require_once __DIR__ . '/includes/question.php';
 require_once __DIR__ . '/includes/entry.php';
@@ -84,6 +85,10 @@ add_filter('status_update_pre', array('\includes\test_modus','set_to_duplicate_w
 
 
 add_action('admin_menu', 'add_plugin_admin_menu');
+
+add_action( 'wp_ajax_kwps_save_test_collection', array('\includes\test_collection','save_from_request'));
+add_action( 'wp_ajax_kwps_update_test_collection', array('\includes\test_collection','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_test_collection', array('\includes\test_collection','delete_from_request'));
 
 add_action( 'wp_ajax_kwps_save_version', array('\includes\version','save_from_request'));
 add_action( 'wp_ajax_kwps_update_version', array('\includes\version','update_from_request'));

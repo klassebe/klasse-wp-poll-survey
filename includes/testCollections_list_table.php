@@ -26,7 +26,7 @@ if(!class_exists('Base_List_Table')){
  *
  * Our theme for this list table is going to be movies.
  */
-class Version_List_Table extends Base_List_Table {
+class Test_Collections_List_Table extends Base_List_Table {
 
 
     /** ************************************************************************
@@ -306,7 +306,7 @@ class Version_List_Table extends Base_List_Table {
          * be able to use your precisely-queried data immediately.
          */
         $arguments = array(
-            'post_type' => 'kwps_version',
+            'post_type' => 'kwps_test_collection',
             'orderby' => $order_by,
             'order' => $order,
             'post_per_page' => 5,
