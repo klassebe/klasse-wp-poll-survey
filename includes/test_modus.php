@@ -70,6 +70,19 @@
             }
         }
 
+        public static function set_to_duplicate_when_title_exists(){
+            global $post;
+
+            if($post->post_type == 'kwps_test_modus'){
+                if(! \includes\Test_Modus::validate_for_insert() ){
+                    $status = 'duplicate';
+                } elseif( isset($_POST['publish']) && current_user_can( 'publish_posts' )){
+                    $status = 'publish';
+                }
+            }
+            return $status;
+        }
+
         public static function validate_for_insert(){
             global $post;
 
@@ -101,6 +114,23 @@
                 return false;
             } else {
                 return false;
+            }
+        }
+
+        public static function admin_notices(){
+            global $current_screen, $post, $wp_post_statuses;
+
+            if ( $current_screen->parent_base == 'edit' && $post->post_type == 'kwps_test_modus'){
+                if(strlen($post->post_title) == 0){
+                    echo '<div class="error"><p>Post could not be saved - Title is empty</p></div>';
+                }
+
+                if( \includes\Test_Modus::has_duplicate($post->ID, $post->post_title)){
+                    echo '<div class="error">';
+                    echo '<p>Test Modus was saved as duplicate - new settings will not be used</p>';
+                    echo '<p>Either rename this Test Modus or remove the Test Modus already in use</p>';
+                    echo '</div>';
+                }
             }
         }
     }
