@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 require_once __DIR__ . '/includes/admin_section.php';
-require_once __DIR__ . '/includes/poll.php';
+require_once __DIR__ . '/includes/version.php';
 require_once __DIR__ . '/includes/question.php';
 require_once __DIR__ . '/includes/entry.php';
 require_once __DIR__ . '/includes/intro.php';
@@ -61,7 +61,7 @@ require 'vendor/autoload.php';
 add_action( 'wp_enqueue_styles', 'enqueue_styles' );
 add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 
-add_action('init', array('\includes\poll','register_post_type'));
+add_action('init', array('\includes\version','register_post_type'));
 add_action('init', array('\includes\answer_option','register_post_type'));
 add_action('init', array('\includes\question','register_post_type'));
 add_action('init', array('\includes\entry','register_post_type'));
@@ -69,21 +69,68 @@ add_action('init', array('\includes\intro','register_post_type'));
 add_action('init', array('\includes\outro','register_post_type'));
 add_action('init', array('\includes\test_modus','register_post_type'));
 
+function my_custom_post_status(){
+    register_post_status( 'duplicate', array(
+        'label'                     => _x( 'Duplicate', 'kwps_test_modus' ),
+        'public'                    => true,
+        'exclude_from_search'       => false,
+        'show_in_admin_all_list'    => true,
+        'show_in_admin_status_list' => true,
+        'label_count'               => _n_noop( 'Duplicate <span class="count">(%s)</span>', 'Duplicate <span class="count">(%s)</span>' ),
+    ) );
+}
+
+
+function kwps_fix_post_state($states){
+    global $post;
+
+    if( 'kwps_test_modus' == $post->post_type && 'duplicate' == $post->post_status ){
+//        $states[] = __('Duplicate');
+        $states[] = 'Duplicate';
+    }
+    return $states;
+}
+add_filter( 'display_post_states', 'kwps_fix_post_state', 10,2);
+
+
+add_action( 'init', 'my_custom_post_status' );
+
 add_action( 'admin_notices', 'custom_error_notice' );
 function custom_error_notice(){
     global $current_screen, $post;
-    if ( $current_screen->parent_base == 'edit' ){
-        if($post->post_title != 'kwps_survey'){
-            echo '<div class="error"><p>Error - Title should be kwps_survey</p></div>';
+//    var_dump($post);
+    if ( $current_screen->parent_base == 'edit' && $post->post_type == 'kwps_test_modus'){
+        if(strlen($post->post_title) == 0){
+            echo '<div class="error"><p>Post could not be saved - Title is empty</p></div>';
+        }
+
+        if( \includes\Test_Modus::has_duplicate($post->ID, $post->post_title)){
+            echo '<div class="error"><p>Post could not be saved - Duplicate already exists</p></div>';
         }
     }
 }
 
+add_filter('status_save_pre', 'validate_post');
+add_filter('status_update_pre', 'validate_post');
+
+function validate_post($status){
+    global $post;
+
+    if($post->post_type == 'kwps_test_modus'){
+        if(! \includes\Test_Modus::validate_for_insert() ){
+            $status = 'duplicate';
+        }
+    }
+    return $status;
+}
+
+
+
 add_action('admin_menu', 'add_plugin_admin_menu');
 
-add_action( 'wp_ajax_kwps_save_poll', array('\includes\poll','save_from_request'));
-add_action( 'wp_ajax_kwps_update_poll', array('\includes\poll','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_poll', array('\includes\poll','delete_from_request'));
+add_action( 'wp_ajax_kwps_save_version', array('\includes\version','save_from_request'));
+add_action( 'wp_ajax_kwps_update_version', array('\includes\version','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_version', array('\includes\version','delete_from_request'));
 
 add_action( 'wp_ajax_kwps_save_question', array('\includes\question','save_from_request'));
 add_action( 'wp_ajax_kwps_update_question', array('\includes\question','update_from_request'));
@@ -113,7 +160,7 @@ register_activation_hook(__FILE__, 'kwps_activate');
 register_deactivation_hook(__FILE__, 'kwps_deactivate');
 
 // shortcode -> use feip_form_posts template in front end for vote function!
-add_shortcode('kwps_poll', array('\includes\poll', 'shortcode') );
+add_shortcode('kwps_version', array('\includes\version', 'shortcode') );
 
 // add_action('shutdown', function() {
 //  echo '<script>jQuery(function($){
@@ -143,8 +190,8 @@ add_filter('template_include', 'kwps_template_include', 99);
 function kwps_template_include($template){
     global $post;
 
-    if('kwps_poll' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
-        \includes\Poll::display_poll_as_json();
+    if('kwps_version' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
+        \includes\version::display_version_as_json();
         exit;
     }
 

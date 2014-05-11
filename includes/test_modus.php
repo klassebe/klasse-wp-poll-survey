@@ -69,4 +69,38 @@
                 );
             }
         }
+
+        public static function validate_for_insert(){
+            global $post;
+
+            if(strlen($post->post_title) == 0){
+                return false;
+            } else {
+                if(static::has_duplicate($post->ID, $post->post_title)) {
+                    return false;
+                }
+            }
+
+
+        }
+
+        public static function has_duplicate($id, $title){
+            $args = array(
+                'post_type' => static::$post_type,
+                'post_status' => 'publish',
+            );
+
+            $posts = get_posts($args);
+            if( sizeof($posts) > 0 ){
+//                var_dump($posts);
+                foreach($posts as $post){
+                    if($post->ID != $id && $post->post_title == $title){
+                        return true;
+                    }
+                }
+                return false;
+            } else {
+                return false;
+            }
+        }
     }

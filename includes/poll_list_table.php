@@ -38,8 +38,8 @@ class Poll_List_Table extends Base_List_Table {
 
         //Set parent defaults
         parent::__construct( array(
-            'singular'  => 'poll',     //singular name of the listed records
-            'plural'    => 'polls',    //plural name of the listed records
+            'singular'  => 'version',     //singular name of the listed records
+            'plural'    => 'versions',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
 
@@ -306,7 +306,7 @@ class Poll_List_Table extends Base_List_Table {
          * be able to use your precisely-queried data immediately.
          */
         $arguments = array(
-            'post_type' => 'kwps_poll',
+            'post_type' => 'kwps_version',
             'orderby' => $order_by,
             'order' => $order,
             'post_per_page' => 5,

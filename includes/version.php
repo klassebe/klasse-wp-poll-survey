@@ -6,13 +6,13 @@ require_once 'kwps_post_type.php';
 require_once 'question.php';
 require_once 'answer_option.php';
 
-class Poll extends Kwps_Post_Type{
-    public static $label = 'kwps-poll';
+class Version extends Kwps_Post_Type{
+    public static $label = 'kwps-version';
 
-    public static $post_type = 'kwps_poll';
+    public static $post_type = 'kwps_version';
 
     public static $rewrite = array(
-            'slug' => 'polls',
+            'slug' => 'versions',
             'with_front' => false,
         );
 
@@ -22,16 +22,16 @@ class Poll extends Kwps_Post_Type{
                 'title',
             ),
             'labels' => array(
-                'name' => 'Polls',
-                'singular_name' => 'Poll',
-                'add_new' => 'Add New Poll',
-                'add_new_item' => 'Add New Poll',
-                'edit_item' => 'Edit Poll',
-                'new_item' => 'New Poll',
-                'view_item' => 'View Poll',
-                'search_items' => 'Search Polls',
-                'not_found' => 'No Polls Found',
-                'not_found_in_trash' => 'No Polls Found In Trash',
+                'name' => 'versions',
+                'singular_name' => 'version',
+                'add_new' => 'Add New version',
+                'add_new_item' => 'Add New version',
+                'edit_item' => 'Edit version',
+                'new_item' => 'New version',
+                'view_item' => 'View version',
+                'search_items' => 'Search versions',
+                'not_found' => 'No versions Found',
+                'not_found_in_trash' => 'No versions Found In Trash',
             ),
             'show_in_menu' => false,
             'show_ui' => false,
@@ -120,7 +120,7 @@ class Poll extends Kwps_Post_Type{
             $dump .= '</div>';
             $dump .= '<div class="kwps-answers">';
 
-            $dump .= '<form id="form-poll-' . $id . '" class="form-poll" action="/">';
+            $dump .= '<form id="form-version-' . $id . '" class="form-version" action="/">';
             $dump .= Answer_Option::get_all_html($question['ID']);
  
             $dump .= '</form>';
@@ -133,7 +133,7 @@ class Poll extends Kwps_Post_Type{
             $dump .= '</div>'; // kwps full wrapper
             $dump .= '<input type=hidden id=adminUrl value='. admin_url() .'>';
         } else {
-            $dump .= "Poll kan niet getoond worden.";
+            $dump .= "version kan niet getoond worden.";
         }
 
         return $dump;

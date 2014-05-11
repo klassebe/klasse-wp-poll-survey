@@ -290,7 +290,7 @@ jQuery(function ($) {
 
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');
-      data.versions = this.collection.where({post_type: "kwps_poll"});
+      data.versions = this.collection.where({post_type: "kwps_version"});
       for (var i = 0; i < data.versions.length; i++) {
         data.versions[i] = data.versions[i].toJSON();
         var kwpsIntro = this.collection.findWhere({post_type: "kwps_intro", post_parent : data.versions[i].ID});
@@ -423,7 +423,7 @@ jQuery(function ($) {
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
       console.log(this.collection);
-      var kwpsPolls = this.collection.where({post_type: 'kwps_poll'});
+      var kwpsPolls = this.collection.where({post_type: 'kwps_version'});
       // get the id of the post parent(main version)
       console.log('event model');
       console.log(e);
