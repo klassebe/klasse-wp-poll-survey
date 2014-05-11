@@ -133,7 +133,7 @@ class Version extends Kwps_Post_Type{
             $dump .= '</div>'; // kwps full wrapper
             $dump .= '<input type=hidden id=adminUrl value='. admin_url() .'>';
         } else {
-            $dump .= "version kan niet getoond worden.";
+            $dump .= "versie kan niet getoond worden.";
         }
 
         return $dump;

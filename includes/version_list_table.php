@@ -26,7 +26,7 @@ if(!class_exists('Base_List_Table')){
  *
  * Our theme for this list table is going to be movies.
  */
-class Poll_List_Table extends Base_List_Table {
+class Version_List_Table extends Base_List_Table {
 
 
     /** ************************************************************************
