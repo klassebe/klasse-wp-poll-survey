@@ -156,7 +156,7 @@ opties
                                         <td class="delete column-action column-answer">
                                             <div class="action">
                                                 <a class="delete-answer-option">
-                                                    <span class="del" data-post-type="kwps_answer_option" data-kwps-sort-order="{{_kwps_sort_order}}">
+                                                    <span class="del" data-post-type="kwps_answer_option" data-kwps-sort-order="{{@index}}">
                                                         <span data-code="f182" class="dashicons dashicons-trash"></span>
                                                     </span>
                                                 </a>

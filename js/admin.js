@@ -332,7 +332,7 @@ jQuery(function ($) {
       };
       data.answers = _.flatten(data.answers);
       data.answers = _.groupBy(data.answers, "_kwps_sort_order");
-      data.questions = questions;
+      data.questions = questions;console.log(data);
       return data;
     },
     addVersion: function (event) {
@@ -382,12 +382,12 @@ jQuery(function ($) {
     // },
     /* TODO: REWRITE FUNCTION TO MAKE IT MORE DYNAMIC, FIND POST TYPE AND DELETE ALL OF THEM IN CURRENT COLLECTION */
     deletePostType: function(e) {
-      console.log($(e.currentTarget));
       e.preventDefault();
+      // console.log($(e.currentTarget));
       var postType = $(e.currentTarget).data('post-type');
       if (postType === 'kwps_answer_option') {
         var sortOrder = $(e.currentTarget).data('kwps-sort-order');
-        sortOrder.toString();
+        console.log('sortable post type');
       } else {
         var sortOrder = 'not a sortable post type';
       }
@@ -397,22 +397,22 @@ jQuery(function ($) {
       console.log(kwpsPolls[0].id);
       var toDelete = this.model.get(postType).get(kwpsPolls[0].id);
       toDelete.destroy();
-      var kwpsPollLen = kwpsPolls.length;
+      // var kwpsPollLen = kwpsPolls.length;
       // switch (postType) {
       //   case 'kwps_intro':
-      //       this.deleteIntro(kwpsPolls[0].id, true);
+      //       this.deleteIntro(kwpsPolls[0].id);
       //     break;
       //   case 'kwps_outro':
-      //       this.deleteOutro(kwpsPolls[0].id, true);
+      //       this.deleteOutro(kwpsPolls[0].id);
       //     break;
       //   case 'kwps_question':
       //     for(var i = 0; i < kwpsPollLen; i++) {
-      //       this.deleteQuestion(kwpsPolls[i].id, true);
+      //       this.deleteQuestion(kwpsPolls[i].id);
       //     }
       //     break;
       //   case 'kwps_answer_option':
       //     for(var i =0; i< kwpsPollLen; i++) {
-      //       this.deleteAnswerOption(kwpsPolls[i].id, true);
+      //       this.deleteAnswerOption(kwpsPolls[i].id);
       //     }
       //     break;
       //   default:
