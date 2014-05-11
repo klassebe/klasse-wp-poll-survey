@@ -4,7 +4,7 @@ namespace includes;
 
     class Duplicate {
 
-        public function register_post_status(){
+        public static function register_post_status(){
             register_post_status( 'duplicate', array(
                 'label'                     => _x( 'Duplicate', 'kwps_test_modus' ),
                 'public'                    => true,
