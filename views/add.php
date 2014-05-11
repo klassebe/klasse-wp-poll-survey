@@ -4,13 +4,11 @@
 
 <script id="chooseTestModus_template" type="text/x-handlebars-template">
 <label>Test name</label>
-<input>
-<div>
-<button data-type="kwps_poll">Poll</button>
-</div>
-<div>
-opties
-</div>
+<input name="post_title">
+
+    <div>
+        <button data-type="kwps_poll">Poll</button>
+    </div>
 </script>
 
 <script id="edit_template" type="text/x-handlebars-template">
@@ -47,6 +45,7 @@ opties
             <li><a href="#tabs-add"><?php _e( 'Edit content', 'klasse-wp-poll-survey' ) ?></a></li>
             <li><a href="#tabs-results"><?php _e( 'Manage results', 'klasse-wp-poll-survey' ) ?></a></li>
             <li><a href="#tabs-entries"><?php _e( 'Manage entries', 'klasse-wp-poll-survey' ) ?></a></li>
+            <li><a href="#tabs-settings"><?php _e( 'Manage settings', 'klasse-wp-poll-survey' ) ?></a></li>
         </ul>
         <div id="tabs-add">
             <div>
@@ -231,6 +230,22 @@ opties
                 Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat.
                 Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod
                 felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+        </div>
+        <div id="tabs-settings">
+            <div>
+                <div>
+                    <label for="kwps_uniqueness"><?php _e('Limit') ?></label>
+                    <select id="kwps_uniqueness" name="_kwps_uniqueness" class="update-main">
+                        {{#each kwpsUniquenessTypes}}
+                        <option value="{{function}}">{{label}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div>
+                    <label for="kwps_must_be_logged_in"><?php _e('Must be logged in') ?></label>
+                    <input type="checkbox" id="kwps_must_be_logged_in" name="_kwps_must_be_logged_in" class="update-main">
+                </div>
+            </div>
         </div>
     </div>
 

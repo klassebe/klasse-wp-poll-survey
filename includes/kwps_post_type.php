@@ -4,7 +4,7 @@ namespace includes;
 
 require_once __DIR__ . '/post_type_interface.php';
 
-abstract class Kwps_Post_Type implements \includes\Post_Type_Interface{
+abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
     public static $post_type = '';
 

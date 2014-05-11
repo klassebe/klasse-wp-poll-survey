@@ -111,7 +111,9 @@ jQuery(function ($) {
     home : function () {
       // console.log("ROUTING TO: home")
       if (app.kwpsPollsCollection !== undefined) {
-        app.views.index = new app.KwpsView({collection: app.kwpsPollsCollection});
+        app.views.index = new app.KwpsView({
+          collection: app.kwpsPollsCollection
+        });
         app.views.index.initialize();
       } 
     },
@@ -274,7 +276,10 @@ jQuery(function ($) {
       'click .toggle-details': 'toggleDetails',
       'click button.add': 'createNew',
       'click span.del': 'deletePostType',
-      'change #post_title': 'changeTitle'
+      // 'click .delete-version': 'deleteVersion',
+      // 'click .delete-intro': 'deleteIntro',
+      'change #post_title': 'changeTitle',
+      'change .update-main': 'updateMain'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -333,6 +338,7 @@ jQuery(function ($) {
       data.answers = _.flatten(data.answers);
       data.answers = _.groupBy(data.answers, "_kwps_sort_order");
       data.questions = questions;console.log(data);
+      data.kwpsUniquenessTypes = kwpsUniquenessTypes;
       return data;
     },
     addVersion: function (event) {
@@ -344,80 +350,65 @@ jQuery(function ($) {
       });
       app.test.set('versions', newVersion, {remove: false});
     },
-    // deleteVersion: function(event) {
-    //   //TODO php function delete poll with(id) and all child posts + child posts of questions
-    //   event.preventDefault();
-    //   var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
-    //   var toDelete = this.model.get('versions').get(kwpdId);
-    //   toDelete.destroy();
-    // },
-    // deleteIntro: function (event) {
-    //   event.preventDefault();
-    //   var kwpdId = $(event.target).closest('div.action').data('kwps-post-id');
-    //   // var kwpdType = $(event.target).closest('div.action').data('kwps-type');
-    //   console.log(kwpsId);
-    //   var toDelete = this.model.get('kwps_intro').get(kwpsId);
-    //   toDelete.destroy();
-    // },
-    // deleteOutro: function (event) {
-    //   console.log('function outro event');
-    //   console.log(event);
-    //   event.preventDefault();
-    //   var kwpdId = $(event.target).closest('div.action').data('kwps-post-id');
-    //   console.log(kwpsId);
-    //   var toDelete = this.model.get('kwps_outro').get(kwpsId);
-    //   toDelete.destroy();
-    // },
-    // deleteQuestion: function (event) {
-    //   event.preventDefault();
-    //   var kwpdId = $(event.target).closest('div.action').data('kwps-post-id');
-    //   var toDelete = this.model.get('kwps_question').get(kwpsId);
-    //   toDelete.destroy();
-    // },
-    // deleteAnswerOption: function (event) {
-    //   event.preventDefault();
-    //   var kwpdId = $(event.target).closest('div.action').data('kwps-post-id');
-    //   var toDelete = this.model.get('kwps_answer_option').get(kwpsId);
-    //   toDelete.destroy();
-    // },
-    /* TODO: REWRITE FUNCTION TO MAKE IT MORE DYNAMIC, FIND POST TYPE AND DELETE ALL OF THEM IN CURRENT COLLECTION */
+    deleteVersion: function(event) {
+      //TODO php function delete poll with(id) and all child posts + child posts of questions
+      event.preventDefault();
+      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
+      var toDelete = this.model.get('versions').get(kwpdId);
+      toDelete.destroy();
+    },
+    deleteIntro: function (event) {
+      event.preventDefault();
+      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
+      // var kwpdType = $(event.target).closest('div.action').data('kwps-type');
+      console.log(kwpsId);
+      var toDelete = this.model.get('kwps_intro').get(kwpsId);
+      toDelete.destroy();
+    },
+    deleteOutro: function (event) {
+      event.preventDefault();
+      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
+      console.log(kwpsId);
+      var toDelete = this.model.get('kwps_outro').get(kwpsId);
+      toDelete.destroy();
+    },
+    deleteQuestion: function (event) {
+      event.preventDefault();
+      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
+      var toDelete = this.model.get('kwps_question').get(kwpsId);
+      toDelete.destroy();
+    },
+    deleteAnswerOption: function (event) {
+      event.preventDefault();
+      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
+      var toDelete = this.model.get('kwps_answer_option').get(kwpsId);
+      toDelete.destroy();
+    },
     deletePostType: function(e) {
       e.preventDefault();
-      // console.log($(e.currentTarget));
       var postType = $(e.currentTarget).data('post-type');
-      if (postType === 'kwps_answer_option') {
-        var sortOrder = $(e.currentTarget).data('kwps-sort-order');
-        console.log('sortable post type');
-      } else {
-        var sortOrder = 'not a sortable post type';
+      var kwpsPolls = this.collection.where({post_type: 'kwps_poll'});
+      var kwpsPollLen = kwpsPolls.length;
+      switch (postType) {
+        case 'kwps_intro':
+            this.deleteIntro(kwpsPolls[i].id, true);
+          break;
+        case 'kwps_outro':
+            this.deleteOutro(kwpsPolls[i].id, true);
+          break;
+        case 'kwps_question':
+          for(var i = 0; i < kwpsPollLen; i++) {
+            this.deleteQuestion(kwpsPolls[i].id, true);
+          }
+          break;
+        case 'kwps_answer_option':
+          for(var i =0; i< kwpsPollLen; i++) {
+            this.deleteAnswerOption(kwpsPolls[i].id, true);
+          }
+          break;
+        default:
+          console.log('no post type was given');
       }
-      var kwpsPolls = this.collection.where({post_type: postType});
-      console.log(postType);
-      console.log(sortOrder);
-      console.log(kwpsPolls[0].id);
-      var toDelete = this.model.get(postType).get(kwpsPolls[0].id);
-      toDelete.destroy();
-      // var kwpsPollLen = kwpsPolls.length;
-      // switch (postType) {
-      //   case 'kwps_intro':
-      //       this.deleteIntro(kwpsPolls[0].id);
-      //     break;
-      //   case 'kwps_outro':
-      //       this.deleteOutro(kwpsPolls[0].id);
-      //     break;
-      //   case 'kwps_question':
-      //     for(var i = 0; i < kwpsPollLen; i++) {
-      //       this.deleteQuestion(kwpsPolls[i].id);
-      //     }
-      //     break;
-      //   case 'kwps_answer_option':
-      //     for(var i =0; i< kwpsPollLen; i++) {
-      //       this.deleteAnswerOption(kwpsPolls[i].id);
-      //     }
-      //     break;
-      //   default:
-      //     console.log('no post type was given');
-      // }
     },
     createNew: function (e) {
       e.preventDefault();
@@ -561,6 +552,18 @@ jQuery(function ($) {
     },
     changeTitle: function(event) {
       this.model.set('post_title', $(event.target).val());
+    },
+    updateMain: function(event) {
+      var mainPost = this.collection.get(GetURLParameter('id'));
+      var attribute = $(event.target).attr("name");
+      var value = $(event.target).val();
+
+      if(value === "on") {
+        value = true;
+      }
+
+      mainPost.set(attribute, value);
+      mainPost.save();
     }
   });
 

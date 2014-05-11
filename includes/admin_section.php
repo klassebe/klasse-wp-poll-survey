@@ -2,6 +2,7 @@
 
 namespace includes;
 require_once __DIR__ . '/testCollections_list_table.php';
+require_once __DIR__ . '/uniqueness.php';
 
 
 class admin_section {
@@ -13,8 +14,8 @@ class admin_section {
 
                 if( null === $current_post ) {
                     echo 'post not found';
-                } elseif ( 'kwps_test_collection' !== $current_post->post_type ) {
-                    echo 'post not of type kwps_test_collection';
+                } elseif ( 'kwps_poll' !== $current_post->post_type ) {
+                    echo 'post not of type kwps_poll';
                 } else {
                     $main_poll_as_array = Version::get_as_array($current_post->ID);
                     $main_poll_questions = Question::get_all_children($current_post->ID);
@@ -34,7 +35,7 @@ class admin_section {
                     $versions = Version::get_all_children($current_post->ID);
 
                     foreach($versions as $version){
-                        $version_as_array = Version::get_as_array($version['ID']);
+                        $version_as_array = Poll::get_as_array($version['ID']);
                         $version_questions = Question::get_all_children($version['ID']);
 
                         $version_intros = Intro::get_all_children($version['ID']);
@@ -52,10 +53,13 @@ class admin_section {
 
                 ?>
                     <script>var kwpsTests=<?php echo json_encode($polls); ?></script>
-                    <script>var kwpsSettings=<?php echo  $global_settings?></script>
+                    <script>var kwpsSettings=<?php echo json_encode($global_settings) ?></script>
                 <?php
                 }
-            } else {
+                ?>
+                <script>var kwpsUniquenessTypes=<?php echo json_encode(Uniqueness::get_types()) ?></script>
+                <?php
+                } else {
                 echo 'No post id given!';
             }
         } else {
