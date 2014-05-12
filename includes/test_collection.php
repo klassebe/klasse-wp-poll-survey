@@ -42,26 +42,12 @@ class Test_Collection extends Kwps_Post_Type{
         'hierarchical' => true,
     );
 
-//    public static function save_post($post_data){
-//        if( !isset($post_data['_kwps_uid']) ){
-//
-//        }
-//        $post_id = wp_insert_post($post_data);
-//
-//        $post = get_post($post_id);
-//
-//        if( $post_id != 0 ){
-//            foreach($post_data as $field => $value){
-//                if( strpos($field, 'kwps') ) {
-//                    update_post_meta($post_id, $field, $value);
-//                }
-//            }
-//        } else {
-//            return null;
-//        }
-//
-//        return $post;
-//    }
+    public static function get_meta_data($test_collection_id){
+        return array(
+            '_kwps_logged_in_user_limit' => get_post_meta($test_collection_id, '_kwps_logged_in_user_limit', true),
+            '_kwps_logged_out_user_limit' => get_post_meta($test_collection_id, '_kwps_logged_out_user_limit', true),
+        );
+    }
 
     public static function validate_for_insert($post_as_array = array())
     {

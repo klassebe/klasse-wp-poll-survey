@@ -39,6 +39,7 @@ require_once __DIR__ . '/includes/outro.php';
 require_once __DIR__ . '/includes/answer_option.php';
 require_once __DIR__ . '/includes/test_modus.php';
 require_once __DIR__ . '/includes/duplicate.php';
+require_once __DIR__ . '/includes/uniqueness.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -74,6 +75,8 @@ add_action('init', array('\includes\test_modus','register_post_type'));
 add_action('init', array('\includes\test_collection','register_post_type'));
 
 add_action( 'init', array('\includes\duplicate','register_post_status' ));
+
+add_action( 'init', array('\includes\uniqueness','set_cookie' ));
 
 add_filter( 'display_post_states', array('\includes\duplicate','display_post_status'), 10,2);
 
@@ -174,12 +177,12 @@ function kwps_add_api_rewrite_rules(){
 add_filter('template_include', 'kwps_template_include', 99);
 
 function kwps_template_include($template){
-    global $post;
-
-    if('kwps_version' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
-        \includes\version::display_version_as_json();
-        exit;
-    }
+//    global $post;
+//
+//    if('kwps_version' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
+//        \includes\version::display_version_as_json();
+//        exit;
+//    }
 
     return $template;
 }
