@@ -133,4 +133,15 @@
                 }
             }
         }
+
+        public static function get_published_modi(){
+            $args = array(
+                'post_type' => static::$post_type,
+                'post_status' => 'publish',
+                'numberposts' => -1,
+            );
+
+            $posts = (array) get_posts($args);
+            return $posts;
+        }
     }
