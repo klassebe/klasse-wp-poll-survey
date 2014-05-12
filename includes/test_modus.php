@@ -71,25 +71,35 @@
         }
 
         public static function set_to_duplicate_when_title_exists($status){
-            global $post;
+            if( isset($_POST) && sizeof($_POST) > 0 ) {
+                global $post;
 
-            if($post && $post->post_type == 'kwps_test_modus'){
-                if(! \includes\Test_Modus::validate_for_insert() ){
-                    $status = 'duplicate';
-                } elseif( isset($_POST['publish']) && current_user_can( 'publish_posts' )){
-                    $status = 'publish';
+                if($post->post_type == 'kwps_test_modus'){
+                    if(! static::title_length_is_ok() ){
+                        $status = 'draft';
+                    } elseif ( static::has_duplicate() ){
+                        $status = 'duplicate';
+                    } elseif( isset($_POST['publish']) && current_user_can( 'publish_posts' )){
+                        $status = 'publish';
+                    }
                 }
             }
             return $status;
+
+
+        }
+
+        private static function title_length_is_ok(){
+            global $post;
+
+            return strlen($post->post_title) > 0;
         }
 
         public static function validate_for_insert(){
-            global $post;
-
-            if(strlen($post->post_title) == 0){
+            if( ! static::title_length_is_ok() ){
                 return false;
             } else {
-                if(static::has_duplicate($post->ID, $post->post_title)) {
+                if( static::has_duplicate() ) {
                     return false;
                 }
             }
@@ -97,17 +107,19 @@
 
         }
 
-        public static function has_duplicate($id, $title){
+        public static function has_duplicate(){
+            global $post;
+
             $args = array(
                 'post_type' => static::$post_type,
                 'post_status' => 'publish',
             );
 
             $posts = get_posts($args);
+
             if( sizeof($posts) > 0 ){
-//                var_dump($posts);
-                foreach($posts as $post){
-                    if($post->ID != $id && $post->post_title == $title){
+                foreach($posts as $retrieved_post){
+                    if($retrieved_post->ID != $post->ID && $retrieved_post->post_title == $post->post_title){
                         return true;
                     }
                 }
@@ -118,11 +130,11 @@
         }
 
         public static function admin_notices(){
-            global $current_screen, $post, $wp_post_statuses;
+            global $current_screen, $post;
 
             if ( $current_screen->parent_base == 'edit' && $post->post_type == 'kwps_test_modus'){
                 if(strlen($post->post_title) == 0){
-                    echo '<div class="error"><p>Post could not be saved - Title is empty</p></div>';
+                    echo '<div class="error"><p>Post saved as draft - Title is empty</p></div>';
                 }
 
                 if( \includes\Test_Modus::has_duplicate($post->ID, $post->post_title)){
