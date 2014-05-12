@@ -55,11 +55,13 @@ class Entry extends Kwps_Post_Type{
 
 
         $request_data = static::get_post_data_from_request();
+        $request_data['_kwps_cookie_value'] = $_COOKIE['klasse_wp_poll_survey'];
+
         if( static::validate_for_insert($request_data) ) {
             static::save_post($request_data);
             wp_send_json( static::get_results_by_question( wp_get_post_parent_id( $request_data['post_parent'] )));
         } else {
-            return wp_send_json(null);
+            wp_send_json(null);
         }
 
         die();

@@ -39,6 +39,7 @@ require_once __DIR__ . '/includes/outro.php';
 require_once __DIR__ . '/includes/answer_option.php';
 require_once __DIR__ . '/includes/test_modus.php';
 require_once __DIR__ . '/includes/duplicate.php';
+require_once __DIR__ . '/includes/uniqueness.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -74,6 +75,8 @@ add_action('init', array('\includes\test_modus','register_post_type'));
 add_action('init', array('\includes\test_collection','register_post_type'));
 
 add_action( 'init', array('\includes\duplicate','register_post_status' ));
+
+add_action( 'init', array('\includes\uniqueness','set_cookie' ));
 
 add_filter( 'display_post_states', array('\includes\duplicate','display_post_status'), 10,2);
 
