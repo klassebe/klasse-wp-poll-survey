@@ -70,10 +70,10 @@
             }
         }
 
-        public static function set_to_duplicate_when_title_exists(){
+        public static function set_to_duplicate_when_title_exists($status){
             global $post;
 
-            if($post->post_type == 'kwps_test_modus'){
+            if($post && $post->post_type == 'kwps_test_modus'){
                 if(! \includes\Test_Modus::validate_for_insert() ){
                     $status = 'duplicate';
                 } elseif( isset($_POST['publish']) && current_user_can( 'publish_posts' )){
