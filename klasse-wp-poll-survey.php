@@ -177,12 +177,12 @@ function kwps_add_api_rewrite_rules(){
 add_filter('template_include', 'kwps_template_include', 99);
 
 function kwps_template_include($template){
-    global $post;
-
-    if('kwps_version' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
-        \includes\version::display_version_as_json();
-        exit;
-    }
+//    global $post;
+//
+//    if('kwps_version' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
+//        \includes\version::display_version_as_json();
+//        exit;
+//    }
 
     return $template;
 }

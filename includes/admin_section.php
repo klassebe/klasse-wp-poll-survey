@@ -52,9 +52,13 @@ class admin_section {
             <script>var kwpsPolls=[]</script>
             <?php
         }
+        $kwps_uniqueness_options = array(
+            'logged_in' => Uniqueness::get_options_for_logged_in_users(),
+            'logged_out' => Uniqueness::get_options_for_logged_out_users(),
+        );
             ?>
 
-        <script>var kwpsUniquenessTypes=<?php echo json_encode(Uniqueness::get_types()) ?></script>
+        <script>var kwpsUniquenessTypes=<?php echo json_encode($kwps_uniqueness_options) ?></script>
         <script>var kwpsTestModi=<?php echo json_encode(Test_Modus::get_published_modi()) ?></script>
         <?php
 

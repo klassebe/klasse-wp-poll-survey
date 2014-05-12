@@ -2,6 +2,7 @@
 namespace includes;
 
 require_once 'kwps_post_type.php';
+require_once 'entry.php';
 
 class Entry extends Kwps_Post_Type{
 
@@ -56,6 +57,8 @@ class Entry extends Kwps_Post_Type{
 
         $request_data = static::get_post_data_from_request();
         $request_data['_kwps_cookie_value'] = $_COOKIE['klasse_wp_poll_survey'];
+        $request_data['_kwps_ip_address'] = Uniqueness::get_ip_of_user();
+        $request_data['post_author'] = get_current_user_id();
 
         if( static::validate_for_insert($request_data) ) {
             static::save_post($request_data);
@@ -66,6 +69,8 @@ class Entry extends Kwps_Post_Type{
 
         die();
     }
+
+
 
     public static function get_results_by_question($question_id){
         $args = array(
@@ -113,26 +118,23 @@ class Entry extends Kwps_Post_Type{
      * @param $post_as_array
      * @return bool
      */
-    static function validate_for_insert($post_as_array = array()) {
-        // $required_fields = array(
-        //     'post_parent'
-        // );
+    static function validate_for_insert($entry = array()) {
+        if( ! isset($entry['post_parent']) ){
+            return false;
+        }
 
-        // foreach($required_fields as $field)
-        //     if(! isset($post_as_array[$field])) {
-        //         return false;
-        //     } else {
-        //         if( is_string($post_as_array[$field])){
-        //             if( strlen($post_as_array[$field]) == 0 ) {
-        //                 return false;
-        //             }
-        //         }
-        //     }
+        $answer_option = Answer_Option::get_as_array($entry['post_parent']);
+        $question = Question::get_as_array($answer_option['post_parent']);
+        $version = Version::get_as_array($question['post_parent']);
 
-        //
+        $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
+        if( is_user_logged_in() ){
+            return Uniqueness::is_allowed($answer_option['ID'], $limitations['_kwps_logged_in_user_limit']);
+        } else {
+            return Uniqueness::is_allowed($answer_option['ID'], $limitations['_kwps_logged_out_user_limit']);
 
-        return true;
+        }
     }
 }
 
