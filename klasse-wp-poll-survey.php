@@ -138,6 +138,29 @@ add_shortcode('kwps_version', array('\includes\version', 'shortcode') );
 function kwps_activate(){
     kwps_add_api_rewrite_rules();
     flush_rewrite_rules();
+    create_default_test_modi();
+}
+
+function create_default_test_modi(){
+    $kwps_poll = array(
+        'post_title' => 'kwps_poll',
+        'post_status' => 'publish',
+        'post_type' => 'kwps_test_modus',
+        '_kwps_max_questions' => 1,
+        '_kwps_max_answer_options_per_question' => -1,
+        '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
+        '_kwps_allowed_output_types' => array('output_type_1', 'output_type_2'),
+    );
+
+    if( ! \includes\Test_Modus::default_test_modus_exists($kwps_poll) ){
+        $error = \includes\Test_Modus::save_post($kwps_poll);
+    }
+
+    if( isset($error) && null == $error ){
+        var_dump($error);
+    }
+
+
 }
 
 function kwps_deactivate(){
