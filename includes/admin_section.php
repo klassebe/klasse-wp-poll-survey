@@ -42,6 +42,7 @@ class admin_section {
                 <?php
                 }
                 ?>
+                <script>var kwpsUniquenessTypes=<?php echo json_encode(Uniqueness::get_types()) ?></script>
                 <?php
                 } else {
                 echo 'No post id given!';

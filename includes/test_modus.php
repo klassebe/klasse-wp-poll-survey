@@ -1,7 +1,7 @@
 <?php
     namespace includes;
 
-    abstract class Test_Modus {
+    abstract class Test_Modus extends Kwps_Post_Type{
         public static $input_types = array(
             'custom_options',   // radio buttons
             'scale',            // radio buttons with predetermined options (letters or numbers)
@@ -50,6 +50,16 @@
             register_post_type(static::$post_type, $post_type_args);
         }
 
+        public static function get_meta_data($post_id)
+        {
+            $meta_as_array = array();
+            $meta_as_array['_kwps_max_questions'] = get_post_meta($post_id, '_kwps_max_questions', true);
+            $meta_as_array['_kwps_max_answer_options_per_question'] = get_post_meta($post_id, '_kwps_max_answer_options_per_question', true);
+            $meta_as_array['_kwps_allowed_input_types'] = get_post_meta($post_id, '_kwps_allowed_input_types', true);
+            $meta_as_array['_kwps_allowed_output_types'] = get_post_meta($post_id, '_kwps_allowed_output_types', true);
+            return $meta_as_array;
+        }
+
         public static function get_rules($post_type = ''){
             $args = array('post_title' => $post_type);
             $posts = get_posts($args);
@@ -95,7 +105,7 @@
             return strlen($post->post_title) > 0;
         }
 
-        public static function validate_for_insert(){
+        public static function validate_for_insert($post_as_array = array()){
             if( ! static::title_length_is_ok() ){
                 return false;
             } else {
@@ -109,6 +119,27 @@
 
         public static function has_duplicate(){
             global $post;
+
+            $args = array(
+                'post_type' => static::$post_type,
+                'post_status' => 'publish',
+            );
+
+            $posts = get_posts($args);
+
+            if( sizeof($posts) > 0 ){
+                foreach($posts as $retrieved_post){
+                    if($retrieved_post->ID != $post->ID && $retrieved_post->post_title == $post->post_title){
+                        return true;
+                    }
+                }
+                return false;
+            } else {
+                return false;
+            }
+        }
+
+        public static function default_test_modus_exists($post){
 
             $args = array(
                 'post_type' => static::$post_type,
@@ -155,7 +186,14 @@
                 'numberposts' => -1,
             );
 
-            $posts = (array) get_posts($args);
-            return $posts;
+            $posts = get_posts($args);
+
+            $posts_with_meta = array();
+
+            foreach($posts as $post){
+                $post_with_meta = static::get_as_array($post->ID);
+                array_push($posts_with_meta, $post_with_meta);
+            }
+            return $posts_with_meta;
         }
     }
