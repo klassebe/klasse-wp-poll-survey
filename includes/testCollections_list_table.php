@@ -311,7 +311,7 @@ class Test_Collections_List_Table extends Base_List_Table {
             'order' => $order,
             'post_per_page' => 5,
             'numberposts' => -1,
-            'post_parent' => 0,
+//            'post_parent' => 0,
             'post_status' => array('draft', 'publish'),
         );
 //        $data = get_posts($arguments);
