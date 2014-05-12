@@ -15,7 +15,7 @@ namespace includes;
             ) );
         }
 
-        public function display_post_status($states){
+        public static function display_post_status($states){
             global $post;
 
             if( 'kwps_test_modus' == $post->post_type && 'duplicate' == $post->post_status ){
