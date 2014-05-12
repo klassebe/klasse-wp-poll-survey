@@ -302,7 +302,7 @@ jQuery(function ($) {
       // 'click .delete-version': 'deleteVersion',
       // 'click .delete-intro': 'deleteIntro',
       'change #post_title': 'changeTitle',
-      'change .update-main': 'updateMain'
+      'change .update-main': 'updateTestCollection'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -573,13 +573,13 @@ jQuery(function ($) {
     changeTitle: function(event) {
       this.model.set('post_title', $(event.target).val());
     },
-    updateMain: function(event) {
+    updateTestCollection: function(event) {
       var mainPost = this.collection.get(GetURLParameter('id'));
       var attribute = $(event.target).attr("name");
       var value = $(event.target).val();
 
       if(value === "on") {
-        value = true;
+        value = 1;
       }
 
       mainPost.set(attribute, value);
