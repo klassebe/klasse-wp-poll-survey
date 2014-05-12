@@ -71,6 +71,7 @@ add_action('init', array('\includes\entry','register_post_type'));
 add_action('init', array('\includes\intro','register_post_type'));
 add_action('init', array('\includes\outro','register_post_type'));
 add_action('init', array('\includes\test_modus','register_post_type'));
+add_action('init', array('\includes\test_collection','register_post_type'));
 
 add_action( 'init', array('\includes\duplicate','register_post_status' ));
 
