@@ -1,12 +1,3 @@
-var kwpsConfig = {
-  kwps_poll : {
-    onNew : {
-      questions : 1,
-      answers : 2
-    }
-  }
-} 
-
 jQuery(function ($) {
 
 
@@ -230,7 +221,8 @@ jQuery(function ($) {
       model.save({},{
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
-          for (var i = 0; i < kwpsConfig[model.get('post_type')].onNew.questions; i++) {
+          console.log(model.get('post_type'));
+          for (var i = 0; i < 1; i++) {
             that.createQuestion(model.get('ID'), i, model.get('post_type'));
           };
           var url = window.location.pathname + window.location.search + "\&action=edit\&id=" + model.get('ID');
@@ -251,7 +243,7 @@ jQuery(function ($) {
       model.save({},{
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
-          for (var i = 0; i < kwpsConfig[post_type].onNew.answers; i++) {
+          for (var i = 0; i < 2; i++) {
             that.createAnswer(model.get('ID'), i, post_type);
           };
         }
@@ -430,9 +422,6 @@ jQuery(function ($) {
       console.log(this.collection);
       var kwpsPolls = this.collection.where({post_type: 'kwps_version'});
       // get the id of the post parent(main version)
-      console.log('event model');
-      console.log(e);
-      console.log(kwpsPolls[0].id);
       var kwpsPollLen = kwpsPolls.length;
       switch (postType) {
         case 'kwps_intro':

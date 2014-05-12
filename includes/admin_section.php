@@ -48,13 +48,14 @@ class admin_section {
                 echo 'No post id given!';
             }
         } else {
-        ?>
+            ?>
             <script>var kwpsPolls=[]</script>
             <?php
         }
             ?>
 
-        <script>var kwpsTestModi=<?php echo json_encode(Test_Modus::get_published_modi()); ?></script>
+        <script>var kwpsUniquenessTypes=<?php echo json_encode(Uniqueness::get_types()) ?></script>
+        <script>var kwpsTestModi=<?php echo json_encode(Test_Modus::get_published_modi()) ?></script>
         <?php
 
         include_once __DIR__ . '/../views/add.php';
