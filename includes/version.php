@@ -102,12 +102,15 @@ class Version extends Kwps_Post_Type{
         $dump = '';
 
         $post_as_array = static::get_as_array($id);
+        $test_collection = Test_Collection::get_as_array($post_as_array['post_parent']);
+        $test_modus = Test_Modus::get_as_array($test_collection['post_parent']);
+        $test_modus_name = $test_modus['post_title'];
 
         if($test_exists = $post_as_array['post_status'] === 'publish'){
             $intros = Intro::get_all_children($id);
             $intro = $intros[0];
 
-            $dump .= '<div class="' . static::$label . '" id="kwps-' . $id . '" >';
+            $dump .= '<div class="' . $test_modus_name . '" id="kwps-' . $id . '" >';
             // $dump .= '<input type="hidden">'
             $dump .= '<div class="kwps-title">' . get_the_title( $id ) . '</div>';
             $dump .= '<div class="kwps-intro">' . Intro::get_html($intro['ID']) . '<input type="button" class="kwps-next" value="Volgende"></div>';

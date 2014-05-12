@@ -43,11 +43,11 @@ class Uniqueness {
                 'label' => __('Must be logged in'),
                 'description' => __('Only logged in users'),
             ),
-            array(
-                'function' => 'mixed',
-                'label' => __('Mixed mode'),
-                'description' => __('Based on ip address'),
-            ),
+//            array(
+//                'function' => 'mixed',
+//                'label' => __('Mixed mode'),
+//                'description' => __('Based on ip address'),
+//            ),
 
         );
     }
