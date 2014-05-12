@@ -64,12 +64,8 @@
                             {{#each versions}}
                                 <th class=" column-title">
                                     <div class="column-tab">
-                                        {{#unless main}}
                                             <div>{{post_title}}</div>
                                             <div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a class="delete-version">delete</a></div>
-                                        {{else}}
-                                            <div>{{../../title}}</div>
-                                        {{/unless}}
                                     </div>
                                 </th>
                             {{/each}}

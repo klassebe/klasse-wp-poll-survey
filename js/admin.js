@@ -221,13 +221,30 @@ jQuery(function ($) {
       model.save({},{
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
-          console.log(model.get('post_type'));
           for (var i = 0; i < 1; i++) {
-            that.createQuestion(model.get('ID'), i, model.get('post_type'));
+            that.createVersion(model.get('ID'), i);
           };
           var url = window.location.pathname + window.location.search + "\&action=edit\&id=" + model.get('ID');
           window.history.pushState( model.get('ID') , "Edit" , url);
           app.router.navigate('', {trigger: true});
+        }
+      });
+    },
+    createVersion: function (post_parent, index) {
+      var that = this;
+      var model = new KwpsModel({
+        post_type: "kwps_version",
+        post_status: "publish",
+        post_title : "Version " + (index+1),
+        post_parent : post_parent,
+        _kwps_sort_order : index
+      });
+      model.save({},{
+        success: function (model, response, options) {
+          app.kwpsPollsCollection.add(model);
+          for (var i = 0; i < 1; i++) {
+            that.createQuestion(model.get('ID'), i, model.get('post_type'));
+          };
         }
       });
     },
