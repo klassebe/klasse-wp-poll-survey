@@ -46,6 +46,7 @@ class Test_Collection extends Kwps_Post_Type{
         return array(
             '_kwps_logged_in_user_limit' => get_post_meta($test_collection_id, '_kwps_logged_in_user_limit', true),
             '_kwps_logged_out_user_limit' => get_post_meta($test_collection_id, '_kwps_logged_out_user_limit', true),
+            '_kwps_sort_order' => get_post_meta($test_collection_id, '_kwps_sort_order', true),
         );
     }
 
@@ -68,14 +69,5 @@ class Test_Collection extends Kwps_Post_Type{
     public static function get_html($id)
     {
         // TODO: Implement get_html() method.
-    }
-
-    public static function get_meta_data($post_id)
-    {
-        $meta_as_array = array();
-        $meta_as_array['_kwps_sort_order'] = get_post_meta($post_id, '_kwps_sort_order', true);
-        $meta_as_array['_kwps_must_be_logged_in'] = get_post_meta($post_id, '_kwps_must_be_logged_in', true);
-        $meta_as_array['_kwps_uniqueness'] = get_post_meta($post_id, '_kwps_uniqueness', true);
-        return $meta_as_array;
     }
 }
