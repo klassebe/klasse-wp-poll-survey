@@ -3,12 +3,20 @@
 </div> <!-- .wrap -->
 
 <script id="chooseTestModus_template" type="text/x-handlebars-template">
-<label>Test name</label>
-<input name="post_title">
-
-    <div>
-        <button data-type="kwps_poll">Poll</button>
-    </div>
+    <form id="create-new-test">
+        <label>Test name</label>
+        <input name="post_title">
+        <ul>
+            {{#each kwpsTestModi}}
+            <li>
+                <input type="radio" value="{{ID}}" name="post_parent" id="kwpsTestModi_{{ID}}"><label for="kwpsTestModi_{{ID}}">{{post_title}}</label>
+            </li>
+            {{/each}}
+        </ul>
+        <div>
+            <button type="submit">Create</button>
+        </div>
+    </form>
 </script>
 
 <script id="edit_template" type="text/x-handlebars-template">

@@ -9,6 +9,22 @@ var kwpsConfig = {
 
 jQuery(function ($) {
 
+
+  $.fn.serializeObject = function(){
+    var obj = {};
+
+    $.each( this.serializeArray(), function(i,o){
+      var n = o.name,
+        v = o.value;
+
+      obj[n] = obj[n] === undefined ? v
+        : $.isArray( obj[n] ) ? obj[n].concat( v )
+        : [ obj[n], v ];
+    });
+
+    return obj;
+  };
+
   // debug helper
   // usage: {{debug}} or {{debug someValue}}
   // from: @commondream (http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/)
@@ -138,20 +154,16 @@ jQuery(function ($) {
       // toon keuze options tussen verschillende testmodi
       // Nu vooral één knop met de keuze poll en invulveld
       // indien opties worden de opties getoond en kan men test aanmaken
+      //console.log("ROUTING TO: newKwpsTest");
+
       app.kwpsPollsCollection = new Backbone.Collection([],{
         model: KwpsModel
       });
-      app.views.newKwpsTest = new app.KwpsViewNewKwpsTest({});
+      app.views.newKwpsTest = new app.KwpsViewNewKwpsTest();
     }
   });
 
   KwpsModel = Backbone.Model.extend({
-    methodToURL: {
-      'read': '/user/get',
-      'create': '/user/create',
-      'update': '/user/update',
-      'delete': '/wp-admin/admin-ajax.php?action=kwps_version_delete'
-    },
     action: {
       create: 'kwps_save',
       update: 'kwps_update',
@@ -199,25 +211,27 @@ jQuery(function ($) {
       $(this.el).empty();
     },
     events: {
-      'click button': 'createKwpsTest'
+      'submit form#create-new-test': 'createKwpsTest'
     },
     render: function() {
-      $(this.el).html(app.templates.newKwpsTest());
+      $(this.el).html(app.templates.newKwpsTest({
+        kwpsTestModi: kwpsTestModi
+      }));
     },
     createKwpsTest : function (e) {
       e.preventDefault();
-      var post_type = $(e.currentTarget).data('type');
+
+      var postData = $(e.target).serializeObject();
+      postData.post_type = 'kwps_test_collection';
+      postData.post_status = "publish";
+
       var that = this;
-      var model = new KwpsModel({
-        post_type: post_type,
-        post_status: "publish",
-        post_title : this.$("input").val()
-      });
+      var model = new KwpsModel(postData);
       model.save({},{
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
-          for (var i = 0; i < kwpsConfig[post_type].onNew.questions; i++) {
-            that.createQuestion(model.get('ID'), i, post_type);
+          for (var i = 0; i < kwpsConfig[model.get('post_type')].onNew.questions; i++) {
+            that.createQuestion(model.get('ID'), i, model.get('post_type'));
           };
           var url = window.location.pathname + window.location.search + "\&action=edit\&id=" + model.get('ID');
           window.history.pushState( model.get('ID') , "Edit" , url);
