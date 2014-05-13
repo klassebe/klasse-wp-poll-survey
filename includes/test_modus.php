@@ -53,7 +53,8 @@
         public static function get_meta_data($post_id)
         {
             $meta_as_array = array();
-            $meta_as_array['_kwps_max_questions'] = get_post_meta($post_id, '_kwps_max_questions', true);
+            $meta_as_array['_kwps_max_question_groups'] = get_post_meta($post_id, '_kwps_max_question_groups', true);
+            $meta_as_array['_kwps_max_questions_per_question_group'] = get_post_meta($post_id, '_kwps_max_questions_per_question_group', true);
             $meta_as_array['_kwps_max_answer_options_per_question'] = get_post_meta($post_id, '_kwps_max_answer_options_per_question', true);
             $meta_as_array['_kwps_allowed_input_types'] = get_post_meta($post_id, '_kwps_allowed_input_types', true);
             $meta_as_array['_kwps_allowed_output_types'] = get_post_meta($post_id, '_kwps_allowed_output_types', true);
@@ -67,12 +68,14 @@
             if(sizeof($posts) < 1){
                 return false;
             } else {
-                $max_questions = get_post_meta($posts[0]['ID'], '_kwps_max_questions', true);
+                $max_question_groups = get_post_meta($posts[0]['ID'], '_kwps_max_question_groups', true);
+                $max_questions_per_question_group = get_post_meta($posts[0]['ID'], '_kwps_max_questions_per_question_group', true);
                 $max_answer_options_per_question = get_post_meta($posts[0]['ID'], '_kwps_max_answer_options_per_question', true);
                 $allowed_input_types = get_post_meta($posts[0]['ID'], '_kwps_allowed_input_types', true);
                 $allowed_output_types = get_post_meta($posts[0]['ID'], '_kwps_allowed_output_types', true);
                 return array(
-                    'max_questions' => $max_questions,
+                    'max_question_groups' => $max_question_groups,
+                    'max_questions_per_question_group' => $max_questions_per_question_group,
                     'max_answer_options_per_question' => $max_answer_options_per_question,
                     'allowed_input_types' => $allowed_input_types,
                     'allowed_output_types' => $allowed_output_types,
