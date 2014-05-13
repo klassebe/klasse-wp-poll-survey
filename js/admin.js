@@ -20,14 +20,14 @@ jQuery(function ($) {
   // usage: {{debug}} or {{debug someValue}}
   // from: @commondream (http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/)
   Handlebars.registerHelper("debug", function(optionalValue) {
-    // console.log("Current Context");
-    // console.log("====================");
-    // console.log(this);
+     console.log("Current Context");
+     console.log("====================");
+     console.log(this);
 
     if (optionalValue) {
-      // console.log("Value");
-      // console.log("====================");
-      // console.log(optionalValue);
+       console.log("Value");
+       console.log("====================");
+       console.log(optionalValue);
     }
   });
 
@@ -74,6 +74,14 @@ jQuery(function ($) {
         if (obj.hasOwnProperty(key)) size++;
     }
     return (index == size-1)? className: "";
+  });
+
+  Handlebars.registerHelper('selected', function(option, value){
+    if (option === value) {
+      return ' selected';
+    } else {
+      return ''
+    }
   });
 
   function GetURLParameter(sParam) {
@@ -302,7 +310,7 @@ jQuery(function ($) {
       // 'click .delete-version': 'deleteVersion',
       // 'click .delete-intro': 'deleteIntro',
       'change #post_title': 'changeTitle',
-      'change .update-main': 'updateMain'
+      'change .update-main': 'updateTestCollection'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -319,6 +327,7 @@ jQuery(function ($) {
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');
       data.versions = this.collection.where({post_type: "kwps_version"});
+      data.collection = this.collection.findWhere({post_type: "kwps_test_collection"}).toJSON();
       for (var i = 0; i < data.versions.length; i++) {
         data.versions[i] = data.versions[i].toJSON();
         var kwpsIntro = this.collection.findWhere({post_type: "kwps_intro", post_parent : data.versions[i].ID});
@@ -573,13 +582,13 @@ jQuery(function ($) {
     changeTitle: function(event) {
       this.model.set('post_title', $(event.target).val());
     },
-    updateMain: function(event) {
+    updateTestCollection: function(event) {
       var mainPost = this.collection.get(GetURLParameter('id'));
       var attribute = $(event.target).attr("name");
       var value = $(event.target).val();
 
       if(value === "on") {
-        value = true;
+        value = 1;
       }
 
       mainPost.set(attribute, value);

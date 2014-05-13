@@ -237,17 +237,22 @@
         </div>
         <div id="tabs-settings">
             <div>
+                <h2>Limit entries</h2>
                 <div>
-                    <label for="kwps_uniqueness"><?php _e('Limit') ?></label>
-                    <select id="kwps_uniqueness" name="_kwps_uniqueness" class="update-main">
-                        {{#each kwpsUniquenessTypes}}
-                        <option value="{{function}}">{{label}}</option>
+                    <label for="kwps_logged_in_user_limit"><?php _e('Logged in user') ?></label>
+                    <select id="kwps_logged_in_user_limit" name="_kwps_logged_in_user_limit" class="update-main">
+                        {{#each kwpsUniquenessTypes.logged_in}}
+                            <option value="{{function}}" {{selected this.function ../this.collection._kwps_logged_in_user_limit}} >{{label}}</option>
                         {{/each}}
                     </select>
                 </div>
                 <div>
-                    <label for="kwps_must_be_logged_in"><?php _e('Must be logged in') ?></label>
-                    <input type="checkbox" id="kwps_must_be_logged_in" name="_kwps_must_be_logged_in" class="update-main">
+                    <label for="kwps_logged_out_user_limit"><?php _e('Logged out user') ?></label>
+                    <select id="kwps_logged_out_user_limit" name="_kwps_logged_out_user_limit" class="update-main">
+                        {{#each kwpsUniquenessTypes.logged_out}}
+                            <option value="{{function}}" {{selected this.function ../this.collection._kwps_logged_out_user_limit}} >{{label}}</option>
+                        {{/each}}
+                    </select>
                 </div>
             </div>
         </div>

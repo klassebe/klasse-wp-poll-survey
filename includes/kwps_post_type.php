@@ -101,10 +101,13 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
     public final static function update_from_request(){
         $request_data = static::get_post_data_from_request();
-
         if(static::validate_for_update($request_data)){
-            static::save_post($request_data);
+            wp_send_json( static::save_post($request_data) );
+        } else {
+            wp_send_json(null);
         }
+
+        die();
     }
 
 

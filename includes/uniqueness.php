@@ -33,19 +33,43 @@ class Uniqueness {
 
     public static function get_options_for_logged_in_users(){
         return array(
-            'free' => array('label' => __('Free'), ),
-            'cookie' => array('label' => __('Once, based on cookie') ),
-            'ip' => array('label' => __('Once, based on IP') ),
-            'once' => array('label' => __('Once, based login') ),
+            array(
+                'label' => __('Free'),
+                'function' => 'free'
+            ),
+            array(
+                'label' => __('Once, based on cookie'),
+                'function' => 'cookie'
+            ),
+            array(
+                'label' => __('Once, based on IP'),
+                'function' => 'ip'
+            ),
+            array(
+                'label' => __('Once, based login'),
+                'function' => 'once'
+            )
         );
     }
 
     public static function get_options_for_logged_out_users(){
         return array(
-            'free' => array('label' => __('Free'), ),
-            'cookie' => array('label' => __('Once, based on cookie') ),
-            'ip' => array('label' => __('Once, based on IP') ),
-            'none' => array('label' => __('Only logged in users allowed') ),
+            array(
+                'label' => __('Free'),
+                'function' => 'free'
+            ),
+            array(
+                'label' => __('Once, based on cookie'),
+                'function' => 'cookie'
+            ),
+            array(
+                'label' => __('Once, based on IP'),
+                'function' => 'ip'
+            ),
+            array(
+                'label' => __('Only logged in users allowed'),
+                'function' => 'none'
+            )
         );
     }
 

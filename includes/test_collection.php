@@ -46,6 +46,7 @@ class Test_Collection extends Kwps_Post_Type{
         return array(
             '_kwps_logged_in_user_limit' => get_post_meta($test_collection_id, '_kwps_logged_in_user_limit', true),
             '_kwps_logged_out_user_limit' => get_post_meta($test_collection_id, '_kwps_logged_out_user_limit', true),
+            '_kwps_sort_order' => get_post_meta($test_collection_id, '_kwps_sort_order', true),
         );
     }
 
@@ -57,6 +58,7 @@ class Test_Collection extends Kwps_Post_Type{
     public static function validate_for_update($post_as_array)
     {
         // TODO: Implement validate_for_update() method.
+        return true;
     }
 
     public static function validate_for_delete($post_id = 0)
