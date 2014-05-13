@@ -40,6 +40,7 @@ require_once __DIR__ . '/includes/outro.php';
 require_once __DIR__ . '/includes/answer_option.php';
 require_once __DIR__ . '/includes/test_modus.php';
 require_once __DIR__ . '/includes/duplicate.php';
+require_once __DIR__ . '/includes/locked.php';
 require_once __DIR__ . '/includes/uniqueness.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
@@ -77,6 +78,7 @@ add_action('init', array('\includes\test_modus','register_post_type'));
 add_action('init', array('\includes\test_collection','register_post_type'));
 
 add_action( 'init', array('\includes\duplicate','register_post_status' ));
+add_action( 'init', array('\includes\locked','register_post_status' ));
 
 add_action( 'init', array('\includes\uniqueness','set_cookie' ));
 
@@ -152,7 +154,7 @@ function kwps_activate(){
 
 function create_default_test_modi(){
     $kwps_poll = array(
-        'post_title' => 'kwps_poll',
+        'post_title' => 'kwps-poll',
         'post_status' => 'publish',
         'post_type' => 'kwps_test_modus',
         '_kwps_max_questions' => 1,
