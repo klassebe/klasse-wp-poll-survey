@@ -86,7 +86,7 @@
         public static function set_to_duplicate_when_title_exists($status){
             if( isset($_POST) && sizeof($_POST) > 0 ) {
                 global $post;
-
+//                var_dump($post);
                 if($post->post_type == 'kwps_test_modus'){
                     if(! static::title_length_is_ok() ){
                         $status = 'draft';
@@ -97,6 +97,7 @@
                     }
                 }
             }
+//            var_dump($status); die;
             return $status;
 
 
@@ -122,6 +123,8 @@
 
         public static function has_duplicate(){
             global $post;
+
+//            var_dump($_POST);
 
             $args = array(
                 'post_type' => static::$post_type,
