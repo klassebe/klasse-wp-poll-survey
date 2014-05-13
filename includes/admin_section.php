@@ -23,20 +23,27 @@ class admin_section {
 
                     $versions = Version::get_all_by_post_parent($current_post->ID);
 
+                    $question_groups = array();
+                    $questions = array();
+                    $intros = array();
+                    $outros = array();
+                    $answer_options = array();
+
                     foreach($versions as $version){
-                        $version_as_array = Version::get_as_array($version['ID']);
-                        $version_questions = Question::get_all_by_post_parent($version['ID']);
-
-                        $version_intros = Intro::get_all_by_post_parent($version['ID']);
-                        $version_outros = Outro::get_all_by_post_parent($version['ID']);
-
-                        $tests = array_merge($tests, array($version_as_array), $version_questions, $version_intros, $version_outros);
-
-                        foreach($version_questions as $question){
-                            $version_answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
-                         $tests = array_merge($tests, $version_answer_options);
-                        }
+                        $question_groups = array_merge($question_groups, Question_Group::get_all_by_post_parent($version['ID']));
+                        $intros = array_merge($intros, Question_Group::get_all_by_post_parent($version['ID']));
+                        $outros = array_merge($outros, Question_Group::get_all_by_post_parent($version['ID']));
                     }
+
+                    foreach($question_groups as $question_group){
+                        $questions = array_merge($questions, Question::get_all_by_post_parent($question_group['ID']));
+                    }
+
+                    foreach($questions as $question){
+                        $answer_options = array_merge($answer_options, Question::get_all_by_post_parent($question['ID']));
+                    }
+
+                    $tests = array_merge($tests, $versions, $question_groups, $questions, $intros, $outros, $answer_options);
                 ?>
                     <script>var kwpsTests=<?php echo json_encode($tests); ?></script>
                 <?php

@@ -43,10 +43,13 @@ class Question extends Kwps_Post_Type{
     public static function validate_for_delete($question_id = 0)
     {
 /*        A question is not allowed to be deleted when:
-            - The test is not in draft anymore
+            - The test collection is not in draft anymore
 */
-        $test_id = wp_get_post_parent_id($question_id);
-        $test_status = get_post_status($test_id);
+        $question_group_id = wp_get_post_parent_id($question_id);
+        $version_id = wp_get_post_parent_id($question_group_id);
+        $test_collection_id = wp_get_post_parent_id($version_id);
+
+        $test_status = get_post_status($test_collection_id);
 
         if('draft' != $test_status){
             return false;
@@ -62,8 +65,6 @@ class Question extends Kwps_Post_Type{
      */
     static function validate_for_insert($post_as_array = array()) {
         $required_fields = array(
-            'post_status',
-            'post_type',
             'post_parent',
             '_kwps_sort_order',
         );
@@ -89,8 +90,6 @@ class Question extends Kwps_Post_Type{
         $required_fields = array(
             'ID',
             'post_content',
-            'post_status',
-            'post_type',
             'post_parent'
         );
 
