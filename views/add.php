@@ -109,23 +109,34 @@
                                 {{/each}}
                             </tr>
                         {{/if}}
-                        <tr class="title">
-                            <th class="no-delete row-title"  colspan="{{getColumnCount versions}}">
-                                <?php _e( 'Question', 'klasse-wp-poll-survey' ) ?>
-                                {{#unless question}}
+
+                        {{#each questionGroups}}
+
+                            {{#each this}}
+                            <tr class="title">
+                                <th class="no-delete row-title"  colspan="{{getColumnCount ../../versions}}">
+                                    {{#if ../open}}
+                                    <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="questionGroup" data-question-row="{{@index}}"></span>
+                                    {{else}}
+                                    <span data-code="f139" class="dashicons dashicons-arrow-right toggle-details" data-type="questionGroup" data-question-row="{{@index}}"></span>
+                                    {{/if}}
+                                    <?php _e( 'Question Group', 'klasse-wp-poll-survey' ) ?> {{@index}}
                                     <button class="button add" data-post-type="kwps_question">
-                                        <span data-code="f132" class="dashicons dashicons-plus"></span> 
+                                        <span data-code="f132" class="dashicons dashicons-plus"></span>
                                     </button>
-                                {{/unless}}
-                            </th>
-                        </tr>
+                                </th>
+                            </tr>
+                                {{post_title}}
+                            {{/each}}
+                        {{/each}}
+
                         {{#each questions}}
                             <tr>
                                 <td class="delete column-action {{#if open}} extra {{/if}}">
                                     {{#if open}} 
-                                        <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-question-row ="{{@index}}"></span> 
+                                        <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row ="{{@index}}"></span>
                                     {{else}} 
-                                        <span data-code="f139" class="dashicons dashicons-arrow-right toggle-details" data-question-row ="{{@index}}"></span> 
+                                        <span data-code="f139" class="dashicons dashicons-arrow-right toggle-details" data-type="question" data-question-row ="{{@index}}"></span>
                                     {{/if}}
                                     <div class="action">
                                         <a class="delete-question">
@@ -150,8 +161,8 @@
                             {{#if open}}
                                 <tr class="title">
                                     <th class="no-delete answers row-title" colspan="{{getColumnCount ../../versions}}">
-                                        <?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?> 
-                                        <button class="button add" data-post-type="kwps_answer_option"><span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button>
+                                        <?php _e( 'Answers', 'klasse-wp-poll-survey' ) ?>
+                                        <button class="button add" data-post-type="kwps_answer_option" data-sort-order="{{@index}}"><span data-code="f132" class="dashicons dashicons-plus"></span> <?php _e( 'Add', 'klasse-wp-poll-survey' ) ?></button>
                                     </th>
                                 </tr>
                                 {{#each ../../answers}}

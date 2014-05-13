@@ -101,7 +101,10 @@ jQuery(function ($) {
 
   var app = {};
   app.url = 'admin-ajax.php?action=';
-  app.openAnswer = "";
+  app.openAnswer = {
+    questionGroup: "",
+    question: ""
+  };
   app.views = {}
 
   if(typeof $('#version_template').html() !== 'undefined') {
@@ -170,7 +173,6 @@ jQuery(function ($) {
     },
 
     sync: function(method, model, options) {
-      console.log(method);
       options = options || {};
       options.url = app.url + model.action[method.toLowerCase()] + (model.attributes.post_type).substring(4);
 
@@ -251,6 +253,24 @@ jQuery(function ($) {
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < 1; i++) {
+            that.createQuestionGroup(model.get('ID'), i);
+          };
+        }
+      });
+    },
+    createQuestionGroup: function (post_parent, index) {
+      var that = this;
+      var model = new KwpsModel({
+        post_type: "kwps_question_group",
+        post_status: "publish",
+        post_title : "Question Group " + (index+1),
+        post_parent : post_parent,
+        _kwps_sort_order : index
+      });
+      model.save({},{
+        success: function (model, response, options) {
+          app.kwpsPollsCollection.add(model);
+          for (var i = 0; i < 1; i++) {
             that.createQuestion(model.get('ID'), i, model.get('post_type'));
           };
         }
@@ -285,19 +305,17 @@ jQuery(function ($) {
       });
       model.save({},{
         success: function (model, response, options) {
-          console.log(model);
           app.kwpsPollsCollection.add(model);
         }
       });
     }
-  })
+  });
 
   app.KwpsView = Backbone.View.extend({
     el: '#kwps_test',
     initialize: function () {
       //_.bindAll(this, 'cleanup');
       this.render();
-      console.log(this.collection);
       this.listenTo(this.collection, 'add', this.render);
     },
     events: {
@@ -344,6 +362,47 @@ jQuery(function ($) {
           data.versions[i].main = true;
         }
       };
+
+
+      var questionGroups = this.collection.where({post_type: "kwps_question_group"});
+      _.each(questionGroups, function (questionGroup, index, list) {
+        questionGroups[index] = questionGroup.toJSON();
+      });
+      questionGroups = _.groupBy(questionGroups, "_kwps_sort_order");
+
+      for (var g in questionGroups) {
+        if (g == app.openAnswer.questionGroup) {
+          questionGroups[g].open = true;
+
+          for (var h = 0; h < questionGroups[g].length; h++) {
+            var questions = this.collection.where({post_type: "kwps_question", post_parent : questionGroups[g][h].ID});
+            _.each(questions, function (question, index, list) {
+              questions[index] = question.toJSON();
+            });
+            questions = _.groupBy(questions, "_kwps_sort_order");
+
+            for (var i in questions) {
+              // if sortorder is equal to openAnswer show all answers
+              if (i == app.openAnswer.question) {
+                questions[i].open = true;
+                data.answers = [];
+
+                for (var j = 0; j < questions[i].length; j++) {
+                  var answers = this.collection.where({post_type: "kwps_answer_option", post_parent : questions[i][j].ID});
+                  _.each(answers, function (answer, index, list) {
+                    answers[index] = answer.toJSON();
+                  });
+
+                  data.answers.push(answers);
+                };
+              }
+            };
+          }
+        }
+      }
+
+
+/*
       var questions = this.collection.where({post_type: "kwps_question"});
       _.each(questions, function (question, index, list) {
         questions[index] = question.toJSON();
@@ -357,7 +416,6 @@ jQuery(function ($) {
           data.answers = [];
 
           for (var j = 0; j < questions[i].length; j++) {
-            console.log(questions[i][j].ID);
             var answers = this.collection.where({post_type: "kwps_answer_option", post_parent : questions[i][j].ID});
             _.each(answers, function (answer, index, list) {
               answers[index] = answer.toJSON();
@@ -367,10 +425,13 @@ jQuery(function ($) {
           };
         }
       };
+*/
+      data.questionGroups = questionGroups;
+      data.questions = questions;
       data.answers = _.flatten(data.answers);
       data.answers = _.groupBy(data.answers, "_kwps_sort_order");
-      data.questions = questions;console.log(data);
       data.kwpsUniquenessTypes = kwpsUniquenessTypes;
+      console.log(data);
       return data;
     },
     addVersion: function (event) {
@@ -393,14 +454,12 @@ jQuery(function ($) {
       event.preventDefault();
       var kwpdId = $(event.target).closest('div.action').data('kwps-id');
       // var kwpdType = $(event.target).closest('div.action').data('kwps-type');
-      console.log(kwpsId);
       var toDelete = this.model.get('kwps_intro').get(kwpsId);
       toDelete.destroy();
     },
     deleteOutro: function (event) {
       event.preventDefault();
       var kwpdId = $(event.target).closest('div.action').data('kwps-id');
-      console.log(kwpsId);
       var toDelete = this.model.get('kwps_outro').get(kwpsId);
       toDelete.destroy();
     },
@@ -445,7 +504,6 @@ jQuery(function ($) {
     createNew: function (e) {
       e.preventDefault();
       var postType = $(e.currentTarget).data('post-type');
-      console.log(this.collection);
       var kwpsPolls = this.collection.where({post_type: 'kwps_version'});
       // get the id of the post parent(main version)
       var kwpsPollLen = kwpsPolls.length;
@@ -466,9 +524,31 @@ jQuery(function ($) {
           }
           break;
         case 'kwps_answer_option':
+          var sortOrder = $(e.currentTarget).data('sort-order');
+
+          console.log(sortOrder);
+
+          var kwpsAnswerOptions = this.collection.where({post_type: 'kwps_answer_option', _kwps_sort_order: sortOrder});
+
+          console.log(kwpsAnswerOptions);
+
+/*_
+          _.each(kwpsAnswerOptions, function (option, index, list) {
+            kwpsAnswerOptions[index] = option.toJSON();
+          });
+          var answers = _.groupBy(kwpsAnswerOptions, "post_parent");
+
+          console.log(kwpsAnswerOptions);
+          console.log(answers);
+
+/*          console.log(kwpsPolls);
+          var kwpsPollLen = kwpsPolls.length;
+          console.log('length: ' + kwpsPollLen);
           for(var i =0; i< kwpsPollLen; i++) {
+            console.log('Id: ' + kwpsPolls[i].id);
             this.createAnswer(kwpsPolls[i].id, true);
           }
+          */
           break;
         default:
           console.log('no post type was given');
@@ -486,7 +566,6 @@ jQuery(function ($) {
       model.save({},{
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
-          console.log(model);
           if (edit) {
             app.router.navigate('edit/'+ model.id, {trigger: true});
 
@@ -506,7 +585,6 @@ jQuery(function ($) {
       model.save({},{
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
-          console.log('outro');
           if (edit) {
             app.router.navigate('edit/'+ model.id, {trigger: true});
 
@@ -514,30 +592,26 @@ jQuery(function ($) {
         }
       });
     },
-    addAnswer: function(event) {
-      var answer = new app.AnswerModel();
-      app.test.get('answers').add(answer);
+    createQuestion: function (post_parent, edit) {
+      var that = this;
+      var index = this.collection.where({post_type: 'kwps_question', post_parent: post_parent}).length;
 
-      this.model.get('versions').each(function(version) {
-        var newAnswer = new app.AnswerModel();
-        version.get('answers').add(newAnswer);
+      app.kwpsPollsCollection.create({
+        post_type: "kwps_question",
+        post_status: "publish",
+        post_content : "question",
+        post_parent : post_parent,
+        _kwps_sort_order : index
+      }, {
+        success: function (model, response, options) {
+          if (edit) {
+            app.router.navigate('edit/'+ model.id, {trigger: true});
+
+          }
+        }
       });
-
-      this.render();
-    },
-    addQuestion: function(event) {
-      // will be done by routing
-
-      // var question = new app.QuestionModel();
-      // question.set('post_parent', app.test.get('ID'));
-      // app.test.get('questions').add(question);
-      // console.log(question);
-      // console.log(app.test);
-      // /**/$(this.el).html(app.templates.iframe(data));
-      new app.KwpsViewQuestion();
     },
     createAnswer: function (post_parent, edit) {
-      var that = this;
       app.kwpsPollsCollection.create({
         post_type: "kwps_answer_option",
         post_status: "publish",
@@ -547,7 +621,6 @@ jQuery(function ($) {
       },
         {
           success: function (model, response, options) {
-            app.kwpsPollsCollection.add(model);
             if (edit) {
               app.router.navigate('edit/'+ model.id, {trigger: true});
 
@@ -563,12 +636,13 @@ jQuery(function ($) {
     },
     toggleDetails: function(event) {
       toggleOnRow = $(event.currentTarget).data('question-row');
+      type = $(event.currentTarget).data('type');
       console.log(toggleOnRow);
-      app.openAnswer = (app.openAnswer !== toggleOnRow || app.openAnswer === "")? toggleOnRow:"";
+      console.log(type);
+      app.openAnswer[type] = (app.openAnswer[type] !== toggleOnRow || app.openAnswer[type] === "")? toggleOnRow:"";
       this.render();
     },
     preview: function(event) {
-      // console.log(event);
     },
     edit: function(event) {
 
@@ -650,9 +724,7 @@ jQuery(function ($) {
       'click button#update': 'updateData'
     },
     render: function() {
-      console.log(this.model);
       var answers = app.kwpsPollsCollection.where({post_type : "kwps_answer_option", post_parent : this.model.id});
-      // console.log(answers);
       answers = _.each(answers, function (answer){
           return answer.toJSON();
       })
@@ -660,7 +732,6 @@ jQuery(function ($) {
         question: this.model.toJSON(),
         answers: answers
       };
-      // console.log(data);
       $(this.el).html(app.templates.question(data));
       tinymce.remove();
     },
