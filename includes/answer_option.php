@@ -61,7 +61,7 @@ class Answer_Option extends Kwps_Post_Type{
     {
         $i = 0;
         $dump = '';
-        foreach(static::get_all_children($question_id) as $answer_option){
+        foreach(static::get_all_by_post_parent($question_id) as $answer_option){
             $dump .= static::get_html($answer_option['ID']);
         }
 
