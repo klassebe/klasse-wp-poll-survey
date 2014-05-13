@@ -101,7 +101,7 @@ class Version extends Kwps_Post_Type{
     public static function get_html($id){
         $version = Version::get_as_array($id);
         $limitations = Test_Collection::get_meta_data($version['post_parent']);
-        $questions = Question::get_all_children($id);
+        $questions = Question::get_all_by_post_parent($id);
 
         if( is_user_logged_in() ){
             $limit_to_apply = $limitations['_kwps_logged_in_user_limit'];
@@ -127,7 +127,7 @@ class Version extends Kwps_Post_Type{
         $test_modus_name = $test_modus['post_title'];
 
         if($test_exists = $post_as_array['post_status'] === 'publish'){
-            $intros = Intro::get_all_children($id);
+            $intros = Intro::get_all_by_post_parent($id);
             $intro = $intros[0];
             $dump .= '<script>var firstQuestionIdAllowed = ' . $first_question_id_allowed . '</script>';
 
@@ -137,7 +137,7 @@ class Version extends Kwps_Post_Type{
             $dump .= '<div class="kwps-intro">' . Intro::get_html($intro['ID']) . '<input type="button" class="kwps-next" value="Volgende"></div>';
             $dump .= '<div class="kwps-content">';
 
-            $questions = Question::get_all_children($id);
+            $questions = Question::get_all_by_post_parent($id);
             $question = $questions[0];
             $dump .= '<div class="kwps-question">';
             $dump .= Question::get_html($question['ID']);
@@ -151,7 +151,7 @@ class Version extends Kwps_Post_Type{
             $dump .= '</div>'; // kwps-answers
             $dump .= '</div>'; // kwps-content
 
-            $outros = Outro::get_all_children($id);
+            $outros = Outro::get_all_by_post_parent($id);
             $outro = $outros[0];
             $dump .= '<div class="kwps-outro">' . Outro::get_html($outro['ID']) . '<div class="kwps-outro-inside"></div></div>';
             $dump .= '</div>'; // kwps full wrapper

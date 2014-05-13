@@ -114,10 +114,10 @@ class Uniqueness {
             return false;
         }
 
-        $answer_options = Answer_Option::get_all_children($question_id);
+        $answer_options = Answer_Option::get_all_by_post_parent($question_id);
 
         foreach($answer_options as $answer_option){
-            $entries = Entry::get_all_children($answer_option['ID']);
+            $entries = Entry::get_all_by_post_parent($answer_option['ID']);
 
             foreach($entries as $entry){
                 if( $entry['_kwps_cookie_value'] == $_COOKIE['klasse_wp_poll_survey']){
@@ -132,10 +132,10 @@ class Uniqueness {
     public static function is_allowed_by_ip($question_id){
         $ip_of_current_user = static::get_ip_of_user();
 
-        $answer_options = Answer_Option::get_all_children($question_id);
+        $answer_options = Answer_Option::get_all_by_post_parent($question_id);
 
         foreach($answer_options as $answer_option){
-            $entries = Entry::get_all_children($answer_option['ID']);
+            $entries = Entry::get_all_by_post_parent($answer_option['ID']);
 
             foreach( $entries as $entry){
                 if( $ip_of_current_user ==  $entry['_kwps_ip_address'] ) {
@@ -150,10 +150,10 @@ class Uniqueness {
     public static function is_allowed_by_user_id($question_id){
         $current_user_id = get_current_user_id();
 
-        $answer_options = Answer_Option::get_all_children($question_id);
+        $answer_options = Answer_Option::get_all_by_post_parent($question_id);
 
         foreach($answer_options as $answer_option){
-            $entries = Entry::get_all_children($answer_option['ID']);
+            $entries = Entry::get_all_by_post_parent($answer_option['ID']);
 
             foreach( $entries as $entry){
                 if( $current_user_id ==  $entry['post_author'] ) {

@@ -21,19 +21,19 @@ class admin_section {
 
                     $tests = array($test_collection);
 
-                    $versions = Version::get_all_children($current_post->ID);
+                    $versions = Version::get_all_by_post_parent($current_post->ID);
 
                     foreach($versions as $version){
                         $version_as_array = Version::get_as_array($version['ID']);
-                        $version_questions = Question::get_all_children($version['ID']);
+                        $version_questions = Question::get_all_by_post_parent($version['ID']);
 
-                        $version_intros = Intro::get_all_children($version['ID']);
-                        $version_outros = Outro::get_all_children($version['ID']);
+                        $version_intros = Intro::get_all_by_post_parent($version['ID']);
+                        $version_outros = Outro::get_all_by_post_parent($version['ID']);
 
                         $tests = array_merge($tests, array($version_as_array), $version_questions, $version_intros, $version_outros);
 
                         foreach($version_questions as $question){
-                            $version_answer_options = Answer_Option::get_all_children($question['ID']);
+                            $version_answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
                          $tests = array_merge($tests, $version_answer_options);
                         }
                     }
