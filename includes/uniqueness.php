@@ -12,27 +12,23 @@ class Uniqueness {
         }
     }
 
-    public static function is_allowed($answer_option_id, $function_name = 'none') {
+    public static function is_allowed($question_id, $function_name = 'none') {
         $is_allowed = false;
 
         switch($function_name){
             case 'free' : $is_allowed = static::is_always_allowed();
                 break;
-            case 'cookie' : $is_allowed = static::is_allowed_by_cookie($answer_option_id);
+            case 'cookie' : $is_allowed = static::is_allowed_by_cookie($question_id);
                 break;
-            case 'ip' : $is_allowed = static::is_allowed_by_ip($answer_option_id);
+            case 'ip' : $is_allowed = static::is_allowed_by_ip($question_id);
                 break;
-            case 'once' : $is_allowed = static::is_allowed_by_user_id($answer_option_id);
+            case 'once' : $is_allowed = static::is_allowed_by_user_id($question_id);
                 break;
             case 'none' : $is_allowed = static::is_never_allowed();
                 break;
         }
 
         return $is_allowed;
-    }
-
-    public static function is_logged_in() {
-
     }
 
     public static function get_options_for_logged_in_users(){
@@ -89,42 +85,59 @@ class Uniqueness {
         return true;
     }
 
-    public static function is_allowed_by_cookie($answer_option_id){
-        $entries = Entry::get_all_children($answer_option_id);
-
+    public static function is_allowed_by_cookie($question_id){
         if( ! isset($_COOKIE['klasse_wp_poll_survey']) ){
             return false;
-        } else {
+        }
+
+        $answer_options = Answer_Option::get_all_children($question_id);
+
+        foreach($answer_options as $answer_option){
+            $entries = Entry::get_all_children($answer_option['ID']);
+
             foreach($entries as $entry){
                 if( $entry['_kwps_cookie_value'] == $_COOKIE['klasse_wp_poll_survey']){
                     return false;
                 }
             }
-            return true;
         }
-    }
 
-    public static function is_allowed_by_ip($answer_option_id){
-        $entries = Entry::get_all_children($answer_option_id);
-        $ip_of_current_user = static::get_ip_of_user();
-
-        foreach( $entries as $entry){
-            if( $ip_of_current_user ==  $entry['_kwps_ip_address'] ) {
-                return false;
-            }
-        }
         return true;
     }
 
-    public static function is_allowed_by_user_id($answer_option_id){
-        $entries = Entry::get_all_children($answer_option_id);
-        $current_user_id = get_current_user_id();
+    public static function is_allowed_by_ip($question_id){
+        $ip_of_current_user = static::get_ip_of_user();
 
-        foreach( $entries as $entry){
-            if( $current_user_id ==  $entry['post_author'] ) {
-                return false;
+        $answer_options = Answer_Option::get_all_children($question_id);
+
+        foreach($answer_options as $answer_option){
+            $entries = Entry::get_all_children($answer_option['ID']);
+
+            foreach( $entries as $entry){
+                if( $ip_of_current_user ==  $entry['_kwps_ip_address'] ) {
+                    return false;
+                }
             }
         }
+
+        return true;
+    }
+
+    public static function is_allowed_by_user_id($question_id){
+        $current_user_id = get_current_user_id();
+
+        $answer_options = Answer_Option::get_all_children($question_id);
+
+        foreach($answer_options as $answer_option){
+            $entries = Entry::get_all_children($answer_option['ID']);
+
+            foreach( $entries as $entry){
+                if( $current_user_id ==  $entry['post_author'] ) {
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 

@@ -130,9 +130,9 @@ class Entry extends Kwps_Post_Type{
         $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
         if( is_user_logged_in() ){
-            return Uniqueness::is_allowed($answer_option['ID'], $limitations['_kwps_logged_in_user_limit']);
+            return Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_in_user_limit']);
         } else {
-            return Uniqueness::is_allowed($answer_option['ID'], $limitations['_kwps_logged_out_user_limit']);
+            return Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_out_user_limit']);
 
         }
     }

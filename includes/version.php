@@ -99,6 +99,26 @@ class Version extends Kwps_Post_Type{
     }
 
     public static function get_html($id){
+        $version = Version::get_as_array($id);
+        $limitations = Test_Collection::get_meta_data($version['post_parent']);
+        $questions = Question::get_all_children($id);
+
+        if( is_user_logged_in() ){
+            $limit_to_apply = $limitations['_kwps_logged_in_user_limit'];
+        } else {
+            $limit_to_apply = $limitations['_kwps_logged_out_user_limit'];
+        }
+
+        $first_question_id_allowed = -1;
+
+        foreach($questions as $question){
+            if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) ){
+                $first_question_id_allowed = $question['ID'];
+                break;
+            }
+        }
+
+
         $dump = '';
 
         $post_as_array = static::get_as_array($id);
@@ -109,6 +129,7 @@ class Version extends Kwps_Post_Type{
         if($test_exists = $post_as_array['post_status'] === 'publish'){
             $intros = Intro::get_all_children($id);
             $intro = $intros[0];
+            $dump .= '<script>var firstQuestionIdAllowed = ' . $first_question_id_allowed . '</script>';
 
             $dump .= '<div class="' . $test_modus_name . '" id="kwps-' . $id . '" >';
             // $dump .= '<input type="hidden">'
