@@ -538,22 +538,22 @@ jQuery(function ($) {
     },
     createAnswer: function (post_parent, edit) {
       var that = this;
-      var model = new KwpsModel({
+      app.kwpsPollsCollection.create({
         post_type: "kwps_answer_option",
         post_status: "publish",
         post_content : "answer ",
         post_parent : post_parent,
         _kwps_sort_order : 0
-      });
-      model.save({},{
-        success: function (model, response, options) {
-          app.kwpsPollsCollection.add(model);
-          if (edit) {
-            app.router.navigate('edit/'+ model.id, {trigger: true});
+      },
+        {
+          success: function (model, response, options) {
+            app.kwpsPollsCollection.add(model);
+            if (edit) {
+              app.router.navigate('edit/'+ model.id, {trigger: true});
 
+            }
           }
-        }
-      });
+        });
     },
     showActions: function(event) {
       $(event.target).find(".actions").show();
