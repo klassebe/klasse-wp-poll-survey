@@ -49,7 +49,7 @@ class admin_section {
             }
         } else {
             ?>
-            <script>var kwpsPolls=[]</script>
+            <script>var kwpsTests=[]</script>
             <?php
         }
         $kwps_uniqueness_options = array(
