@@ -11,4 +11,6 @@
         public static function delete_meta($post_id);
         public static  function get_html($id);
         public static function get_meta_data($post_id);
+
+        public static function get_test_modus($post_id);
     }

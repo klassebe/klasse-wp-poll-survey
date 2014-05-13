@@ -40,6 +40,12 @@ class Question_Group extends Kwps_Post_Type {
         'hierarchical' => true,
     );
 
+    public static function get_test_modus($question_group_id)
+    {
+        $question_group = static::get_as_array($question_group_id);
+        return Version::get_test_modus($question_group['post_parent']);
+    }
+
 
     public static function get_html($id)
     {
@@ -50,8 +56,35 @@ class Question_Group extends Kwps_Post_Type {
 
     public static function validate_for_insert($post_as_array = array())
     {
-        // TODO: Implement validate_for_insert() method.
-        return true;
+        $required_fields = array(
+            'post_parent',
+            '_kwps_sort_order',
+        );
+
+        foreach($required_fields as $field){
+            if(! isset($post_as_array[$field])) {
+                return false;
+            } else {
+                if( is_string($post_as_array[$field])){
+                    if( strlen($post_as_array[$field]) == 0 ) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        $version = Version::get_as_array($post_as_array['post_parent']);
+        $test_modus = static::get_test_modus($post_as_array['ID']);
+
+        $kwps_max_question_groups = $test_modus['_kwps_max_question_groups'];
+
+        $all_question_groups_of_version = Question_Group::get_all_by_post_parent($version['ID']);
+
+        if( sizeof($all_question_groups_of_version) >= $kwps_max_question_groups){
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public static function validate_for_update($post_as_array)

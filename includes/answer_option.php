@@ -35,6 +35,12 @@ class Answer_Option extends Kwps_Post_Type{
         'publicly_queryable' => false,
     );
 
+    public static function get_test_modus($answer_option_id)
+    {
+        $answer_option = static::get_as_array($answer_option_id);
+        return Question::get_test_modus($answer_option['post_parent']);
+    }
+
     public static function get_sort_order($answer_option_id){
         return get_post_meta($answer_option_id, '_kwps_sort_order', true);
     }
@@ -75,11 +81,11 @@ class Answer_Option extends Kwps_Post_Type{
     static function validate_for_insert($post_as_array = array()) {
         $required_fields = array(
             'post_content',
-            'post_status',
-            'post_parent'
+            'post_parent',
+            '_kwps_sort_order',
         );
 
-        foreach($required_fields as $field)
+        foreach($required_fields as $field){
             if(! isset($post_as_array[$field])) {
                 return false;
             } else {
@@ -89,6 +95,16 @@ class Answer_Option extends Kwps_Post_Type{
                     }
                 }
             }
+        }
+
+        $test_modus = static::get_test_modus($post_as_array['ID']);
+
+        $all_answer_options_of_same_question = Answer_Option::get_all_by_post_parent($post_as_array['post_parent']);
+
+        if( sizeof($all_answer_options_of_same_question) >= $test_modus['_kwps_max_answer_options_per_question']){
+            return false;
+        }
+
         return true;
     }
 

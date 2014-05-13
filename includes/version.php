@@ -45,6 +45,12 @@ class Version extends Kwps_Post_Type{
         return $meta_as_array;
     }
 
+    public static function get_test_modus($version_id)
+    {
+        $version = static::get_as_array($version_id);
+        return Test_Collection::get_test_modus($version['post_parent']);
+    }
+
     /**
      * @param $post_as_array
      * @return bool
@@ -52,7 +58,6 @@ class Version extends Kwps_Post_Type{
     static function validate_for_insert($post_as_array = array()) {
         $required_fields = array(
             'post_status',
-            'post_type',
         );
 
         foreach($required_fields as $field)

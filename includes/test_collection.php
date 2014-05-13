@@ -50,6 +50,13 @@ class Test_Collection extends Kwps_Post_Type{
         );
     }
 
+    public static function get_test_modus($test_collection_id)
+    {
+        $test_collection = static::get_as_array($test_collection_id);
+        return Test_Modus::get_as_array($test_collection['post_parent']);
+    }
+
+
     public static function validate_for_insert($post_as_array = array())
     {
         return true;
