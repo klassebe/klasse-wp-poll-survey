@@ -35,6 +35,12 @@ class Entry extends Kwps_Post_Type{
         'publicly_queryable' => false,
     );
 
+    public static function get_test_modus($entry_id)
+    {
+        $entry = static::get_as_array($entry_id);
+        return Answer_Option::get_test_modus($entry['post_parent']);
+    }
+
     public static function get_html($entry_id){
         $entry = static::get_as_array($entry_id);
 

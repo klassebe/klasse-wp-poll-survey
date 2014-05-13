@@ -39,6 +39,12 @@ class Intro extends Kwps_Post_Type{
         return get_post_meta($intro_id, '_kwps_sort_order', true);
     }
 
+    public static function get_test_modus($intro_id)
+    {
+        $intro = static::get_as_array($intro_id);
+        return Version::get_test_modus($intro['post_parent']);
+    }
+
     public static function get_html($intro_id){
         $intro = static::get_as_array($intro_id);
 
