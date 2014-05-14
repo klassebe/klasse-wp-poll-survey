@@ -8,7 +8,15 @@ require_once __DIR__ . '/uniqueness.php';
 class admin_section {
     public static function display_form()
     {
+        $kwps_uniqueness_options = array(
+            'logged_in' => Uniqueness::get_options_for_logged_in_users(),
+            'logged_out' => Uniqueness::get_options_for_logged_out_users(),
+        );
+
+        $kwps_test_modi = Test_Modus::get_published_modi();
+
         if( isset($_GET['action']) && 'edit' === $_GET['action']){
+
             if( isset($_GET['id']) ) {
                 $current_post = get_post($_GET['id']);
 
@@ -43,7 +51,10 @@ class admin_section {
                         $answer_options = array_merge($answer_options, Question::get_all_by_post_parent($question['ID']));
                     }
 
-                    $tests = array_merge($tests, $versions, $question_groups, $questions, $intros, $outros, $answer_options);
+                    $tests = array_merge(
+                        $tests, $versions, $question_groups, $questions, $intros, $outros, $answer_options,
+                        $kwps_test_modi
+                    );
                 ?>
                     <script>var kwpsTests=<?php echo json_encode($tests); ?></script>
                 <?php
@@ -55,14 +66,14 @@ class admin_section {
                 echo 'No post id given!';
             }
         } else {
+
+            $tests = $kwps_test_modi;
+
             ?>
-            <script>var kwpsTests=[]</script>
+            <script>var kwpsTests=<?php echo json_encode($tests); ?></script>
             <?php
         }
-        $kwps_uniqueness_options = array(
-            'logged_in' => Uniqueness::get_options_for_logged_in_users(),
-            'logged_out' => Uniqueness::get_options_for_logged_out_users(),
-        );
+
             ?>
 
         <script>var kwpsUniquenessTypes=<?php echo json_encode($kwps_uniqueness_options) ?></script>
