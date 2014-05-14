@@ -84,6 +84,30 @@ jQuery(function ($) {
     }
   });
 
+  Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+
+    switch (operator) {
+      case '==':
+        return (v1 == v2) ? options.fn(this) : options.inverse(this);
+      case '===':
+        return (v1 === v2) ? options.fn(this) : options.inverse(this);
+      case '<':
+        return (v1 < v2) ? options.fn(this) : options.inverse(this);
+      case '<=':
+        return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+      case '>':
+        return (v1 > v2) ? options.fn(this) : options.inverse(this);
+      case '>=':
+        return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+      case '&&':
+        return (v1 && v2) ? options.fn(this) : options.inverse(this);
+      case '||':
+        return (v1 || v2) ? options.fn(this) : options.inverse(this);
+      default:
+        return options.inverse(this);
+    }
+  });
+
   function GetURLParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
@@ -346,6 +370,7 @@ jQuery(function ($) {
       data.title = mainPost.get('post_title');
       data.versions = this.collection.where({post_type: "kwps_version"});
       data.collection = this.collection.findWhere({post_type: "kwps_test_collection"}).toJSON();
+      data.testmodus = this.collection.findWhere({ID: data.collection.post_parent}).toJSON();
       for (var i = 0; i < data.versions.length; i++) {
         data.versions[i] = data.versions[i].toJSON();
         var kwpsIntro = this.collection.findWhere({post_type: "kwps_intro", post_parent : data.versions[i].ID});
@@ -371,6 +396,7 @@ jQuery(function ($) {
       questionGroups = _.groupBy(questionGroups, "_kwps_sort_order");
 
       for (var g in questionGroups) {
+        questionGroups.length = questionGroups[g].length;
         if (g == app.openAnswer.questionGroup) {
           questionGroups[g].open = true;
 
@@ -383,6 +409,8 @@ jQuery(function ($) {
 
             for (var i in questions) {
               // if sortorder is equal to openAnswer show all answers
+              questions.length = questions[i].length;
+
               if (i == app.openAnswer.question) {
                 questions[i].open = true;
                 data.answers = [];

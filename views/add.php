@@ -215,21 +215,25 @@
 				{{/if}}
 				{{/each}}
 
-
+				{{#ifCond ../../questions.length '<' ../../testmodus._kwps_max_questions_per_question_group}}
 				<tr class="title">
-					<th class="no-delete row-title" colspan="{{getColumnCount ../../versions}}">
-						<button class="button add" data-post-type="kwps_question" data-open-order="{{../../open/questionGroup}}">
+					<th class="no-delete row-title" colspan="{{getColumnCount ../../../versions}}">
+						<button class="button add" data-post-type="kwps_question" data-open-order="{{../../../open/questionGroup}}">
 							<span data-code="f132" class="dashicons dashicons-plus"></span>
 							<?php _e( 'Add Question', 'klasse-wp-poll-survey' ) ?>
 
 						</button>
 					</th>
 				</tr>
+				{{/ifCond}}
 
 
 				{{/if}}
 				{{/each}}
 
+
+
+				{{#ifCond questionGroups.length '<' testmodus._kwps_max_question_groups}}
 				<tr class="title">
 					<th class="no-delete row-title" colspan="{{getColumnCount versions}}">
 						<button class="button add" data-post-type="kwps_question_group">
@@ -239,6 +243,7 @@
 						</button>
 					</th>
 				</tr>
+				{{/ifCond}}
 
 				<tr class="title">
 					<th class="no-delete row-title" colspan="{{getColumnCount versions}}">
