@@ -74,7 +74,7 @@ class Question_Group extends Kwps_Post_Type {
         }
 
         $version = Version::get_as_array($post_as_array['post_parent']);
-        $test_modus = static::get_test_modus($post_as_array['ID']);
+        $test_modus = Version::get_test_modus($version['ID']);
 
         $kwps_max_question_groups = $test_modus['_kwps_max_question_groups'];
 
