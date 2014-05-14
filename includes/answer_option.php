@@ -97,7 +97,8 @@ class Answer_Option extends Kwps_Post_Type{
             }
         }
 
-        $test_modus = static::get_test_modus($post_as_array['ID']);
+        $question = Question::get_as_array($post_as_array['post_parent']);
+        $test_modus = Question::get_test_modus($question['ID']);
 
         $all_answer_options_of_same_question = Answer_Option::get_all_by_post_parent($post_as_array['post_parent']);
 

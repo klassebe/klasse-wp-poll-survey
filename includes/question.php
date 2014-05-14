@@ -87,7 +87,8 @@ class Question extends Kwps_Post_Type{
             }
         }
 
-        $test_modus = static::get_test_modus($post_as_array['ID']);
+        $question_group = Question_Group::get_as_array($post_as_array['post_parent']);
+        $test_modus = Question_Group::get_test_modus($question_group['ID']);
 
         $all_questions_of_same_group = Question::get_all_by_post_parent($post_as_array['post_parent']);
 
