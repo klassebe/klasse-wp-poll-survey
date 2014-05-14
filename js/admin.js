@@ -406,6 +406,7 @@ jQuery(function ($) {
       data.answers = _.flatten(data.answers);
       data.answers = _.groupBy(data.answers, "_kwps_sort_order");
       data.kwpsUniquenessTypes = kwpsUniquenessTypes;
+      data.open = app.openAnswer;
       return data;
     },
     addVersion: function (event) {
@@ -492,14 +493,16 @@ jQuery(function ($) {
             this.createOutro(kwpsPolls[i].id, true);
           }
           break;
-        case 'kwps_question':
-          for(var i = 0; i < kwpsPollLen; i++) {
-            this.createQuestion(kwpsPolls[i].id, true);
-          }
-          break;
         case 'kwps_question_group':
           for(var i = 0; i < kwpsPollLen; i++) {
             this.createQuestionGroup(kwpsPolls[i].id, true);
+          }
+          break;
+        case 'kwps_question':
+          var openOrder = $(e.currentTarget).data('open-order');
+
+          for(var i = 0; i < kwpsPollLen; i++) {
+            this.createQuestion(kwpsPolls[i].id, openOrder, true);
           }
           break;
         case 'kwps_answer_option':
@@ -558,15 +561,15 @@ jQuery(function ($) {
         _kwps_sort_order : index
       });
     },
-    createQuestion: function (post_parent, edit) {
-      var that = this;
-      var index = this.collection.where({post_type: 'kwps_question', post_parent: post_parent}).length;
+    createQuestion: function (post_parent, open_order, edit) {
+      var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent, _kwps_sort_order: open_order.toString()});
+      var index = this.collection.where({post_type: 'kwps_question', post_parent: parent.get('ID')}).length;
 
       app.kwpsPollsCollection.create({
         post_type: "kwps_question",
         post_status: "publish",
         post_content : "question",
-        post_parent : post_parent,
+        post_parent : parent.get('ID'),
         _kwps_sort_order : index
       }, {
         success: function (model, response, options) {
