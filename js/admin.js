@@ -395,10 +395,12 @@ jQuery(function ($) {
       _.each(questionGroups, function (questionGroup, index, list) {
         questionGroups[index] = questionGroup.toJSON();
       });
+      var questionGroupsLength = questionGroups.length;
+
       questionGroups = _.groupBy(questionGroups, "_kwps_sort_order");
+      questionGroups.length = questionGroupsLength;
 
       for (var g in questionGroups) {
-        questionGroups.length = questionGroups[g].length;
         if (g == app.openAnswer.questionGroup) {
           questionGroups[g].open = true;
 

@@ -231,6 +231,7 @@
 				{{/if}}
 				{{/each}}
 
+				{{debug questionGroups.length}}
 
 
 				{{#ifCond questionGroups.length '<' testmodus._kwps_max_question_groups}}
