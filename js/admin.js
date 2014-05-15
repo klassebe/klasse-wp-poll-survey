@@ -600,7 +600,7 @@ jQuery(function ($) {
       });
     },
     createQuestion: function (post_parent, open_order, edit) {
-      var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent, _kwps_sort_order: open_order});
+      var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent, _kwps_sort_order: open_order.toString()});
       var index = this.collection.where({post_type: 'kwps_question', post_parent: parent.get('ID')}).length;
 
       app.kwpsPollsCollection.create({

@@ -122,10 +122,10 @@
 					<th class="no-delete row-title" colspan="{{getColumnCount ../../versions}}">
 						{{#if ../open}}
 						<span data-code="f140" class="dashicons dashicons-arrow-down toggle-details"
-						      data-type="questionGroup" data-question-row="{{@index}}"></span>
+						      data-type="questionGroup" data-question-row="{{_kwps_sort_order}}"></span>
 						{{else}}
 						<span data-code="f139" class="dashicons dashicons-arrow-right toggle-details"
-						      data-type="questionGroup" data-question-row="{{@index}}"></span>
+						      data-type="questionGroup" data-question-row="{{_kwps_sort_order}}"></span>
 						{{/if}}
 					    <input type="text" data-id="{{ID}}" value="{{post_title}}" name="post_title" class="update-post-title">
 						<div>
