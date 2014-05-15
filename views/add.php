@@ -136,6 +136,7 @@
 
 
 				{{#each ../../questions}}
+				{{debug this}}
 				<tr>
 					<td class="delete column-action {{#if open}} extra {{/if}}">
 						{{#if open}}
@@ -215,7 +216,7 @@
 				{{/if}}
 				{{/each}}
 
-				{{#ifCond ../../questions.length '<' ../../testmodus._kwps_max_questions_per_question_group}}
+				{{#ifLength ../../questions ../../testmodus._kwps_max_questions_per_question_group}}
 				<tr class="title">
 					<th class="no-delete row-title" colspan="{{getColumnCount ../../../versions}}">
 						<button class="button add" data-post-type="kwps_question" data-open-order="{{../../../open/questionGroup}}">
@@ -225,16 +226,13 @@
 						</button>
 					</th>
 				</tr>
-				{{/ifCond}}
+				{{/ifLength}}
 
 
 				{{/if}}
 				{{/each}}
 
-				{{debug questionGroups.length}}
-
-
-				{{#ifCond questionGroups.length '<' testmodus._kwps_max_question_groups}}
+				{{#ifLength questionGroups testmodus._kwps_max_question_groups}}
 				<tr class="title">
 					<th class="no-delete row-title" colspan="{{getColumnCount versions}}">
 						<button class="button add" data-post-type="kwps_question_group">
@@ -244,7 +242,7 @@
 						</button>
 					</th>
 				</tr>
-				{{/ifCond}}
+				{{/ifLength}}
 
 				<tr class="title">
 					<th class="no-delete row-title" colspan="{{getColumnCount versions}}">

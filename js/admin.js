@@ -108,6 +108,16 @@ jQuery(function ($) {
     }
   });
 
+  Handlebars.registerHelper('ifLength', function(obj, max, options) {
+    var size = 0,
+      key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+    }
+
+    return (size < max) ? options.fn(this) : options.inverse(this);
+  });
+
   function GetURLParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
@@ -366,6 +376,8 @@ jQuery(function ($) {
     prepareData: function() {
       var data = {};
 
+      console.log(this.collection);
+
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');
       data.versions = this.collection.where({post_type: "kwps_version"});
@@ -398,7 +410,6 @@ jQuery(function ($) {
       var questionGroupsLength = questionGroups.length;
 
       questionGroups = _.groupBy(questionGroups, "_kwps_sort_order");
-      questionGroups.length = questionGroupsLength;
 
       for (var g in questionGroups) {
         if (g == app.openAnswer.questionGroup) {
@@ -413,7 +424,7 @@ jQuery(function ($) {
 
             for (var i in questions) {
               // if sortorder is equal to openAnswer show all answers
-              questions.length = questions[i].length;
+              //questions.length = questions[i].length;
 
               if (i == app.openAnswer.question) {
                 questions[i].open = true;
@@ -552,7 +563,7 @@ jQuery(function ($) {
         post_status: "publish",
         post_content : "intro ",
         post_parent : post_parent,
-        _kwps_sort_order : 0
+        _kwps_sort_order : "0"
       });
       model.save({},{
         success: function (model, response, options) {
@@ -594,7 +605,17 @@ jQuery(function ($) {
       });
     },
     createQuestion: function (post_parent, open_order, edit) {
-      var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent, _kwps_sort_order: open_order.toString()});
+      console.log(post_parent);
+      console.log(open_order);
+      console.log(this.collection);
+      console.log(this.collection.findWhere({post_type: 'kwps_question_group'}));
+      console.log(this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent}));
+      console.log(this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent, _kwps_sort_order: open_order}));
+
+
+
+
+      var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent, _kwps_sort_order: open_order});
       var index = this.collection.where({post_type: 'kwps_question', post_parent: parent.get('ID')}).length;
 
       app.kwpsPollsCollection.create({
