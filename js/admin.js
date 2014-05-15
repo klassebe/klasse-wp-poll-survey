@@ -182,7 +182,7 @@ jQuery(function ($) {
       // indien opties worden de opties getoond en kan men test aanmaken
       //console.log("ROUTING TO: newKwpsTest");
 
-      app.kwpsPollsCollection = new Backbone.Collection([],{
+      app.kwpsPollsCollection = new Backbone.Collection(kwpsTests,{
         model: KwpsModel
       });
       app.views.newKwpsTest = new app.KwpsViewNewKwpsTest();
@@ -371,6 +371,8 @@ jQuery(function ($) {
       data.versions = this.collection.where({post_type: "kwps_version"});
       data.collection = this.collection.findWhere({post_type: "kwps_test_collection"}).toJSON();
       data.testmodus = this.collection.findWhere({ID: data.collection.post_parent}).toJSON();
+
+
       for (var i = 0; i < data.versions.length; i++) {
         data.versions[i] = data.versions[i].toJSON();
         var kwpsIntro = this.collection.findWhere({post_type: "kwps_intro", post_parent : data.versions[i].ID});
