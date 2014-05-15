@@ -136,7 +136,6 @@
 
 
 				{{#each ../../questions}}
-				{{debug this}}
 				<tr>
 					<td class="delete column-action {{#if open}} extra {{/if}}">
 						{{#if open}}

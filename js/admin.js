@@ -115,7 +115,7 @@ jQuery(function ($) {
       if (obj.hasOwnProperty(key)) size++;
     }
 
-    return (size < max) ? options.fn(this) : options.inverse(this);
+    return (size < max || max < 0) ? options.fn(this) : options.inverse(this);
   });
 
   function GetURLParameter(sParam) {
@@ -130,8 +130,6 @@ jQuery(function ($) {
       }
     }
   };
-
-
 
   var app = {};
   app.url = 'admin-ajax.php?action=';
@@ -375,15 +373,11 @@ jQuery(function ($) {
     },
     prepareData: function() {
       var data = {};
-
-      console.log(this.collection);
-
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');
       data.versions = this.collection.where({post_type: "kwps_version"});
       data.collection = this.collection.findWhere({post_type: "kwps_test_collection"}).toJSON();
       data.testmodus = this.collection.findWhere({ID: data.collection.post_parent}).toJSON();
-
 
       for (var i = 0; i < data.versions.length; i++) {
         data.versions[i] = data.versions[i].toJSON();
@@ -605,16 +599,6 @@ jQuery(function ($) {
       });
     },
     createQuestion: function (post_parent, open_order, edit) {
-      console.log(post_parent);
-      console.log(open_order);
-      console.log(this.collection);
-      console.log(this.collection.findWhere({post_type: 'kwps_question_group'}));
-      console.log(this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent}));
-      console.log(this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent, _kwps_sort_order: open_order}));
-
-
-
-
       var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent, _kwps_sort_order: open_order});
       var index = this.collection.where({post_type: 'kwps_question', post_parent: parent.get('ID')}).length;
 
