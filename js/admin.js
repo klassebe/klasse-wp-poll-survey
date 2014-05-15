@@ -360,7 +360,8 @@ jQuery(function ($) {
       // 'click .delete-version': 'deleteVersion',
       // 'click .delete-intro': 'deleteIntro',
       'change #post_title': 'changeTitle',
-      'change .update-main': 'updateTestCollection'
+      'change .update-main': 'updateTestCollection',
+      'change .update-post-title': 'updatePostTitle'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -671,6 +672,14 @@ jQuery(function ($) {
 
       mainPost.set(attribute, value);
       mainPost.save();
+    },
+    updatePostTitle: function(event) {
+      var attribute = $(event.target).attr("name");
+      var value = $(event.target).val();
+      var ID = $(event.target).data('id');
+      var post = this.collection.get(ID);
+      post.set(attribute, value);
+      post.save();
     }
   });
 

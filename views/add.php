@@ -127,7 +127,14 @@
 						<span data-code="f139" class="dashicons dashicons-arrow-right toggle-details"
 						      data-type="questionGroup" data-question-row="{{@index}}"></span>
 						{{/if}}
-						{{post_title}}
+					    <input type="text" data-id="{{ID}}" value="{{post_title}}" name="post_title" class="update-post-title">
+						<div>
+							<strong>
+								<a class="row-title" href="#edit/{{ID}}"
+								   title="Edit “{{{subStringStripper post_content 30}}}”">{{{subStringStripper post_content
+									100}}}</a>
+							</strong>
+						</div>
 					</th>
 				</tr>
 				{{/each}}
