@@ -226,7 +226,6 @@ function enqueue_scripts() {
  */
 function enqueue_scripts_admin() {
     wp_register_script( 'klasse-wp-poll-survey-handlebars', plugins_url( 'js/bower_components/handlebars/handlebars.js', __FILE__ ), array( 'jquery' ));
-    wp_register_script( 'klasse-wp-poll-survey-backbone-associations', plugins_url( 'js/bower_components/backbone-associations/backbone-associations.js', __FILE__ ), array( 'backbone' ));
     wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ));
 
 
@@ -240,6 +239,7 @@ function enqueue_scripts_admin() {
     wp_enqueue_script( 'jquery' );
     wp_enqueue_script( 'jquery-ui-core' );
     wp_enqueue_script( 'jquery-ui-tabs' );
+    wp_enqueue_script( 'backbone' );
     // wp_enqueue_script( 'tiny_mce' );
     // wp_enqueue_script( 'editorremov' );
     // wp_enqueue_script( 'editor-functions' );
