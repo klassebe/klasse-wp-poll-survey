@@ -220,6 +220,10 @@ jQuery(function ($) {
         console.log(this)
       }});
     },
+    destroy: function() {
+      this.set('post_status', 'trash');
+      this.save();
+    },
     idAttribute: 'ID',
     defaults: {
       post_author: 0,
@@ -348,7 +352,7 @@ jQuery(function ($) {
     initialize: function () {
       //_.bindAll(this, 'cleanup');
       this.render();
-      this.listenTo(this.collection, 'add', this.render);
+      this.listenTo(this.collection, 'add remove', this.render);
     },
     events: {
       'click #add-version': 'addVersion',
@@ -357,8 +361,6 @@ jQuery(function ($) {
       'click .toggle-details': 'toggleDetails',
       'click button.add': 'createNew',
       'click span.del': 'deletePostType',
-      // 'click .delete-version': 'deleteVersion',
-      // 'click .delete-intro': 'deleteIntro',
       'change #post_title': 'changeTitle',
       'change .update-main': 'updateTestCollection',
       'change .update-post-title': 'updatePostTitle'
@@ -463,18 +465,10 @@ jQuery(function ($) {
       var toDelete = this.model.get('versions').get(kwpdId);
       toDelete.destroy();
     },
-    deleteIntro: function (event) {
-      event.preventDefault();
-      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
-      // var kwpdType = $(event.target).closest('div.action').data('kwps-type');
-      var toDelete = this.model.get('kwps_intro').get(kwpsId);
-      toDelete.destroy();
-    },
-    deleteOutro: function (event) {
-      event.preventDefault();
-      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
-      var toDelete = this.model.get('kwps_outro').get(kwpsId);
-      toDelete.destroy();
+    deleteUnique: function (postType) {
+      var postToDelete = this.collection.findWhere({post_type: postType});
+      postToDelete.destroy();
+      this.collection.remove(postToDelete);
     },
     deleteQuestion: function (event) {
       event.preventDefault();
@@ -490,12 +484,13 @@ jQuery(function ($) {
     },
     deletePostType: function(e) {
       e.preventDefault();
-      var postType = $(e.currentTarget).data('post-type');
+      var type = $(e.currentTarget).data('type');
       var kwpsPolls = this.collection.where({post_type: 'kwps_poll'});
       var kwpsPollLen = kwpsPolls.length;
-      switch (postType) {
-        case 'kwps_intro':
-            this.deleteIntro(kwpsPolls[i].id, true);
+      switch (type) {
+        case 'unique':
+            var postType = $(e.currentTarget).data('post-type');
+            this.deleteUnique(postType);
           break;
         case 'kwps_outro':
             this.deleteOutro(kwpsPolls[i].id, true);

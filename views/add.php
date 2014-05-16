@@ -95,8 +95,8 @@
 					{{#each versions}}
 					<td class="column-action">
 						<div class="action">
-							<a class="delete-intro">
-                                                <span class="del" data-post-type="kwps_intro">
+							<a class="">
+                                                <span class="del" data-type="unique" data-post-type="kwps_intro">
                                                     <span data-code="f182" class="dashicons dashicons-trash"></span>
                                                 </span>
 							</a>
@@ -266,7 +266,7 @@
 					<td class="column-action">
 						<div class="action">
 							<a class="delete-outro">
-                                                <span class="del" data-post-type="kwps_outro">
+                                                <span class="del" data-type="unique" data-post-type="kwps_outro">
                                                     <span data-code="f182" class="dashicons dashicons-trash"></span>
                                                 </span>
 							</a>
