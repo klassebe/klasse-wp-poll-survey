@@ -470,6 +470,13 @@ jQuery(function ($) {
       postToDelete.destroy();
       this.collection.remove(postToDelete);
     },
+    deleteRow: function(postType, sortOrder) {
+      var postsToDelete = this.collection.where({post_type: postType, _kwps_sort_order: sortOrder.toString()});
+      for (var i = 0; i < postsToDelete.length; i++) {
+        postsToDelete[i].destroy();
+      }
+      this.collection.remove(postsToDelete);
+    },
     deleteQuestion: function (event) {
       event.preventDefault();
       var kwpdId = $(event.target).closest('div.action').data('kwps-id');
@@ -492,18 +499,10 @@ jQuery(function ($) {
             var postType = $(e.currentTarget).data('post-type');
             this.deleteUnique(postType);
           break;
-        case 'kwps_outro':
-            this.deleteOutro(kwpsPolls[i].id, true);
-          break;
-        case 'kwps_question':
-          for(var i = 0; i < kwpsPollLen; i++) {
-            this.deleteQuestion(kwpsPolls[i].id, true);
-          }
-          break;
-        case 'kwps_answer_option':
-          for(var i =0; i< kwpsPollLen; i++) {
-            this.deleteAnswerOption(kwpsPolls[i].id, true);
-          }
+        case 'row':
+            var sortOrder = $(e.currentTarget).data('sort-order');     
+            var postType = $(e.currentTarget).data('post-type');
+            this.deleteRow(postType, sortOrder);
           break;
         default:
           console.log('no post type was given');

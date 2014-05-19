@@ -154,7 +154,7 @@
 						{{/if}}
 						<div class="action">
 							<a class="delete-question">
-                                            <span class="del" data-post-type="kwps_question">
+                                            <span class="del" data-type="row" data-sort-order="{{@index}}" data-post-type="kwps_question">
                                                 <span data-code="f182" class="dashicons dashicons-trash"></span>
                                             </span>
 							</a>
