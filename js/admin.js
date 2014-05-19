@@ -519,12 +519,12 @@ jQuery(function ($) {
       switch (postType) {
         case 'kwps_intro':
           for(var i = 0; i < kwpsPollLen; i++) {
-            this.createIntro(kwpsPolls[i].id, true);
+            this.createIntro(kwpsPolls[i].id);
           }
           break;
         case 'kwps_outro':
           for(var i = 0; i < kwpsPollLen; i++) {
-            this.createOutro(kwpsPolls[i].id, true);
+            this.createOutro(kwpsPolls[i].id);
           }
           break;
         case 'kwps_question_group':
@@ -533,10 +533,8 @@ jQuery(function ($) {
           }
           break;
         case 'kwps_question':
-          var openOrder = $(e.currentTarget).data('open-order');
-
           for(var i = 0; i < kwpsPollLen; i++) {
-            this.createQuestion(kwpsPolls[i].id, openOrder, true);
+            this.createQuestion(kwpsPolls[i].id);
           }
           break;
         case 'kwps_answer_option':
