@@ -41,6 +41,11 @@
     font-family: dashicons;
     font-size: 16px;
 }
+#kwps_test .add-media-icon:before {
+    content: '\f104';
+    font-family: dashicons;
+    font-size: 14px;
+}
 #kwps_test .form-table {
     width: 100%;
 }
