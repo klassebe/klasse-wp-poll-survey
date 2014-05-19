@@ -355,7 +355,6 @@ jQuery(function ($) {
       this.listenTo(this.collection, 'add remove', this.render);
     },
     events: {
-      'click #add-version': 'addVersion',
       'click .delete-version': 'deleteVersion',
       'mouseenter td': 'showActions',
       'mouseleave td': 'hideActions',
@@ -450,15 +449,6 @@ jQuery(function ($) {
       data.open = app.openAnswer;
       return data;
     },
-    addVersion: function (event) {
-      //TODO php function clone main poll en return added posts
-      var newVersion = this.model.clone();
-      newVersion.unset('versions');
-      newVersion.set({
-        answers: this.model.get('answers')
-      });
-      app.test.set('versions', newVersion, {remove: false});
-    },
     deleteVersion: function(event) {
       //TODO php function delete poll with(id) and all child posts + child posts of questions
       event.preventDefault();
@@ -478,18 +468,6 @@ jQuery(function ($) {
         postsToDelete[i].destroy();
       }
       this.collection.remove(postsToDelete);
-    },
-    deleteQuestion: function (event) {
-      event.preventDefault();
-      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
-      var toDelete = this.model.get('kwps_question').get(kwpsId);
-      toDelete.destroy();
-    },
-    deleteAnswerOption: function (event) {
-      event.preventDefault();
-      var kwpdId = $(event.target).closest('div.action').data('kwps-id');
-      var toDelete = this.model.get('kwps_answer_option').get(kwpsId);
-      toDelete.destroy();
     },
     deletePostType: function(e) {
       e.preventDefault();
@@ -519,12 +497,12 @@ jQuery(function ($) {
       switch (postType) {
         case 'kwps_intro':
           for(var i = 0; i < kwpsPollLen; i++) {
-            this.createIntro(kwpsPolls[i].id, true);
+            this.createIntro(kwpsPolls[i].id);
           }
           break;
         case 'kwps_outro':
           for(var i = 0; i < kwpsPollLen; i++) {
-            this.createOutro(kwpsPolls[i].id, true);
+            this.createOutro(kwpsPolls[i].id);
           }
           break;
         case 'kwps_question_group':
@@ -533,15 +511,22 @@ jQuery(function ($) {
           }
           break;
         case 'kwps_question':
-          var openOrder = $(e.currentTarget).data('open-order');
-
           for(var i = 0; i < kwpsPollLen; i++) {
-            this.createQuestion(kwpsPolls[i].id, openOrder, true);
+            var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: kwpsPolls[i].id});
+            this.createQuestion(parent.get('ID'));
           }
           break;
         case 'kwps_answer_option':
           var sortOrder = $(e.currentTarget).data('sort-order');
-          var kwpsAnswerOptions = this.collection.where({post_type: 'kwps_answer_option', _kwps_sort_order: sortOrder});
+          for(var i = 0; i < kwpsPollLen; i++) {
+            var questionGroups = this.collection.where({post_type: 'kwps_question_group', post_parent: kwpsPolls[i].id});
+            for(var j = 0; j < questionGroups.length; j++) {
+              var questions = this.collection.where({post_type: 'kwps_question', post_parent: questionGroups[j].id, _kwps_sort_order: sortOrder.toString()});
+              for(var k = 0; k < questions.length; k++) {
+                this.createAnswer(questions[k].id);
+              }
+            }
+          }
           break;
         case 'kwps_version':
           this.createVersion(kwpsPolls[kwpsPollLen-1], kwpsPollLen);
