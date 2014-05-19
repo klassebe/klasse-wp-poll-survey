@@ -749,8 +749,12 @@ jQuery(function ($) {
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({
+        menubar: false,
+        // statusbar: true,
         selector: "textarea",
-        plugins: "code"
+        plugins: "code link hr paste lists table textcolor wordcount",
+        toolbar: ["bold italic strikethrough bullist numlist blockquote hr alignleft aligncenter alignright link", 
+                  "formatselect underline alignjustify forecolor backcolor paste inserttable outdent indent undo redo | code"]
       });
       /* MEDIA UPLOAD */
       $('#add-media-button').on('click', function() {

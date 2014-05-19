@@ -21,6 +21,7 @@
 </script>
 
 <script id="edit_template" type="text/x-handlebars-template">
+
 	<h2>{{label}}</h2>
 	<div>
     <button id="add-media-button"><span class="add-media-icon"></span><?php _e( 'Add Media', 'klasse-wp-poll-survey' ) ?></button>
