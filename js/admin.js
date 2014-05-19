@@ -1,6 +1,6 @@
 jQuery(function ($) {
 
-
+/* BACKBONE STUFF */
   $.fn.serializeObject = function(){
     var obj = {};
 
@@ -702,8 +702,20 @@ jQuery(function ($) {
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({
-        selector: "textarea"
+        selector: "textarea",
+        plugins: "code"
       });
+      /* MEDIA UPLOAD */
+      $('#add-media-button').on('click', function() {
+        tb_show( '', 'media-upload.php?type=image&amp;TB_iframe=true' );
+        return false;
+      });
+      window.send_to_editor = function(html) {
+        var imgUrl = $('img',html).attr('src');
+        var imgTitle = url.split("/").pop();
+        $('iframe').contents().find('#tinymce').append('<img class="img img-' + imgTitle + '" src="' + imgUrl + '" alt="">');
+        tb_remove();
+      };
     },
     updateData: function(event) {
       event.preventDefault();
@@ -762,5 +774,5 @@ jQuery(function ($) {
   }
   app.router = new router;
   Backbone.history.start();
-  
+
 });
