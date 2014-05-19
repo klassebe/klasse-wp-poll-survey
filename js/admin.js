@@ -527,7 +527,7 @@ jQuery(function ($) {
           break;
         case 'kwps_question_group':
           for(var i = 0; i < kwpsPollLen; i++) {
-            this.createQuestionGroup(kwpsPolls[i].id, true);
+            this.createQuestionGroup(kwpsPolls[i].id);
           }
           break;
         case 'kwps_question':
@@ -541,9 +541,72 @@ jQuery(function ($) {
           var sortOrder = $(e.currentTarget).data('sort-order');
           var kwpsAnswerOptions = this.collection.where({post_type: 'kwps_answer_option', _kwps_sort_order: sortOrder});
           break;
+        case 'kwps_version':
+          this.createVersion(kwpsPolls[kwpsPollLen-1], kwpsPollLen);
+          break;
         default:
           console.log('no post type was given');
       }
+    },
+    createVersion: function (previousVersion, index) {
+      var that = this;
+      app.kwpsPollsCollection.create({
+        post_type: "kwps_version",
+        post_status: "publish",
+        post_title : "Version " + index,
+        post_content : "Version " + index,
+        post_parent : previousVersion.get('post_parent'),
+        _kwps_sort_order : index
+      },
+        {
+          success: function (newVersion, response, options) {
+            //that.createIntro(newVersion.get('ID'), false);
+            //that.createOutro(newVersion.get('ID'), false);
+            var questionGroups = that.collection.where({post_type: 'kwps_question_group', post_parent: previousVersion.get('ID')});  
+
+            for (var i = 0; i < questionGroups.length; i++) {
+              var questionGroupOriginal = questionGroups[i];
+
+              that.createQuestionGroup(newVersion.get('ID'), function(newQuestionGroup) {
+                var questionsInGroup = that.collection.where({post_type: 'kwps_question', post_parent: questionGroupOriginal.id});  
+
+                for (var i = 0; i < questionsInGroup.length; i++) {
+                  var questionOriginal = questionsInGroup[i];
+
+                  that.createQuestion(newQuestionGroup.get('ID'), function(newQuestion) {
+                    var answersInQuestion = that.collection.where({post_type: 'kwps_answer_option', post_parent: questionOriginal.id});  
+
+                    for (var i = 0; i < answersInQuestion.length; i++) {
+                      that.createAnswer(newQuestion.get('ID'), function(newAnswer) {
+                        console.log('answer created: ' + newAnswer.id);
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          }
+        });
+
+
+      /*
+      var that = this;
+      var model = new KwpsModel({
+        post_type: "kwps_version",
+        post_status: "publish",
+        post_title : "Version " + (index+1),
+        post_parent : post_parent,
+        _kwps_sort_order : index
+      });
+      model.save({},{
+        success: function (model, response, options) {
+          app.kwpsPollsCollection.add(model);
+          for (var i = 0; i < 1; i++) {
+            that.createQuestionGroup(model.get('ID'), i);
+          };
+        }
+      });
+      */
     },
     createIntro: function (post_parent, edit) {
       var that = this;
@@ -583,7 +646,7 @@ jQuery(function ($) {
         }
       });
     },
-    createQuestionGroup: function (post_parent, edit) {
+    createQuestionGroup: function (post_parent, cb) {
       var index = this.collection.where({post_type: 'kwps_question_group', post_parent: post_parent}).length;
       app.kwpsPollsCollection.create({
         post_type: "kwps_question_group",
@@ -591,43 +654,46 @@ jQuery(function ($) {
         post_title : "Question Group " + index,
         post_parent : post_parent,
         _kwps_sort_order : index
-      });
-    },
-    createQuestion: function (post_parent, open_order, edit) {
-      var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent, _kwps_sort_order: open_order.toString()});
-      var index = this.collection.where({post_type: 'kwps_question', post_parent: parent.get('ID')}).length;
-
-      app.kwpsPollsCollection.create({
-        post_type: "kwps_question",
-        post_status: "publish",
-        post_content : "question",
-        post_parent : parent.get('ID'),
-        _kwps_sort_order : index
       }, {
-        success: function (model, response, options) {
-          if (edit) {
-            app.router.navigate('edit/'+ model.id, {trigger: true});
-
+        success: function(model, response, options) {
+          if(cb) {
+            cb(model);
           }
         }
       });
     },
-    createAnswer: function (post_parent, edit) {
+    createQuestion: function (post_parent, cb) {
+      var index = this.collection.where({post_type: 'kwps_question', post_parent: post_parent}).length;
+      app.kwpsPollsCollection.create({
+        post_type: "kwps_question",
+        post_status: "publish",
+        post_content : "question",
+        post_parent : post_parent,
+        _kwps_sort_order : index
+      }, {
+        success: function (model, response, options) {
+          if(cb) {
+            cb(model);
+          }        
+        }
+      });
+    },
+    createAnswer: function (post_parent, cb) {
+      var index = this.collection.where({post_type: 'kwps_answer_option', post_parent: post_parent}).length;
       app.kwpsPollsCollection.create({
         post_type: "kwps_answer_option",
         post_status: "publish",
         post_content : "answer ",
         post_parent : post_parent,
-        _kwps_sort_order : 0
+        _kwps_sort_order : index
       },
         {
           success: function (model, response, options) {
-            if (edit) {
-              app.router.navigate('edit/'+ model.id, {trigger: true});
-
-            }
-          }
-        });
+          if(cb) {
+            cb(model);
+          }        
+        }
+      });
     },
     showActions: function(event) {
       $(event.target).find(".actions").show();

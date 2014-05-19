@@ -73,7 +73,7 @@
 					{{/each}}
 					<td class="column-title" style="width:85px;">
 						<div class="column-tab">
-							<button class="add button">
+							<button class="add button" data-post-type="kwps_version" data-sort-order="{{@index}}">
 								<span data-code="f132" class="dashicons dashicons-plus"></span>
 							</button>
 						</div>
@@ -116,9 +116,9 @@
 				{{/if}}
 
 				{{#each questionGroups}}
+                <tr class="title">
 
 				{{#each this}}
-				<tr class="title">
 					<th class="no-delete row-title" colspan="{{getColumnCount ../../versions}}">
 						{{#if ../open}}
 						<span data-code="f140" class="dashicons dashicons-arrow-down toggle-details"
@@ -136,8 +136,8 @@
 							</strong>
 						</div>
 					</th>
-				</tr>
 				{{/each}}
+                </tr>
 
 				{{#if open}}
 
