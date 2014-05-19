@@ -66,8 +66,9 @@
 					<th class=" column-title">
 						<div class="column-tab">
 							<div>{{post_title}}</div>
-							<div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a
-									class="delete-version">delete</a></div>
+							<div class="actions">
+                                <a class="delete-version" data-version-id="{{ID}}">delete</a>
+                            </div>
 						</div>
 					</th>
 					{{/each}}

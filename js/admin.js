@@ -356,6 +356,7 @@ jQuery(function ($) {
     },
     events: {
       'click #add-version': 'addVersion',
+      'click .delete-version': 'deleteVersion',
       'mouseenter td': 'showActions',
       'mouseleave td': 'hideActions',
       'click .toggle-details': 'toggleDetails',
@@ -461,9 +462,10 @@ jQuery(function ($) {
     deleteVersion: function(event) {
       //TODO php function delete poll with(id) and all child posts + child posts of questions
       event.preventDefault();
-      var kwpdId = $(event.target).closest('div.actions').data('kwps-id');
-      var toDelete = this.model.get('versions').get(kwpdId);
+      var versionId = $(event.target).data('version-id');
+      var toDelete = this.collection.get(versionId);
       toDelete.destroy();
+      this.collection.remove(toDelete);
     },
     deleteUnique: function (postType) {
       var postToDelete = this.collection.findWhere({post_type: postType});
