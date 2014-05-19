@@ -534,7 +534,8 @@ jQuery(function ($) {
           break;
         case 'kwps_question':
           for(var i = 0; i < kwpsPollLen; i++) {
-            this.createQuestion(kwpsPolls[i].id);
+            var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: kwpsPolls[i].id});
+            this.createQuestion(parent.get('ID'));
           }
           break;
         case 'kwps_answer_option':
@@ -643,13 +644,12 @@ jQuery(function ($) {
       });
     },
     createQuestion: function (post_parent, cb) {
-      var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: post_parent});
-      var index = this.collection.where({post_type: 'kwps_question', post_parent: parent.get('ID')}).length;
+      var index = this.collection.where({post_type: 'kwps_question', post_parent: post_parent}).length;
       app.kwpsPollsCollection.create({
         post_type: "kwps_question",
         post_status: "draft",
         post_content : "question",
-        post_parent : parent.get('ID'),
+        post_parent : post_parent,
         _kwps_sort_order : index
       }, {
         success: function (model, response, options) {
