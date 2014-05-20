@@ -1,3 +1,5 @@
+<?php echo '<link type="text/css" rel="stylesheet" href="'. plugins_url( '../css/editor.css', __FILE__ ) .'">'; ?>
+<?php echo '<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>'; ?>
 <script src="http://localhost:35729/livereload.js"></script>
 <div class="wrap" id="kwps_test">
 	
@@ -572,7 +574,9 @@
             
         </div>
     </div>
-    <?php echo '<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>'; ?>
+
+
+
 </div> <!-- .wrap -->
 
 
@@ -596,11 +600,18 @@
 </script>
 
 <script id="edit_template" type="text/x-handlebars-template">
-<?php echo '<link type="text/css" rel="stylesheet" href="'. plugins_url( '../css/editor.css', __FILE__ ) .'">'; ?>
 	<h2>{{label}}</h2>
-	<div>
-    <button id="add-media-button"><span class="add-media-icon"></span><?php _e( 'Add Media', 'klasse-wp-poll-survey' ) ?></button>
+	<div>  
 		<form id="update-model">
+            {{#if title}}
+                <div>Title: <input type="text" name="qg-title" id="kwps-question-group-title" value="{{title}}"></div>
+            {{/if}}
+
+            {{#if answer_option_value}}
+                <div>Value: <input type="text" name="ao-value" id="kwps-answer-option-value" value="{{answer_option_value}}"></div>
+            {{/if}}
+            <br>
+            <button id="add-media-button"><span class="add-media-icon"></span><?php _e( 'Add Media', 'klasse-wp-poll-survey' ) ?></button>
             <div id="editor-tiny">   
 			 <textarea name='text' rows="20">{{text}}</textarea>
             </div>
@@ -677,9 +688,9 @@
 					<td class="column-action">
 						<div class="action">
 							<a class="">
-                                                <span class="del" data-type="unique" data-post-type="kwps_intro">
-                                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                                </span>
+                                <span class="del" data-type="unique" data-post-type="kwps_intro">
+                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                </span>
 							</a>
 						</div>
 					</td>
@@ -735,9 +746,9 @@
 						{{/if}}
 						<div class="action">
 							<a class="delete-question">
-                                            <span class="del" data-type="row" data-sort-order="{{@index}}" data-post-type="kwps_question">
-                                                <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                            </span>
+                                <span class="del" data-type="row" data-sort-order="{{@index}}" data-post-type="kwps_question">
+                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                </span>
 							</a>
 						</div>
 						<div class="move">
@@ -748,8 +759,7 @@
 					<td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
 						<strong>
 							<a class="row-title" href="#edit/{{ID}}"
-							   title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content
-								100}}</a>
+							   title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
 						</strong>
 
 						<div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
@@ -772,10 +782,10 @@
 				<td class="delete column-action column-answer">
 					<div class="action">
 						<a class="delete-answer-option">
-                                                    <span class="del" data-post-type="kwps_answer_option"
-                                                          data-kwps-sort-order="{{@index}}">
-                                                        <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                                    </span>
+                            <span class="del" data-post-type="kwps_answer_option"
+                                  data-kwps-sort-order="{{@index}}">
+                                <span data-code="f182" class="dashicons dashicons-trash"></span>
+                            </span>
 						</a>
 					</div>
 					<div class="move">
@@ -785,8 +795,7 @@
 				{{#each this}}
 				<td id="_kwps_answer_option_{{ID}}" class="post-title page-title column-title">
 					<strong>
-						<a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper
-							post_content 100}}</a>
+						<a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
 					</strong>
 
 					<div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
@@ -798,8 +807,6 @@
 				{{/each}}
 
 
-
-
 				{{/if}}
 				{{/each}}
 
@@ -809,7 +816,6 @@
 						<button class="button add" data-post-type="kwps_question" data-open-order="{{../../../open/questionGroup}}">
 							<span data-code="f132" class="dashicons dashicons-plus"></span>
 							<?php _e( 'Add Question', 'klasse-wp-poll-survey' ) ?>
-
 						</button>
 					</th>
 				</tr>
@@ -847,9 +853,9 @@
 					<td class="column-action">
 						<div class="action">
 							<a class="delete-outro">
-                                                <span class="del" data-type="unique" data-post-type="kwps_outro">
-                                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                                </span>
+                                <span class="del" data-type="unique" data-post-type="kwps_outro">
+                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                </span>
 							</a>
 						</div>
 					</td>

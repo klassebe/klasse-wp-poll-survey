@@ -100,68 +100,39 @@ class Version extends Kwps_Post_Type{
     }
 
     public static function get_html($id){
-        $version = Version::get_as_array($id);
-        $limitations = Test_Collection::get_meta_data($version['post_parent']);
-        $questions = Question::get_all_by_post_parent($id);
+	    $version = Version::get_as_array($id);
+	    $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
-        if( is_user_logged_in() ){
-            $limit_to_apply = $limitations['_kwps_logged_in_user_limit'];
-        } else {
-            $limit_to_apply = $limitations['_kwps_logged_out_user_limit'];
-        }
-
-        $first_question_id_allowed = -1;
-
-        foreach($questions as $question){
-            if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) ){
-                $first_question_id_allowed = $question['ID'];
-                break;
-            }
-        }
+	    if( is_user_logged_in() ){
+		    $limit_to_apply = $limitations['_kwps_logged_in_user_limit'];
+	    } else {
+		    $limit_to_apply = $limitations['_kwps_logged_out_user_limit'];
+	    }
 
 
-        $dump = '';
+	    $data = array(
+		    'settings' => array(
+			    'first_question_id_allowed' => -1
+		    )
+	    );
+	    $data['intro'] = Intro::get_one_by_post_parent($id);
+	    $data['outro'] = Outro::get_one_by_post_parent($id);
+	    $data['question_groups'] = Question_Group::get_all_by_post_parent($id);
 
-        $post_as_array = static::get_as_array($id);
-        $test_collection = Test_Collection::get_as_array($post_as_array['post_parent']);
-        $test_modus = Test_Modus::get_as_array($test_collection['post_parent']);
-        $test_modus_name = $test_modus['post_title'];
+	    foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
+		    $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
 
-        if($test_exists = $post_as_array['post_status'] === 'publish'){
-            $intros = Intro::get_all_by_post_parent($id);
-            $intro = $intros[0];
-            $dump .= '<script>var firstQuestionIdAllowed = ' . $first_question_id_allowed . '</script>';
+		    foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
+			    if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
+				    $data['settings']['first_question_id_allowed'] = $question['ID'];
+			    }
+			    $data['question_groups'][$questionGroupKey]['questions'][$questionKey]['answer_options'] = Answer_Option::get_all_by_post_parent($question['ID']);
+		    }
+	    }
 
-            $dump .= '<div class="' . $test_modus_name . '" id="kwps-' . $id . '" >';
-            // $dump .= '<input type="hidden">'
-            $dump .= '<div class="kwps-title">' . get_the_title( $id ) . '</div>';
-            $dump .= '<div class="kwps-intro">' . Intro::get_html($intro['ID']) . '<input type="button" class="kwps-next" value="Volgende"></div>';
-            $dump .= '<div class="kwps-content">';
-
-            $questions = Question::get_all_by_post_parent($id);
-            $question = $questions[0];
-            $dump .= '<div class="kwps-question">';
-            $dump .= Question::get_html($question['ID']);
-            $dump .= '</div>';
-            $dump .= '<div class="kwps-answers">';
-
-            $dump .= '<form id="form-version-' . $id . '" class="form-version" action="/">';
-            $dump .= Answer_Option::get_all_html($question['ID']);
- 
-            $dump .= '</form>';
-            $dump .= '</div>'; // kwps-answers
-            $dump .= '</div>'; // kwps-content
-
-            $outros = Outro::get_all_by_post_parent($id);
-            $outro = $outros[0];
-            $dump .= '<div class="kwps-outro">' . Outro::get_html($outro['ID']) . '<div class="kwps-outro-inside"></div></div>';
-            $dump .= '</div>'; // kwps full wrapper
-            $dump .= '<input type=hidden id=adminUrl value='. admin_url() .'>';
-        } else {
-            $dump .= "versie kan niet getoond worden.";
-        }
-
-        return $dump;
+	    ob_start();
+	    include_once(dirname(__FILE__) . '/../views/public/version.php');
+		return ob_get_clean();
     }
 
 }

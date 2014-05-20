@@ -235,7 +235,8 @@ jQuery(function ($) {
         post_status: "draft",
         post_content : "answer " + (index+1),
         post_parent : post_parent,
-        _kwps_sort_order : index
+        _kwps_sort_order : index,
+        _kwps_answer_option_value : 'value...'
       });
       model.save({},{
         success: function (model, response, options) {
@@ -312,9 +313,6 @@ jQuery(function ($) {
           data.versions[i].deleteVersion = true;
         }
       };
-
-      
-
 
       var questionGroups = this.collection.where({post_type: "kwps_question_group"});
       for (var i = questionGroups.length - 1; i >= 0; i--) {
@@ -682,7 +680,8 @@ jQuery(function ($) {
         post_status: "draft",
         post_content : "answer ",
         post_parent : post_parent,
-        _kwps_sort_order : index
+        _kwps_sort_order : index,
+        _kwps_answer_option_value : "value ..."
       },
         {
           success: function (model, response, options) {
@@ -759,14 +758,15 @@ jQuery(function ($) {
       var data = {
         attribute: this.options.attribute,
         label: kwps_translations[this.options.attribute],
-        text: this.model.get("post_content")
+        text: this.model.get("post_content"),
+        title: this.model.get("post_title"),
+        answer_option_value: this.model.get("_kwps_answer_option_value")
       };
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({
         menubar: false,
         visual: true,
-        // statusbar: true,
         selector: "textarea",
         plugins: "code link hr paste lists table textcolor wordcount charmap",
         toolbar: ["bold italic strikethrough bullist numlist blockquote hr alignleft aligncenter alignright link unlink", 
@@ -785,10 +785,26 @@ jQuery(function ($) {
       };
     },
     updateData: function(event) {
+      var type, title, content, value;
       event.preventDefault();
       tinymce.triggerSave();
-      var value = $(event.target).closest('form').find('textarea').val();
-      this.model.save({"post_content": value});
+      content = $(event.target).closest('form').find('textarea').val();
+      type = this.model.get("post_type");
+
+      if (type === 'kwps_question_group') {
+        title = $(event.target).closest('form').find('input[name=qg-title]').val();
+      } else if (type === 'kwps_answer_option') {
+        value = $(event.target).closest('form').find('input[name=ao-value]').val();
+        if (!value) {
+          value = 'value...';
+        }
+      }
+
+      this.model.save({
+        "post_content": content,
+        "post_title" : title,
+        "_kwps_answer_option_value" : value
+      });
 
       this.cleanup();
       window.location = '#';

@@ -60,6 +60,18 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
     }
 
 
+    public static function get_one_by_post_parent($test_id){
+        $children = static::get_all_by_post_parent($test_id);
+
+	    if(!empty($children)) {
+		    $child = $children[0];
+	    } else {
+		    $child = null;
+	    }
+        return $child;
+    }
+
+
     public static function save_from_request(){
 
         $request_data = static::get_post_data_from_request();
