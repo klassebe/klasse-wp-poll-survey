@@ -400,7 +400,6 @@ jQuery(function ($) {
         }
       };
 
-
       var questionGroups = this.collection.where({post_type: "kwps_question_group"});
       _.each(questionGroups, function (questionGroup, index, list) {
         questionGroups[index] = questionGroup.toJSON();
@@ -648,12 +647,14 @@ jQuery(function ($) {
     },
     createAnswer: function (post_parent, cb) {
       var index = this.collection.where({post_type: 'kwps_answer_option', post_parent: post_parent}).length;
+      var index = this.collection.where({post_type: 'kwps_answer_option', _kwps_answer_option_value: kwps_answer_option_value});
       app.kwpsPollsCollection.create({
         post_type: "kwps_answer_option",
         post_status: "draft",
         post_content : "answer ",
         post_parent : post_parent,
-        _kwps_sort_order : index
+        _kwps_sort_order : index,
+        _kwps_answer_option_value : _kwps_answer_option_value
       },
         {
           success: function (model, response, options) {
@@ -730,7 +731,9 @@ jQuery(function ($) {
       var data = {
         attribute: this.options.attribute,
         label: kwps_translations[this.options.attribute],
-        text: this.model.get("post_content")
+        text: this.model.get("post_content"),
+        title: this.model.get("post_title"),
+        answer_option_value: this.model.get("_kwps_answer_option_value")
       };
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
@@ -758,8 +761,10 @@ jQuery(function ($) {
     updateData: function(event) {
       event.preventDefault();
       tinymce.triggerSave();
-      var value = $(event.target).closest('form').find('textarea').val();
-      this.model.save({"post_content": value});
+      var content = $(event.target).closest('form').find('textarea').val();
+      var title = $(event.target).closest('form').find('input[name=qg-title]').val();
+      var value = $(event.target).closest('form').find('input[name=ao-value]').val();
+      this.model.save({"post_content": content});
 
       this.cleanup();
       window.location = '#';
