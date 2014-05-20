@@ -130,34 +130,9 @@ class Version extends Kwps_Post_Type{
 		    }
 	    }
 
-	    /*
-        $limitations = Test_Collection::get_meta_data($version['post_parent']);
-        $questions = Question::get_all_by_post_parent($id);
-
-        if( is_user_logged_in() ){
-            $limit_to_apply = $limitations['_kwps_logged_in_user_limit'];
-        } else {
-            $limit_to_apply = $limitations['_kwps_logged_out_user_limit'];
-        }
-
-        $first_question_id_allowed = -1;
-
-        foreach($questions as $question){
-            if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) ){
-                $first_question_id_allowed = $question['ID'];
-                break;
-            }
-        }
-	    */
-
-
-        $dump = '
-        <script>var kwpsData = ' . json_encode($data) . '</script>
-        <div id="kwps"></div>';
-
-
-
-        return $dump;
+	    ob_start();
+	    include_once(dirname(__FILE__) . '/../views/public/version.php');
+		return ob_get_clean();
     }
 
 }
