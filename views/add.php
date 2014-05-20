@@ -24,8 +24,17 @@
 <?php echo '<link type="text/css" rel="stylesheet" href="'. plugins_url( '../css/editor.css', __FILE__ ) .'">'; ?>
 	<h2>{{label}}</h2>
 	<div>
-    <button id="add-media-button"><span class="add-media-icon"></span><?php _e( 'Add Media', 'klasse-wp-poll-survey' ) ?></button>
+    
 		<form id="update-model">
+            {{#unless Kwps_Question_Group}}
+                <div>Title: <input type="text" name="qg-title" id="kwps-question-group-title" value="{{title}}"></div>
+            {{/unless}}
+
+            {{#unless Kwps_Anwerp_Option}}
+                <div>Value: <input type="text" name="ao-value" id="kwps-answer-option-value" value="{{title}}"></div>
+            {{/unless}}
+            <br>
+            <button id="add-media-button"><span class="add-media-icon"></span><?php _e( 'Add Media', 'klasse-wp-poll-survey' ) ?></button>
             <div id="editor-tiny">   
 			 <textarea name='text' rows="20">{{text}}</textarea>
             </div>
@@ -101,9 +110,9 @@
 					<td class="column-action">
 						<div class="action">
 							<a class="">
-                                                <span class="del" data-type="unique" data-post-type="kwps_intro">
-                                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                                </span>
+                                <span class="del" data-type="unique" data-post-type="kwps_intro">
+                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                </span>
 							</a>
 						</div>
 					</td>
@@ -159,9 +168,9 @@
 						{{/if}}
 						<div class="action">
 							<a class="delete-question">
-                                            <span class="del" data-type="row" data-sort-order="{{@index}}" data-post-type="kwps_question">
-                                                <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                            </span>
+                                <span class="del" data-type="row" data-sort-order="{{@index}}" data-post-type="kwps_question">
+                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                </span>
 							</a>
 						</div>
 						<div class="move">
@@ -196,10 +205,10 @@
 				<td class="delete column-action column-answer">
 					<div class="action">
 						<a class="delete-answer-option">
-                                                    <span class="del" data-post-type="kwps_answer_option"
-                                                          data-kwps-sort-order="{{@index}}">
-                                                        <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                                    </span>
+                            <span class="del" data-post-type="kwps_answer_option"
+                                  data-kwps-sort-order="{{@index}}">
+                                <span data-code="f182" class="dashicons dashicons-trash"></span>
+                            </span>
 						</a>
 					</div>
 					<div class="move">
@@ -220,8 +229,6 @@
 				</td>
 				</tr>
 				{{/each}}
-
-
 
 
 				{{/if}}

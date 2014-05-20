@@ -337,7 +337,8 @@ jQuery(function ($) {
         post_status: "draft",
         post_content : "answer " + (index+1),
         post_parent : post_parent,
-        _kwps_sort_order : index
+        _kwps_sort_order : index,
+        _kwps_answer_option_value : 'bla'
       });
       model.save({},{
         success: function (model, response, options) {
