@@ -1,7 +1,19 @@
 jQuery(function ($) {
   $('#tabs').tabs();
 
-/* BACKBONE STUFF */
+  function GetURLParameter(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+      var sParameterName = sURLVariables[i].split('=');
+      if (sParameterName[0] == sParam) 
+      {
+          return sParameterName[1];
+      }
+    }
+  };
+
   $.fn.serializeObject = function(){
     var obj = {};
 
@@ -17,142 +29,27 @@ jQuery(function ($) {
     return obj;
   };
 
-  // debug helper
-  // usage: {{debug}} or {{debug someValue}}
-  // from: @commondream (http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/)
-  Handlebars.registerHelper("debug", function(optionalValue) {
-     console.log("Current Context");
-     console.log("====================");
-     console.log(this);
 
-    if (optionalValue) {
-       console.log("Value");
-       console.log("====================");
-       console.log(optionalValue);
-    }
-  });
-
-  Handlebars.registerHelper("getColumnCount", function(versions) {
-    versions = parseInt(versions.length);
-    return versions + 2;
-  });
-
-  Handlebars.registerHelper('setIndex', function(value){
-    this.index = Number(value + 1);
-  });
-
-  Handlebars.registerHelper('subStringStripper', function (html, length){
-    var tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    var result = tmp.textContent || tmp.innerText || "";
-    return  result.substring(0, length) + " ...";
-  })
-
-  Handlebars.registerHelper('sorter', function (index, obj) {
-    var size = 0,
-        key;
-    for (key in obj) {
-        if (obj.hasOwnProperty(key)) size++;
-    }
-    var result;
-    if(index == 0) {
-      result = '<span class="up passive"></span>'
-    } else {
-      result = '<span class="up"></span>'
-    }
-    if (index == size-1) {
-      result = result + '<span class="down passive"></span>'
-    } else {
-      result = result + '<span class="down"></span>'
-    }
-    return result;
-  });
-
-  Handlebars.registerHelper('lastItem', function ( className ,index, obj){
-    var size = 0,
-        key;
-    for (key in obj) {
-        if (obj.hasOwnProperty(key)) size++;
-    }
-    return (index == size-1)? className: "";
-  });
-
-  Handlebars.registerHelper('selected', function(option, value){
-    if (option === value) {
-      return ' selected';
-    } else {
-      return ''
-    }
-  });
-
-  Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
-
-    switch (operator) {
-      case '==':
-        return (v1 == v2) ? options.fn(this) : options.inverse(this);
-      case '===':
-        return (v1 === v2) ? options.fn(this) : options.inverse(this);
-      case '<':
-        return (v1 < v2) ? options.fn(this) : options.inverse(this);
-      case '<=':
-        return (v1 <= v2) ? options.fn(this) : options.inverse(this);
-      case '>':
-        return (v1 > v2) ? options.fn(this) : options.inverse(this);
-      case '>=':
-        return (v1 >= v2) ? options.fn(this) : options.inverse(this);
-      case '&&':
-        return (v1 && v2) ? options.fn(this) : options.inverse(this);
-      case '||':
-        return (v1 || v2) ? options.fn(this) : options.inverse(this);
-      default:
-        return options.inverse(this);
-    }
-  });
-
-  Handlebars.registerHelper('ifLength', function(obj, max, options) {
-    var size = 0,
-      key;
-    for (key in obj) {
-      if (obj.hasOwnProperty(key)) size++;
-    }
-
-    return (size < max || max < 0) ? options.fn(this) : options.inverse(this);
-  });
-
-  function GetURLParameter(sParam) {
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++) 
-    {
-      var sParameterName = sURLVariables[i].split('=');
-      if (sParameterName[0] == sParam) 
-      {
-          return sParameterName[1];
-      }
-    }
-  };
-
+  /* BACKBONE STUFF */
   var app = {};
   app.url = 'admin-ajax.php?action=';
   app.openAnswer = {
-    questionGroup: "",
-    question: ""
+    questionGroup: 0,
+    question: 0
   };
   app.views = {}
 
-  if(typeof $('#version_template').html() !== 'undefined') {
-    app.templates = {
-      version: kwps_admin_templates.table,
-      edit: kwps_admin_templates.table,
-      question: kwps_admin_templates.table,
-      newKwpsTest: kwps_admin_templates.choose_testmodus
-    };
+  app.templates = {
+    controlPanel: kwps_admin_templates.control_panel,
+    edit: kwps_admin_templates.table,
+    question: kwps_admin_templates.table,
+    newKwpsTest: kwps_admin_templates.choose_testmodus
   }
   
   // Routing
    var router = Backbone.Router.extend({
     routes: {
-      //'' : 'home',
+      '' : 'home',
       'edit/:id' : 'edit',
       'edit/question/:id' : 'editQuestion',
       'new/:type/:parentId' : 'new',
@@ -359,6 +256,8 @@ jQuery(function ($) {
       'click .delete-version': 'deleteVersion',
       'mouseenter td': 'showActions',
       'mouseleave td': 'hideActions',
+      'mouseenter th': 'showActions',
+      'mouseleave th': 'hideActions',
       'click .toggle-details': 'toggleDetails',
       'click button.add': 'createNew',
       'click span.del': 'deletePostType',
@@ -372,15 +271,25 @@ jQuery(function ($) {
     },
     render: function () {
       var data = this.prepareData();
-      $(this.el).html(app.templates.version(data));
+      $(this.el).html(app.templates.controlPanel(data));
       $('#tabs').tabs();
     },
     prepareData: function() {
       var data = {};
+      var privData = {};
+      privData.intro = [];
+
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');
       data.versions = this.collection.where({post_type: "kwps_version"});
+      
+      privData.amountOfVersions = data.versions.length;
+      privData.amountOfQuestionPages = this.collection.where({post_type: "kwps_question_group"}).length;
+
+
+
       data.collection = this.collection.findWhere({post_type: "kwps_test_collection"}).toJSON();
+
       data.testmodus = this.collection.findWhere({ID: data.collection.post_parent}).toJSON();
 
       for (var i = 0; i < data.versions.length; i++) {
@@ -389,6 +298,7 @@ jQuery(function ($) {
         if (kwpsIntro !== undefined) {
           data.intro = true;
           data.versions[i].kwpsIntro = kwpsIntro.toJSON();
+          privData.intro[i]= kwpsIntro.toJSON();
         }
         var kwpsOutro = this.collection.findWhere({post_type: "kwps_outro", post_parent : data.versions[i].ID});
         if (kwpsOutro !== undefined) {
@@ -398,26 +308,29 @@ jQuery(function ($) {
         if (i === 0) {
           data.versions[i].main = true;
         }
+        if (data.versions.length > 1) {
+          data.versions[i].deleteVersion = true;
+        }
       };
+
+      
 
 
       var questionGroups = this.collection.where({post_type: "kwps_question_group"});
-      _.each(questionGroups, function (questionGroup, index, list) {
-        questionGroups[index] = questionGroup.toJSON();
-      });
-      var questionGroupsLength = questionGroups.length;
+      for (var i = questionGroups.length - 1; i >= 0; i--) {
+        questionGroups[i] = questionGroups[i].toJSON();
+      };
+      questionGroups = _.toArray(_.groupBy(questionGroups, "_kwps_sort_order"));
 
-      questionGroups = _.groupBy(questionGroups, "_kwps_sort_order");
-
-      for (var g in questionGroups) {
+      for (var g = questionGroups.length - 1; g >= 0; g--) {
         if (g == app.openAnswer.questionGroup) {
           questionGroups[g].open = true;
 
           for (var h = 0; h < questionGroups[g].length; h++) {
             var questions = this.collection.where({post_type: "kwps_question", post_parent : questionGroups[g][h].ID});
-            _.each(questions, function (question, index, list) {
-              questions[index] = question.toJSON();
-            });
+            for (var i = questions.length - 1; i >= 0; i--) {
+              questions[i] = questions[i].toJSON();
+            };
             questions = _.groupBy(questions, "_kwps_sort_order");
 
             for (var i in questions) {
@@ -442,12 +355,125 @@ jQuery(function ($) {
         }
       }
 
+      privData.questionGroupsLength = questionGroups.length;
+
       data.questionGroups = questionGroups;
       data.questions = questions;
       data.answers = _.flatten(data.answers);
       data.answers = _.groupBy(data.answers, "_kwps_sort_order");
       data.kwpsUniquenessTypes = kwpsUniquenessTypes;
       data.open = app.openAnswer;
+
+
+      data.table = [];
+      data.table.push({
+        colSpan : data.versions.length +1,
+        title: "Intro",
+        post_type: "kwps_intro",
+        mainTitle: true,
+        add: (this.collection.where({post_type: "kwps_intro"}).length > 0)? false:true,
+        hasMore: (this.collection.where({post_type: "kwps_intro"}).length > 0)? true:false,
+        addText: 'Add Intro',
+        opened: true,
+        amount: "" 
+      });
+      if (privData.intro.length == privData.amountOfVersions) {
+        data.table.push({
+          sorterArrows : false,
+          postType: 'kwps_intro',
+          deletable : true,
+          hasMore: false,
+          hasAmount: false,
+          editable: true, //TODO look if the test is published or not.
+          versions: privData.intro,
+          mainRow: true,
+          sortOrder: privData.intro[privData.intro.length-1]._kwps_sort_order
+        })
+      };
+      data.table.push({
+        colSpan : data.versions.length +1,
+        title: "Question pages",
+        post_type: "kwps_question_group",
+        mainTitle: true,
+        add: (data.testmodus._kwps_max_question_groups <= (privData.amountOfQuestionPages/ privData.amountOfVersions))? false:true,
+        hasMore: (privData.amountOfQuestionPages/ privData.amountOfVersions > 0)? true:false,
+        addText: 'Add question page',
+        opened: true,
+        amount: privData.amountOfQuestionPages/ privData.amountOfVersions
+      });
+      if (privData.questionGroupsLength > 0) {
+        for (var key in data.questionGroups) {
+          console.log('key',key);
+          data.table.push({
+            sorterArrows : (data.questionGroups.length > 1)? true : false,
+            postType: data.questionGroups[key][0].post_type,
+            deletable : true,
+            hasMore: (this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][data.questionGroups.length - 1].ID}).length > 0)? true : false,
+            hasAmount: false,
+            hasOpened: (app.openAnswer.questionGroup == key)? true : false,
+            editable: true, //TODO look if the test is published or not.
+            versions: data.questionGroups[key],
+            mainRow: true,
+            sortOrder: data.questionGroups[key][0]._kwps_sort_order,
+            amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][data.questionGroups.length - 1].ID}).length
+          })
+          if(app.openAnswer.questionGroup == key) {
+            privData.questions = [];
+            data.table.push({
+              questionTitle: true,
+              title: "Questions",
+              addText: "Add question",
+              colSpan : data.versions.length +1,
+            })
+            for (var i = data.questionGroups[key].length - 1; i >= 0; i--) {
+              console.log(data.questionGroups[key][i].ID);
+              privData.questions = privData.questions.concat(this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][i].ID}));
+            };
+            console.log(privData.questions);
+            for (var i = privData.questions.length - 1; i >= 0; i--) {
+              privData.questions[i] = privData.questions[i].toJSON();
+            };
+            console.log(privData.questions);
+            privData.questions = _.toArray(_.groupBy(privData.questions, "_kwps_sort_order"));
+            console.log(privData.questions);
+            for (var i = 0; i < privData.questions.length; i++) {
+              data.table.push({
+                versions: privData.questions[i],
+                question: true,
+                postType: privData.questions[i][0].post_type,
+                sortOrder: privData.questions[i][0]._kwps_sort_order,
+                amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length
+              })
+              if (i == app.openAnswer.question) {
+                privData.answers = [];
+                data.table.push({
+                  answerTitle: true,
+                  title: "Questions",
+                  addText: "Add question",
+                  colSpan : data.versions.length +1,
+                })
+                for (var j = privData.questions[i].length - 1; j >= 0; j--) {
+                  privData.answers = privData.answers.concat(this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][j].ID}));
+                };
+                console.log('answers: ',privData.answers);
+                for (var j = privData.answers.length - 1; j >= 0; j--) {
+                  privData.answers[j] = privData.answers[j].toJSON();
+                };
+                console.log('answers: ',privData.answers);
+                privData.answers = _.toArray(_.groupBy(privData.answers, "_kwps_sort_order"));
+                console.log('answers: ',privData.answers);
+                for (var j = 0; j < privData.answers.length; j++) {
+                  data.table.push({
+                    answer: true,
+                    
+                  })
+                };
+              }
+            };
+          }
+        };
+        console.log(data.table);
+      };
       return data;
     },
     deleteVersion: function(event) {
@@ -464,7 +490,10 @@ jQuery(function ($) {
       this.collection.remove(postToDelete);
     },
     deleteRow: function(postType, sortOrder) {
+      console.log(postType);
+      console.log(sortOrder);
       var postsToDelete = this.collection.where({post_type: postType, _kwps_sort_order: sortOrder.toString()});
+
       for (var i = 0; i < postsToDelete.length; i++) {
         postsToDelete[i].destroy();
       }
@@ -806,6 +835,7 @@ jQuery(function ($) {
   });
 
   if (typeof kwpsTests !== 'undefined') {
+    kwpsTests.push(kwpsTestModi[0]);
     app.kwpsPollsCollection = new Backbone.Collection(kwpsTests, {
       model: KwpsModel
     });

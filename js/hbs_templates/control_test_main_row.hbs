@@ -1,0 +1,44 @@
+
+<tr class="type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
+    <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+        <div style="width:10px; height: 60px; float:left;">
+            <svg x="0px" y="0px" viewBox="0 0 10 60">
+                <rect x="0" y="0" fill="#555555" width="10" height="60"></rect>
+            </svg>
+        </div>
+        {{#if sorterArrows}}
+        <div class="move">
+            <span class="up passive"></span>
+            <span class="down"></span>
+        </div>
+        {{/if}}
+        <div class="action" style="padding: 10px; float:left;">
+            {{#if hasMore}}
+                {{#if hasOpened}}
+                    <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+                {{else}}
+                    <span data-code="f140" class="dashicons dashicons-arrow-right toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+                {{/if}}
+            {{/if}}
+            {{#if deletable}}
+            <a class="delete-intro">
+                <span class="del" data-post-type="{{postType}}" data-type="row" data-sort-order="{{sortOrder}}">
+                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                </span>
+            </a>
+            {{/if}}
+        </div>
+    </td>
+    {{#each versions}}
+        <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+            <strong>
+                <a class="row-title" href="#edit/{{ID}}"
+                   title="Edit “”">{{post_content}}</a>
+            </strong>
+
+            <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
+        </td>
+    {{/each}}
+    
+    <td>{{amountOfSiblings}}</td>
+</tr>

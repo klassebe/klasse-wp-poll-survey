@@ -37,7 +37,7 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['./js/bower_components/handlebars/handlebars.runtime.js','./js/admin.js', './js/temp/templates.js'],
+        src: ['./js/bower_components/handlebars/handlebars.runtime.js', './js/temp/templates.js', './js/handlebars.helpers.js', './js/admin.js' ],
         dest: './js/dist/kwps_admin.js'
       }
     },

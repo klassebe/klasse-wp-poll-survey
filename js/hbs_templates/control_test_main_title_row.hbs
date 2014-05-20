@@ -1,0 +1,18 @@
+<tr class="title">
+    <th class="row-title" colspan="{{colSpan}}">
+        {{#if hasMore}}
+        	{{#if opened}}
+            	<span class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+        	{{else}}
+            	<span class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+        	{{/if}}
+        {{/if}}
+        {{t title}}
+        {{#if add}}
+        <button class="button add" data-post-type="kwps_intro">
+            <span data-code="f132" class="dashicons dashicons-plus"></span>{{t addText}}
+        </button>
+        {{/if}}
+    </th>
+    <th class="row-title">{{amount}}</th>
+</tr>

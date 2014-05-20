@@ -225,16 +225,15 @@ function enqueue_scripts() {
  * @since    1.0.0
  */
 function enqueue_scripts_admin() {
-    //wp_register_script( 'klasse-wp-poll-survey-handlebars', plugins_url( 'js/bower_components/handlebars/handlebars.js', __FILE__ ), array( 'jquery' ));
-    //wp_register_script( 'klasse-wp-poll-survey-backbone-associations', plugins_url( 'js/bower_components/backbone-associations/backbone-associations.js', __FILE__ ), array( 'backbone' ));
     wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( 'js/dist/kwps_admin.js', __FILE__ ), array( 'jquery', 'backbone' ));
 
 
     $translation_array = array(
         '_kwps_intro' => __( 'Intro' ),
         '_kwps_outro' => __( 'Outro' ),
-        '_kwps_question' => __( 'Question' )
-    );
+        '_kwps_question' => __( 'Question' ),
+        'Add question' => __( 'Voeg vraag toe')
+     );
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
     wp_enqueue_script( 'jquery' );
