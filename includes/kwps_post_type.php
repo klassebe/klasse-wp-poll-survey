@@ -48,6 +48,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
             'post_parent' => $test_id,
             'orderby' => 'meta_value_num',
             'meta_key' => '_kwps_sort_order',
+            'post_status'	=> array('draft', 'publish')
         ) );
 
         $children = array();

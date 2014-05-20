@@ -629,10 +629,14 @@
 </script>
 
 <script id="edit_template" type="text/x-handlebars-template">
+<?php echo '<link type="text/css" rel="stylesheet" href="'. plugins_url( '../css/editor.css', __FILE__ ) .'">'; ?>
 	<h2>{{label}}</h2>
 	<div>
+    <button id="add-media-button"><span class="add-media-icon"></span><?php _e( 'Add Media', 'klasse-wp-poll-survey' ) ?></button>
 		<form id="update-model">
-			<textarea name='text' rows="20">{{text}}</textarea>
+            <div id="editor-tiny">   
+			 <textarea name='text' rows="20">{{text}}</textarea>
+            </div>
 			<button id="update"><?php _e( 'Update', 'klasse-wp-poll-survey' ) ?></button>
 		</form>
 	</div>
@@ -675,14 +679,15 @@
 					<th class=" column-title">
 						<div class="column-tab">
 							<div>{{post_title}}</div>
-							<div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a
-									class="delete-version">delete</a></div>
+							<div class="actions">
+                                <a class="delete-version" data-version-id="{{ID}}">delete</a>
+                            </div>
 						</div>
 					</th>
 					{{/each}}
 					<td class="column-title" style="width:85px;">
 						<div class="column-tab">
-							<button class="add button">
+							<button class="add button" data-post-type="kwps_version" data-sort-order="{{@index}}">
 								<span data-code="f132" class="dashicons dashicons-plus"></span>
 							</button>
 						</div>
@@ -704,8 +709,8 @@
 					{{#each versions}}
 					<td class="column-action">
 						<div class="action">
-							<a class="delete-intro">
-                                                <span class="del" data-post-type="kwps_intro">
+							<a class="">
+                                                <span class="del" data-type="unique" data-post-type="kwps_intro">
                                                     <span data-code="f182" class="dashicons dashicons-trash"></span>
                                                 </span>
 							</a>
@@ -725,9 +730,9 @@
 				{{/if}}
 
 				{{#each questionGroups}}
+                <tr class="title">
 
 				{{#each this}}
-				<tr class="title">
 					<th class="no-delete row-title" colspan="{{getColumnCount ../../versions}}">
 						{{#if ../open}}
 						<span data-code="f140" class="dashicons dashicons-arrow-down toggle-details"
@@ -745,8 +750,8 @@
 							</strong>
 						</div>
 					</th>
-				</tr>
 				{{/each}}
+                </tr>
 
 				{{#if open}}
 
@@ -763,7 +768,7 @@
 						{{/if}}
 						<div class="action">
 							<a class="delete-question">
-                                            <span class="del" data-post-type="kwps_question">
+                                            <span class="del" data-type="row" data-sort-order="{{@index}}" data-post-type="kwps_question">
                                                 <span data-code="f182" class="dashicons dashicons-trash"></span>
                                             </span>
 							</a>
@@ -875,7 +880,7 @@
 					<td class="column-action">
 						<div class="action">
 							<a class="delete-outro">
-                                                <span class="del" data-post-type="kwps_outro">
+                                                <span class="del" data-type="unique" data-post-type="kwps_outro">
                                                     <span data-code="f182" class="dashicons dashicons-trash"></span>
                                                 </span>
 							</a>

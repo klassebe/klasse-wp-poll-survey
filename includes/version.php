@@ -84,11 +84,7 @@ class Version extends Kwps_Post_Type{
         $post = get_post($post_as_array['ID'], ARRAY_A);
 
         if(null != $post){
-            if($post['post_status'] == 'publish'){
-                return false;
-            } else {
-                return true;
-            }
+            return true;    
         } else {
             return false;
         }

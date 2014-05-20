@@ -102,6 +102,10 @@ class Answer_Option extends Kwps_Post_Type{
 
         $all_answer_options_of_same_question = Answer_Option::get_all_by_post_parent($post_as_array['post_parent']);
 
+        if($test_modus['_kwps_max_answer_options_per_question'] < 0){
+            return true;
+        }
+
         if( sizeof($all_answer_options_of_same_question) >= $test_modus['_kwps_max_answer_options_per_question']){
             return false;
         }
