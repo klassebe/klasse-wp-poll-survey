@@ -23,18 +23,16 @@
 </script>
 
 <script id="edit_template" type="text/x-handlebars-template">
-
 	<h2>{{label}}</h2>
-	<div>
-    
+	<div>  
 		<form id="update-model">
-            {{#unless Kwps_Question_Group}}
+            {{#if title}}
                 <div>Title: <input type="text" name="qg-title" id="kwps-question-group-title" value="{{title}}"></div>
-            {{/unless}}
+            {{/if}}
 
-            {{#unless Kwps_Anwerp_Option}}
-                <div>Value: <input type="text" name="ao-value" id="kwps-answer-option-value" value="{{title}}"></div>
-            {{/unless}}
+            {{#if answer_option_value}}
+                <div>Value: <input type="text" name="ao-value" id="kwps-answer-option-value" value="{{answer_option_value}}"></div>
+            {{/if}}
             <br>
             <button id="add-media-button"><span class="add-media-icon"></span><?php _e( 'Add Media', 'klasse-wp-poll-survey' ) ?></button>
             <div id="editor-tiny">   
@@ -183,8 +181,7 @@
 					<td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
 						<strong>
 							<a class="row-title" href="#edit/{{ID}}"
-							   title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content
-								100}}</a>
+							   title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
 						</strong>
 
 						<div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
@@ -220,8 +217,7 @@
 				{{#each this}}
 				<td id="_kwps_answer_option_{{ID}}" class="post-title page-title column-title">
 					<strong>
-						<a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper
-							post_content 100}}</a>
+						<a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
 					</strong>
 
 					<div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
@@ -242,7 +238,6 @@
 						<button class="button add" data-post-type="kwps_question" data-open-order="{{../../../open/questionGroup}}">
 							<span data-code="f132" class="dashicons dashicons-plus"></span>
 							<?php _e( 'Add Question', 'klasse-wp-poll-survey' ) ?>
-
 						</button>
 					</th>
 				</tr>
@@ -280,9 +275,9 @@
 					<td class="column-action">
 						<div class="action">
 							<a class="delete-outro">
-                                                <span class="del" data-type="unique" data-post-type="kwps_outro">
-                                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                                </span>
+                                <span class="del" data-type="unique" data-post-type="kwps_outro">
+                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                </span>
 							</a>
 						</div>
 					</td>
