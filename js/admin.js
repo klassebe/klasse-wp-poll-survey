@@ -735,11 +735,12 @@ jQuery(function ($) {
       tinymce.remove();
       tinymce.init({
         menubar: false,
+        visual: true,
         // statusbar: true,
         selector: "textarea",
-        plugins: "code link hr paste lists table textcolor wordcount",
-        toolbar: ["bold italic strikethrough bullist numlist blockquote hr alignleft aligncenter alignright link", 
-                  "formatselect underline alignjustify forecolor backcolor paste inserttable outdent indent undo redo | code"]
+        plugins: "code link hr paste lists table textcolor wordcount charmap",
+        toolbar: ["bold italic strikethrough bullist numlist blockquote hr alignleft aligncenter alignright link unlink", 
+                  "formatselect underline alignjustify forecolor backcolor paste removeformat charmap outdent indent undo redo | code"]
       });
       /* MEDIA UPLOAD */
       $('#add-media-button').on('click', function() {

@@ -21,12 +21,14 @@
 </script>
 
 <script id="edit_template" type="text/x-handlebars-template">
-
+<?php echo '<link type="text/css" rel="stylesheet" href="'. plugins_url( '../css/editor.css', __FILE__ ) .'">'; ?>
 	<h2>{{label}}</h2>
 	<div>
     <button id="add-media-button"><span class="add-media-icon"></span><?php _e( 'Add Media', 'klasse-wp-poll-survey' ) ?></button>
-		<form id="update-model">    
-			<textarea name='text' rows="20">{{text}}</textarea>
+		<form id="update-model">
+            <div id="editor-tiny">   
+			 <textarea name='text' rows="20">{{text}}</textarea>
+            </div>
 			<button id="update"><?php _e( 'Update', 'klasse-wp-poll-survey' ) ?></button>
 		</form>
 	</div>
