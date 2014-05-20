@@ -1,5 +1,7 @@
+<?php echo '<link type="text/css" rel="stylesheet" href="'. plugins_url( '../css/editor.css', __FILE__ ) .'">'; ?>
+<?php echo '<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>'; ?>
 <div class="wrap" id="kwps_test">
-	<?php echo '<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>'; ?>
+	
 </div> <!-- .wrap -->
 
 <script id="chooseTestModus_template" type="text/x-handlebars-template">
@@ -21,7 +23,7 @@
 </script>
 
 <script id="edit_template" type="text/x-handlebars-template">
-<?php echo '<link type="text/css" rel="stylesheet" href="'. plugins_url( '../css/editor.css', __FILE__ ) .'">'; ?>
+
 	<h2>{{label}}</h2>
 	<div>
     
