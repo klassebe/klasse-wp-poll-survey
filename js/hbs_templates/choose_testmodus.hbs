@@ -1,0 +1,15 @@
+<form id="create-new-test">
+	<label>Test name</label>
+	<input name="post_title">
+	<ul>
+		{{#each kwpsTestModi}}
+		<li>
+			<input type="radio" value="{{ID}}" name="post_parent" id="kwpsTestModi_{{ID}}"><label
+				for="kwpsTestModi_{{ID}}">{{post_title}}</label>
+		</li>
+		{{/each}}
+	</ul>
+	<div>
+		<button type="submit">Create</button>
+	</div>
+</form>

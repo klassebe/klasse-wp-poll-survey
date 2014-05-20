@@ -25,7 +25,7 @@
     line-height: 40px;
 }
 #kwps_test .move {
-    float: right;
+    float: left;
 }
 #kwps_test .move .passive {
     color: #D6D6D6;

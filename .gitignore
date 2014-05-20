@@ -6,3 +6,5 @@ build/
 codecept.phar
 _log/
 *.phar
+bower_components
+node_modules
