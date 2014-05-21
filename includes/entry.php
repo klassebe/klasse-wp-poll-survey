@@ -59,8 +59,6 @@ class Entry extends Kwps_Post_Type{
     }
 
     public static function save_from_request(){
-
-
         $request_data = static::get_post_data_from_request();
         $request_data['_kwps_cookie_value'] = $_COOKIE['klasse_wp_poll_survey'];
         $request_data['_kwps_ip_address'] = Uniqueness::get_ip_of_user();
@@ -75,8 +73,6 @@ class Entry extends Kwps_Post_Type{
 
         die();
     }
-
-
 
     public static function get_results_by_question($question_id){
         $args = array(

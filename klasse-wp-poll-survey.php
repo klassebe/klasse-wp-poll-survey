@@ -136,16 +136,6 @@ register_deactivation_hook(__FILE__, 'kwps_deactivate');
 // shortcode -> use feip_form_posts template in front end for vote function!
 add_shortcode('kwps_version', array('\includes\version', 'shortcode') );
 
-// add_action('shutdown', function() {
-//  echo '<script>jQuery(function($){
-//                     setTimeout(function() {
-//                         tinymce.init({
-//                             selector: "textarea"
-//                         });
-//                     }, 5000);
-//                 }); console.log("testje")</script>';
-// });
-
 function kwps_activate(){
     kwps_add_api_rewrite_rules();
     flush_rewrite_rules();

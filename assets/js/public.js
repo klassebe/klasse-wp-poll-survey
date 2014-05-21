@@ -40,7 +40,8 @@ jQuery(function($) {
 						    dataType: "json",
 						    success: function(data){
 						    	// alert(data);
-						    	// console.log(entry);
+						    	console.log(entry);
+						    	// TODO: no data is returned from server!
 						    	console.log(data);
 						    	var graphCategories = [];
 						    	var graphData = [];
