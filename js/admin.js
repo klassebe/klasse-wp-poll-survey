@@ -166,6 +166,7 @@ jQuery(function ($) {
       var that = this;
       var model = new KwpsModel(postData);
       model.save({},{
+        wait: true,
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < 1; i++) {
@@ -187,6 +188,7 @@ jQuery(function ($) {
         _kwps_sort_order : index
       });
       model.save({},{
+        wait: true,
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < 1; i++) {
@@ -368,6 +370,7 @@ jQuery(function ($) {
       data.open = app.openRow;
 
 
+
       data.table = [];
       data.table.push({
         colSpan : data.versions.length +1,
@@ -390,7 +393,7 @@ jQuery(function ($) {
           editable: true, //TODO look if the test is published or not.
           versions: privData.intro,
           mainRow: true,
-          sortOrder: privData.intro[privData.intro.length-1]._kwps_sort_order
+          sortOrder: 0
         })
       };
       data.table.push({
@@ -407,6 +410,7 @@ jQuery(function ($) {
       if (privData.questionGroupsLength > 0 && app.openRow.kwps_question_group) {
         for (var key in data.questionGroups) {
           console.log('key',key);
+          console.log(_.flatten(data.questionGroups[key]));
           data.table.push({
             sorterArrows : (data.questionGroups.length > 1)? true : false,
             postType: data.questionGroups[key][0].post_type,
@@ -417,7 +421,7 @@ jQuery(function ($) {
             editable: true, //TODO look if the test is published or not.
             versions: data.questionGroups[key],
             mainRow: true,
-            sortOrder: data.questionGroups[key][0]._kwps_sort_order,
+            sortOrder: key,
             amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][data.questionGroups.length - 1].ID}).length
           })
           if(app.openRow.questionGroup == key) {
@@ -447,7 +451,7 @@ jQuery(function ($) {
                 versions: privData.questions[i],
                 question: true,
                 postType: privData.questions[i][0].post_type,
-                sortOrder: privData.questions[i][0]._kwps_sort_order,
+                sortOrder: i,
                 amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length
               })
               if (i == app.openRow.question) {
@@ -457,6 +461,7 @@ jQuery(function ($) {
                   title: "Answers",
                   postType: "kwps_answer_option",
                   addText: "Add answer",
+                  questionSortOrder: i,
                   colSpan : data.versions.length +1
                 })
                 for (var j = privData.questions[i].length - 1; j >= 0; j--) {
@@ -503,7 +508,7 @@ jQuery(function ($) {
           editable: true, //TODO look if the test is published or not.
           versions: privData.outro,
           mainRow: true,
-          sortOrder: privData.outro[privData.outro.length-1]._kwps_sort_order
+          sortOrder: 0
         })
       };
 
@@ -678,13 +683,14 @@ jQuery(function ($) {
     },
     createQuestionGroup: function (post_parent, cb) {
       var index = this.collection.where({post_type: 'kwps_question_group', post_parent: post_parent}).length;
-      app.kwpsPollsCollection.create({
+      this.collection.create({
         post_type: "kwps_question_group",
         post_status: "draft",
         post_title : "Question Group " + index,
         post_parent : post_parent,
         _kwps_sort_order : index
       }, {
+        wait: true,
         success: function(model, response, options) {
           if(cb) {
             cb(model);
@@ -701,6 +707,7 @@ jQuery(function ($) {
         post_parent : post_parent,
         _kwps_sort_order : index
       }, {
+        wait: true,
         success: function (model, response, options) {
           if(cb) {
             cb(model);
@@ -719,6 +726,7 @@ jQuery(function ($) {
         _kwps_answer_option_value : "value ..."
       },
         {
+          wait: true,
           success: function (model, response, options) {
           if(cb) {
             cb(model);
@@ -825,8 +833,6 @@ jQuery(function ($) {
         return false;
       });
       window.send_to_editor = function(html) {
-        // relatief pad vanaf de hoofdfolder
-        // om weer te geven in front end, toevoegen van hoofdfolder naam is required
         var imgUrl = $('img',html).attr('src');
         var imgTitle = url.split("/").pop();
         $('iframe').contents().find('#tinymce').append('<img class="img img-' + imgTitle + '" src="' + imgUrl + '" alt="">');
