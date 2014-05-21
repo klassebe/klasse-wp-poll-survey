@@ -370,6 +370,7 @@ jQuery(function ($) {
       data.open = app.openRow;
 
 
+
       data.table = [];
       data.table.push({
         colSpan : data.versions.length +1,
@@ -409,6 +410,7 @@ jQuery(function ($) {
       if (privData.questionGroupsLength > 0 && app.openRow.kwps_question_group) {
         for (var key in data.questionGroups) {
           console.log('key',key);
+          console.log(_.flatten(data.questionGroups[key]));
           data.table.push({
             sorterArrows : (data.questionGroups.length > 1)? true : false,
             postType: data.questionGroups[key][0].post_type,
@@ -419,7 +421,7 @@ jQuery(function ($) {
             editable: true, //TODO look if the test is published or not.
             versions: data.questionGroups[key],
             mainRow: true,
-            sortOrder: data.questionGroups[key][0]._kwps_sort_order,
+            sortOrder: key,
             amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][data.questionGroups.length - 1].ID}).length
           })
           if(app.openRow.questionGroup == key) {
@@ -449,7 +451,7 @@ jQuery(function ($) {
                 versions: privData.questions[i],
                 question: true,
                 postType: privData.questions[i][0].post_type,
-                sortOrder: privData.questions[i][0]._kwps_sort_order,
+                sortOrder: i,
                 amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length
               })
               if (i == app.openRow.question) {
