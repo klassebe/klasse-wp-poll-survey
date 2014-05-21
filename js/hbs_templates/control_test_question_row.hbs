@@ -11,9 +11,9 @@
                         <span class="down"></span>
                     </div>
                     <div class="action" style="padding: 10px; float:left;">
-                        <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{sortOrder}}"></span>
+                        <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-sort-order="{{sortOrder}}"></span>
 
-                        <a class="delete-intro">
+                        <a class="delete-question">
                             <span class="del" data-post-type="kwps_qsdlfkj">
                                 <span data-code="f182" class="dashicons dashicons-trash"></span>
                             </span>
@@ -23,7 +23,7 @@
                     
                 </td>
                 {{#each versions}}
-                <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                <td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
                     <strong>
                         <a class="row-title" href="#edit/{{ID}}"
                            title="Edit “{{post_content}}”">{{post_content}}</a>
