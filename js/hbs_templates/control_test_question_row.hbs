@@ -13,8 +13,11 @@
                         </div>
                     {{/if}}
                     <div class="action" style="padding: 10px; float:left;">
-                        <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-sort-order="{{sortOrder}}"></span>
-
+                        {{#if hasOpened}}
+                            <span class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-sort-order="{{sortOrder}}"></span>
+                        {{else}}
+                            <span class="dashicons dashicons-arrow-right toggle-details" data-type="question" data-sort-order="{{sortOrder}}"></span>
+                        {{/if}}
                         <a class="delete-question">
                             <span class="del" data-post-type="kwps_qsdlfkj">
                                 <span data-code="f182" class="dashicons dashicons-trash"></span>

@@ -455,7 +455,8 @@ jQuery(function ($) {
                 postType: privData.questions[i][0].post_type,
                 sortOrder: i,
                 number: i+1,
-                amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length
+                amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length,
+                hasOpened: (app.openRow.question == i)? true : false
               })
               if (app.openRow.question >= 0 && i == app.openRow.question) {
                 privData.answers = [];
@@ -759,6 +760,10 @@ jQuery(function ($) {
           app.openRow[type] = (app.openRow[type])? false: true;
         break;
         case "question" :
+          var sortOrder = $(event.currentTarget).data('sort-order');
+          app.openRow[type] = (app.openRow[type] == sortOrder)? -1 : sortOrder;
+        break;
+        case "questionGroup" :
           var sortOrder = $(event.currentTarget).data('sort-order');
           app.openRow[type] = (app.openRow[type] == sortOrder)? -1 : sortOrder;
         break;
