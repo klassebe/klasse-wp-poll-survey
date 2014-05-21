@@ -461,6 +461,7 @@ jQuery(function ($) {
                   title: "Answers",
                   postType: "kwps_answer_option",
                   addText: "Add answer",
+                  questionSortOrder: i,
                   colSpan : data.versions.length +1
                 })
                 for (var j = privData.questions[i].length - 1; j >= 0; j--) {
