@@ -18,13 +18,19 @@ jQuery(function($) {
 
 			//  Search for the class with the ID in it
 			elem.find('#kwps-content').on('click', '.kwps-next', function () {
-				var selected = $(this).val();
+				// Check if an answer option was selected
+				// Get the name of the radio buttons
+				var getNameOfRadioBtn = elem.find('input:radio').attr('name');
+				// Get the value of the selected field
+				var selected = elem.find('.kwps-answer-option input:radio[name=' + getNameOfRadioBtn + ']').val();
+				console.log("selected:", selected);
+				if (selected) {
 			    var url = $('#adminUrl').val() + "admin-ajax.php?action=kwps_save_entry";
 
 			    var entry = {
 				  		"post_parent": selected,
 				  		"_kwps_sort_order": 0
-				  	}
+				  	};
 
 				  	$.ajax({
 						    type: "POST",
@@ -97,7 +103,7 @@ jQuery(function($) {
 						        alert(errMsg);
 						    }
 						});
-
+				}
 				$('.kwps-intro').hide();
 				$('.kwps-outro').show();
 				$('.kwps-question-group').hide();

@@ -23,7 +23,7 @@
 		<div class="kwps-answer-option">
 		<ul>
 		<?php foreach($question['answer_options'] as $answerOption): ?>
-			<li><input id="answer-option-<?php echo $answerOption['ID'] ?>" type="radio" name="answer_option[<?php echo $question['ID'] ?>]" value="<?php echo $answerOption['ID'] ?>"><label for="answer-option-<?php echo $answerOption['ID'] ?>"><?php echo $answerOption['post_content'] ?></label></li>
+			<li><input id="answer-option-<?php echo $answerOption['ID'] ?>" type="radio" name="answer_option_<?php echo $question['ID'] ?>" value="<?php echo $answerOption['ID'] ?>"><label for="answer-option-<?php echo $answerOption['ID'] ?>"><?php echo $answerOption['post_content'] ?></label></li>
 		<?php endforeach; ?>
 		</ul>
 		</div>
@@ -43,5 +43,5 @@
 		</div>
 	</div>
 <?php endif; ?>
-<input type="hidden" id="adminUrl" value="<?php admin_url(); ?>">
+<input type="hidden" id="adminUrl" value="<?php echo admin_url(); ?>">
 </div>
