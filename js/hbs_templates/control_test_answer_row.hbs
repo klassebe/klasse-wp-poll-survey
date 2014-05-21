@@ -6,17 +6,19 @@
                 <rect x="20" y="0" fill="#FFBA00" width="10" height="60"></rect>
             </svg>
         </div>
+        {{#if sorterArrows}}
         <div class="move">
-            <span class="up passive"></span>
-            <span class="down"></span>
+            <span class="up {{#if first}}disabled{{/if}}"></span>
+            <span class="down {{#if last}}disabled{{/if}}"></span>
         </div>
+        {{/if}}
         <div class="action" style="padding: 10px; float:left;">
             <a class="delete-intro">
-                <span class="del" data-post-type="kwps_intro">
+                <span class="del" data-post-type="{{postType}}" data-sort-order{{sortOrder}}>
                     <span data-code="f182" class="dashicons dashicons-trash"></span>
                 </span>
             </a>
-            {{sortOrder}}
+            {{number}}
         </div>
     </td>
     {{#each versions}}
@@ -29,7 +31,7 @@
         <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
     </td>
     {{/each}}
-    <td id="_kwps_intro_nog_iets_{{ID}}" class="post-title page-title column-title">
+    <td>
         &nbsp;
     </td>
 </tr>

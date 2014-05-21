@@ -412,10 +412,12 @@ jQuery(function ($) {
           console.log('key',key);
           console.log(_.flatten(data.questionGroups[key]));
           data.table.push({
+            first: (key == '0')? true:false,
+            last: (key == privData.questionGroupsLength-1)? true: false,
             sorterArrows : (data.questionGroups.length > 1)? true : false,
             postType: data.questionGroups[key][0].post_type,
             deletable : true,
-            hasMore: (this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][data.questionGroups.length - 1].ID}).length > 0)? true : false,
+            hasMore: (this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][0].ID}).length > 0)? true : false,
             hasAmount: false,
             hasOpened: (app.openRow.questionGroup == key)? true : false,
             editable: true, //TODO look if the test is published or not.
@@ -451,7 +453,8 @@ jQuery(function ($) {
                 versions: privData.questions[i],
                 question: true,
                 postType: privData.questions[i][0].post_type,
-                sortOrder: i+1,
+                sortOrder: i,
+                number: i+1,
                 amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length
               })
               if (app.openRow.question >= 0 && i == app.openRow.question) {
@@ -477,7 +480,11 @@ jQuery(function ($) {
                 for (var j = 0; j < privData.answers.length; j++) {
                   data.table.push({
                     answer: true,
-                    sortOrder : j+1,
+                    sorterArrows: true,
+                    first: (j == 0)? true:false,
+                    last: (j == privData.answers.length-1)? true:false,
+                    sortOrder : j,
+                    number: j+1,
                     versions : privData.answers[j]
                   })
                 };

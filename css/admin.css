@@ -27,7 +27,7 @@
 #kwps_test .move {
     float: left;
 }
-#kwps_test .move .passive {
+#kwps_test .move .disabled {
     color: #D6D6D6;
 }
 #kwps_test .move .up:after {
