@@ -1665,7 +1665,7 @@ jQuery(function ($) {
           editable: true, //TODO look if the test is published or not.
           versions: privData.intro,
           mainRow: true,
-          sortOrder: privData.intro[privData.intro.length-1]._kwps_sort_order
+          sortOrder: 0
         })
       };
       data.table.push({
@@ -1778,7 +1778,7 @@ jQuery(function ($) {
           editable: true, //TODO look if the test is published or not.
           versions: privData.outro,
           mainRow: true,
-          sortOrder: privData.outro[privData.outro.length-1]._kwps_sort_order
+          sortOrder: 0
         })
       };
 

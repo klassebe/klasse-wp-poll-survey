@@ -390,7 +390,7 @@ jQuery(function ($) {
           editable: true, //TODO look if the test is published or not.
           versions: privData.intro,
           mainRow: true,
-          sortOrder: privData.intro[privData.intro.length-1]._kwps_sort_order
+          sortOrder: 0
         })
       };
       data.table.push({
@@ -503,7 +503,7 @@ jQuery(function ($) {
           editable: true, //TODO look if the test is published or not.
           versions: privData.outro,
           mainRow: true,
-          sortOrder: privData.outro[privData.outro.length-1]._kwps_sort_order
+          sortOrder: 0
         })
       };
 
@@ -825,8 +825,6 @@ jQuery(function ($) {
         return false;
       });
       window.send_to_editor = function(html) {
-        // relatief pad vanaf de hoofdfolder
-        // om weer te geven in front end, toevoegen van hoofdfolder naam is required
         var imgUrl = $('img',html).attr('src');
         var imgTitle = url.split("/").pop();
         $('iframe').contents().find('#tinymce').append('<img class="img img-' + imgTitle + '" src="' + imgUrl + '" alt="">');
