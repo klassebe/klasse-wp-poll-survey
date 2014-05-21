@@ -699,7 +699,7 @@ function program12(depth0,data) {
 this["kwps_admin_templates"]["control_test_answer_row"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, helper, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
   buffer += "<tr class=\"post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFF8E7\">\n    <td class=\"column-action\" style=\"border: none; padding: 0px;height: 60px;\">\n        <div style=\"width:30px; height: 60px; float:left;\">\n            <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 30 60\">\n                <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"20\" height=\"60\"></rect>\n                <rect x=\"20\" y=\"0\" fill=\"#FFBA00\" width=\"10\" height=\"60\"></rect>\n            </svg>\n        </div>\n        <div class=\"move\">\n            <span class=\"up passive\"></span>\n            <span class=\"down\"></span>\n        </div>\n        <div class=\"action\" style=\"padding: 10px; float:left;\">\n            <a class=\"delete-intro\">\n                <span class=\"del\" data-post-type=\"kwps_intro\">\n                    <span data-code=\"f182\" class=\"dashicons dashicons-trash\"></span>\n                </span>\n            </a>\n            1\n        </div>\n    </td>\n    <td id=\"_kwps_answer_option_";
@@ -708,7 +708,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   buffer += escapeExpression(stack1)
     + "\" class=\"post-title page-title column-title\">\n        <strong>\n            <a class=\"row-title\" href=\"#edit/"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.ID)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\"\n               title=\"Edit\">mldfkqùdsfgjlmùdsfgùmfdkg</a>\n        </strong>\n\n        <div class=\"actions\" style=\"display: none\"><a href=\"#edit/"
+    + "\"\n               title=\""
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Edit", options) : helperMissing.call(depth0, "t", "Edit", options)))
+    + "\">mldfkqùdsfgjlmùdsfgùmfdkg</a>\n        </strong>\n\n        <div class=\"actions\" style=\"display: none\"><a href=\"#edit/"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.ID)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">edit</a></div>\n    </td>\n    <td id=\"_kwps_intro_nog_iets_";
   if (helper = helpers.ID) { stack1 = helper.call(depth0, {hash:{},data:data}); }
