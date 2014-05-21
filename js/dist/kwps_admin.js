@@ -867,8 +867,12 @@ function program4(depth0,data) {
 
 function program6(depth0,data) {
   
-  var buffer = "", helper, options;
-  buffer += "\n        <button class=\"button add\" data-post-type=\"kwps_intro\">\n            <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>"
+  var buffer = "", stack1, helper, options;
+  buffer += "\n        <button class=\"button add\" data-post-type=\"";
+  if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\">\n            <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>"
     + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.addText), options) : helperMissing.call(depth0, "t", (depth0 && depth0.addText), options)))
     + "\n        </button>\n        ";
   return buffer;
