@@ -1,5 +1,5 @@
 <tr class="post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background:#FFB500">
-                <th class="no-delete row-title" colspan="3" style=" border-top: #FFBA00; padding: 0px;height: 42px;">
+                <th class="no-delete row-title" colspan="{{colSpan}}" style=" border-top: #FFBA00; padding: 0px;height: 42px;">
                     <div style="width:20px; height: 42px; float:left;">
                         <svg x="0px" y="0px" viewBox="0 0 20 42">
                             <rect x="0" y="0" fill="#FFFFFF" width="10" height="42"></rect>
@@ -7,10 +7,10 @@
                         </svg>
                     </div>
                     <div style="padding: 10px; float:left;">
-                        Answer options
-                        <button class="button add" data-post-type="kwps_intro">
+                        {{t title}}
+                        <button class="button add" data-post-type="{{postType}}">
                             <span data-code="f132" class="dashicons dashicons-plus"></span>
-                            add answers
+                            {{t addText}}
                         </button>
                     </div> 
                 </th>

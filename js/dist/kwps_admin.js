@@ -692,12 +692,6 @@ function program12(depth0,data) {
   buffer += "\n            ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.table), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n\n            \n\n            \n\n            \n\n            ";
-  stack1 = self.invokePartial(partials.controlTestMainTitleRow, 'controlTestMainTitleRow', depth0, helpers, partials, data);
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n            ";
-  stack1 = self.invokePartial(partials.controlTestMainRow, 'controlTestMainRow', depth0, helpers, partials, data);
-  if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        </table>\n    </div>\n</div>";
   return buffer;
   });
@@ -708,35 +702,44 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  buffer += "<tr class=\"post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFF8E7\">\n    <td class=\"column-action\" style=\"border: none; padding: 0px;height: 60px;\">\n        <div style=\"width:30px; height: 60px; float:left;\">\n            <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 30 60\">\n                <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"20\" height=\"60\"></rect>\n                <rect x=\"20\" y=\"0\" fill=\"#FFBA00\" width=\"10\" height=\"60\"></rect>\n            </svg>\n        </div>\n        <div class=\"move\">\n            <span class=\"up passive\"></span>\n            <span class=\"down\"></span>\n        </div>\n        <div class=\"action\" style=\"padding: 10px; float:left;\">\n            <a class=\"delete-intro\">\n                <span class=\"del\" data-post-type=\"kwps_intro\">\n                    <span data-code=\"f182\" class=\"dashicons dashicons-trash\"></span>\n                </span>\n            </a>\n            1\n        </div>\n    </td>\n    <td id=\"_kwps_intro_";
+  buffer += "<tr class=\"post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFF8E7\">\n    <td class=\"column-action\" style=\"border: none; padding: 0px;height: 60px;\">\n        <div style=\"width:30px; height: 60px; float:left;\">\n            <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 30 60\">\n                <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"20\" height=\"60\"></rect>\n                <rect x=\"20\" y=\"0\" fill=\"#FFBA00\" width=\"10\" height=\"60\"></rect>\n            </svg>\n        </div>\n        <div class=\"move\">\n            <span class=\"up passive\"></span>\n            <span class=\"down\"></span>\n        </div>\n        <div class=\"action\" style=\"padding: 10px; float:left;\">\n            <a class=\"delete-intro\">\n                <span class=\"del\" data-post-type=\"kwps_intro\">\n                    <span data-code=\"f182\" class=\"dashicons dashicons-trash\"></span>\n                </span>\n            </a>\n            1\n        </div>\n    </td>\n    <td id=\"_kwps_answer_option_";
   if (helper = helpers.ID) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.ID); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
     + "\" class=\"post-title page-title column-title\">\n        <strong>\n            <a class=\"row-title\" href=\"#edit/"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.ID)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\"\n               title=\"Edit “”\">mldfkqùdsfgjlmùdsfgùmfdkg</a>\n        </strong>\n\n        <div class=\"actions\" style=\"display: none\"><a href=\"#edit/"
+    + "\"\n               title=\""
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Edit", options) : helperMissing.call(depth0, "t", "Edit", options)))
+    + "\">mldfkqùdsfgjlmùdsfgùmfdkg</a>\n        </strong>\n\n        <div class=\"actions\" style=\"display: none\"><a href=\"#edit/"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.ID)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">edit</a></div>\n    </td>\n    <td id=\"_kwps_intro_";
+    + "\">edit</a></div>\n    </td>\n    <td id=\"_kwps_intro_nog_iets_";
   if (helper = helpers.ID) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.ID); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" class=\"post-title page-title column-title\">\n        <strong>\n            <a class=\"row-title\" href=\"#edit/"
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.ID)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\"\n               title=\"Edit “"
-    + escapeExpression((helper = helpers.subStringStripper || (depth0 && depth0.subStringStripper),options={hash:{},data:data},helper ? helper.call(depth0, ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.post_content), 100, options) : helperMissing.call(depth0, "subStringStripper", ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.post_content), 100, options)))
-    + "”\">subStringStripper\n                kwpsIntro.post_content 100</a>\n        </strong>\n\n        <div class=\"actions\" style=\"display: none\"><a href=\"#edit/"
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.ID)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">edit</a></div>\n    </td>\n    <td></td>\n</tr>";
+    + "\" class=\"post-title page-title column-title\">\n        &nbsp;\n    </td>\n</tr>";
   return buffer;
   });
 
 this["kwps_admin_templates"]["control_test_answer_title_row"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", stack1, helper, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  return "<tr class=\"post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFB500\">\n                <th class=\"no-delete row-title\" colspan=\"3\" style=\" border-top: #FFBA00; padding: 0px;height: 42px;\">\n                    <div style=\"width:20px; height: 42px; float:left;\">\n                        <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 20 42\">\n                            <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"10\" height=\"42\"></rect>\n                            <rect x=\"10\" y=\"0\" fill=\"#1E8CBE\" width=\"10\" height=\"42\"></rect>\n                        </svg>\n                    </div>\n                    <div style=\"padding: 10px; float:left;\">\n                        Answer options\n                        <button class=\"button add\" data-post-type=\"kwps_intro\">\n                            <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n                            add answers\n                        </button>\n                    </div> \n                </th>\n                <th class=\"no-delete row-title\" style=\"height:20px;\">3</th>\n            </tr>";
+  buffer += "<tr class=\"post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFB500\">\n                <th class=\"no-delete row-title\" colspan=\"";
+  if (helper = helpers.colSpan) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.colSpan); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\" style=\" border-top: #FFBA00; padding: 0px;height: 42px;\">\n                    <div style=\"width:20px; height: 42px; float:left;\">\n                        <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 20 42\">\n                            <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"10\" height=\"42\"></rect>\n                            <rect x=\"10\" y=\"0\" fill=\"#1E8CBE\" width=\"10\" height=\"42\"></rect>\n                        </svg>\n                    </div>\n                    <div style=\"padding: 10px; float:left;\">\n                        "
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.title), options) : helperMissing.call(depth0, "t", (depth0 && depth0.title), options)))
+    + "\n                        <button class=\"button add\" data-post-type=\"";
+  if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\">\n                            <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n                            "
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.addText), options) : helperMissing.call(depth0, "t", (depth0 && depth0.addText), options)))
+    + "\n                        </button>\n                    </div> \n                </th>\n                <th class=\"no-delete row-title\" style=\"height:20px;\">3</th>\n            </tr>";
+  return buffer;
   });
 
 this["kwps_admin_templates"]["control_test_main_row"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -844,24 +847,41 @@ function program1(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n        	";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.opened), {hash:{},inverse:self.program(2, program2, data),fn:self.program(2, program2, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.opened), {hash:{},inverse:self.program(4, program4, data),fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        ";
   return buffer;
   }
 function program2(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n            	<span class=\"dashicons dashicons-arrow-down toggle-details\" data-type=\"question\" data-question-row=\""
-    + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+  var buffer = "", stack1, helper;
+  buffer += "\n            	<span class=\"dashicons dashicons-arrow-down toggle-details\" data-type=\"";
+  if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
     + "\"></span>\n        	";
   return buffer;
   }
 
 function program4(depth0,data) {
   
-  var buffer = "", helper, options;
-  buffer += "\n        <button class=\"button add\" data-post-type=\"kwps_intro\">\n            <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>"
+  var buffer = "", stack1, helper;
+  buffer += "\n            	<span class=\"dashicons dashicons-arrow-right toggle-details\" data-type=\"";
+  if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\" ></span>\n        	";
+  return buffer;
+  }
+
+function program6(depth0,data) {
+  
+  var buffer = "", stack1, helper, options;
+  buffer += "\n        <button class=\"button add\" data-post-type=\"";
+  if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\">\n            <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>"
     + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.addText), options) : helperMissing.call(depth0, "t", (depth0 && depth0.addText), options)))
     + "\n        </button>\n        ";
   return buffer;
@@ -877,7 +897,7 @@ function program4(depth0,data) {
   buffer += "\n        "
     + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.title), options) : helperMissing.call(depth0, "t", (depth0 && depth0.title), options)))
     + "\n        ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.add), {hash:{},inverse:self.noop,fn:self.program(4, program4, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.add), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </th>\n    <th class=\"row-title\">";
   if (helper = helpers.amount) { stack1 = helper.call(depth0, {hash:{},data:data}); }
@@ -950,7 +970,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   buffer += escapeExpression(stack1)
     + "\" style=\"border-top: none ;padding: 0px;height: 40px;\">\n        <div style=\"width:10px; height: 42px; float:left;\">\n            <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 10 42\">\n                 <rect x=\"0\" y=\"0\" fill=\"#555555\" width=\"10\" height=\"42\"></rect>\n            </svg>\n        </div>\n        <div style=\"padding: 10px; float:left; color:white;\">\n            "
     + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.title), options) : helperMissing.call(depth0, "t", (depth0 && depth0.title), options)))
-    + "\n            <button class=\"button add\" data-post-type=\"kwps_intro\">\n                <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n                "
+    + "\n            <button class=\"button add\" data-post-type=\"";
+  if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\">\n                <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n                "
     + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.addText), options) : helperMissing.call(depth0, "t", (depth0 && depth0.addText), options)))
     + "\n            </button>\n        </div>  \n    </th>\n    <th class=\"no-delete row-title\" style=\"height:20px; border-top: none;\"></th>\n</tr>";
   return buffer;
@@ -993,6 +1017,55 @@ function program2(depth0,data) {
   stack1 = helpers.each.call(depth0, (depth0 && depth0.versions), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    <td class=\"column-title\" style=\"width:85px;\">\n        <div class=\"column-tab\">\n            <button class=\"add button\" data-post-type=\"kwps_version\">\n                <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n            </button>\n        </div>\n    </td>\n</tr>";
+  return buffer;
+  });
+
+this["kwps_admin_templates"]["edit"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, helper, options, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1, helper;
+  buffer += "\n            <div>Title: <input type=\"text\" name=\"qg-title\" id=\"kwps-question-group-title\" value=\"";
+  if (helper = helpers.title) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.title); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\"></div>\n        ";
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1, helper;
+  buffer += "\n            <div>Value: <input type=\"text\" name=\"ao-value\" id=\"kwps-answer-option-value\" value=\"";
+  if (helper = helpers.answer_option_value) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.answer_option_value); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\"></div>\n        ";
+  return buffer;
+  }
+
+  buffer += "<h2>";
+  if (helper = helpers.label) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.label); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "</h2>\n<div>  \n	<form id=\"update-model\">\n        ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.title), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n        ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.answer_option_value), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n        <br>\n        <button id=\"add-media-button\"><span class=\"add-media-icon\"></span>"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Add medie", options) : helperMissing.call(depth0, "t", "Add medie", options)))
+    + "</button>\n        <div id=\"editor-tiny\">   \n		 <textarea name='text' rows=\"20\">";
+  if (helper = helpers.text) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.text); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "</textarea>\n        </div>\n		<button id=\"update\">"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "update", options) : helperMissing.call(depth0, "t", "update", options)))
+    + "</button>\n	</form>\n</div>";
   return buffer;
   });
 
@@ -1235,7 +1308,10 @@ jQuery(function ($) {
   /* BACKBONE STUFF */
   var app = {};
   app.url = 'admin-ajax.php?action=';
-  app.openAnswer = {
+  app.openRow = {
+    kwps_outro: true,
+    kwps_intro: true,
+    kwps_question_group: true,
     questionGroup: 0,
     question: 0
   };
@@ -1243,7 +1319,7 @@ jQuery(function ($) {
 
   app.templates = {
     controlPanel: kwps_admin_templates.control_panel,
-    edit: kwps_admin_templates.table,
+    edit: kwps_admin_templates.edit,
     question: kwps_admin_templates.table,
     newKwpsTest: kwps_admin_templates.choose_testmodus
   }
@@ -1332,7 +1408,7 @@ jQuery(function ($) {
       post_status: "draft",
       post_modified: "",
       post_parent: 0,
-      post_type: "",
+      post_type: ""
     }
   });
 
@@ -1481,6 +1557,7 @@ jQuery(function ($) {
       var data = {};
       var privData = {};
       privData.intro = [];
+      privData.outro = [];
 
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');
@@ -1507,6 +1584,7 @@ jQuery(function ($) {
         if (kwpsOutro !== undefined) {
           data.outro = true;
           data.versions[i].kwpsOutro = kwpsOutro.toJSON();
+          privData.outro[i] = kwpsOutro.toJSON();
         }
         if (i === 0) {
           data.versions[i].main = true;
@@ -1523,7 +1601,7 @@ jQuery(function ($) {
       questionGroups = _.toArray(_.groupBy(questionGroups, "_kwps_sort_order"));
 
       for (var g = questionGroups.length - 1; g >= 0; g--) {
-        if (g == app.openAnswer.questionGroup) {
+        if (g == app.openRow.questionGroup) {
           questionGroups[g].open = true;
 
           for (var h = 0; h < questionGroups[g].length; h++) {
@@ -1534,10 +1612,10 @@ jQuery(function ($) {
             questions = _.groupBy(questions, "_kwps_sort_order");
 
             for (var i in questions) {
-              // if sortorder is equal to openAnswer show all answers
+              // if sortorder is equal to openRow show all answers
               //questions.length = questions[i].length;
 
-              if (i == app.openAnswer.question) {
+              if (i == app.openRow.question) {
                 questions[i].open = true;
                 data.answers = [];
 
@@ -1562,22 +1640,22 @@ jQuery(function ($) {
       data.answers = _.flatten(data.answers);
       data.answers = _.groupBy(data.answers, "_kwps_sort_order");
       data.kwpsUniquenessTypes = kwpsUniquenessTypes;
-      data.open = app.openAnswer;
+      data.open = app.openRow;
 
 
       data.table = [];
       data.table.push({
         colSpan : data.versions.length +1,
         title: "Intro",
-        post_type: "kwps_intro",
+        postType: "kwps_intro",
         mainTitle: true,
         add: (this.collection.where({post_type: "kwps_intro"}).length > 0)? false:true,
         hasMore: (this.collection.where({post_type: "kwps_intro"}).length > 0)? true:false,
         addText: 'Add Intro',
-        opened: true,
-        amount: "" 
+        opened: app.openRow.kwps_intro,
+        amount: privData.intro.length/ privData.amountOfVersions
       });
-      if (privData.intro.length == privData.amountOfVersions) {
+      if (this.collection.where({post_type: "kwps_intro"}).length > 0 && privData.intro.length == privData.amountOfVersions && app.openRow.kwps_intro) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_intro',
@@ -1593,15 +1671,15 @@ jQuery(function ($) {
       data.table.push({
         colSpan : data.versions.length +1,
         title: "Question pages",
-        post_type: "kwps_question_group",
+        postType: "kwps_question_group",
         mainTitle: true,
         add: (data.testmodus._kwps_max_question_groups <= (privData.amountOfQuestionPages/ privData.amountOfVersions))? false:true,
         hasMore: (privData.amountOfQuestionPages/ privData.amountOfVersions > 0)? true:false,
         addText: 'Add question page',
-        opened: true,
+        opened: app.openRow.kwps_question_group,
         amount: privData.amountOfQuestionPages/ privData.amountOfVersions
       });
-      if (privData.questionGroupsLength > 0) {
+      if (privData.questionGroupsLength > 0 && app.openRow.kwps_question_group) {
         for (var key in data.questionGroups) {
           console.log('key',key);
           data.table.push({
@@ -1610,20 +1688,21 @@ jQuery(function ($) {
             deletable : true,
             hasMore: (this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][data.questionGroups.length - 1].ID}).length > 0)? true : false,
             hasAmount: false,
-            hasOpened: (app.openAnswer.questionGroup == key)? true : false,
+            hasOpened: (app.openRow.questionGroup == key)? true : false,
             editable: true, //TODO look if the test is published or not.
             versions: data.questionGroups[key],
             mainRow: true,
             sortOrder: data.questionGroups[key][0]._kwps_sort_order,
             amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][data.questionGroups.length - 1].ID}).length
           })
-          if(app.openAnswer.questionGroup == key) {
+          if(app.openRow.questionGroup == key) {
             privData.questions = [];
             data.table.push({
               questionTitle: true,
               title: "Questions",
+              postType: "kwps_question",
               addText: "Add question",
-              colSpan : data.versions.length +1,
+              colSpan : data.versions.length +1
             })
             for (var i = data.questionGroups[key].length - 1; i >= 0; i--) {
               console.log(data.questionGroups[key][i].ID);
@@ -1637,6 +1716,8 @@ jQuery(function ($) {
             privData.questions = _.toArray(_.groupBy(privData.questions, "_kwps_sort_order"));
             console.log(privData.questions);
             for (var i = 0; i < privData.questions.length; i++) {
+              console.log(privData.questions[i]);
+              console.log(privData.questions[i][0]);
               data.table.push({
                 versions: privData.questions[i],
                 question: true,
@@ -1644,13 +1725,14 @@ jQuery(function ($) {
                 sortOrder: privData.questions[i][0]._kwps_sort_order,
                 amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length
               })
-              if (i == app.openAnswer.question) {
+              if (i == app.openRow.question) {
                 privData.answers = [];
                 data.table.push({
                   answerTitle: true,
-                  title: "Questions",
-                  addText: "Add question",
-                  colSpan : data.versions.length +1,
+                  title: "Answers",
+                  postType: "kwps_answer_option",
+                  addText: "Add answer",
+                  colSpan : data.versions.length +1
                 })
                 for (var j = privData.questions[i].length - 1; j >= 0; j--) {
                   privData.answers = privData.answers.concat(this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][j].ID}));
@@ -1664,7 +1746,7 @@ jQuery(function ($) {
                 console.log('answers: ',privData.answers);
                 for (var j = 0; j < privData.answers.length; j++) {
                   data.table.push({
-                    answer: true,
+                    answer: true
                     
                   })
                 };
@@ -1674,6 +1756,32 @@ jQuery(function ($) {
         };
         console.log(data.table);
       };
+      data.table.push({
+        colSpan : data.versions.length +1,
+        title: "Outro",
+        postType: "kwps_outro",
+        mainTitle: true,
+        add: (this.collection.where({post_type: "kwps_outro"}).length > 0)? false:true,
+        hasMore: (this.collection.where({post_type: "kwps_outro"}).length > 0)? true:false,
+        addText: 'Add outro',
+        opened: app.openRow.kwps_outro,
+        amount: privData.outro.length/ privData.amountOfVersions
+      });
+      console.log(privData.outro);
+      if (this.collection.where({post_type: "kwps_outro"}).length > 0 && privData.outro.length == privData.amountOfVersions && app.openRow.kwps_outro) {
+        data.table.push({
+          sorterArrows : false,
+          postType: 'kwps_outro',
+          deletable : true,
+          hasMore: false,
+          hasAmount: false,
+          editable: true, //TODO look if the test is published or not.
+          versions: privData.outro,
+          mainRow: true,
+          sortOrder: privData.outro[privData.outro.length-1]._kwps_sort_order
+        })
+      };
+
       return data;
     },
     deleteVersion: function(event) {
@@ -1900,9 +2008,21 @@ jQuery(function ($) {
       $(event.target).find(".actions").hide();
     },
     toggleDetails: function(event) {
-      toggleOnRow = $(event.currentTarget).data('question-row');
       type = $(event.currentTarget).data('type');
-      app.openAnswer[type] = (app.openAnswer[type] !== toggleOnRow || app.openAnswer[type] === "")? toggleOnRow:"";
+      switch (type) {
+        case "kwps_intro" :
+          app.openRow[type] = (app.openRow[type])? false: true;
+        break;
+        case "kwps_outro" :
+          app.openRow[type] = (app.openRow[type])? false: true;
+        break;
+        case "kwps_question_group" :
+          app.openRow[type] = (app.openRow[type])? false: true;
+        break;
+      }
+      //toggleOnRow = $(event.currentTarget).data('question-row');
+      
+      //app.openRow[type] = (app.openRow[type] !== toggleOnRow || app.openRow[type] === "")? toggleOnRow:"";
       this.render();
     },
     preview: function(event) {
