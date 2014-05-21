@@ -133,7 +133,7 @@ jQuery(function ($) {
       post_status: "draft",
       post_modified: "",
       post_parent: 0,
-      post_type: "",
+      post_type: ""
     }
   });
 
@@ -427,7 +427,7 @@ jQuery(function ($) {
               title: "Questions",
               postType: "kwps_question",
               addText: "Add question",
-              colSpan : data.versions.length +1,
+              colSpan : data.versions.length +1
             })
             for (var i = data.questionGroups[key].length - 1; i >= 0; i--) {
               console.log(data.questionGroups[key][i].ID);
@@ -454,10 +454,10 @@ jQuery(function ($) {
                 privData.answers = [];
                 data.table.push({
                   answerTitle: true,
-                  title: "Questions",
+                  title: "Answers",
                   postType: "kwps_answer_option",
-                  addText: "Add question",
-                  colSpan : data.versions.length +1,
+                  addText: "Add answer",
+                  colSpan : data.versions.length +1
                 })
                 for (var j = privData.questions[i].length - 1; j >= 0; j--) {
                   privData.answers = privData.answers.concat(this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][j].ID}));
@@ -471,7 +471,7 @@ jQuery(function ($) {
                 console.log('answers: ',privData.answers);
                 for (var j = 0; j < privData.answers.length; j++) {
                   data.table.push({
-                    answer: true,
+                    answer: true
                     
                   })
                 };

@@ -233,7 +233,8 @@ function enqueue_scripts_admin() {
         '_kwps_intro' => __( 'Intro' ),
         '_kwps_outro' => __( 'Outro' ),
         '_kwps_question' => __( 'Question' ),
-        'Add question' => __( 'Voeg vraag toe')
+        'Add question' => __( 'Voeg vraag toe'),
+        'Add answer' => __( 'Voeg antwoord toe')
      );
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 

@@ -702,7 +702,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  buffer += "<tr class=\"post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFF8E7\">\n    <td class=\"column-action\" style=\"border: none; padding: 0px;height: 60px;\">\n        <div style=\"width:30px; height: 60px; float:left;\">\n            <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 30 60\">\n                <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"20\" height=\"60\"></rect>\n                <rect x=\"20\" y=\"0\" fill=\"#FFBA00\" width=\"10\" height=\"60\"></rect>\n            </svg>\n        </div>\n        <div class=\"move\">\n            <span class=\"up passive\"></span>\n            <span class=\"down\"></span>\n        </div>\n        <div class=\"action\" style=\"padding: 10px; float:left;\">\n            <a class=\"delete-intro\">\n                <span class=\"del\" data-post-type=\"kwps_intro\">\n                    <span data-code=\"f182\" class=\"dashicons dashicons-trash\"></span>\n                </span>\n            </a>\n            1\n        </div>\n    </td>\n    <td id=\"_kwps_intro_";
+  buffer += "<tr class=\"post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFF8E7\">\n    <td class=\"column-action\" style=\"border: none; padding: 0px;height: 60px;\">\n        <div style=\"width:30px; height: 60px; float:left;\">\n            <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 30 60\">\n                <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"20\" height=\"60\"></rect>\n                <rect x=\"20\" y=\"0\" fill=\"#FFBA00\" width=\"10\" height=\"60\"></rect>\n            </svg>\n        </div>\n        <div class=\"move\">\n            <span class=\"up passive\"></span>\n            <span class=\"down\"></span>\n        </div>\n        <div class=\"action\" style=\"padding: 10px; float:left;\">\n            <a class=\"delete-intro\">\n                <span class=\"del\" data-post-type=\"kwps_intro\">\n                    <span data-code=\"f182\" class=\"dashicons dashicons-trash\"></span>\n                </span>\n            </a>\n            1\n        </div>\n    </td>\n    <td id=\"_kwps_answer_option_";
   if (helper = helpers.ID) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.ID); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -710,7 +710,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.ID)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"\n               title=\"Edit “”\">mldfkqùdsfgjlmùdsfgùmfdkg</a>\n        </strong>\n\n        <div class=\"actions\" style=\"display: none\"><a href=\"#edit/"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.ID)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">edit</a></div>\n    </td>\n    <td id=\"_kwps_intro_";
+    + "\">edit</a></div>\n    </td>\n    <td id=\"_kwps_intro_nog_iets_";
   if (helper = helpers.ID) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.ID); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -720,21 +720,29 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression((helper = helpers.subStringStripper || (depth0 && depth0.subStringStripper),options={hash:{},data:data},helper ? helper.call(depth0, ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.post_content), 100, options) : helperMissing.call(depth0, "subStringStripper", ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.post_content), 100, options)))
     + "”\">subStringStripper\n                kwpsIntro.post_content 100</a>\n        </strong>\n\n        <div class=\"actions\" style=\"display: none\"><a href=\"#edit/"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.kwpsIntro)),stack1 == null || stack1 === false ? stack1 : stack1.ID)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">edit</a></div>\n    </td>\n    <td></td>\n</tr>";
+    + "\">edit</a></div>\n    </td>\n</tr>";
   return buffer;
   });
 
 this["kwps_admin_templates"]["control_test_answer_title_row"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, helper, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  buffer += "<tr class=\"post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFB500\">\n                <th class=\"no-delete row-title\" colspan=\"3\" style=\" border-top: #FFBA00; padding: 0px;height: 42px;\">\n                    <div style=\"width:20px; height: 42px; float:left;\">\n                        <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 20 42\">\n                            <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"10\" height=\"42\"></rect>\n                            <rect x=\"10\" y=\"0\" fill=\"#1E8CBE\" width=\"10\" height=\"42\"></rect>\n                        </svg>\n                    </div>\n                    <div style=\"padding: 10px; float:left;\">\n                        Answer options\n                        <button class=\"button add\" data-post-type=\"";
+  buffer += "<tr class=\"post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFB500\">\n                <th class=\"no-delete row-title\" colspan=\"";
+  if (helper = helpers.colSpan) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.colSpan); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\" style=\" border-top: #FFBA00; padding: 0px;height: 42px;\">\n                    <div style=\"width:20px; height: 42px; float:left;\">\n                        <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 20 42\">\n                            <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"10\" height=\"42\"></rect>\n                            <rect x=\"10\" y=\"0\" fill=\"#1E8CBE\" width=\"10\" height=\"42\"></rect>\n                        </svg>\n                    </div>\n                    <div style=\"padding: 10px; float:left;\">\n                        "
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.title), options) : helperMissing.call(depth0, "t", (depth0 && depth0.title), options)))
+    + "\n                        <button class=\"button add\" data-post-type=\"";
   if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\">\n                            <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n                            add answers\n                        </button>\n                    </div> \n                </th>\n                <th class=\"no-delete row-title\" style=\"height:20px;\">3</th>\n            </tr>";
+    + "\">\n                            <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n                            "
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.addText), options) : helperMissing.call(depth0, "t", (depth0 && depth0.addText), options)))
+    + "\n                        </button>\n                    </div> \n                </th>\n                <th class=\"no-delete row-title\" style=\"height:20px;\">3</th>\n            </tr>";
   return buffer;
   });
 
@@ -1404,7 +1412,7 @@ jQuery(function ($) {
       post_status: "draft",
       post_modified: "",
       post_parent: 0,
-      post_type: "",
+      post_type: ""
     }
   });
 
@@ -1698,7 +1706,7 @@ jQuery(function ($) {
               title: "Questions",
               postType: "kwps_question",
               addText: "Add question",
-              colSpan : data.versions.length +1,
+              colSpan : data.versions.length +1
             })
             for (var i = data.questionGroups[key].length - 1; i >= 0; i--) {
               console.log(data.questionGroups[key][i].ID);
@@ -1725,10 +1733,10 @@ jQuery(function ($) {
                 privData.answers = [];
                 data.table.push({
                   answerTitle: true,
-                  title: "Questions",
+                  title: "Answers",
                   postType: "kwps_answer_option",
-                  addText: "Add question",
-                  colSpan : data.versions.length +1,
+                  addText: "Add answer",
+                  colSpan : data.versions.length +1
                 })
                 for (var j = privData.questions[i].length - 1; j >= 0; j--) {
                   privData.answers = privData.answers.concat(this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][j].ID}));
@@ -1742,7 +1750,7 @@ jQuery(function ($) {
                 console.log('answers: ',privData.answers);
                 for (var j = 0; j < privData.answers.length; j++) {
                   data.table.push({
-                    answer: true,
+                    answer: true
                     
                   })
                 };
