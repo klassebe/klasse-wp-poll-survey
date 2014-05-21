@@ -451,7 +451,7 @@ jQuery(function ($) {
                 versions: privData.questions[i],
                 question: true,
                 postType: privData.questions[i][0].post_type,
-                sortOrder: i,
+                sortOrder: i+1,
                 amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length
               })
               if (app.openRow.question >= 0 && i == app.openRow.question) {
@@ -476,8 +476,9 @@ jQuery(function ($) {
                 console.log('answers: ',privData.answers);
                 for (var j = 0; j < privData.answers.length; j++) {
                   data.table.push({
-                    answer: true
-                    
+                    answer: true,
+                    sortOrder : j+1,
+                    versions : privData.answers[j]
                   })
                 };
               }
