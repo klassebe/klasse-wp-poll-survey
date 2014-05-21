@@ -16,17 +16,19 @@
                     <span data-code="f182" class="dashicons dashicons-trash"></span>
                 </span>
             </a>
-            1
+            {{sortOrder}}
         </div>
     </td>
+    {{#each versions}}
     <td id="_kwps_answer_option_{{ID}}" class="post-title page-title column-title">
         <strong>
-            <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+            <a class="row-title" href="#edit/{{ID}}"
                title="{{t "Edit"}}">mldfkqùdsfgjlmùdsfgùmfdkg</a>
         </strong>
 
-        <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+        <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
     </td>
+    {{/each}}
     <td id="_kwps_intro_nog_iets_{{ID}}" class="post-title page-title column-title">
         &nbsp;
     </td>
