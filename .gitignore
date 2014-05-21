@@ -12,3 +12,7 @@ node_modules
 klasse-wp-poll-survey.php
 
 klasse-wp-poll-survey.php
+
+js/dist/kwps_admin.min.js
+
+js/dist/kwps_admin.js
