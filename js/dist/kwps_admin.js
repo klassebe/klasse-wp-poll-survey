@@ -727,10 +727,15 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["kwps_admin_templates"]["control_test_answer_title_row"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  return "<tr class=\"post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFB500\">\n                <th class=\"no-delete row-title\" colspan=\"3\" style=\" border-top: #FFBA00; padding: 0px;height: 42px;\">\n                    <div style=\"width:20px; height: 42px; float:left;\">\n                        <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 20 42\">\n                            <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"10\" height=\"42\"></rect>\n                            <rect x=\"10\" y=\"0\" fill=\"#1E8CBE\" width=\"10\" height=\"42\"></rect>\n                        </svg>\n                    </div>\n                    <div style=\"padding: 10px; float:left;\">\n                        Answer options\n                        <button class=\"button add\" data-post-type=\"kwps_intro\">\n                            <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n                            add answers\n                        </button>\n                    </div> \n                </th>\n                <th class=\"no-delete row-title\" style=\"height:20px;\">3</th>\n            </tr>";
+  buffer += "<tr class=\"post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFB500\">\n                <th class=\"no-delete row-title\" colspan=\"3\" style=\" border-top: #FFBA00; padding: 0px;height: 42px;\">\n                    <div style=\"width:20px; height: 42px; float:left;\">\n                        <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 20 42\">\n                            <rect x=\"0\" y=\"0\" fill=\"#FFFFFF\" width=\"10\" height=\"42\"></rect>\n                            <rect x=\"10\" y=\"0\" fill=\"#1E8CBE\" width=\"10\" height=\"42\"></rect>\n                        </svg>\n                    </div>\n                    <div style=\"padding: 10px; float:left;\">\n                        Answer options\n                        <button class=\"button add\" data-post-type=\"";
+  if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\">\n                            <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n                            add answers\n                        </button>\n                    </div> \n                </th>\n                <th class=\"no-delete row-title\" style=\"height:20px;\">3</th>\n            </tr>";
+  return buffer;
   });
 
 this["kwps_admin_templates"]["control_test_main_row"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -961,7 +966,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   buffer += escapeExpression(stack1)
     + "\" style=\"border-top: none ;padding: 0px;height: 40px;\">\n        <div style=\"width:10px; height: 42px; float:left;\">\n            <svg x=\"0px\" y=\"0px\" viewBox=\"0 0 10 42\">\n                 <rect x=\"0\" y=\"0\" fill=\"#555555\" width=\"10\" height=\"42\"></rect>\n            </svg>\n        </div>\n        <div style=\"padding: 10px; float:left; color:white;\">\n            "
     + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.title), options) : helperMissing.call(depth0, "t", (depth0 && depth0.title), options)))
-    + "\n            <button class=\"button add\" data-post-type=\"kwps_intro\">\n                <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n                "
+    + "\n            <button class=\"button add\" data-post-type=\"";
+  if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\">\n                <span data-code=\"f132\" class=\"dashicons dashicons-plus\"></span>\n                "
     + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.addText), options) : helperMissing.call(depth0, "t", (depth0 && depth0.addText), options)))
     + "\n            </button>\n        </div>  \n    </th>\n    <th class=\"no-delete row-title\" style=\"height:20px; border-top: none;\"></th>\n</tr>";
   return buffer;
@@ -1687,6 +1696,7 @@ jQuery(function ($) {
             data.table.push({
               questionTitle: true,
               title: "Questions",
+              postType: "kwps_question",
               addText: "Add question",
               colSpan : data.versions.length +1,
             })
@@ -1702,6 +1712,8 @@ jQuery(function ($) {
             privData.questions = _.toArray(_.groupBy(privData.questions, "_kwps_sort_order"));
             console.log(privData.questions);
             for (var i = 0; i < privData.questions.length; i++) {
+              console.log(privData.questions[i]);
+              console.log(privData.questions[i][0]);
               data.table.push({
                 versions: privData.questions[i],
                 question: true,
@@ -1714,6 +1726,7 @@ jQuery(function ($) {
                 data.table.push({
                   answerTitle: true,
                   title: "Questions",
+                  postType: "kwps_answer_option",
                   addText: "Add question",
                   colSpan : data.versions.length +1,
                 })

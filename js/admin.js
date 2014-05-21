@@ -425,6 +425,7 @@ jQuery(function ($) {
             data.table.push({
               questionTitle: true,
               title: "Questions",
+              postType: "kwps_question",
               addText: "Add question",
               colSpan : data.versions.length +1,
             })
@@ -440,6 +441,8 @@ jQuery(function ($) {
             privData.questions = _.toArray(_.groupBy(privData.questions, "_kwps_sort_order"));
             console.log(privData.questions);
             for (var i = 0; i < privData.questions.length; i++) {
+              console.log(privData.questions[i]);
+              console.log(privData.questions[i][0]);
               data.table.push({
                 versions: privData.questions[i],
                 question: true,
@@ -452,6 +455,7 @@ jQuery(function ($) {
                 data.table.push({
                   answerTitle: true,
                   title: "Questions",
+                  postType: "kwps_answer_option",
                   addText: "Add question",
                   colSpan : data.versions.length +1,
                 })
