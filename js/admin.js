@@ -33,7 +33,10 @@ jQuery(function ($) {
   /* BACKBONE STUFF */
   var app = {};
   app.url = 'admin-ajax.php?action=';
-  app.openAnswer = {
+  app.openRow = {
+    kwps_outro: true,
+    kwps_intro: true,
+    kwps_question_group: true,
     questionGroup: 0,
     question: 0
   };
@@ -41,7 +44,7 @@ jQuery(function ($) {
 
   app.templates = {
     controlPanel: kwps_admin_templates.control_panel,
-    edit: kwps_admin_templates.table,
+    edit: kwps_admin_templates.edit,
     question: kwps_admin_templates.table,
     newKwpsTest: kwps_admin_templates.choose_testmodus
   }
@@ -279,6 +282,7 @@ jQuery(function ($) {
       var data = {};
       var privData = {};
       privData.intro = [];
+      privData.outro = [];
 
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');
@@ -305,6 +309,7 @@ jQuery(function ($) {
         if (kwpsOutro !== undefined) {
           data.outro = true;
           data.versions[i].kwpsOutro = kwpsOutro.toJSON();
+          privData.outro[i] = kwpsOutro.toJSON();
         }
         if (i === 0) {
           data.versions[i].main = true;
@@ -321,7 +326,7 @@ jQuery(function ($) {
       questionGroups = _.toArray(_.groupBy(questionGroups, "_kwps_sort_order"));
 
       for (var g = questionGroups.length - 1; g >= 0; g--) {
-        if (g == app.openAnswer.questionGroup) {
+        if (g == app.openRow.questionGroup) {
           questionGroups[g].open = true;
 
           for (var h = 0; h < questionGroups[g].length; h++) {
@@ -332,10 +337,10 @@ jQuery(function ($) {
             questions = _.groupBy(questions, "_kwps_sort_order");
 
             for (var i in questions) {
-              // if sortorder is equal to openAnswer show all answers
+              // if sortorder is equal to openRow show all answers
               //questions.length = questions[i].length;
 
-              if (i == app.openAnswer.question) {
+              if (i == app.openRow.question) {
                 questions[i].open = true;
                 data.answers = [];
 
@@ -360,22 +365,22 @@ jQuery(function ($) {
       data.answers = _.flatten(data.answers);
       data.answers = _.groupBy(data.answers, "_kwps_sort_order");
       data.kwpsUniquenessTypes = kwpsUniquenessTypes;
-      data.open = app.openAnswer;
+      data.open = app.openRow;
 
 
       data.table = [];
       data.table.push({
         colSpan : data.versions.length +1,
         title: "Intro",
-        post_type: "kwps_intro",
+        postType: "kwps_intro",
         mainTitle: true,
         add: (this.collection.where({post_type: "kwps_intro"}).length > 0)? false:true,
         hasMore: (this.collection.where({post_type: "kwps_intro"}).length > 0)? true:false,
         addText: 'Add Intro',
-        opened: true,
-        amount: "" 
+        opened: app.openRow.kwps_intro,
+        amount: privData.intro.length/ privData.amountOfVersions
       });
-      if (privData.intro.length == privData.amountOfVersions) {
+      if (privData.intro.length == privData.amountOfVersions && app.openRow.kwps_intro) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_intro',
@@ -391,15 +396,15 @@ jQuery(function ($) {
       data.table.push({
         colSpan : data.versions.length +1,
         title: "Question pages",
-        post_type: "kwps_question_group",
+        postType: "kwps_question_group",
         mainTitle: true,
         add: (data.testmodus._kwps_max_question_groups <= (privData.amountOfQuestionPages/ privData.amountOfVersions))? false:true,
         hasMore: (privData.amountOfQuestionPages/ privData.amountOfVersions > 0)? true:false,
         addText: 'Add question page',
-        opened: true,
+        opened: app.openRow.kwps_question_group,
         amount: privData.amountOfQuestionPages/ privData.amountOfVersions
       });
-      if (privData.questionGroupsLength > 0) {
+      if (privData.questionGroupsLength > 0 && app.openRow.kwps_question_group) {
         for (var key in data.questionGroups) {
           console.log('key',key);
           data.table.push({
@@ -408,14 +413,14 @@ jQuery(function ($) {
             deletable : true,
             hasMore: (this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][data.questionGroups.length - 1].ID}).length > 0)? true : false,
             hasAmount: false,
-            hasOpened: (app.openAnswer.questionGroup == key)? true : false,
+            hasOpened: (app.openRow.questionGroup == key)? true : false,
             editable: true, //TODO look if the test is published or not.
             versions: data.questionGroups[key],
             mainRow: true,
             sortOrder: data.questionGroups[key][0]._kwps_sort_order,
             amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][data.questionGroups.length - 1].ID}).length
           })
-          if(app.openAnswer.questionGroup == key) {
+          if(app.openRow.questionGroup == key) {
             privData.questions = [];
             data.table.push({
               questionTitle: true,
@@ -442,7 +447,7 @@ jQuery(function ($) {
                 sortOrder: privData.questions[i][0]._kwps_sort_order,
                 amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length
               })
-              if (i == app.openAnswer.question) {
+              if (i == app.openRow.question) {
                 privData.answers = [];
                 data.table.push({
                   answerTitle: true,
@@ -472,6 +477,32 @@ jQuery(function ($) {
         };
         console.log(data.table);
       };
+      data.table.push({
+        colSpan : data.versions.length +1,
+        title: "Outro",
+        postType: "kwps_outro",
+        mainTitle: true,
+        add: (this.collection.where({post_type: "kwps_outro"}).length > 0)? false:true,
+        hasMore: (this.collection.where({post_type: "kwps_outro"}).length > 0)? true:false,
+        addText: 'Add outro',
+        opened: app.openRow.kwps_outro,
+        amount: privData.outro.length/ privData.amountOfVersions
+      });
+      console.log(privData.outro);
+      if (privData.outro.length == privData.amountOfVersions && app.openRow.kwps_outro) {
+        data.table.push({
+          sorterArrows : false,
+          postType: 'kwps_outro',
+          deletable : true,
+          hasMore: false,
+          hasAmount: false,
+          editable: true, //TODO look if the test is published or not.
+          versions: privData.outro,
+          mainRow: true,
+          sortOrder: privData.outro[privData.outro.length-1]._kwps_sort_order
+        })
+      };
+
       return data;
     },
     deleteVersion: function(event) {
@@ -698,9 +729,21 @@ jQuery(function ($) {
       $(event.target).find(".actions").hide();
     },
     toggleDetails: function(event) {
-      toggleOnRow = $(event.currentTarget).data('question-row');
       type = $(event.currentTarget).data('type');
-      app.openAnswer[type] = (app.openAnswer[type] !== toggleOnRow || app.openAnswer[type] === "")? toggleOnRow:"";
+      switch (type) {
+        case "kwps_intro" :
+          app.openRow[type] = (app.openRow[type])? false: true;
+        break;
+        case "kwps_outro" :
+          app.openRow[type] = (app.openRow[type])? false: true;
+        break;
+        case "kwps_question_group" :
+          app.openRow[type] = (app.openRow[type])? false: true;
+        break;
+      }
+      //toggleOnRow = $(event.currentTarget).data('question-row');
+      
+      //app.openRow[type] = (app.openRow[type] !== toggleOnRow || app.openRow[type] === "")? toggleOnRow:"";
       this.render();
     },
     preview: function(event) {

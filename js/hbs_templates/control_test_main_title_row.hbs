@@ -2,9 +2,9 @@
     <th class="row-title" colspan="{{colSpan}}">
         {{#if hasMore}}
         	{{#if opened}}
-            	<span class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+            	<span class="dashicons dashicons-arrow-down toggle-details" data-type="{{postType}}"></span>
         	{{else}}
-            	<span class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+            	<span class="dashicons dashicons-arrow-right toggle-details" data-type="{{postType}}" ></span>
         	{{/if}}
         {{/if}}
         {{t title}}
