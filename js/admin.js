@@ -380,7 +380,7 @@ jQuery(function ($) {
         opened: app.openRow.kwps_intro,
         amount: privData.intro.length/ privData.amountOfVersions
       });
-      if (privData.intro.length == privData.amountOfVersions && app.openRow.kwps_intro) {
+      if (this.collection.where({post_type: "kwps_intro"}).length > 0 && privData.intro.length == privData.amountOfVersions && app.openRow.kwps_intro) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_intro',
@@ -493,7 +493,7 @@ jQuery(function ($) {
         amount: privData.outro.length/ privData.amountOfVersions
       });
       console.log(privData.outro);
-      if (privData.outro.length == privData.amountOfVersions && app.openRow.kwps_outro) {
+      if (this.collection.where({post_type: "kwps_outro"}).length > 0 && privData.outro.length == privData.amountOfVersions && app.openRow.kwps_outro) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_outro',
