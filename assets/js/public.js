@@ -1,10 +1,9 @@
 'use strict';
 
-
 jQuery(function($) {
-	
+
 	$('.kwps-outro').hide();
-	$('.kwps-content').hide();
+	$('.kwps-question-group').hide();
 
 	$.fn.pollPlugin = function ( options ) {
 		return this.each( function ( ) {
@@ -13,13 +12,12 @@ jQuery(function($) {
 			elem.find('.kwps-next').on('click', function () {
 				elem.find('.kwps-intro').hide();
 				elem.find('.kwps-outro').hide();
-				elem.find('.kwps-content').show();
+				elem.find('.kwps-question-group').show();
 				console.log('next was clicked');
 			});
 
 			//  Search for the class with the ID in it
-			elem.find('input:radio').click( function () {
-
+			elem.find('#kwps-content').on('click', '.kwps-next', function () {
 				var selected = $(this).val();
 			    var url = $('#adminUrl').val() + "admin-ajax.php?action=kwps_save_entry";
 
@@ -102,7 +100,7 @@ jQuery(function($) {
 
 				$('.kwps-intro').hide();
 				$('.kwps-outro').show();
-				$('.kwps-content').hide();
+				$('.kwps-question-group').hide();
 			});
 			
 		});
@@ -110,5 +108,5 @@ jQuery(function($) {
 	};
 
 	// TODO: Has to be attached to the id of every class 'kwps_poll'
-	$('.kwps-poll').pollPlugin();
+	$('.kwps-version').pollPlugin();
 });

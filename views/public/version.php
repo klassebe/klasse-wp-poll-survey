@@ -1,6 +1,6 @@
-<div>
+<div class="kwps-version">
 <?php if(!empty($data['intro'])): ?>
-	<div id="kwps-intro" class="kwps-page intro">
+	<div id="kwps-intro" class="kwps-page kwps-intro">
 		<div class="kwps-content">
 			<?php echo $data['intro']['post_content']; ?>
 		</div>
@@ -12,7 +12,7 @@
 
 
 <?php foreach($data['question_groups'] as $questionGroup): ?>
-<div class="kwps-page question_group">
+<div id="kwps-content" class="kwps-page kwps-question-group ">
 	<div>
 		<?php echo $questionGroup['post_title']; ?>
 	</div>
@@ -37,10 +37,11 @@
 <?php endforeach; ?>
 
 <?php if(!empty($data['outro'])): ?>
-	<div id="kwps-outro" class="kwps-page outro">
+	<div id="kwps-outro" class="kwps-page kwps-outro">
 		<div class="kwps-content">
 			<?php echo $data['outro']['post_content']; ?>
 		</div>
 	</div>
 <?php endif; ?>
+<input type="hidden" id="adminUrl" value="<?php admin_url(); ?>">
 </div>
