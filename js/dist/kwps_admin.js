@@ -1441,6 +1441,7 @@ jQuery(function ($) {
       var that = this;
       var model = new KwpsModel(postData);
       model.save({},{
+        wait: true,
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < 1; i++) {
@@ -1462,6 +1463,7 @@ jQuery(function ($) {
         _kwps_sort_order : index
       });
       model.save({},{
+        wait: true,
         success: function (model, response, options) {
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < 1; i++) {
@@ -1953,13 +1955,14 @@ jQuery(function ($) {
     },
     createQuestionGroup: function (post_parent, cb) {
       var index = this.collection.where({post_type: 'kwps_question_group', post_parent: post_parent}).length;
-      app.kwpsPollsCollection.create({
+      this.collection.create({
         post_type: "kwps_question_group",
         post_status: "draft",
         post_title : "Question Group " + index,
         post_parent : post_parent,
         _kwps_sort_order : index
       }, {
+        wait: true,
         success: function(model, response, options) {
           if(cb) {
             cb(model);
@@ -1976,6 +1979,7 @@ jQuery(function ($) {
         post_parent : post_parent,
         _kwps_sort_order : index
       }, {
+        wait: true,
         success: function (model, response, options) {
           if(cb) {
             cb(model);
@@ -1994,6 +1998,7 @@ jQuery(function ($) {
         _kwps_answer_option_value : "value ..."
       },
         {
+          wait: true,
           success: function (model, response, options) {
           if(cb) {
             cb(model);
@@ -2100,6 +2105,8 @@ jQuery(function ($) {
         return false;
       });
       window.send_to_editor = function(html) {
+        // relatief pad vanaf de hoofdfolder
+        // om weer te geven in front end, toevoegen van hoofdfolder naam is required
         var imgUrl = $('img',html).attr('src');
         var imgTitle = url.split("/").pop();
         $('iframe').contents().find('#tinymce').append('<img class="img img-' + imgTitle + '" src="' + imgUrl + '" alt="">');
