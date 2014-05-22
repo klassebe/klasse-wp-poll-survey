@@ -20,6 +20,21 @@ class Test_Collection extends Kwps_Post_Type{
         'with_front' => false,
     );
 
+    public static $allowed_dropdown_values = array(
+        '_kwps_logged_in_user_limit' => array(
+            'free',
+            'cookie',
+            'ip',
+            'once',
+        ),
+        '_kwps_logged_out_user_limit' => array(
+            'free',
+            'cookie',
+            'ip',
+            'none',
+        ),
+    );
+
     public static $post_type_args = array(
         'public' => true,
         'supports' => array(
@@ -57,9 +72,51 @@ class Test_Collection extends Kwps_Post_Type{
     }
 
 
-    public static function validate_for_insert($post_as_array = array())
-    {
-        return true;
+    static function validate_for_insert($post_as_array = array()) {
+        $errors = array(
+            'missing_required_fields' => array(),
+            'invalid_numeric_fields' => array(),
+            'invalid_dropdown_fields' => array(),
+        );
+
+        $numeric_fields = array();
+
+        $required_fields = array(
+            'post_status',
+            '_kwps_sort_order',
+            '_kwps_logged_in_user_limit',
+            '_kwps_logged_out_user_limit',
+        );
+
+        foreach($required_fields as $field){
+            if(! isset($post_as_array[$field])) {
+                array_push($errors['missing_required_fields'], $field);
+            } else {
+                if( is_string($post_as_array[$field])){
+                    if( strlen($post_as_array[$field]) == 0 ) {
+                        array_push($errors['missing_required_fields'], $field);
+                    }
+                }
+            }
+        }
+
+        foreach($numeric_fields as $field){
+            if( isset( $post_as_array[$field]) ) {
+                if(! is_numeric( $post_as_array[$field] ) ){
+                    array_push( $errors['invalid_numeric_fields'] , $field);
+                }
+            }
+        }
+
+        foreach( static::$allowed_dropdown_values as $field => $allowed_values ){
+            if( isset( $post_as_array[$field] ) ) {
+                if( !in_array( $post_as_array[$field], $allowed_values) ) {
+                    array_push( $errors['invalid_dropdown_fields'], $field );
+                }
+            }
+        }
+
+        return $errors;
     }
 
     public static function validate_for_update($post_as_array)

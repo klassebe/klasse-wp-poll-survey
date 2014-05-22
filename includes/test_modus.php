@@ -52,6 +52,7 @@
             $errors = array(
                 'missing_required_fields' => array(),
                 'invalid_numeric_fields' => array(),
+                'invalid_dropdown_fields' => array(),
             );
 
             $numeric_fields = array(
@@ -72,14 +73,10 @@
             foreach($required_fields as $field){
                 if(! isset($post_as_array[$field])) {
                     array_push($errors['missing_required_fields'], $field);
-
-//                    return false;
                 } else {
                     if( is_string($post_as_array[$field])){
                         if( strlen($post_as_array[$field]) == 0 ) {
                             array_push($errors['missing_required_fields'], $field);
-
-//                            return false;
                         }
                     }
                 }
@@ -89,22 +86,12 @@
                 if( isset( $post_as_array[$field]) ) {
                     if(! is_numeric( $post_as_array[$field] ) ){
                         array_push( $errors['invalid_numeric_fields'] , $field);
-//                        return false;
                     }
                 }
 
             }
 
             return $errors;
-
-
-//            if( ! static::title_length_is_ok() ){
-//                return false;
-//            } else {
-//                if( static::has_duplicate() ) {
-//                    return false;
-//                }
-//            }
         }
 
         public static function get_meta_data($post_id)
