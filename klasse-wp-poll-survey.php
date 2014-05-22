@@ -215,9 +215,35 @@ function enqueue_scripts() {
  *
  * @since    1.0.0
  */
-function enqueue_scripts_admin() {
-    wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( 'js/dist/kwps_admin.js', __FILE__ ), array( 'jquery', 'backbone' ));
+// function enqueue_scripts_admin() {
+//     wp_enqueue_script( 'jquery' );
+//     wp_enqueue_script( 'jquery-ui-core' );
+//     wp_enqueue_script( 'jquery-ui-tabs' );
+//     wp_enqueue_script( 'backbone' );
+//     // wp_enqueue_script( 'tiny_mce' );
+//     // wp_enqueue_script( 'editorremov' );
+//     // wp_enqueue_script( 'editor-functions' );
+//     wp_enqueue_script( 'media-upload' );
+//     wp_enqueue_script( 'thickbox' );
 
+//     wp_register_script( 'klasse-wp-poll-survey-handlebars', plugins_url( 'js/bower_components/handlebars/handlebars.js', __FILE__ ), array( 'jquery' ));
+//     wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery', 'media-upload', 'thickbox' ));
+
+
+//     $translation_array = array(
+//         '_kwps_intro' => __( 'Intro' ),
+//         '_kwps_outro' => __( 'Outro' ),
+//         '_kwps_question' => __( 'Question' )
+//     );
+//     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
+
+//     wp_enqueue_script( 'klasse-wp-poll-survey-handlebars');
+//     wp_enqueue_script( 'klasse-wp-poll-survey-backbone-associations');
+//     wp_enqueue_script( 'klasse-wp-poll-survey-admin');
+// }
+
+function enqueue_scripts_admin() {
+    wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( 'js/dist/kwps_admin.js', __FILE__ ), array( 'jquery', 'backbone', 'thickbox', 'media-upload' ));
 
     $translation_array = array(
         '_kwps_intro' => __( 'Intro' ),
@@ -231,16 +257,12 @@ function enqueue_scripts_admin() {
     wp_enqueue_script( 'jquery' );
     wp_enqueue_script( 'jquery-ui-core' );
     wp_enqueue_script( 'jquery-ui-tabs' );
-    // wp_enqueue_script( 'tiny_mce' );
-    // wp_enqueue_script( 'editorremov' );
-    // wp_enqueue_script( 'editor-functions' );
-    // wp_enqueue_script( 'media-upload' );
-    wp_enqueue_script( 'klasse-wp-poll-survey-handlebars');
-    wp_enqueue_script( 'klasse-wp-poll-survey-backbone-associations');
     wp_enqueue_script( 'klasse-wp-poll-survey-admin');
 }
 
 function enqueue_styles_admin() {
+    wp_enqueue_style('thickbox');
+    wp_enqueue_style('editor');
     wp_enqueue_style( 'klasse-wp-poll-survey-plugin-jquery-ui-core', plugins_url( 'css/jquery-ui/jquery.ui.core.min.css', __FILE__ ));
     wp_enqueue_style( 'klasse-wp-poll-survey-plugin-jquery-ui-tabs', plugins_url( 'css/jquery-ui/jquery.ui.tabs.min.css', __FILE__ ));
     wp_enqueue_style( 'klasse-wp-poll-survey-plugin-admin-styles', plugins_url( 'css/admin.css', __FILE__ ));

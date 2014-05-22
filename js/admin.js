@@ -1,4 +1,5 @@
 jQuery(function ($) {
+
   $('#tabs').tabs();
 
   function GetURLParameter(sParam) {
@@ -854,7 +855,9 @@ jQuery(function ($) {
       $(this.el).empty();
     },
     events: {
-      'click button#update': 'updateData'
+      'click button#update': 'updateData',
+      'click button#add-media-button': 'addMedia',
+      'click td.savesend input.button': 'insertIntoEditor'
     },
     render: function() {
       var data = {
@@ -874,18 +877,19 @@ jQuery(function ($) {
         toolbar: ["bold italic strikethrough bullist numlist blockquote hr alignleft aligncenter alignright link unlink", 
                   "formatselect underline alignjustify forecolor backcolor paste removeformat charmap outdent indent undo redo | code"]
       });
-      /* MEDIA UPLOAD */
-      $('#add-media-button').on('click', function() {
-        tb_show( '', 'media-upload.php?type=image&amp;TB_iframe=true' );
-        return false;
-      });
-      window.send_to_editor = function(html) {
-        var imgUrl = $('img',html).attr('src');
-        var imgTitle = url.split("/").pop();
-        $('iframe').contents().find('#tinymce').append('<img class="img img-' + imgTitle + '" src="' + imgUrl + '" alt="">');
-        tb_remove();
-      };
     },
+    /* BEGIN MEDIA UPLOAD */
+    addMedia: function () {
+      tb_show( '', 'media-upload.php?type=image&amp;TB_iframe=true' );
+      return false;
+    },
+    insertIntoEditor: function (html) {
+      var imgUrl = $('img',html).attr('src');
+      var imgTitle = imgUrl.split("/").pop();
+      $('iframe').contents().find('#tinymce').append('<img class="img img-' + imgTitle + '" src="' + imgUrl + '" alt="">');
+      tb_remove();
+    },
+    /* END MEDIA UPLOAD */
     updateData: function(event) {
       var type, title, content, value;
       event.preventDefault();
