@@ -600,7 +600,8 @@ jQuery(function ($) {
             for(var j = 0; j < questionGroups.length; j++) {
               var questions = this.collection.where({post_type: 'kwps_question', post_parent: questionGroups[j].id, _kwps_sort_order: sortOrder.toString()});
               for(var k = 0; k < questions.length; k++) {
-                this.createAnswer(questions[k].id, k);
+                var index = this.collection.where({post_type: 'kwps_answer_option', post_parent: questions[k].id}).length;
+                this.createAnswer(questions[k].id, index);
               }
             }
           }
