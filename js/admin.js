@@ -406,7 +406,7 @@ jQuery(function ($) {
         title: "Question pages",
         postType: "kwps_question_group",
         mainTitle: true,
-        add: (data.testmodus._kwps_max_question_groups <= (data.questions.length/ privData.amountOfVersions))? false:true,
+        add: (data.questions && data.testmodus._kwps_max_question_groups <= (data.questions.length/ privData.amountOfVersions))? false:true,
         hasMore: (privData.amountOfQuestionPages/ privData.amountOfVersions > 0)? true:false,
         addText: 'Add question page',
         opened: app.openRow.kwps_question_group,
