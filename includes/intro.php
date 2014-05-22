@@ -59,28 +59,44 @@ class Intro extends Kwps_Post_Type{
         return false;        
     }
 
-    /**
-     * @param $post_as_array
-     * @return bool
-     */
     static function validate_for_insert($post_as_array = array()) {
+        $errors = array(
+            'missing_required_fields' => array(),
+            'invalid_numeric_fields' => array(),
+            'invalid_dropdown_fields' => array(),
+        );
+
+        $numeric_fields = array(
+            '_kwps_sort_order',
+        );
+
         $required_fields = array(
             'post_content',
             'post_status',
-            'post_parent'
+            'post_parent',
+            '_kwps_sort_order',
         );
 
-        foreach($required_fields as $field)
+        foreach($required_fields as $field){
             if(! isset($post_as_array[$field])) {
-                return false;
+                array_push($errors['missing_required_fields'], $field);
             } else {
                 if( is_string($post_as_array[$field])){
                     if( strlen($post_as_array[$field]) == 0 ) {
-                        return false;
+                        array_push($errors['missing_required_fields'], $field);
                     }
                 }
             }
-        return true;
+        }
+
+        foreach($numeric_fields as $field){
+            if( isset( $post_as_array[$field]) ) {
+                if(! is_numeric( $post_as_array[$field] ) ){
+                    array_push( $errors['invalid_numeric_fields'] , $field);
+                }
+            }
+        }
+        return $errors;
     }
 
     /**

@@ -53,6 +53,9 @@ class Version extends Kwps_Post_Type{
 
     static function validate_for_insert($post_as_array = array()) {
         $errors = array(
+            'missing_required_fields' => array(),
+            'invalid_numeric_fields' => array(),
+            'invalid_dropdown_fields' => array(),
         );
 
         $numeric_fields = array(
