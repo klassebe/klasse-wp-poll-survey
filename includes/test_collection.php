@@ -79,6 +79,7 @@ class Test_Collection extends Kwps_Post_Type{
 
         $required_fields = array(
             'post_status',
+            'post_parent',
             '_kwps_sort_order',
             '_kwps_logged_in_user_limit',
             '_kwps_logged_out_user_limit',

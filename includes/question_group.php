@@ -88,16 +88,19 @@ class Question_Group extends Kwps_Post_Type {
             }
         }
 
-        $version = Version::get_as_array($post_as_array['post_parent']);
-        $test_modus = Version::get_test_modus($version['ID']);
+        if( isset( $post_as_array['post_parent'] ) ){
+            $version = Version::get_as_array($post_as_array['post_parent']);
+            $test_modus = Version::get_test_modus($version['ID']);
 
-        $kwps_max_question_groups = $test_modus['_kwps_max_question_groups'];
+            $kwps_max_question_groups = $test_modus['_kwps_max_question_groups'];
 
-        $all_question_groups_of_version = Question_Group::get_all_by_post_parent($version['ID']);
+            $all_question_groups_of_version = Question_Group::get_all_by_post_parent($version['ID']);
 
-        if( sizeof($all_question_groups_of_version) >= $kwps_max_question_groups){
-            array_push( $errors, array( 'All', 'Maximum question groups already reached' ) );
+            if( sizeof($all_question_groups_of_version) >= $kwps_max_question_groups){
+                array_push( $errors, array( 'All', 'Maximum question groups already reached' ) );
+            }
         }
+
 
         return $errors;
     }

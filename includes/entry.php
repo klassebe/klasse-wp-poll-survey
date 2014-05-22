@@ -150,19 +150,21 @@ class Entry extends Kwps_Post_Type{
             }
         }
 
-        $answer_option = Answer_Option::get_as_array($entry['post_parent']);
-        $question = Question::get_as_array($answer_option['post_parent']);
-        $version = Version::get_as_array($question['post_parent']);
+        if( isset( $post_as_array['post_parent'] ) ){
+            $answer_option = Answer_Option::get_as_array($entry['post_parent']);
+            $question = Question::get_as_array($answer_option['post_parent']);
+            $version = Version::get_as_array($question['post_parent']);
 
-        $limitations = Test_Collection::get_meta_data($version['post_parent']);
+            $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
-        if( is_user_logged_in() ){
-            if( ! Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_in_user_limit']) ){
-                array_push( $errors, array('All', 'You have the reached limit to participate') );
-            }
-        } else {
-            if( ! Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_out_user_limit']) ){
-                array_push( $errors, array('All', 'You have the reached limit to participate') );
+            if( is_user_logged_in() ){
+                if( ! Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_in_user_limit']) ){
+                    array_push( $errors, array('All', 'You have the reached limit to participate') );
+                }
+            } else {
+                if( ! Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_out_user_limit']) ){
+                    array_push( $errors, array('All', 'You have the reached limit to participate') );
+                }
             }
         }
 

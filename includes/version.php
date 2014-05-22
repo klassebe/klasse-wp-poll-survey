@@ -60,6 +60,7 @@ class Version extends Kwps_Post_Type{
 
         $required_fields = array(
             'post_status',
+            'post_parent',
             '_kwps_sort_order',
         );
 

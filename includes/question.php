@@ -78,6 +78,7 @@ class Question extends Kwps_Post_Type{
 
         $required_fields = array(
             'post_content',
+            'post_parent',
             '_kwps_sort_order',
         );
 
@@ -101,13 +102,15 @@ class Question extends Kwps_Post_Type{
             }
         }
 
-        $question_group = Question_Group::get_as_array($post_as_array['post_parent']);
-        $test_modus = Question_Group::get_test_modus($question_group['ID']);
+        if( isset( $post_as_array['post_parent'] ) ){
+            $question_group = Question_Group::get_as_array($post_as_array['post_parent']);
+            $test_modus = Question_Group::get_test_modus($question_group['ID']);
 
-        $all_questions_of_same_group = Question::get_all_by_post_parent($post_as_array['post_parent']);
+            $all_questions_of_same_group = Question::get_all_by_post_parent($post_as_array['post_parent']);
 
-        if( sizeof($all_questions_of_same_group) >= $test_modus['_kwps_max_questions_per_question_group']){
-            array_push( $errors, array( 'All', 'Maximum questions already reached' ) );
+            if( sizeof($all_questions_of_same_group) >= $test_modus['_kwps_max_questions_per_question_group']){
+                array_push( $errors, array( 'All', 'Maximum questions already reached' ) );
+            }
         }
 
         return $errors;
