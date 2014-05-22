@@ -51,26 +51,39 @@ class Version extends Kwps_Post_Type{
         return Test_Collection::get_test_modus($version['post_parent']);
     }
 
-    /**
-     * @param $post_as_array
-     * @return bool
-     */
     static function validate_for_insert($post_as_array = array()) {
-        $required_fields = array(
-            'post_status',
+        $errors = array(
         );
 
-        foreach($required_fields as $field)
+        $numeric_fields = array(
+            '_kwps_sort_order',
+        );
+
+        $required_fields = array(
+            'post_status',
+            '_kwps_sort_order',
+        );
+
+        foreach($required_fields as $field){
             if(! isset($post_as_array[$field])) {
-                return false;
+                array_push($errors['missing_required_fields'], $field);
             } else {
                 if( is_string($post_as_array[$field])){
                     if( strlen($post_as_array[$field]) == 0 ) {
-                        return false;
+                        array_push($errors['missing_required_fields'], $field);
                     }
                 }
             }
-        return true;
+        }
+
+        foreach($numeric_fields as $field){
+            if( isset( $post_as_array[$field]) ) {
+                if(! is_numeric( $post_as_array[$field] ) ){
+                    array_push( $errors['invalid_numeric_fields'] , $field);
+                }
+            }
+        }
+        return $errors;
     }
 
     public static function validate_for_delete($post_id = 0)

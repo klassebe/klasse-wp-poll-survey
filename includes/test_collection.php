@@ -79,7 +79,7 @@ class Test_Collection extends Kwps_Post_Type{
             'invalid_dropdown_fields' => array(),
         );
 
-        $numeric_fields = array();
+        $numeric_fields = array('_kwps_sort_order');
 
         $required_fields = array(
             'post_status',
