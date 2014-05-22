@@ -78,7 +78,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         $errors = static::validate_for_insert($request_data);
 
         if( sizeof( $errors ) > 0 ) {
-            wp_send_json_error($errors);
+            echo 0; die;
         } else {
             wp_send_json( static::save_post($request_data) );
         }
