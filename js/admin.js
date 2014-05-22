@@ -439,7 +439,7 @@ jQuery(function ($) {
         title: "Question pages",
         postType: "kwps_question_group",
         mainTitle: true,
-        add: (data.testmodus._kwps_max_question_groups <= (privData.amountOfQuestionPages/ privData.amountOfVersions))? false:true,
+        add: (data.questions && data.testmodus._kwps_max_question_groups <= (data.questions.length/ privData.amountOfVersions))? false:true,
         hasMore: (privData.amountOfQuestionPages/ privData.amountOfVersions > 0)? true:false,
         addText: 'Add question page',
         opened: app.openRow.kwps_question_group,
@@ -635,7 +635,8 @@ jQuery(function ($) {
             for(var j = 0; j < questionGroups.length; j++) {
               var questions = this.collection.where({post_type: 'kwps_question', post_parent: questionGroups[j].id, _kwps_sort_order: sortOrder.toString()});
               for(var k = 0; k < questions.length; k++) {
-                this.createAnswer(questions[k].id, k);
+                var index = this.collection.where({post_type: 'kwps_answer_option', post_parent: questions[k].id}).length;
+                this.createAnswer(questions[k].id, index);
               }
             }
           }
