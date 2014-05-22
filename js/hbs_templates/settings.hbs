@@ -1,0 +1,22 @@
+<div>
+    <h2>Limit entries</h2>
+
+    <div>
+        <label for="kwps_logged_in_user_limit">Logged in user</label>
+        <select id="kwps_logged_in_user_limit" name="_kwps_logged_in_user_limit" class="update-main">
+            {{#each kwpsUniquenessTypes.logged_in}}
+            <option value="{{function}}"
+            {{selected this.function ../this.collection._kwps_logged_in_user_limit}} >{{label}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div>
+        <label for="kwps_logged_out_user_limit">Logged out user</label>
+        <select id="kwps_logged_out_user_limit" name="_kwps_logged_out_user_limit" class="update-main">
+            {{#each kwpsUniquenessTypes.logged_out}}
+            <option value="{{function}}"
+            {{selected this.function ../this.collection._kwps_logged_out_user_limit}} >{{label}}</option>
+            {{/each}}
+        </select>
+    </div>
+</div>

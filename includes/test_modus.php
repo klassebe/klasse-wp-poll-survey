@@ -131,7 +131,8 @@
             if( isset($_POST) && sizeof($_POST) > 0 ) {
                 global $post;
 //                var_dump($post);
-                if($post->post_type == 'kwps_test_modus'){
+
+                if(isset($post) &&'kwps_test_modus' == $post->post_type){
                     if(! static::title_length_is_ok() ){
                         $status = 'draft';
                     } elseif ( static::has_duplicate() ){

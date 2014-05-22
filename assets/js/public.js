@@ -1,10 +1,9 @@
 'use strict';
 
-
 jQuery(function($) {
-	
+
 	$('.kwps-outro').hide();
-	$('.kwps-content').hide();
+	$('.kwps-question-group').hide();
 
 	$.fn.pollPlugin = function ( options ) {
 		return this.each( function ( ) {
@@ -13,20 +12,25 @@ jQuery(function($) {
 			elem.find('.kwps-next').on('click', function () {
 				elem.find('.kwps-intro').hide();
 				elem.find('.kwps-outro').hide();
-				elem.find('.kwps-content').show();
+				elem.find('.kwps-question-group').show();
 				console.log('next was clicked');
 			});
 
 			//  Search for the class with the ID in it
-			elem.find('input:radio').click( function () {
-
-				var selected = $(this).val();
+			elem.find('#kwps-content').on('click', '.kwps-next', function () {
+				// Check if an answer option was selected
+				// Get the name of the radio buttons
+				var getNameOfRadioBtn = elem.find('input:radio').attr('name');
+				// Get the value of the selected field
+				var selected = elem.find('.kwps-answer-option input:radio[name=' + getNameOfRadioBtn + ']').val();
+				console.log("selected:", selected);
+				if (selected) {
 			    var url = $('#adminUrl').val() + "admin-ajax.php?action=kwps_save_entry";
 
 			    var entry = {
 				  		"post_parent": selected,
 				  		"_kwps_sort_order": 0
-				  	}
+				  	};
 
 				  	$.ajax({
 						    type: "POST",
@@ -36,7 +40,8 @@ jQuery(function($) {
 						    dataType: "json",
 						    success: function(data){
 						    	// alert(data);
-						    	// console.log(entry);
+						    	console.log(entry);
+						    	// TODO: no data is returned from server!
 						    	console.log(data);
 						    	var graphCategories = [];
 						    	var graphData = [];
@@ -99,10 +104,10 @@ jQuery(function($) {
 						        alert(errMsg);
 						    }
 						});
-
+				}
 				$('.kwps-intro').hide();
 				$('.kwps-outro').show();
-				$('.kwps-content').hide();
+				$('.kwps-question-group').hide();
 			});
 			
 		});
@@ -110,5 +115,5 @@ jQuery(function($) {
 	};
 
 	// TODO: Has to be attached to the id of every class 'kwps_poll'
-	$('.kwps-poll').pollPlugin();
+	$('.kwps-version').pollPlugin();
 });

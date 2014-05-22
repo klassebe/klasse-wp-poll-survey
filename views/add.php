@@ -1,6 +1,585 @@
+<?php echo '<link type="text/css" rel="stylesheet" href="'. plugins_url( '../css/editor.css', __FILE__ ) .'">'; ?>
+<?php echo '<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>'; ?>
+<script src="http://localhost:35729/livereload.js"></script>
 <div class="wrap" id="kwps_test">
-	<?php echo '<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>'; ?>
+	
+    <div id="icon-tests" class="icon32"><br/></div>
+    <h2><?php echo get_admin_page_title() ?></h2>
+
+    <div class="test-input">
+        <input type="text" name="post_title" id="post_title" value="Wa tekst" placeholder="<?php _e( 'New Test' ) ?>"/>
+    </div>
+
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-add"><?php _e( 'Edit content', 'klasse-wp-poll-survey' ) ?></a></li>
+            <li><a href="#tabs-results"><?php _e( 'Manage results', 'klasse-wp-poll-survey' ) ?></a></li>
+            <li><a href="#tabs-entries"><?php _e( 'Manage entries', 'klasse-wp-poll-survey' ) ?></a></li>
+            <li><a href="#tabs-settings"><?php _e( 'Manage settings', 'klasse-wp-poll-survey' ) ?></a></li>
+        </ul>
+        <div id="tabs-add">
+            <div>
+                <div>
+
+                    <table id="matrix" class="wp-list-table widefat fixed" style="table-layout:fixed;">
+                        <tr>
+                            <th class="no-delete column-action" colspan="1">&nbsp;</th>
+                            <th class=" column-title">
+                                <div class="column-tab">
+                                    <div><input value="Versie 1"></div>
+                                    <div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a
+                                            class="delete-version">delete</a></div>
+                                </div>
+                            </th>
+                            <th class=" column-title">
+                                <div class="column-tab">
+                                    <div><input value="Versie 2"></div>
+                                    <div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a
+                                            class="delete-version">delete</a></div>
+                                </div>
+                            </th>
+                            <td class="column-title" style="width:85px;">
+                                <div class="column-tab">
+                                    <button class="add button">
+                                        <span data-code="f132" class="dashicons dashicons-plus"></span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="title">
+                            <th class="no-delete row-title" colspan="3">
+                                <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+                                <?php _e( 'Intro', 'klasse-wp-poll-survey' ) ?>
+                                <button class="button add" data-post-type="kwps_intro">
+                                    <span data-code="f132" class="dashicons dashicons-plus"></span>
+                                </button>
+                            </th>
+                            <th class="no-delete row-title"></th>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                <div style="width:10px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 10 60">
+                                        <rect x="0" y="0" fill="#555555" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                        </tr>
+
+                        <tr class="title">
+                            <th class="no-delete row-title" colspan="3">
+                                <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+                                Question Pages
+                                <button class="button add" data-post-type="kwps_intro">
+                                    <span data-code="f132" class="dashicons dashicons-plus"></span>
+                                    add question page
+                                </button>
+                            </th>
+                            <th class="no-delete row-title">4</th>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                <div style="width:10px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 10 60">
+                                        <rect x="0" y="0" fill="#555555" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+                                <div class="move">
+                                    <span class="up passive"></span>
+                                    <span class="down"></span>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td>2</td>
+                        </tr>
+
+                        <tr class="post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background: #1E8CBE;">
+                            <th class="no-delete row-title" colspan="3" style="border-top: #1E8CBE;padding: 0px;height: 40px;">
+                                <div style="width:10px; height: 40px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 10 40">
+                                                                                <rect x="0" y="0" fill="#555555" width="10" height="40"></rect>
+                                    </svg>
+                                </div>
+                                <div style="padding: 10px; float:left;">
+                                    Questions
+                                    <button class="button add" data-post-type="kwps_intro">
+                                        <span data-code="f132" class="dashicons dashicons-plus"></span>
+                                        add question
+                                    </button>
+                                </div>  
+                            </th>
+                            <th class="no-delete row-title" style="height:20px;"></th>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background: #DAEFF8;">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                <div style="width:20px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 20 60">
+                                        <rect x="0" y="0" fill="#FFFFFF" width="10" height="60"></rect>
+
+                                        <rect x="10" y="0" fill="#1E8CBE" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+                                <div class="move">
+                                    <span class="up passive"></span>
+                                    <span class="down"></span>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                    1
+                                </div>
+                                
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr class="post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background:#FFB500">
+                            <th class="no-delete row-title" colspan="3" style=" border-top: #FFBA00; padding: 0px;height: 40px;">
+                                <div style="width:20px; height: 40px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 20 40">
+                                        <rect x="0" y="0" fill="#FFFFFF" width="10" height="40"></rect>
+                                        <rect x="10" y="0" fill="#1E8CBE" width="10" height="40"></rect>
+                                    </svg>
+                                </div>
+                                <div style="padding: 10px; float:left;">
+                                    Answer options
+                                    <button class="button add" data-post-type="kwps_intro">
+                                        <span data-code="f132" class="dashicons dashicons-plus"></span>
+                                        add answers
+                                    </button>
+                                </div> 
+                            </th>
+                            <th class="no-delete row-title" style="height:20px;">3</th>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background:#FFF8E7">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                <div style="width:30px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 30 60">
+                                        <rect x="0" y="0" fill="#FFFFFF" width="20" height="60"></rect>
+                                        <rect x="20" y="0" fill="#FFBA00" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+                                <div class="move">
+                                    <span class="up passive"></span>
+                                    <span class="down"></span>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                    1
+                                </div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background:#FFF8E7">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                <div style="width:30px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 30 60">
+                                        <rect x="0" y="0" fill="#FFFFFF" width="20" height="60"></rect>
+                                        <rect x="20" y="0" fill="#FFBA00" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down"></span>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                    2
+                                </div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background:#FFF8E7">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                 <div style="width:30px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 30 60">
+                                        <rect x="0" y="0" fill="#FFFFFF" width="20" height="60"></rect>
+                                        <rect x="20" y="0" fill="#FFBA00" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down passive"></span>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                    3
+                                </div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background: #DAEFF8;">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                <div style="width:20px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 20 60">
+                                        <rect x="0" y="0" fill="#FFFFFF" width="10" height="60"></rect>
+                                        <rect x="10" y="0" fill="#1E8CBE" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down passive"></span>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <span class="dashicons dashicons-arrow-right toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                    2
+                                </div>
+                                
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                <div style="width:10px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 10 60">
+                                        <rect x="0" y="0" fill="#555555" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down"></span>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <span class="dashicons dashicons-arrow-right toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                </div>
+                                
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                <div style="width:10px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 10 60">
+                                        <rect x="0" y="0" fill="#555555" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down"></span>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <span class="dashicons dashicons-arrow-right toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                </div>
+                                
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                <div style="width:10px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 10 60">
+                                        <rect x="0" y="0" fill="#555555" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+
+                                <div class="move">
+                                    <span class="up"></span>
+                                    <span class="down passive"></span>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <span class="dashicons dashicons-arrow-right toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                        </tr>
+
+                        <tr class="title">
+                            <th class="no-delete row-title" colspan="3">
+                                <span data-code="f140" class="dashicons dashicons-arrow-down toggle-details" data-type="question" data-question-row="{{@index}}"></span>
+                                <?php _e( 'Outro', 'klasse-wp-poll-survey' ) ?>
+                                <button class="button add" data-post-type="kwps_intro">
+                                    <span data-code="f132" class="dashicons dashicons-plus"></span>
+                                </button>
+                            </th>
+                            <th class="no-delete row-title">1</th>
+                        </tr>
+
+                        <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0">
+                            <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+                                <div style="width:10px; height: 60px; float:left;">
+                                    <svg x="0px" y="0px" viewBox="0 0 10 60">
+                                        <rect x="0" y="0" fill="#555555" width="10" height="60"></rect>
+                                    </svg>
+                                </div>
+                                <div class="action" style="padding: 10px; float:left;">
+                                    <a class="delete-intro">
+                                        <span class="del" data-post-type="kwps_intro">
+                                            <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “”">mldfkqùdsfgjlmùdsfgùmfdkg</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                            <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+                                <strong>
+                                    <a class="row-title" href="#edit/{{kwpsIntro.ID}}"
+                                       title="Edit “{{subStringStripper kwpsIntro.post_content 100}}”">subStringStripper
+                                        kwpsIntro.post_content 100</a>
+                                </strong>
+
+                                <div class="actions" style="display: none"><a href="#edit/{{kwpsIntro.ID}}">edit</a></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tabs-results">
+       
+        <div id="tabs-entries">
+            
+        </div>
+        <div id="tabs-settings">
+            
+        </div>
+    </div>
+
+
+
 </div> <!-- .wrap -->
+
+
 
 <script id="chooseTestModus_template" type="text/x-handlebars-template">
 	<form id="create-new-test">
@@ -22,9 +601,20 @@
 
 <script id="edit_template" type="text/x-handlebars-template">
 	<h2>{{label}}</h2>
-	<div>
+	<div>  
 		<form id="update-model">
-			<textarea name='text' rows="20">{{text}}</textarea>
+            {{#if title}}
+                <div>Title: <input type="text" name="qg-title" id="kwps-question-group-title" value="{{title}}"></div>
+            {{/if}}
+
+            {{#if answer_option_value}}
+                <div>Value: <input type="text" name="ao-value" id="kwps-answer-option-value" value="{{answer_option_value}}"></div>
+            {{/if}}
+            <br>
+            <button id="add-media-button"><span class="add-media-icon"></span><?php _e( 'Add Media', 'klasse-wp-poll-survey' ) ?></button>
+            <div id="editor-tiny">   
+			 <textarea name='text' rows="20">{{text}}</textarea>
+            </div>
 			<button id="update"><?php _e( 'Update', 'klasse-wp-poll-survey' ) ?></button>
 		</form>
 	</div>
@@ -59,6 +649,7 @@
 <div id="tabs-add">
 	<div>
 		<div>
+
 			<table id="matrix" class="wp-list-table widefat fixed">
 				<tr>
 					<th class="no-delete column-action">&nbsp;</th>
@@ -66,14 +657,15 @@
 					<th class=" column-title">
 						<div class="column-tab">
 							<div>{{post_title}}</div>
-							<div class="actions" style="display: none" data-kwps-id="{{ID}}">edit | <a
-									class="delete-version">delete</a></div>
+							<div class="actions">
+                                <a class="delete-version" data-version-id="{{ID}}">delete</a>
+                            </div>
 						</div>
 					</th>
 					{{/each}}
 					<td class="column-title" style="width:85px;">
 						<div class="column-tab">
-							<button class="add button">
+							<button class="add button" data-post-type="kwps_version" data-sort-order="{{@index}}">
 								<span data-code="f132" class="dashicons dashicons-plus"></span>
 							</button>
 						</div>
@@ -95,10 +687,10 @@
 					{{#each versions}}
 					<td class="column-action">
 						<div class="action">
-							<a class="delete-intro">
-                                                <span class="del" data-post-type="kwps_intro">
-                                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                                </span>
+							<a class="">
+                                <span class="del" data-type="unique" data-post-type="kwps_intro">
+                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                </span>
 							</a>
 						</div>
 					</td>
@@ -116,21 +708,28 @@
 				{{/if}}
 
 				{{#each questionGroups}}
+                <tr class="title">
 
 				{{#each this}}
-				<tr class="title">
 					<th class="no-delete row-title" colspan="{{getColumnCount ../../versions}}">
 						{{#if ../open}}
 						<span data-code="f140" class="dashicons dashicons-arrow-down toggle-details"
-						      data-type="questionGroup" data-question-row="{{@index}}"></span>
+						      data-type="questionGroup" data-question-row="{{_kwps_sort_order}}"></span>
 						{{else}}
 						<span data-code="f139" class="dashicons dashicons-arrow-right toggle-details"
-						      data-type="questionGroup" data-question-row="{{@index}}"></span>
+						      data-type="questionGroup" data-question-row="{{_kwps_sort_order}}"></span>
 						{{/if}}
-						{{post_title}}
+					    <input type="text" data-id="{{ID}}" value="{{post_title}}" name="post_title" class="update-post-title">
+						<div>
+							<strong>
+								<a class="row-title" href="#edit/{{ID}}"
+								   title="Edit “{{{subStringStripper post_content 30}}}”">{{{subStringStripper post_content
+									100}}}</a>
+							</strong>
+						</div>
 					</th>
-				</tr>
 				{{/each}}
+                </tr>
 
 				{{#if open}}
 
@@ -147,9 +746,9 @@
 						{{/if}}
 						<div class="action">
 							<a class="delete-question">
-                                            <span class="del" data-post-type="kwps_question">
-                                                <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                            </span>
+                                <span class="del" data-type="row" data-sort-order="{{@index}}" data-post-type="kwps_question">
+                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                </span>
 							</a>
 						</div>
 						<div class="move">
@@ -160,8 +759,7 @@
 					<td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
 						<strong>
 							<a class="row-title" href="#edit/{{ID}}"
-							   title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content
-								100}}</a>
+							   title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
 						</strong>
 
 						<div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
@@ -184,10 +782,10 @@
 				<td class="delete column-action column-answer">
 					<div class="action">
 						<a class="delete-answer-option">
-                                                    <span class="del" data-post-type="kwps_answer_option"
-                                                          data-kwps-sort-order="{{@index}}">
-                                                        <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                                    </span>
+                            <span class="del" data-post-type="kwps_answer_option"
+                                  data-kwps-sort-order="{{@index}}">
+                                <span data-code="f182" class="dashicons dashicons-trash"></span>
+                            </span>
 						</a>
 					</div>
 					<div class="move">
@@ -197,8 +795,7 @@
 				{{#each this}}
 				<td id="_kwps_answer_option_{{ID}}" class="post-title page-title column-title">
 					<strong>
-						<a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper
-							post_content 100}}</a>
+						<a class="row-title" href="#edit/{{ID}}" title="Edit “{{subStringStripper post_content 100}}”">{{subStringStripper post_content 100}}</a>
 					</strong>
 
 					<div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
@@ -210,26 +807,25 @@
 				{{/each}}
 
 
-
-
 				{{/if}}
 				{{/each}}
 
-
+				{{#ifLength ../../questions ../../testmodus._kwps_max_questions_per_question_group}}
 				<tr class="title">
-					<th class="no-delete row-title" colspan="{{getColumnCount ../../versions}}">
-						<button class="button add" data-post-type="kwps_question" data-open-order="{{../../open/questionGroup}}">
+					<th class="no-delete row-title" colspan="{{getColumnCount ../../../versions}}">
+						<button class="button add" data-post-type="kwps_question" data-open-order="{{../../../open/questionGroup}}">
 							<span data-code="f132" class="dashicons dashicons-plus"></span>
 							<?php _e( 'Add Question', 'klasse-wp-poll-survey' ) ?>
-
 						</button>
 					</th>
 				</tr>
+				{{/ifLength}}
 
 
 				{{/if}}
 				{{/each}}
 
+				{{#ifLength questionGroups testmodus._kwps_max_question_groups}}
 				<tr class="title">
 					<th class="no-delete row-title" colspan="{{getColumnCount versions}}">
 						<button class="button add" data-post-type="kwps_question_group">
@@ -239,6 +835,7 @@
 						</button>
 					</th>
 				</tr>
+				{{/ifLength}}
 
 				<tr class="title">
 					<th class="no-delete row-title" colspan="{{getColumnCount versions}}">
@@ -256,9 +853,9 @@
 					<td class="column-action">
 						<div class="action">
 							<a class="delete-outro">
-                                                <span class="del" data-post-type="kwps_outro">
-                                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
-                                                </span>
+                                <span class="del" data-type="unique" data-post-type="kwps_outro">
+                                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                                </span>
 							</a>
 						</div>
 					</td>

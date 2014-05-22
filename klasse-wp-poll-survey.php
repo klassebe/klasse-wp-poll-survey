@@ -136,16 +136,6 @@ register_deactivation_hook(__FILE__, 'kwps_deactivate');
 // shortcode -> use feip_form_posts template in front end for vote function!
 add_shortcode('kwps_version', array('\includes\version', 'shortcode') );
 
-// add_action('shutdown', function() {
-//  echo '<script>jQuery(function($){
-//                     setTimeout(function() {
-//                         tinymce.init({
-//                             selector: "textarea"
-//                         });
-//                     }, 5000);
-//                 }); console.log("testje")</script>';
-// });
-
 function kwps_activate(){
     kwps_add_api_rewrite_rules();
     flush_rewrite_rules();
@@ -214,7 +204,8 @@ function enqueue_scripts() {
     wp_enqueue_script( 'jquery' );
     wp_enqueue_script( 'jquery-ui-core' );
     wp_enqueue_script( 'jquery-ui-tabs' );
-    wp_enqueue_script( 'highcharts', plugins_url( 'assets/js/highcharts.js', __FILE__ ), array( 'jquery' ));
+	wp_enqueue_script( 'backbone' );
+	wp_enqueue_script( 'highcharts', plugins_url( 'assets/js/highcharts.js', __FILE__ ), array( 'jquery' ));
     wp_enqueue_script( 'highcharts-exporting', plugins_url( 'assets/js/exporting.js', __FILE__ ), array( 'jquery', 'highcharts' ));
     wp_enqueue_script( 'klasse-wp-poll-survey-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ));
 }
@@ -225,16 +216,16 @@ function enqueue_scripts() {
  * @since    1.0.0
  */
 function enqueue_scripts_admin() {
-    wp_register_script( 'klasse-wp-poll-survey-handlebars', plugins_url( 'js/bower_components/handlebars/handlebars.js', __FILE__ ), array( 'jquery' ));
-    wp_register_script( 'klasse-wp-poll-survey-backbone-associations', plugins_url( 'js/bower_components/backbone-associations/backbone-associations.js', __FILE__ ), array( 'backbone' ));
-    wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ));
+    wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( 'js/dist/kwps_admin.js', __FILE__ ), array( 'jquery', 'backbone' ));
 
 
     $translation_array = array(
         '_kwps_intro' => __( 'Intro' ),
         '_kwps_outro' => __( 'Outro' ),
-        '_kwps_question' => __( 'Question' )
-    );
+        '_kwps_question' => __( 'Question' ),
+        'Add question' => __( 'Voeg vraag toe'),
+        'Add answer' => __( 'Voeg antwoord toe')
+     );
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
     wp_enqueue_script( 'jquery' );

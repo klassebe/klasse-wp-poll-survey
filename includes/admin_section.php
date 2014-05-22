@@ -39,8 +39,8 @@ class admin_section {
 
                     foreach($versions as $version){
                         $question_groups = array_merge($question_groups, Question_Group::get_all_by_post_parent($version['ID']));
-                        $intros = array_merge($intros, Question_Group::get_all_by_post_parent($version['ID']));
-                        $outros = array_merge($outros, Question_Group::get_all_by_post_parent($version['ID']));
+                        $intros = array_merge($intros, Intro::get_all_by_post_parent($version['ID']));
+                        $outros = array_merge($outros, Outro::get_all_by_post_parent($version['ID']));
                     }
 
                     foreach($question_groups as $question_group){
@@ -48,7 +48,7 @@ class admin_section {
                     }
 
                     foreach($questions as $question){
-                        $answer_options = array_merge($answer_options, Question::get_all_by_post_parent($question['ID']));
+                        $answer_options = array_merge($answer_options, Answer_Option::get_all_by_post_parent($question['ID']));
                     }
 
                     $tests = array_merge(

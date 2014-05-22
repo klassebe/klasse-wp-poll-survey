@@ -62,6 +62,13 @@ class Answer_Option extends Kwps_Post_Type{
         return Question::validate_for_delete($question_id);
     }
 
+    public static function get_meta_data($post_id)
+    {
+        $meta_as_array = array();
+        $meta_as_array['_kwps_sort_order'] = get_post_meta($post_id, '_kwps_sort_order', true);
+        $meta_as_array['_kwps_answer_option_value'] = get_post_meta($post_id, '_kwps_answer_option_value', true);
+        return $meta_as_array;
+    }
 
     public static function get_all_html($question_id)
     {
@@ -101,6 +108,10 @@ class Answer_Option extends Kwps_Post_Type{
         $test_modus = Question::get_test_modus($question['ID']);
 
         $all_answer_options_of_same_question = Answer_Option::get_all_by_post_parent($post_as_array['post_parent']);
+
+        if($test_modus['_kwps_max_answer_options_per_question'] < 0){
+            return true;
+        }
 
         if( sizeof($all_answer_options_of_same_question) >= $test_modus['_kwps_max_answer_options_per_question']){
             return false;

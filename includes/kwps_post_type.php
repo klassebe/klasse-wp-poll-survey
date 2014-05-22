@@ -48,6 +48,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
             'post_parent' => $test_id,
             'orderby' => 'meta_value_num',
             'meta_key' => '_kwps_sort_order',
+            'post_status'	=> array('draft', 'publish')
         ) );
 
         $children = array();
@@ -56,6 +57,18 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
             array_push($children, static::get_as_array($object->ID));
         }
         return $children;
+    }
+
+
+    public static function get_one_by_post_parent($test_id){
+        $children = static::get_all_by_post_parent($test_id);
+
+	    if(!empty($children)) {
+		    $child = $children[0];
+	    } else {
+		    $child = null;
+	    }
+        return $child;
     }
 
 
