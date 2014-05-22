@@ -86,20 +86,33 @@ class Answer_Option extends Kwps_Post_Type{
      * @return bool
      */
     static function validate_for_insert($post_as_array = array()) {
+        $errors = array();
+
+        $numeric_fields = array(
+            '_kwps_sort_order',
+        );
+
         $required_fields = array(
             'post_content',
-            'post_parent',
             '_kwps_sort_order',
         );
 
         foreach($required_fields as $field){
             if(! isset($post_as_array[$field])) {
-                return false;
+                array_push($errors, array( $field, 'Required') );
             } else {
                 if( is_string($post_as_array[$field])){
                     if( strlen($post_as_array[$field]) == 0 ) {
-                        return false;
+                        array_push($errors, array( $field, 'Required') );
                     }
+                }
+            }
+        }
+
+        foreach($numeric_fields as $field){
+            if( isset( $post_as_array[$field]) ) {
+                if(! is_numeric( $post_as_array[$field] ) ){
+                    array_push( $errors , array( $field, 'Needs to be a number') );
                 }
             }
         }
@@ -109,15 +122,12 @@ class Answer_Option extends Kwps_Post_Type{
 
         $all_answer_options_of_same_question = Answer_Option::get_all_by_post_parent($post_as_array['post_parent']);
 
-        if($test_modus['_kwps_max_answer_options_per_question'] < 0){
-            return true;
-        }
-
         if( sizeof($all_answer_options_of_same_question) >= $test_modus['_kwps_max_answer_options_per_question']){
-            return false;
+            array_push( $errors, array( 'All', 'Maximum answer options already reached' ) );
+            ;
         }
 
-        return true;
+        return $errors;
     }
 
     /**
