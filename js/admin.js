@@ -269,7 +269,8 @@ jQuery(function ($) {
       'click span.del': 'deletePostType',
       'change #post_title': 'changeTitle',
       'change .update-main': 'updateTestCollection',
-      'change .update-post-title': 'updatePostTitle'
+      'change .update-post-title': 'updatePostTitle',
+      'click .move-action:not(.disabled)': 'moveItem'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -486,8 +487,9 @@ jQuery(function ($) {
                     last: (j == privData.answers.length-1)? true:false,
                     sortOrder : j,
                     number: j+1,
-                    versions : privData.answers[j]
-                  })
+                    versions : privData.answers[j],
+                    postType: 'kwps_answer_option'
+                  });
                 };
               }
             };
@@ -751,7 +753,6 @@ jQuery(function ($) {
     },
     toggleDetails: function(event) {
       var type = $(event.currentTarget).data('type');
-      console.log('type: ', type);
       switch (type) {
         case "kwps_intro" :
           app.openRow[type] = (app.openRow[type])? false: true;
@@ -809,6 +810,34 @@ jQuery(function ($) {
       var post = this.collection.get(ID);
       post.set(attribute, value);
       post.save();
+    },
+    moveItem: function(event) {
+      var currentSortOrder = $(event.currentTarget).closest('tr').data('sort-order');
+      if($(event.currentTarget).hasClass('up')) {
+        var newSortOrder = currentSortOrder-1;
+      } else {
+        var newSortOrder = currentSortOrder+1;
+      }
+      var postType = $(event.currentTarget).closest('tr').data('post-type');
+
+      console.log($(event.currentTarget).hasClass('up'));
+      console.log(currentSortOrder);
+      console.log(newSortOrder);
+
+      var toMove = this.collection.where({post_type: "kwps_answer_option", _kwps_sort_order: currentSortOrder.toString()});
+      var toCorrect = this.collection.where({post_type: "kwps_answer_option", _kwps_sort_order: newSortOrder.toString()});
+
+      toMove.forEach(function(post) {
+        post.set('_kwps_sort_order', newSortOrder.toString());
+        post.save();
+      });
+
+      toCorrect.forEach(function(post) {
+        post.set('_kwps_sort_order', currentSortOrder.toString());
+        post.save();
+      });
+
+      this.render();
     }
   });
 

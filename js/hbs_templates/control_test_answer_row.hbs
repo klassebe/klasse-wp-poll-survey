@@ -1,4 +1,4 @@
-<tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background:#FFF8E7">
+<tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background:#FFF8E7" data-post-type="{{postType}}" data-sort-order="{{sortOrder}}">
     <td class="column-action" style="border: none; padding: 0px;height: 60px;">
         <div style="width:30px; height: 60px; float:left;">
             <svg x="0px" y="0px" viewBox="0 0 30 60">
@@ -8,13 +8,13 @@
         </div>
         {{#if sorterArrows}}
         <div class="move">
-            <span class="up {{#if first}}disabled{{/if}}"></span>
-            <span class="down {{#if last}}disabled{{/if}}"></span>
+            <span class="move-action up {{#if first}}disabled{{/if}}"></span>
+            <span class="move-action down {{#if last}}disabled{{/if}}"></span>
         </div>
         {{/if}}
         <div class="action" style="padding: 10px; float:left;">
-            <a class="delete-intro">
-                <span class="del" data-post-type="{{postType}}" data-sort-order{{sortOrder}}>
+            <a class="delete-answer-option">
+                <span class="del" data-post-type="{{postType}}" data-sort-order="{{sortOrder}}">
                     <span data-code="f182" class="dashicons dashicons-trash"></span>
                 </span>
             </a>
