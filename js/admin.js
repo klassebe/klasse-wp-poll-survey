@@ -134,7 +134,10 @@ jQuery(function ($) {
       post_status: "draft",
       post_modified: "",
       post_parent: 0,
-      post_type: ""
+      post_type: "",
+      _kwps_sort_order: 0,
+      _kwps_logged_in_user_limit: 'free',
+      _kwps_logged_out_user_limit: 'free'
     }
   });
 

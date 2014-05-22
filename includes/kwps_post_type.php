@@ -80,7 +80,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         if( sizeof( $errors ) > 0 ) {
             wp_send_json_error($errors);
         } else {
-            wp_send_json_success( static::save_post($request_data) );
+            wp_send_json( static::save_post($request_data) );
         }
 
         die();
