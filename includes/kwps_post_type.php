@@ -75,10 +75,12 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
     public static function save_from_request(){
 
         $request_data = static::get_post_data_from_request();
-        if( static::validate_for_insert($request_data) ) {
-            wp_send_json( static::save_post($request_data) );
+        $errors = static::validate_for_insert($request_data);
+
+        if( sizeof( $errors ) > 0 ) {
+            wp_send_json_error($errors);
         } else {
-            wp_send_json(null);
+            wp_send_json_success( static::save_post($request_data) );
         }
 
         die();

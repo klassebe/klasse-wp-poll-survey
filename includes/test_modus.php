@@ -49,7 +49,10 @@
         }
 
         static function validate_for_insert($post_as_array = array()) {
-            $errors = array();
+            $errors = array(
+                'missing_required_fields' => array(),
+                'invalid_numeric_fields' => array(),
+            );
 
             $numeric_fields = array(
                 '_kwps_max_question_groups',
@@ -68,30 +71,40 @@
 
             foreach($required_fields as $field){
                 if(! isset($post_as_array[$field])) {
-                    
-                    return false;
+                    array_push($errors['missing_required_fields'], $field);
+
+//                    return false;
                 } else {
                     if( is_string($post_as_array[$field])){
                         if( strlen($post_as_array[$field]) == 0 ) {
-                            return false;
+                            array_push($errors['missing_required_fields'], $field);
+
+//                            return false;
                         }
                     }
                 }
             }
 
             foreach($numeric_fields as $field){
-                if(! is_numeric($field) ){
-                    return false;
+                if( isset( $post_as_array[$field]) ) {
+                    if(! is_numeric( $post_as_array[$field] ) ){
+                        array_push( $errors['invalid_numeric_fields'] , $field);
+//                        return false;
+                    }
                 }
+
             }
 
-            if( ! static::title_length_is_ok() ){
-                return false;
-            } else {
-                if( static::has_duplicate() ) {
-                    return false;
-                }
-            }
+            return $errors;
+
+
+//            if( ! static::title_length_is_ok() ){
+//                return false;
+//            } else {
+//                if( static::has_duplicate() ) {
+//                    return false;
+//                }
+//            }
         }
 
         public static function get_meta_data($post_id)
