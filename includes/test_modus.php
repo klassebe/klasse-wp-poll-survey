@@ -2,15 +2,13 @@
     namespace includes;
 
     abstract class Test_Modus extends Kwps_Post_Type{
-        public static $input_types = array(
-            'custom_options',   // radio buttons
-            'scale',            // radio buttons with predetermined options (letters or numbers)
-            'multiple_choice',  // radio buttons, each answer option is tied to a letter
-            'scored_options',   // radio buttons, each answer option has a numerical value
-            'quiz',             // radio buttons, there is only one correct answer among the options
-            'links'
-
+        public static $answer_option_types = array(
+            'free-text-only',   // free text, no value assigned
+            'scale',            // free text, each question has the same answer_options, free text + integer value
+            'multiple_choice',  // same as free text but on display each answer option is listed with a letter next to it
+            //'scored_options',   // free text, each answer option has a numerical value
         );
+
         public static $output_types = array();
 
         public static $post_type = 'kwps_test_modus';
@@ -48,6 +46,52 @@
             $post_type_args['rewrite'] = static::$rewrite;
 
             register_post_type(static::$post_type, $post_type_args);
+        }
+
+        static function validate_for_insert($post_as_array = array()) {
+            $errors = array(
+                'missing_required_fields' => array(),
+                'invalid_numeric_fields' => array(),
+                'invalid_dropdown_fields' => array(),
+            );
+
+            $numeric_fields = array(
+                '_kwps_max_question_groups',
+                '_kwps_max_questions_per_question_group',
+                '_kwps_max_answer_options_per_question',
+            );
+
+            $required_fields = array(
+                'post_title',
+                '_kwps_max_question_groups',
+                '_kwps_max_questions_per_question_group',
+                '_kwps_max_answer_options_per_question',
+                '_kwps_allowed_input_types',
+                '_kwps_allowed_output_types',
+            );
+
+            foreach($required_fields as $field){
+                if(! isset($post_as_array[$field])) {
+                    array_push($errors['missing_required_fields'], $field);
+                } else {
+                    if( is_string($post_as_array[$field])){
+                        if( strlen($post_as_array[$field]) == 0 ) {
+                            array_push($errors['missing_required_fields'], $field);
+                        }
+                    }
+                }
+            }
+
+            foreach($numeric_fields as $field){
+                if( isset( $post_as_array[$field]) ) {
+                    if(! is_numeric( $post_as_array[$field] ) ){
+                        array_push( $errors['invalid_numeric_fields'] , $field);
+                    }
+                }
+
+            }
+
+            return $errors;
         }
 
         public static function get_meta_data($post_id)
@@ -108,18 +152,6 @@
             global $post;
 
             return strlen($post->post_title) > 0;
-        }
-
-        public static function validate_for_insert($post_as_array = array()){
-            if( ! static::title_length_is_ok() ){
-                return false;
-            } else {
-                if( static::has_duplicate() ) {
-                    return false;
-                }
-            }
-
-
         }
 
         public static function has_duplicate(){
