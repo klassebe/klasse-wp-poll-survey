@@ -121,8 +121,33 @@ class Entry extends Kwps_Post_Type{
      * @return bool
      */
     static function validate_for_insert($entry = array()) {
-        if( ! isset($entry['post_parent']) ){
-            return false;
+        $errors = array();
+
+        $numeric_fields = array(
+        );
+
+        $required_fields = array(
+            'post_parent',
+        );
+
+        foreach($required_fields as $field){
+            if(! isset($post_as_array[$field])) {
+                array_push($errors, array( $field, 'Required') );
+            } else {
+                if( is_string($post_as_array[$field])){
+                    if( strlen($post_as_array[$field]) == 0 ) {
+                        array_push($errors, array( $field, 'Required') );
+                    }
+                }
+            }
+        }
+
+        foreach($numeric_fields as $field){
+            if( isset( $post_as_array[$field]) ) {
+                if(! is_numeric( $post_as_array[$field] ) ){
+                    array_push( $errors , array( $field, 'Needs to be a number') );
+                }
+            }
         }
 
         $answer_option = Answer_Option::get_as_array($entry['post_parent']);
@@ -132,11 +157,16 @@ class Entry extends Kwps_Post_Type{
         $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
         if( is_user_logged_in() ){
-            return Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_in_user_limit']);
+            if( ! Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_in_user_limit']) ){
+                array_push( $errors, array('All', 'You have the reached limit to participate') );
+            }
         } else {
-            return Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_out_user_limit']);
-
+            if( ! Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_out_user_limit']) ){
+                array_push( $errors, array('All', 'You have the reached limit to participate') );
+            }
         }
+
+        return $errors;
     }
 }
 

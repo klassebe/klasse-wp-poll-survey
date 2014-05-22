@@ -52,11 +52,7 @@ class Version extends Kwps_Post_Type{
     }
 
     static function validate_for_insert($post_as_array = array()) {
-        $errors = array(
-            'missing_required_fields' => array(),
-            'invalid_numeric_fields' => array(),
-            'invalid_dropdown_fields' => array(),
-        );
+        $errors = array();
 
         $numeric_fields = array(
             '_kwps_sort_order',
@@ -69,11 +65,11 @@ class Version extends Kwps_Post_Type{
 
         foreach($required_fields as $field){
             if(! isset($post_as_array[$field])) {
-                array_push($errors['missing_required_fields'], $field);
+                array_push($errors, array( $field, 'Required') );
             } else {
                 if( is_string($post_as_array[$field])){
                     if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors['missing_required_fields'], $field);
+                        array_push($errors, array( $field, 'Required') );
                     }
                 }
             }
@@ -82,10 +78,11 @@ class Version extends Kwps_Post_Type{
         foreach($numeric_fields as $field){
             if( isset( $post_as_array[$field]) ) {
                 if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors['invalid_numeric_fields'] , $field);
+                    array_push( $errors , array( $field, 'Needs to be a number') );
                 }
             }
         }
+
         return $errors;
     }
 

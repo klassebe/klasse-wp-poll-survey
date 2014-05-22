@@ -1,11 +1,11 @@
-<tr>
+<tr data-post-type="kwps_version">
     <th class="no-delete column-action">&nbsp;</th>
     {{#each versions}}
         <th class=" column-title">
             <div class="column-tab">
                 <input name="{{ID}}" value="{{post_title}}">
                 {{#if deleteVersion}}
-                    <span class="del" data-post-type="kwps_version" data-type="row" data-sort-order="{{_kwps_sort_order}}">
+                    <span class="del" data-version-id="{{ID}}">
                         <span data-code="f182" class="dashicons dashicons-trash"></span>
                     </span>
                 {{/if}}

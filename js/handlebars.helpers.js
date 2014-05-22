@@ -9,6 +9,7 @@
   Handlebars.registerPartial('controlTestQuestionRow', kwps_admin_templates.control_test_question_row);
   Handlebars.registerPartial('controlTestAnswerTitleRow', kwps_admin_templates.control_test_answer_title_row);
   Handlebars.registerPartial('controlTestAnswerRow', kwps_admin_templates.control_test_answer_row);
+  Handlebars.registerPartial('controlTestBottomRow', kwps_admin_templates.control_test_bottom_row);
 
   //translate helper
   Handlebars.registerHelper("t", function(key) {
@@ -18,6 +19,7 @@
       return key
     }
   });
+  
 
 
   // debug helper
