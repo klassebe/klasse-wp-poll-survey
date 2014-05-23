@@ -822,12 +822,8 @@ jQuery(function ($) {
       }
       var postType = $(event.currentTarget).closest('tr').data('post-type');
 
-      console.log($(event.currentTarget).hasClass('up'));
-      console.log(currentSortOrder);
-      console.log(newSortOrder);
-
-      var toMove = this.collection.where({post_type: "kwps_answer_option", _kwps_sort_order: currentSortOrder.toString()});
-      var toCorrect = this.collection.where({post_type: "kwps_answer_option", _kwps_sort_order: newSortOrder.toString()});
+      var toMove = this.collection.where({post_type: postType, _kwps_sort_order: currentSortOrder.toString()});
+      var toCorrect = this.collection.where({post_type: postType, _kwps_sort_order: newSortOrder.toString()});
 
       toMove.forEach(function(post) {
         post.set('_kwps_sort_order', newSortOrder.toString());
