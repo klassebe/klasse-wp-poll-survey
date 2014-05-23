@@ -286,37 +286,55 @@ jQuery(function ($) {
       $('#tabs').tabs();
     },
     prepareData: function() {
-/*
       //Get versions
       var versions = _.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON');
+      console.log("versions", versions);
 
       //Get intro's
       var intro = [];
       for (var i = 0; i < versions.length; i++) {
         var y = this.collection.findWhere({post_type: "kwps_intro", post_parent : versions[i].ID});
         if (y == undefined) {
-          return;
+          break;
         };
         intro[i] = y.toJSON;
       };
+      console.log("intros", intro);
 
       //Get outro's
       var outro = [];
       for (var i = 0; i < versions.length; i++) {
         var y = this.collection.findWhere({post_type: "kwps_outro", post_parent : versions[i].ID});
         if (y == undefined) {
-          return;
+          break;
         };
         outro[i] = y.toJSON();
       };
+      console.log("outro", outro);
 
-      //Get questionGroups
+      //Get questionGroups if questionGroups are open
       var qGroup = [];
-      for (var i = 0; i < versions.length; i++) {
-        qGroup.push(_.invoke(this.collection.where({post_type: "kwps_question_group", post_parent : versions[i].ID}), 'toJSON'));
+      if (app.openRow.kwps_question_group) {
+        for (var i = 0; i < versions.length; i++) {
+          var qGrJson = _.invoke(this.collection.where({post_type: "kwps_question_group", post_parent : versions[i].ID}), 'toJSON');
+          var sortedQuestionGroupPerVersion = _.sortBy(qGrJson, "_kwps_sort_order");
+          qGroup.push(sortedQuestionGroupPerVersion);
+        };
       };
       console.log(qGroup);
-*/
+
+      //Get questions if a question is open
+      var qu = [];
+      if (app.openRow.questionGroup >= 0) {
+        for (var i = 0; i < versions.length; i++) {
+          var questionGroupId = this.collection.where({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.questionGroup});
+          console.log(questionGroupId);
+          var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : versions[i].ID}), 'toJSON');
+          versions[i]
+        };
+      }
+
+
 
 
       var data = {};
