@@ -285,7 +285,7 @@ jQuery(function ($) {
       var testmodus = this.collection.findWhere({ID: testCollection.get('post_parent')});
 
       //Get versions
-      var versions = _.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON');
+      var versions = _.sortBy(_.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON'),'_kwps_sort_order');
 
       //Get intro's
       var intros = [];
