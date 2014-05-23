@@ -425,7 +425,7 @@ jQuery(function ($) {
             mainRow: true,
             sortOrder: sortOrderQG,
             number: parseInt(sortOrderQG) +1,
-            amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent: qGroups[0][sortOrderQG].ID}).length
+            //amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent: qGroups[0][sortOrderQG].ID}).length
           });
 
 
