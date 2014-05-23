@@ -280,7 +280,6 @@ jQuery(function ($) {
 
       //Get versions
       var versions = _.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON');
-      console.log("versions", versions);
 
       //Get intro's
       var intros = [];
@@ -290,8 +289,8 @@ jQuery(function ($) {
           break;
         }
         intros[i] = y.toJSON();
-      }
-      console.log("intros", intros);
+      };
+
 
       //Get outro's
       var outros = [];
@@ -301,8 +300,8 @@ jQuery(function ($) {
           break;
         }
         outros[i] = y.toJSON();
-      }
-      console.log("outro", outros);
+      };
+
 
       //Get questionGroups if questionGroups are open
       var qGroups = [];
@@ -311,35 +310,27 @@ jQuery(function ($) {
           var qGrJson = _.invoke(this.collection.where({post_type: "kwps_question_group", post_parent : versions[i].ID}), 'toJSON');
           var sortedQuestionGroupPerVersion = _.sortBy(qGrJson, "_kwps_sort_order");
           qGroups.push(sortedQuestionGroupPerVersion);
-        }
-      }
-      console.log("open Question Groups ",qGroups);
+        };
+      };
 
       var sortedQGroups = _.groupBy(_.flatten(qGroups,true),"_kwps_sort_order");
-      console.log("sorted open Question Groups",sortedQGroups);
 
       var allqGroups = _.invoke(this.collection.where({post_type: "kwps_question_group"}), 'toJSON');
-      console.log("All Question Groups", allqGroups);
 
       var sortedAllQGroups =_.groupBy(_.flatten(allqGroups,true),"_kwps_sort_order");
-      console.log("All Sorted Question Groups", sortedAllQGroups);
 
       //Get questions if a questiongroup is open
       var qu = [];
       if (app.openRow.kwps_question_group >= 0) {
         for (var i = 0; i < versions.length; i++) {
-          console.log(app.openRow);
           var questionGroupId = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
-          console.log({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
           var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : questionGroupId.id}), 'toJSON');
           var sortedQuestionsPerVersion = _.sortBy(quJson, "_kwps_sort_order");
           qu.push(sortedQuestionsPerVersion);
         }
       }
-      console.log("opened Questions", qu);
 
       var sortedQu = _.groupBy(_.flatten(qu,true),"_kwps_sort_order");
-      console.log("sorted opened Questions", sortedQu);
 
       //Get Answers if a question is open
       var ans = [];
@@ -352,10 +343,8 @@ jQuery(function ($) {
           ans.push(sortedAnswersPerVersion);
         }
       }
-      console.log("opened Answers", ans);
 
       var sortedAns = _.groupBy(_.flatten(ans,true),"_kwps_sort_order");
-      console.log("sorted opened Answers", sortedAns);
 
       var data = {};
       var privData = {};
@@ -438,6 +427,7 @@ jQuery(function ($) {
               questionTitle: true,
               title: "Questions",
               postType: "kwps_question",
+              questionGroupSortOrder : sortOrderQG,
               addText: "Add question",
               colSpan : versions.length +1,
               add: (testmodus.get('_kwps_max_questions_per_question_group') > _.size(sortedQu))
@@ -576,11 +566,16 @@ jQuery(function ($) {
           }
           break;
         case 'kwps_question':
-
-          for(var i = 0; i < kwpsPollLen; i++) {
-            var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: kwpsPolls[i].id});
-            var index = this.collection.where({post_type: 'kwps_question', post_parent: parent.get('ID')}).length;
-            this.createQuestion(parent.get('ID'), index, function(newQuestion) {
+          var sortOrderOfQuestionGroup = $(e.currentTarget).closest('tr').data('sort-order');
+          var versionsOfOpenedQuestionGroup = this.collection.where({post_type: 'kwps_question_group', _kwps_sort_order: sortOrderOfQuestionGroup.toString()});
+          var highestSortOrder = 0;
+          for (var i = versionsOfOpenedQuestionGroup.length - 1; i >= 0; i--) {
+            var connectedQuestionsToOpenedQuestionGroup = _.invoke(this.collection.where({post_type: "kwps_question", post_parent: versionsOfOpenedQuestionGroup[i].id}), 'toJSON');
+            var highestSortOrder = Math.max (parseInt(_.max( connectedQuestionsToOpenedQuestionGroup ,function (model) {return parseInt(model._kwps_sort_order);})._kwps_sort_order),highestSortOrder);
+          };
+          highestSortOrder = (isNaN(highestSortOrder))? 0:highestSortOrder;
+          for (var i = versionsOfOpenedQuestionGroup.length - 1; i >= 0; i--) {
+            this.createQuestion(versionsOfOpenedQuestionGroup[i].id , highestSortOrder +1, function (newQuestion) {
               for (var i = 0; i < 2; i++) {
                 that.createAnswer(newQuestion.get('ID'), i, function(newAnswer) {
                   console.log('answer created: ' + newAnswer.id);
@@ -708,7 +703,7 @@ jQuery(function ($) {
       app.kwpsPollsCollection.create({
         post_type: "kwps_question",
         post_status: "draft",
-        post_content : "question",
+        post_content : "question" + (index + 1),
         post_parent : post_parent,
         _kwps_sort_order : index.toString()
       }, {
