@@ -35,11 +35,11 @@ jQuery(function ($) {
   var app = {};
   app.url = 'admin-ajax.php?action=';
   app.openRow = {
-    kwps_outro: true,
-    kwps_intro: true,
-    kwps_question_group: true,
-    questionGroup: 0,
-    question: 0
+    kwps_outro: false,
+    kwps_intro: false,
+    kwps_question_group: false,
+    questionGroup: -1,
+    question: -1
   };
   app.views = {}
 
@@ -323,18 +323,33 @@ jQuery(function ($) {
       };
       console.log("Question",qGroup);
 
-      //Get questions if a question is open
+      //Get questions if a questiongroup is open
       var qu = [];
       if (app.openRow.questionGroup >= 0) {
         for (var i = 0; i < versions.length; i++) {
           var questionGroupId = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.questionGroup.toString()});
-          console.log(questionGroupId.id);
           var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : questionGroupId.id}), 'toJSON');
           var sortedQuestionsPerVersion = _.sortBy(quJson, "_kwps_sort_order");
           qu.push(sortedQuestionsPerVersion);
         };
       }
       console.log("opened Questions", qu);
+
+      //Get Answers if a question is open
+      var ans = [];
+      if (app.openRow.question >= 0) {
+        for (var i = 0; i < versions.length; i++) {
+          var openQuestionGroup = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.questionGroup.toString()});
+          var openQuestion = this.collection.findWhere({post_type: "kwps_question", post_parent : openQuestionGroup.id, _kwps_sort_order: app.openRow.question.toString()});
+          var ansJson = _.invoke(this.collection.where({post_type: "kwps_answer_option", post_parent: openQuestion.id}), 'toJSON');
+          var sortedAnswersPerVersion = _.sortBy(ansJson, "_kwps_sort_order");
+          ans.push(sortedAnswersPerVersion);
+        }
+      }
+      console.log("opened Answers", ans);
+
+      var table = [];
+
 
 
 
@@ -806,10 +821,10 @@ jQuery(function ($) {
       var postType = $(event.currentTarget).closest('tr').data('post-type');
       switch (postType) {
         case "kwps_intro" :
-          app.openRow[postType] = (app.openRow[postType])? false: true;
+          app.openRow[postType] = !app.openRow[postType];
         break;
         case "kwps_outro" :
-          app.openRow[postType] = (app.openRow[postType])? false: true;
+          app.openRow[postType] = !app.openRow[postType];
         break;
         case "kwps_question" :
           var sortOrder = $(event.currentTarget).data('sort-order');
@@ -820,7 +835,7 @@ jQuery(function ($) {
           app.openRow[postType] = (app.openRow[postType] == sortOrder)? -1 : sortOrder;
         break;
         case "kwps_question_group" :
-          app.openRow[postType] = (app.openRow[postType])? false: true;
+          app.openRow[postType] = !app.openRow[postType];
         break;
         default:
           console.log('no post type was given', postType);
