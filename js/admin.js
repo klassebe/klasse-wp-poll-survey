@@ -591,7 +591,7 @@ jQuery(function ($) {
     },
     createNew: function (e) {
       e.preventDefault();
-      var postType = $(e.currentTarget).data('post-type');
+      var postType = $(e.currentTarget).closest('tr').data('post-type');
       var kwpsPolls = this.collection.where({post_type: 'kwps_version'});
       // get the id of the post parent(main version)
       var kwpsPollLen = kwpsPolls.length;
@@ -610,7 +610,6 @@ jQuery(function ($) {
         case 'kwps_question_group':
           var sortOrder = _.max(_.invoke(this.collection.where({post_type: 'kwps_question_group'}),"toJSON"), function (a) {return a._kwps_sort_order});
           sortOrder = (sortOrder == -Infinity || sortOrder == Infinity)? 0: parseInt(sortOrder._kwps_sort_order)+1
-          console.log(sortOrder);
           for(var i = 0; i < kwpsPollLen; i++) {
             this.createQuestionGroup(kwpsPolls[i].id, i, sortOrder);
           }
@@ -629,7 +628,7 @@ jQuery(function ($) {
           }
           break;
         case 'kwps_answer_option':
-          var sortOrder = $(e.currentTarget).data('sort-order');
+          var sortOrder = $(e.currentTarget).closest('tr').data('sort-order');
           for(var i = 0; i < kwpsPollLen; i++) {
             var questionGroups = this.collection.where({post_type: 'kwps_question_group', post_parent: kwpsPolls[i].id});
             for(var j = 0; j < questionGroups.length; j++) {
@@ -785,7 +784,6 @@ jQuery(function ($) {
     },
     toggleDetails: function(event) {
       var postType = $(event.currentTarget).closest('tr').data('post-type');
-      console.log(postType);
       switch (postType) {
         case "kwps_intro" :
           app.openRow[postType] = (app.openRow[postType])? false: true;
@@ -807,9 +805,6 @@ jQuery(function ($) {
         default:
           console.log('no post type was given', postType);
       }
-      //toggleOnRow = $(event.currentTarget).data('question-row');
-      
-      //app.openRow[type] = (app.openRow[type] !== toggleOnRow || app.openRow[type] === "")? toggleOnRow:"";
       this.render();
     },
     preview: function(event) {
