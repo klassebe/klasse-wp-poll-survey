@@ -45,7 +45,7 @@ jQuery(function($) {
 							  			type: "POST",
 							  			url: urlGetChartData,
 							  			data: {
-							  				ID : data,
+							  				ID : data.ID,
 							  				output_type : 'bar-chart-per-question'
 							  			},
 							  			contentType: "application/json; charset=utf-8",
