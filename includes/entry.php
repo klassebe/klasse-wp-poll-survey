@@ -66,8 +66,8 @@ class Entry extends Kwps_Post_Type{
 
         $errors = static::validate_for_insert($request_data);
         if( sizeof( $errors ) == 0 ) {
-            static::save_post($request_data);
-            wp_send_json( $request_data);
+            $post = static::save_post($request_data);
+            wp_send_json( $post );
         } else {
             wp_send_json(null);
         }
