@@ -353,14 +353,17 @@ jQuery(function ($) {
       var sortedAns = _.groupBy(_.flatten(ans,true),"_kwps_sort_order");
 
       var data = {};
-      var privData = {};
 
       var mainPost = this.collection.get(GetURLParameter('id'));
-      data.title = mainPost.get('post_title');
-      data.versions = this.collection.where({post_type: "kwps_version"});
-
+      data.title = mainPost.get('post_title');      
       
+      if (versions.length >1) {
+        for (var i = versions.length - 1; i >=1; i--) {
+          versions[i].deleteVersion = true
+        };
+      }
       data.versions = versions;
+      
       data.table = [];
 
       // TITLE INTRO
@@ -370,7 +373,7 @@ jQuery(function ($) {
         postType: "kwps_intro",
         mainTitle: true,
         add: (intros.length <= 0),
-        hasMore: (intros.length <= 0),
+        hasMore: (intros.length > 0),
         addText: 'Add Intro',
         opened: app.openRow.main_kwps_intro,
         amount: intros.length/ versions.length
@@ -422,7 +425,7 @@ jQuery(function ($) {
             mainRow: true,
             sortOrder: sortOrderQG,
             number: parseInt(sortOrderQG) +1,
-            amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent: qGroups[0][sortOrderQG].ID}).length
+            //amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent: qGroups[0][sortOrderQG].ID}).length
           });
 
 
@@ -446,7 +449,7 @@ jQuery(function ($) {
                 postType: "kwps_question",
                 sortOrder: sortOrderQ,
                 number: parseInt(sortOrderQ) +1,
-                amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : qu[0][sortOrderQ].ID}).length,
+                //amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : qu[0].ID}).length,
                 hasOpened: (app.openRow.kwps_question == sortOrderQ)
               });
 
@@ -484,8 +487,8 @@ jQuery(function ($) {
         title: "Outro",
         postType: "kwps_outro",
         mainTitle: true,
-        add: (outros.length <= 0),
-        hasMore: (outros.length > 0),
+        add: (intros.length <= 0),
+        hasMore: (intros.length > 0),
         addText: 'Add outro',
         opened: app.openRow.main_kwps_outro,
         amount: outros.length/ versions.length
