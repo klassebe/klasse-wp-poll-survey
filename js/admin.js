@@ -339,7 +339,9 @@ jQuery(function ($) {
       var qu = [];
       if (app.openRow.kwps_question_group >= 0) {
         for (var i = 0; i < versions.length; i++) {
+          console.log(app.openRow);
           var questionGroupId = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
+          console.log({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
           var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : questionGroupId.id}), 'toJSON');
           var sortedQuestionsPerVersion = _.sortBy(quJson, "_kwps_sort_order");
           qu.push(sortedQuestionsPerVersion);
@@ -471,7 +473,7 @@ jQuery(function ($) {
         add: (intros.length > 0)? false:true,
         hasMore: (intros.length > 0)? true:false,
         addText: 'Add Intro',
-        opened: app.openRow.kwps_intro,
+        opened: app.openRow.main_kwps_intro,
         amount: intros.length/ versions.length
       });
 
@@ -596,11 +598,11 @@ jQuery(function ($) {
         add: (this.collection.where({post_type: "kwps_outro"}).length > 0)? false:true,
         hasMore: (this.collection.where({post_type: "kwps_outro"}).length > 0)? true:false,
         addText: 'Add outro',
-        opened: app.openRow.kwps_outro,
+        opened: app.openRow.main_kwps_outro,
         amount: privData.outro.length/ privData.amountOfVersions
       });
 
-      if (this.collection.where({post_type: "kwps_outro"}).length > 0 && privData.outro.length == privData.amountOfVersions && app.openRow.kwps_outro) {
+      if (this.collection.where({post_type: "kwps_outro"}).length > 0 && privData.outro.length == privData.amountOfVersions && app.openRow.main_kwps_outro) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_outro',
@@ -660,16 +662,19 @@ jQuery(function ($) {
       var kwpsPollLen = kwpsPolls.length;
       var that = this;
       switch (postType) {
+        case 'main_kwps_intro':
         case 'kwps_intro':
           for(var i = 0; i < kwpsPollLen; i++) {
             this.createIntro(kwpsPolls[i].id);
           }
           break;
+        case 'main_kwps_outro':
         case 'kwps_outro':
           for(var i = 0; i < kwpsPollLen; i++) {
             this.createOutro(kwpsPolls[i].id);
           }
           break;
+        case 'main_kwps_question_group':
         case 'kwps_question_group':
           var sortOrder = _.max(_.invoke(this.collection.where({post_type: 'kwps_question_group'}),"toJSON"), function (a) {return a._kwps_sort_order});
           sortOrder = (sortOrder == -Infinity || sortOrder == Infinity)? 0: parseInt(sortOrder._kwps_sort_order)+1
@@ -795,7 +800,7 @@ jQuery(function ($) {
         post_status: "draft",
         post_title : "Question Group " + index,
         post_parent : post_parent,
-        _kwps_sort_order : sortOrder,
+        _kwps_sort_order : sortOrder.toString(),
       }, {
         wait: true,
         success: function(model, response, options) {
