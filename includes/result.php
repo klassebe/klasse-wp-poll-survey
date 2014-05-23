@@ -18,8 +18,8 @@ class Result {
 
 
         switch($output_type){
-            case 'block-chart-per-question' :
-                $results = static::bar_char_per_question($version_id);
+            case 'bar-chart-per-question' :
+                $results = static::bar_chart_per_question($version_id);
                 break;
         }
 
@@ -35,7 +35,7 @@ class Result {
         return $request_data;
     }
 
-    public static function bar_char_per_question($version_id) {
+    public static function bart_char_per_question($version_id) {
         $question_groups = Question_Group::get_all_by_post_parent($version_id);
         $results = array();
 
