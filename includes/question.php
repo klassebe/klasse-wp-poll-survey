@@ -73,7 +73,7 @@ class Question extends Kwps_Post_Type{
         $errors = array();
 
         $numeric_fields = array(
-            '_kwps_sort_order',
+//            '_kwps_sort_order',
         );
 
         $required_fields = array(
