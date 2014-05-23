@@ -285,7 +285,7 @@ jQuery(function ($) {
       var testmodus = this.collection.findWhere({ID: testCollection.get('post_parent')});
 
       //Get versions
-      var versions = _.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON');
+      var versions = _.sortBy(_.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON'),'_kwps_sort_order');
 
       //Get intro's
       var intros = [];
@@ -330,9 +330,14 @@ jQuery(function ($) {
       if (app.openRow.kwps_question_group >= 0) {
         for (var i = 0; i < versions.length; i++) {
           var questionGroupId = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
-          var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : questionGroupId.id}), 'toJSON');
-          var sortedQuestionsPerVersion = _.sortBy(quJson, "_kwps_sort_order");
-          qu.push(sortedQuestionsPerVersion);
+          if (questionGroupId != undefined) {
+            var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : questionGroupId.id}), 'toJSON');
+            var sortedQuestionsPerVersion = _.sortBy(quJson, "_kwps_sort_order");
+            qu.push(sortedQuestionsPerVersion);
+          } else {
+            app.openRow.kwps_question_group = -1;
+            app.openRow.kwps_question = -1;
+          }
         }
       }
 
@@ -352,7 +357,9 @@ jQuery(function ($) {
 
       var sortedAns = _.groupBy(_.flatten(ans,true),"_kwps_sort_order");
 
-      var data = {};
+      var data = {
+        kwpsUniquenessTypes: kwpsUniquenessTypes
+      };
 
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');      

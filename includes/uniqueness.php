@@ -16,15 +16,20 @@ class Uniqueness {
         $is_allowed = false;
 
         switch($function_name){
-            case 'free' : $is_allowed = static::is_always_allowed();
+            case 'free' :
+                $is_allowed = static::is_always_allowed();
                 break;
-            case 'cookie' : $is_allowed = static::is_allowed_by_cookie($question_id);
+            case 'cookie' :
+                $is_allowed = static::is_allowed_by_cookie($question_id);
                 break;
-            case 'ip' : $is_allowed = static::is_allowed_by_ip($question_id);
+            case 'ip' :
+                $is_allowed = static::is_allowed_by_ip($question_id);
                 break;
-            case 'once' : $is_allowed = static::is_allowed_by_user_id($question_id);
+            case 'once' :
+                $is_allowed = static::is_allowed_by_user_id($question_id);
                 break;
-            case 'none' : $is_allowed = static::is_never_allowed();
+            case 'none' :
+                $is_allowed = static::is_never_allowed();
                 break;
         }
 
@@ -148,7 +153,7 @@ class Uniqueness {
     }
 
     public static function is_allowed_by_user_id($question_id){
-        $current_user_id = get_current_user_id();
+        $current_user_id = (string) get_current_user_id();
 
         $answer_options = Answer_Option::get_all_by_post_parent($question_id);
 
@@ -161,7 +166,6 @@ class Uniqueness {
                 }
             }
         }
-
         return true;
     }
 

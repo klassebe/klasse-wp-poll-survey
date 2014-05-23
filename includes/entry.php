@@ -64,9 +64,10 @@ class Entry extends Kwps_Post_Type{
         $request_data['_kwps_ip_address'] = Uniqueness::get_ip_of_user();
         $request_data['post_author'] = get_current_user_id();
 
-        if( static::validate_for_insert($request_data) ) {
-            static::save_post($request_data);
-            wp_send_json( $request_data);
+        $errors = static::validate_for_insert($request_data);
+        if( sizeof( $errors ) == 0 ) {
+            $post = static::save_post($request_data);
+            wp_send_json( $post );
         } else {
             wp_send_json(null);
         }
@@ -78,7 +79,7 @@ class Entry extends Kwps_Post_Type{
      * @param $post_as_array
      * @return bool
      */
-    static function validate_for_insert($entry = array()) {
+    static function validate_for_insert($post_as_array = array()) {
         $errors = array();
 
         $numeric_fields = array(
@@ -109,9 +110,10 @@ class Entry extends Kwps_Post_Type{
         }
 
         if( isset( $post_as_array['post_parent'] ) ){
-            $answer_option = Answer_Option::get_as_array($entry['post_parent']);
+            $answer_option = Answer_Option::get_as_array($post_as_array['post_parent']);
             $question = Question::get_as_array($answer_option['post_parent']);
-            $version = Version::get_as_array($question['post_parent']);
+            $question_group = Question_Group::get_as_array($question['post_parent']);
+            $version = Version::get_as_array($question_group['post_parent']);
 
             $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
