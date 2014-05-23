@@ -108,7 +108,9 @@ class Question extends Kwps_Post_Type{
 
             $all_questions_of_same_group = Question::get_all_by_post_parent($post_as_array['post_parent']);
 
-            if( 0 > $test_modus['_kwps_max_questions_per_question_group'] ){
+            $max_questions_per_question_group = (int) $test_modus['_kwps_max_questions_per_question_group'];
+
+            if( 0 < $max_questions_per_question_group ){
                 if( sizeof($all_questions_of_same_group) >= $test_modus['_kwps_max_questions_per_question_group']){
                     array_push( $errors, array( 'All', 'Maximum questions already reached' ) );
                 }
