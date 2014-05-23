@@ -104,10 +104,13 @@ jQuery(function($) {
 						        alert(errMsg);
 						    }
 						});
+					$('.kwps-intro').hide();
+					$('.kwps-outro').show();
+					$('.kwps-question-group').hide();
+				} else {
+					alert('Please select an answer!');
 				}
-				$('.kwps-intro').hide();
-				$('.kwps-outro').show();
-				$('.kwps-question-group').hide();
+				
 			});
 			
 		});
