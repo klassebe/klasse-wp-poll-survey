@@ -26,7 +26,7 @@ jQuery(function($) {
 				console.log("selected:", selected);
 				if (selected) {
 			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
-			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=get_result_of_version";
+			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
 
 			    var entry = {
 				  		"post_parent": selected,
