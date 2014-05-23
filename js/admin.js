@@ -286,42 +286,54 @@ jQuery(function ($) {
       $('#tabs').tabs();
     },
     prepareData: function() {
+      var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
+      var testmodus = this.collection.findWhere({ID: testCollection.get('post_parent')});
+
       //Get versions
       var versions = _.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON');
       console.log("versions", versions);
 
       //Get intro's
-      var intro = [];
+      var intros = [];
       for (var i = 0; i < versions.length; i++) {
         var y = this.collection.findWhere({post_type: "kwps_intro", post_parent : versions[i].ID});
         if (y == undefined) {
           break;
         };
-        intro[i] = y.toJSON;
+        intros[i] = y.toJSON();
       };
-      console.log("intros", intro);
+      console.log("intros", intros);
 
       //Get outro's
-      var outro = [];
+      var outros = [];
       for (var i = 0; i < versions.length; i++) {
         var y = this.collection.findWhere({post_type: "kwps_outro", post_parent : versions[i].ID});
         if (y == undefined) {
           break;
         };
-        outro[i] = y.toJSON();
+        outros[i] = y.toJSON();
       };
-      console.log("outro", outro);
+      console.log("outro", outros);
 
       //Get questionGroups if questionGroups are open
-      var qGroup = [];
+      var qGroups = [];
       if (app.openRow.kwps_question_group) {
         for (var i = 0; i < versions.length; i++) {
           var qGrJson = _.invoke(this.collection.where({post_type: "kwps_question_group", post_parent : versions[i].ID}), 'toJSON');
           var sortedQuestionGroupPerVersion = _.sortBy(qGrJson, "_kwps_sort_order");
-          qGroup.push(sortedQuestionGroupPerVersion);
+          qGroups.push(sortedQuestionGroupPerVersion);
         };
       };
-      console.log("Question",qGroup);
+      console.log("open Question Groups ",qGroups);
+
+      var sortedQGroups = _.groupBy(_.flatten(qGroups,true),"_kwps_sort_order");
+      console.log("sorted open Question Groups",sortedQGroups);
+
+      var allqGroups = _.invoke(this.collection.where({post_type: "kwps_question_group"}), 'toJSON');
+      console.log("All Question Groups", allqGroups);
+
+      var sortedAllQGroups =_.groupBy(_.flatten(allqGroups,true),"_kwps_sort_order");
+      console.log("All Sorted Question Groups", sortedAllQGroups);
 
       //Get questions if a questiongroup is open
       var qu = [];
@@ -334,6 +346,9 @@ jQuery(function ($) {
         };
       }
       console.log("opened Questions", qu);
+
+      var sortedQu = _.groupBy(_.flatten(qu,true),"_kwps_sort_order");
+      console.log("sorted opened Questions", sortedQu);
 
       //Get Answers if a question is open
       var ans = [];
@@ -348,10 +363,13 @@ jQuery(function ($) {
       }
       console.log("opened Answers", ans);
 
-      var table = [];
+      var sortedAns = _.groupBy(_.flatten(ans,true),"_kwps_sort_order");
+      console.log("sorted opened Answers", sortedAns);
 
 
 
+
+      console.log("openRow: ",app.openRow)
 
 
       var data = {};
@@ -368,9 +386,9 @@ jQuery(function ($) {
 
 
 
-      data.collection = this.collection.findWhere({post_type: "kwps_test_collection"}).toJSON();
+      
 
-      data.testmodus = this.collection.findWhere({ID: data.collection.post_parent}).toJSON();
+      
 
       for (var i = 0; i < data.versions.length; i++) {
         data.versions[i] = data.versions[i].toJSON();
@@ -442,21 +460,23 @@ jQuery(function ($) {
       data.kwpsUniquenessTypes = kwpsUniquenessTypes;
       data.open = app.openRow;
 
-
-
       data.table = [];
+
+      // TITLE INTRO
       data.table.push({
-        colSpan : data.versions.length +1,
+        colSpan : versions.length +1,
         title: "Intro",
         postType: "kwps_intro",
         mainTitle: true,
-        add: (this.collection.where({post_type: "kwps_intro"}).length > 0)? false:true,
-        hasMore: (this.collection.where({post_type: "kwps_intro"}).length > 0)? true:false,
+        add: (intros.length > 0)? false:true,
+        hasMore: (intros.length > 0)? true:false,
         addText: 'Add Intro',
         opened: app.openRow.kwps_intro,
-        amount: privData.intro.length/ privData.amountOfVersions
+        amount: intros.length/ versions.length
       });
-      if (this.collection.where({post_type: "kwps_intro"}).length > 0 && privData.intro.length == privData.amountOfVersions && app.openRow.kwps_intro) {
+
+      // INTRO
+      if (intros.length > 0 && intros.length == versions.length && app.openRow.kwps_intro) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_intro',
@@ -464,43 +484,51 @@ jQuery(function ($) {
           hasMore: false,
           hasAmount: false,
           editable: true, //TODO look if the test is published or not.
-          versions: privData.intro,
+          versions: intros,
           mainRow: true,
           sortOrder: 0
-        })
-      };
+        });
+      }
+
+      // TITLE QUESTION GROUP
       data.table.push({
-        colSpan : data.versions.length +1,
+        colSpan : versions.length +1,
         title: "Question pages",
         postType: "kwps_question_group",
         mainTitle: true,
-        add: (data.questions && data.testmodus._kwps_max_question_groups <= (data.questions.length/ privData.amountOfVersions))? false:true,
-        hasMore: (privData.amountOfQuestionPages/ privData.amountOfVersions > 0)? true:false,
+        add: (allqGroups && testmodus.get('_kwps_max_question_groups') <= _.size(sortedAllQGroups))? false:true,
+        hasMore: (_.size(sortedAllQGroups) > 0)? true:false,
         addText: 'Add question page',
         opened: app.openRow.kwps_question_group,
-        amount: privData.amountOfQuestionPages/ privData.amountOfVersions
+        amount: _.size(sortedAllQGroups)
       });
-      if (privData.questionGroupsLength > 0 && app.openRow.kwps_question_group) {
-        for (var key in data.questionGroups) {
+
+
+      if ( _.size(sortedAllQGroups) > 0 && app.openRow.kwps_question_group) {
+        for (var sortOrderQG in sortedQGroups) {
+          // QUESTION GROUP
           data.table.push({
-            first: (key == '0')? true:false,
-            last: (key == privData.questionGroupsLength-1)? true: false,
-            sorterArrows : (data.questionGroups.length > 1)? true : false,
-            postType: data.questionGroups[key][0].post_type,
+            first: (sortOrderQG == '0')? true:false,
+            last: (sortOrderQG == allqGroups.length/ versions.length-1)? true: false,
+            sorterArrows : (allqGroups.length/ versions.length > 1)? true : false,
+            postType: "kwps_question_group",
             deletable : true,
-            hasMore: (this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][0].ID}).length > 0)? true : false,
+            hasMore: true,
             hasAmount: false,
-            hasOpened: (app.openRow.questionGroup == key)? true : false,
+            hasOpened: (app.openRow.questionGroup == sortOrderQG)? true : false,
             editable: true, //TODO look if the test is published or not.
-            versions: data.questionGroups[key],
+            versions: sortedQGroups[sortOrderQG],
             mainRow: true,
-            sortOrder: key,
-            //amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][data.questionGroups.length - 1].ID}).length
-          })
-          if(app.openRow.questionGroup == key) {
+            sortOrder: sortOrderQG,
+            amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent: qGroups[0][sortOrderQG].ID}).length
+          });
+
+
+
+          if(app.openRow.questionGroup == sortOrderQG) {
             privData.questions = [];
-            for (var i = data.questionGroups[key].length - 1; i >= 0; i--) {
-              privData.questions = privData.questions.concat(this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[key][i].ID}));
+            for (var i = data.questionGroups[sortOrderQG].length - 1; i >= 0; i--) {
+              privData.questions = privData.questions.concat(this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[sortOrderQG][i].ID}));
             };
             for (var i = privData.questions.length - 1; i >= 0; i--) {
               privData.questions[i] = privData.questions[i].toJSON();
