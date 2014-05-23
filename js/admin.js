@@ -368,12 +368,6 @@ jQuery(function ($) {
       var sortedAns = _.groupBy(_.flatten(ans,true),"_kwps_sort_order");
       console.log("sorted opened Answers", sortedAns);
 
-
-
-
-      console.log("openRow: ",app.openRow)
-
-
       var data = {};
       var privData = {};
 
@@ -592,6 +586,7 @@ jQuery(function ($) {
           }
           break;
         case 'kwps_question':
+
           for(var i = 0; i < kwpsPollLen; i++) {
             var parent = this.collection.findWhere({post_type: 'kwps_question_group', post_parent: kwpsPolls[i].id});
             var index = this.collection.where({post_type: 'kwps_question', post_parent: parent.get('ID')}).length;
@@ -643,7 +638,7 @@ jQuery(function ($) {
             for (var i = 0; i < questionGroups.length; i++) {
               var questionGroupOriginal = questionGroups[i];
 
-              that.createQuestionGroup(newVersion.get('ID'), i, function(newQuestionGroup) {
+              that.createQuestionGroup(newVersion.get('ID'), i,i, function(newQuestionGroup) {
                 var questionsInGroup = that.collection.where({post_type: 'kwps_question', post_parent: questionGroupOriginal.id});  
 
                 for (var i = 0; i < questionsInGroup.length; i++) {
