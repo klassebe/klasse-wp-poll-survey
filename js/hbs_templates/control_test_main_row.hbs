@@ -1,5 +1,5 @@
 
-<tr class="type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0" data-post-type="question" data-sort-order="{{sortOrder}}">
+<tr class="type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0" data-post-type="{{postType}}" data-sort-order="{{sortOrder}}">
     <td class="column-action" style="border: none; padding: 0px;height: 60px;">
         <div style="width:10px; height: 60px; float:left;">
             <svg x="0px" y="0px" viewBox="0 0 10 60">
@@ -28,12 +28,20 @@
             </a>
             {{/if}}
         </div>
+        {{#if number}}
+        #: {{number}}
+        {{/if}}
+        
     </td>
     {{#each versions}}
         <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
             <strong>
                 <a class="row-title" href="#edit/{{ID}}"
-                   title="Edit “”">{{subStringStripper post_content 120}}</a>
+                   title="Edit “”">
+                   {{subStringStripper post_title 50}}
+                   {{subStringStripper post_content 120}}
+
+                   </a>
             </strong>
 
             <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
