@@ -135,9 +135,7 @@ jQuery(function ($) {
       post_modified: "",
       post_parent: 0,
       post_type: "",
-      _kwps_sort_order: 0,
-      _kwps_logged_in_user_limit: 'free',
-      _kwps_logged_out_user_limit: 'free'
+      _kwps_sort_order: 0
     }
   });
 
@@ -166,6 +164,8 @@ jQuery(function ($) {
       var postData = $(e.target).serializeObject();
       postData.post_type = 'kwps_test_collection';
       postData.post_status = "draft";
+      postData._kwps_logged_in_user_limit = 'free';
+      postData._kwps_logged_out_user_limit = 'free';
 
       var that = this;
       var model = new KwpsModel(postData);
@@ -481,7 +481,7 @@ jQuery(function ($) {
                     answer: true,
                     sorterArrows: true,
                     first: (sortOrderA == 0)? true:false,
-                    last: (sortOrderA == _.size()-1)? true:false,
+                    last: (sortOrderA == _.size(sortedAns)-1)? true:false,
                     sortOrder : sortOrderA,
                     number: parseInt(sortOrderA) +1,
                     versions : sortedAns[sortOrderA],
