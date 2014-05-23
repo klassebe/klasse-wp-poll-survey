@@ -49,7 +49,8 @@
     var tmp = document.createElement("DIV");
     tmp.innerHTML = html;
     var result = tmp.textContent || tmp.innerText || "";
-    return  result.substring(0, length) + " ...";
+    var substrResult = result.substring(0, length);
+    return  (substrResult.length <= length)? substrResult : substrResult + "...";
   })
 
   Handlebars.registerHelper('sorter', function (index, obj) {

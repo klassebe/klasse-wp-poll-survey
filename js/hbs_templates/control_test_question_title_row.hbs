@@ -1,4 +1,4 @@
- <tr class="post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background: #1E8CBE;">
+ <tr class="post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background: #1E8CBE;" data-post-type="{{postType}}">
     <th class="no-delete row-title" colspan="{{colSpan}}" style="border-top: none ;padding: 0px;height: 40px;">
         <div style="width:10px; height: 42px; float:left;">
             <svg x="0px" y="0px" viewBox="0 0 10 42">
@@ -7,10 +7,12 @@
         </div>
         <div style="padding: 10px; float:left; color:white;">
             {{t title}}
-            <button class="button add" data-post-type="{{postType}}">
-                <span data-code="f132" class="dashicons dashicons-plus"></span>
-                {{t addText}}
-            </button>
+            {{#if add}}
+                <button class="button add">
+                    <span data-code="f132" class="dashicons dashicons-plus"></span>
+                    {{t addText}}
+                </button>
+            {{/if}}
         </div>  
     </th>
     <th class="no-delete row-title" style="height:20px; border-top: none;"></th>

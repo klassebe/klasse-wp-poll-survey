@@ -108,7 +108,11 @@
     background-color: #f9f9f9;
     font-weight: 600;
 }
-#kwps_test .column-title .column-tab.bottom{
+#kwps_test .column-title.bottom{
+    padding-top: 0;
+    vertical-align: top;
+}
+#kwps_test .column-title.bottom .column-tab{
     margin: 0 5px 5px 5px;
     border-top: none;
     border-left: 1px solid #D6D6D6;

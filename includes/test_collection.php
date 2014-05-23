@@ -75,10 +75,13 @@ class Test_Collection extends Kwps_Post_Type{
     static function validate_for_insert($post_as_array = array()) {
         $errors = array();
 
-        $numeric_fields = array('_kwps_sort_order');
+        $numeric_fields = array(
+//            '_kwps_sort_order'
+        );
 
         $required_fields = array(
             'post_status',
+            'post_parent',
             '_kwps_sort_order',
             '_kwps_logged_in_user_limit',
             '_kwps_logged_out_user_limit',

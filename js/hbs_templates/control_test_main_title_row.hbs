@@ -1,15 +1,15 @@
-<tr class="title">
+<tr class="title" data-post-type="main_{{postType}}">
     <th class="row-title" colspan="{{colSpan}}">
         {{#if hasMore}}
         	{{#if opened}}
-            	<span class="dashicons dashicons-arrow-down toggle-details" data-type="{{postType}}"></span>
+            	<span class="dashicons dashicons-arrow-down toggle-details"></span>
         	{{else}}
-            	<span class="dashicons dashicons-arrow-right toggle-details" data-type="{{postType}}" ></span>
+            	<span class="dashicons dashicons-arrow-right toggle-details"></span>
         	{{/if}}
         {{/if}}
         {{t title}}
         {{#if add}}
-        <button class="button add" data-post-type="{{postType}}">
+        <button class="button add">
             <span data-code="f132" class="dashicons dashicons-plus"></span>{{t addText}}
         </button>
         {{/if}}

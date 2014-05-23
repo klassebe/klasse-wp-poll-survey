@@ -38,8 +38,8 @@ class Test_Collections_List_Table extends Base_List_Table {
 
         //Set parent defaults
         parent::__construct( array(
-            'singular'  => 'version',     //singular name of the listed records
-            'plural'    => 'versions',    //plural name of the listed records
+            'singular'  => 'test_collection',     //singular name of the listed records
+            'plural'    => 'test_collections',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
 
@@ -104,6 +104,8 @@ class Test_Collections_List_Table extends Base_List_Table {
     function column_name($item){
 
         //Build row actions
+        $delete_url = sprintf("%spost.php?post=%s&action=%s", get_admin_url() ,$item['ID'], 'delete');
+        $delete_url_with_nonce = wp_nonce_url($delete_url);
         $actions = array(
 //            http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=edit
 
@@ -113,9 +115,10 @@ class Test_Collections_List_Table extends Base_List_Table {
 
 //        http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=trash&_wpnonce=25ff8209c2
 
-            'delete'      => sprintf('<a href="%spost.php?post=%s&action=%s">Delete</a>',get_admin_url(), $item['ID'] ,'trash' ),
+//            'delete'      =>  sprintf('<a href="%spost.php?post=%s&action=%s">Delete</a>',get_admin_url(), $item['ID'] ,'trash' ) ,
+//            'delete'      =>  sprintf('<a href="%s">Delete</a>',$delete_url_with_nonce ) ,
 
-//            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
+            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-test_collection') ),
         );
 
         //Return the post_title contents
@@ -228,7 +231,19 @@ class Test_Collections_List_Table extends Base_List_Table {
 
         //Detect when a bulk action is being triggered...
         if( 'delete'===$this->current_action() ) {
-            wp_die('Items deleted (or they would be if we had items to delete)!');
+            if( isset( $_REQUEST['id']) ){
+                if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'delete-test_collection' ) ){
+                    $post_id = (int) $_REQUEST['id'];
+                    wp_delete_post( $post_id );
+                }
+            } elseif( isset( $_REQUEST['test_collection'] ) ) {
+                if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-' . $this->_args['plural'] ) ){
+                    foreach( $_REQUEST['test_collection'] as $post_id ){
+                        $post_id_int = (int) $post_id;
+                        wp_delete_post( $post_id_int );
+                    }
+                }
+            }
         }
 
     }

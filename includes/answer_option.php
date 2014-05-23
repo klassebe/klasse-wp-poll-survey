@@ -89,11 +89,12 @@ class Answer_Option extends Kwps_Post_Type{
         $errors = array();
 
         $numeric_fields = array(
-            '_kwps_sort_order',
+//            '_kwps_sort_order',
         );
 
         $required_fields = array(
             'post_content',
+            'post_parent',
             '_kwps_sort_order',
         );
 
@@ -117,14 +118,17 @@ class Answer_Option extends Kwps_Post_Type{
             }
         }
 
-        $question = Question::get_as_array($post_as_array['post_parent']);
-        $test_modus = Question::get_test_modus($question['ID']);
+        if( isset( $post_as_array['post_parent'] ) ){
+            $question = Question::get_as_array($post_as_array['post_parent']);
+            $test_modus = Question::get_test_modus($question['ID']);
 
-        $all_answer_options_of_same_question = Answer_Option::get_all_by_post_parent($post_as_array['post_parent']);
+            $all_answer_options_of_same_question = Answer_Option::get_all_by_post_parent($post_as_array['post_parent']);
 
-        if( sizeof($all_answer_options_of_same_question) >= $test_modus['_kwps_max_answer_options_per_question']){
-            array_push( $errors, array( 'All', 'Maximum answer options already reached' ) );
-            ;
+            if( 0 < $test_modus['_kwps_max_answer_options_per_question'] ){
+                if( sizeof($all_answer_options_of_same_question) >= $test_modus['_kwps_max_answer_options_per_question']){
+                    array_push( $errors, array( 'All', 'Maximum answer options already reached' ) );
+                }
+            }
         }
 
         return $errors;

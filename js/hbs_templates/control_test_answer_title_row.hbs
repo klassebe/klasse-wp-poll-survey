@@ -1,4 +1,4 @@
-<tr class="post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background:#FFB500">
+<tr class="post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background:#FFB500" data-post-type="{{postType}}" data-sort-order="{{questionSortOrder}}">
     <th class="no-delete row-title" colspan="{{colSpan}}" style=" border-top: #FFBA00; padding: 0px;height: 42px;">
         <div style="width:20px; height: 42px; float:left;">
             <svg x="0px" y="0px" viewBox="0 0 20 42">
@@ -8,11 +8,11 @@
         </div>
         <div style="padding: 10px; float:left;">
             {{t title}}
-            <button class="button add" data-post-type="{{postType}}" data-sort-order="{{questionSortOrder}}">
+            <button class="button add">
                 <span class="dashicons dashicons-plus"></span>
                 {{t addText}}
             </button>
         </div> 
     </th>
-    <th class="no-delete row-title" style="height:20px;">3</th>
+    <th class="no-delete row-title" style="height:20px;">{{number}}</th>
 </tr>

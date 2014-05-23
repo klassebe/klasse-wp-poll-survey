@@ -8,8 +8,8 @@
         </div>
         {{#if sorterArrows}}
         <div class="move">
-            <span class="up {{#if first}}disabled{{/if}}"></span>
-            <span class="down {{#if last}}disabled{{/if}}"></span>
+            <span class="move-action up {{#if first}}disabled{{/if}}"></span>
+            <span class="move-action down {{#if last}}disabled{{/if}}"></span>
         </div>
         {{/if}}
         <div class="action" style="padding: 10px; float:left;">
@@ -28,12 +28,20 @@
             </a>
             {{/if}}
         </div>
+        {{#if number}}
+        #: {{number}}
+        {{/if}}
+        
     </td>
     {{#each versions}}
         <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
             <strong>
                 <a class="row-title" href="#edit/{{ID}}"
-                   title="Edit “”">{{post_content}}</a>
+                   title="Edit “”">
+                   {{subStringStripper post_title 50}}
+                   {{subStringStripper post_content 120}}
+
+                   </a>
             </strong>
 
             <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>

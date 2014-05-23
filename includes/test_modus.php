@@ -184,7 +184,8 @@
 
             if( sizeof($posts) > 0 ){
                 foreach($posts as $retrieved_post){
-                    if($retrieved_post->ID != $post->ID && $retrieved_post->post_title == $post->post_title){
+//                    if($retrieved_post->ID != $post->ID && $retrieved_post->post_title == $post->post_title){
+                    if( $retrieved_post->post_title == $post['post_title'] ){
                         return true;
                     }
                 }
