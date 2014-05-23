@@ -321,18 +321,20 @@ jQuery(function ($) {
           qGroup.push(sortedQuestionGroupPerVersion);
         };
       };
-      console.log(qGroup);
+      console.log("Question",qGroup);
 
       //Get questions if a question is open
       var qu = [];
       if (app.openRow.questionGroup >= 0) {
         for (var i = 0; i < versions.length; i++) {
-          var questionGroupId = this.collection.where({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.questionGroup});
-          console.log(questionGroupId);
-          var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : versions[i].ID}), 'toJSON');
-          versions[i]
+          var questionGroupId = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.questionGroup.toString()});
+          console.log(questionGroupId.id);
+          var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : questionGroupId.id}), 'toJSON');
+          var sortedQuestionsPerVersion = _.sortBy(quJson, "_kwps_sort_order");
+          qu.push(sortedQuestionsPerVersion);
         };
       }
+      console.log("opened Questions", qu);
 
 
 
