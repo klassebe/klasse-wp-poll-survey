@@ -505,9 +505,9 @@ jQuery(function ($) {
         amount: _.size(sortedAllQGroups)
       });
 
-
       if ( _.size(sortedAllQGroups) > 0 && app.openRow.main_kwps_question_group) {
         for (var sortOrderQG in sortedQGroups) {
+
           // QUESTION GROUP
           data.table.push({
             first: (sortOrderQG == '0')? true:false,
@@ -522,9 +522,9 @@ jQuery(function ($) {
             versions: sortedQGroups[sortOrderQG],
             mainRow: true,
             sortOrder: sortOrderQG,
+            number: parseInt(sortOrderQG) +1,
             amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent: qGroups[0][sortOrderQG].ID}).length
           });
-
 
 
           if(app.openRow.kwps_question_group == sortOrderQG) {
@@ -542,7 +542,7 @@ jQuery(function ($) {
               postType: "kwps_question",
               addText: "Add question",
               colSpan : data.versions.length +1,
-              add: (testmodus._kwps_max_questions_per_question_group <= privData.questions.length)? false:true
+              add: (testmodus._kwps_max_questions_per_question_group <= _.size(sortedQu))? false:true
             })
             
 
