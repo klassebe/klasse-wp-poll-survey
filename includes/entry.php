@@ -121,7 +121,7 @@ class Entry extends Kwps_Post_Type{
                 }
             } else {
                 if( ! Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_out_user_limit']) ){
-                    array_push( $errors, array('All', 'You have the reached limit to participate') );
+                    array_push( $errors, array('All', 'You have reached the limit to participate') );
                 }
             }
         }
