@@ -104,9 +104,9 @@ jQuery(function($) {
 						        alert(errMsg);
 						    }
 						});
-					$('.kwps-intro').hide();
-					$('.kwps-outro').show();
-					$('.kwps-question-group').hide();
+					elem.find('.kwps-intro').hide();
+					elem.find('.kwps-question-group').hide();
+					elem.find('.kwps-outro').show();
 				} else {
 					alert('Please select an answer!');
 				}
