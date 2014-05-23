@@ -487,8 +487,8 @@ jQuery(function ($) {
         title: "Outro",
         postType: "kwps_outro",
         mainTitle: true,
-        add: (intros.length <= 0),
-        hasMore: (intros.length > 0),
+        add: (outros.length <= 0),
+        hasMore: (outros.length > 0),
         addText: 'Add outro',
         opened: app.openRow.main_kwps_outro,
         amount: outros.length/ versions.length
@@ -696,7 +696,7 @@ jQuery(function ($) {
       this.collection.create({
         post_type: "kwps_question_group",
         post_status: "draft",
-        post_title : "Question Group " + index,
+        post_title : "Question Group " + (parseInt(sortOrder) + 1),
         post_parent : post_parent,
         _kwps_sort_order : sortOrder.toString()
       }, {
