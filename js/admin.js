@@ -444,15 +444,15 @@ jQuery(function ($) {
 
           if(app.openRow.kwps_question_group == sortOrderQG) {
 
-            // TITLE QUESTION 
+            // TITLE QUESTION
             data.table.push({
               questionTitle: true,
               title: "Questions",
               postType: "kwps_question",
               addText: "Add question",
               colSpan : versions.length +1,
-              add: (testmodus._kwps_max_questions_per_question_group <= _.size(sortedQu))? false:true
-            })
+              add: (testmodus.get('_kwps_max_questions_per_question_group') <= _.size(sortedQu))? false:true
+            });
             
             for (var sortOrderQ in sortedQu) {
               data.table.push({
@@ -463,7 +463,7 @@ jQuery(function ($) {
                 number: parseInt(sortOrderQ) +1,
                 amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : qu[0][sortOrderQ].ID}).length,
                 hasOpened: (app.openRow.kwps_question == sortOrderQ)? true : false
-              })
+              });
 
               if (app.openRow.kwps_question >= 0 && sortOrderQ == app.openRow.kwps_question) {
 
@@ -727,6 +727,9 @@ jQuery(function ($) {
           if(cb) {
             cb(model);
           }        
+        },
+        error: function() {
+          console.log('error in de vraag');
         }
       });
     },
