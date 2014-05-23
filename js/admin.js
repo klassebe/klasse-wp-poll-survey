@@ -489,9 +489,9 @@ jQuery(function ($) {
                 sortOrder: i,
                 number: i+1,
                 amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length,
-                hasOpened: (app.openRow.question == i)? true : false
+                hasOpened: (app.openRow.kwps_question == i)? true : false
               })
-              if (app.openRow.question >= 0 && i == app.openRow.question) {
+              if (app.openRow.kwps_question >= 0 && i == app.openRow.kwps_question) {
                 privData.answers = [];
                 data.table.push({
                   answerTitle: true,
@@ -784,25 +784,28 @@ jQuery(function ($) {
       $(event.target).find(".actions").hide();
     },
     toggleDetails: function(event) {
-      var type = $(event.currentTarget).data('type');
-      switch (type) {
+      var postType = $(event.currentTarget).closest('tr').data('post-type');
+      console.log(postType);
+      switch (postType) {
         case "kwps_intro" :
-          app.openRow[type] = (app.openRow[type])? false: true;
+          app.openRow[postType] = (app.openRow[postType])? false: true;
         break;
         case "kwps_outro" :
-          app.openRow[type] = (app.openRow[type])? false: true;
+          app.openRow[postType] = (app.openRow[postType])? false: true;
         break;
-        case "question" :
+        case "kwps_question" :
           var sortOrder = $(event.currentTarget).data('sort-order');
-          app.openRow[type] = (app.openRow[type] == sortOrder)? -1 : sortOrder;
+          app.openRow[postType] = (app.openRow[postType] == sortOrder)? -1 : sortOrder;
         break;
         case "questionGroup" :
           var sortOrder = $(event.currentTarget).data('sort-order');
-          app.openRow[type] = (app.openRow[type] == sortOrder)? -1 : sortOrder;
+          app.openRow[postType] = (app.openRow[postType] == sortOrder)? -1 : sortOrder;
         break;
         case "kwps_question_group" :
-          app.openRow[type] = (app.openRow[type])? false: true;
+          app.openRow[postType] = (app.openRow[postType])? false: true;
         break;
+        default:
+          console.log('no post type was given', postType);
       }
       //toggleOnRow = $(event.currentTarget).data('question-row');
       
