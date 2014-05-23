@@ -13,7 +13,7 @@ jQuery(function ($) {
           return sParameterName[1];
       }
     }
-  };
+  }
 
   $.fn.serializeObject = function(){
     var obj = {};
@@ -41,14 +41,14 @@ jQuery(function ($) {
     kwps_question_group: -1,
     kwps_question: -1
   };
-  app.views = {}
+  app.views = {};
 
   app.templates = {
     controlPanel: kwps_admin_templates.control_panel,
     edit: kwps_admin_templates.edit,
     question: kwps_admin_templates.table,
     newKwpsTest: kwps_admin_templates.choose_testmodus
-  }
+  };
   
   // Routing
    var router = Backbone.Router.extend({
@@ -99,7 +99,7 @@ jQuery(function ($) {
     }
   });
 
-  KwpsModel = Backbone.Model.extend({
+  var KwpsModel = Backbone.Model.extend({
     action: {
       create: 'kwps_save',
       update: 'kwps_update',
@@ -111,16 +111,6 @@ jQuery(function ($) {
       options.url = app.url + model.action[method.toLowerCase()] + (model.attributes.post_type).substring(4);
 
       return Backbone.sync.apply(this, arguments);
-    },
-    initialize: function() {
-      //this.bind("add", this.changeHandler);
-    },
-    changeHandler: function() {
-      this.save({silent: true},{error : function (model, response, options) {
-        console.log(this);
-      }, success : function (model, response, options) {
-        console.log(this)
-      }});
     },
     destroy: function() {
       this.set('post_status', 'trash');
@@ -135,9 +125,7 @@ jQuery(function ($) {
       post_modified: "",
       post_parent: 0,
       post_type: "",
-      _kwps_sort_order: 0,
-      _kwps_logged_in_user_limit: 'free',
-      _kwps_logged_out_user_limit: 'free'
+      _kwps_sort_order: 0
     }
   });
 
@@ -166,16 +154,18 @@ jQuery(function ($) {
       var postData = $(e.target).serializeObject();
       postData.post_type = 'kwps_test_collection';
       postData.post_status = "draft";
+      postData._kwps_logged_in_user_limit = 'free';
+      postData._kwps_logged_out_user_limit = 'free';
 
       var that = this;
       var model = new KwpsModel(postData);
       model.save({},{
         wait: true,
-        success: function (model, response, options) {
+        success: function (model) {
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < 1; i++) {
             that.createVersion(model.get('ID'), i);
-          };
+          }
           var url = window.location.pathname + window.location.search + "\&action=edit\&id=" + model.get('ID');
           window.history.pushState( model.get('ID') , "Edit" , url);
           app.router.navigate('', {trigger: true});
@@ -193,11 +183,11 @@ jQuery(function ($) {
       });
       model.save({},{
         wait: true,
-        success: function (model, response, options) {
+        success: function (model) {
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < 1; i++) {
             that.createQuestionGroup(model.get('ID'), i);
-          };
+          }
         }
       });
     },
@@ -211,11 +201,11 @@ jQuery(function ($) {
         _kwps_sort_order : index.toString()
       });
       model.save({},{
-        success: function (model, response, options) {
+        success: function (model) {
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < 1; i++) {
             that.createQuestion(model.get('ID'), i, model.get('post_type'));
-          };
+          }
         }
       });
     },
@@ -229,16 +219,15 @@ jQuery(function ($) {
         _kwps_sort_order : index.toString()
       });
       model.save({},{
-        success: function (model, response, options) {
+        success: function (model) {
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < 2; i++) {
             that.createAnswer(model.get('ID'), i, post_type);
-          };
+          }
         }
       });
     },
-    createAnswer: function (post_parent, index, post_type) {
-      var that = this;
+    createAnswer: function (post_parent, index) {
       var model = new KwpsModel({
         post_type: "kwps_answer_option",
         post_status: "draft",
@@ -248,7 +237,7 @@ jQuery(function ($) {
         _kwps_answer_option_value : 'value...'
       });
       model.save({},{
-        success: function (model, response, options) {
+        success: function (model) {
           app.kwpsPollsCollection.add(model);
         }
       });
@@ -298,9 +287,10 @@ jQuery(function ($) {
         var y = this.collection.findWhere({post_type: "kwps_intro", post_parent : versions[i].ID});
         if (y == undefined) {
           break;
-        };
+        }
         intros[i] = y.toJSON();
       };
+
 
       //Get outro's
       var outros = [];
@@ -308,9 +298,10 @@ jQuery(function ($) {
         var y = this.collection.findWhere({post_type: "kwps_outro", post_parent : versions[i].ID});
         if (y == undefined) {
           break;
-        };
+        }
         outros[i] = y.toJSON();
       };
+
 
       //Get questionGroups if questionGroups are open
       var qGroups = [];
@@ -336,7 +327,7 @@ jQuery(function ($) {
           var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : questionGroupId.id}), 'toJSON');
           var sortedQuestionsPerVersion = _.sortBy(quJson, "_kwps_sort_order");
           qu.push(sortedQuestionsPerVersion);
-        };
+        }
       }
 
       var sortedQu = _.groupBy(_.flatten(qu,true),"_kwps_sort_order");
@@ -363,7 +354,7 @@ jQuery(function ($) {
       data.versions = this.collection.where({post_type: "kwps_version"});
 
       
-      data.versions = versions
+      data.versions = versions;
       data.table = [];
 
       // TITLE INTRO
@@ -372,8 +363,8 @@ jQuery(function ($) {
         title: "Intro",
         postType: "kwps_intro",
         mainTitle: true,
-        add: (intros.length > 0)? false:true,
-        hasMore: (intros.length > 0)? true:false,
+        add: (intros.length <= 0),
+        hasMore: (intros.length <= 0),
         addText: 'Add Intro',
         opened: app.openRow.main_kwps_intro,
         amount: intros.length/ versions.length
@@ -401,7 +392,7 @@ jQuery(function ($) {
         postType: "kwps_question_group",
         mainTitle: true,
         add: (allqGroups && testmodus.get('_kwps_max_question_groups') <= _.size(sortedAllQGroups))? false:true,
-        hasMore: (_.size(sortedAllQGroups) > 0)? true:false,
+        hasMore: (_.size(sortedAllQGroups) > 0),
         addText: 'Add question page',
         opened: app.openRow.main_kwps_question_group,
         amount: _.size(sortedAllQGroups)
@@ -412,14 +403,14 @@ jQuery(function ($) {
 
           // QUESTION GROUP
           data.table.push({
-            first: (sortOrderQG == '0')? true:false,
-            last: (sortOrderQG == allqGroups.length/ versions.length-1)? true: false,
-            sorterArrows : (allqGroups.length/ versions.length > 1)? true : false,
+            first: (sortOrderQG == '0'),
+            last: (sortOrderQG == allqGroups.length/ versions.length-1),
+            sorterArrows : (allqGroups.length/ versions.length > 1),
             postType: "kwps_question_group",
             deletable : true,
             hasMore: true,
             hasAmount: false,
-            hasOpened: (app.openRow.kwps_question_group == sortOrderQG)? true : false,
+            hasOpened: (app.openRow.kwps_question_group == sortOrderQG),
             editable: true, //TODO look if the test is published or not.
             versions: sortedQGroups[sortOrderQG],
             mainRow: true,
@@ -431,7 +422,7 @@ jQuery(function ($) {
 
           if(app.openRow.kwps_question_group == sortOrderQG) {
 
-            // TITLE QUESTION 
+            // TITLE QUESTION
             data.table.push({
               questionTitle: true,
               title: "Questions",
@@ -439,8 +430,8 @@ jQuery(function ($) {
               questionGroupSortOrder : sortOrderQG,
               addText: "Add question",
               colSpan : versions.length +1,
-              add: (testmodus._kwps_max_questions_per_question_group <= _.size(sortedQu))? false:true
-            })
+              add: (testmodus.get('_kwps_max_questions_per_question_group') > _.size(sortedQu))
+            });
             
             for (var sortOrderQ in sortedQu) {
               data.table.push({
@@ -449,9 +440,9 @@ jQuery(function ($) {
                 postType: "kwps_question",
                 sortOrder: sortOrderQ,
                 number: parseInt(sortOrderQ) +1,
-                //amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : qu[0][sortOrderQ].ID}).length,
-                hasOpened: (app.openRow.kwps_question == sortOrderQ)? true : false
-              })
+                amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : qu[0][sortOrderQ].ID}).length,
+                hasOpened: (app.openRow.kwps_question == sortOrderQ)
+              });
 
               if (app.openRow.kwps_question >= 0 && sortOrderQ == app.openRow.kwps_question) {
 
@@ -462,14 +453,14 @@ jQuery(function ($) {
                   addText: "Add answer",
                   questionSortOrder: sortOrderQ,
                   colSpan : versions.length +1
-                })
+                });
 
                 for (var sortOrderA in sortedAns) {
                   data.table.push({
                     answer: true,
                     sorterArrows: true,
-                    first: (sortOrderA == 0)? true:false,
-                    last: (sortOrderA == _.size()-1)? true:false,
+                    first: (sortOrderA == 0),
+                    last: (sortOrderA == _.size(sortedAns)-1),
                     sortOrder : sortOrderA,
                     number: parseInt(sortOrderA) +1,
                     versions : sortedAns[sortOrderA],
@@ -479,15 +470,16 @@ jQuery(function ($) {
               }
             }
           }
-        };
-      };
+        }
+      }
+
       data.table.push({
         colSpan : data.versions.length +1,
         title: "Outro",
         postType: "kwps_outro",
         mainTitle: true,
-        add: (outros.length > 0)? false:true,
-        hasMore: (outros.length > 0)? true:false,
+        add: (outros.length <= 0),
+        hasMore: (outros.length > 0),
         addText: 'Add outro',
         opened: app.openRow.main_kwps_outro,
         amount: outros.length/ versions.length
@@ -568,7 +560,7 @@ jQuery(function ($) {
         case 'main_kwps_question_group':
         case 'kwps_question_group':
           var sortOrder = _.max(_.invoke(this.collection.where({post_type: 'kwps_question_group'}),"toJSON"), function (a) {return a._kwps_sort_order});
-          sortOrder = (sortOrder == -Infinity || sortOrder == Infinity)? 0: parseInt(sortOrder._kwps_sort_order)+1
+          sortOrder = (sortOrder == -Infinity || sortOrder == Infinity)? 0: parseInt(sortOrder._kwps_sort_order)+1;
           for(var i = 0; i < kwpsPollLen; i++) {
             this.createQuestionGroup(kwpsPolls[i].id, i, sortOrder);
           }
@@ -720,6 +712,9 @@ jQuery(function ($) {
           if(cb) {
             cb(model);
           }        
+        },
+        error: function() {
+          console.log('error in de vraag');
         }
       });
     },
@@ -815,12 +810,8 @@ jQuery(function ($) {
       }
       var postType = $(event.currentTarget).closest('tr').data('post-type');
 
-      console.log($(event.currentTarget).hasClass('up'));
-      console.log(currentSortOrder);
-      console.log(newSortOrder);
-
-      var toMove = this.collection.where({post_type: "kwps_answer_option", _kwps_sort_order: currentSortOrder.toString()});
-      var toCorrect = this.collection.where({post_type: "kwps_answer_option", _kwps_sort_order: newSortOrder.toString()});
+      var toMove = this.collection.where({post_type: postType, _kwps_sort_order: currentSortOrder.toString()});
+      var toCorrect = this.collection.where({post_type: postType, _kwps_sort_order: newSortOrder.toString()});
 
       toMove.forEach(function(post) {
         post.set('_kwps_sort_order', newSortOrder.toString());
@@ -851,7 +842,9 @@ jQuery(function ($) {
     events: {
       'click button#update': 'updateData',
       'click button#add-media-button': 'addMedia',
-      'click td.savesend input.button': 'insertIntoEditor'
+      'click button#add-result-button': 'addResult',
+      'click td.savesend input.button': 'insertIntoEditor',
+      'click button#add-result-to-editor': 'insertChartIntoEditor'
     },
     render: function() {
       var data = {
@@ -872,6 +865,19 @@ jQuery(function ($) {
                   "formatselect underline alignjustify forecolor backcolor paste removeformat charmap outdent indent undo redo | code"]
       });
     },
+    /* BEGIN RESULT INPUT */
+    addResult: function () {
+      console.log('add chart');
+      $('iframe').contents().find('#tinymce').append('<div class="kwps-chart">Chart will be here</div>');
+      // tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show-charts.php?type=image&amp;TB_iframe=true');
+      return false;
+    },
+    insertChartIntoEditor: function (html) {
+      console.log('you clicked to add result to editor');
+      $('iframe').contents().find('#tinymce').append('<div class="kwps-chart">Hello</div>');
+      tb_remove();
+    },
+    /* END RESULT INPUT */
     /* BEGIN MEDIA UPLOAD */
     addMedia: function () {
       tb_show( '', 'media-upload.php?type=image&amp;TB_iframe=true' );
