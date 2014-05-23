@@ -35,11 +35,11 @@ jQuery(function ($) {
   var app = {};
   app.url = 'admin-ajax.php?action=';
   app.openRow = {
-    kwps_outro: false,
-    kwps_intro: false,
-    kwps_question_group: false,
-    questionGroup: -1,
-    question: -1
+    main_kwps_outro: false,
+    main_kwps_intro: false,
+    main_kwps_question_group: false,
+    kwps_question_group: -1,
+    kwps_question: -1
   };
   app.views = {}
 
@@ -317,7 +317,7 @@ jQuery(function ($) {
 
       //Get questionGroups if questionGroups are open
       var qGroups = [];
-      if (app.openRow.kwps_question_group) {
+      if (app.openRow.main_kwps_question_group) {
         for (var i = 0; i < versions.length; i++) {
           var qGrJson = _.invoke(this.collection.where({post_type: "kwps_question_group", post_parent : versions[i].ID}), 'toJSON');
           var sortedQuestionGroupPerVersion = _.sortBy(qGrJson, "_kwps_sort_order");
@@ -337,9 +337,9 @@ jQuery(function ($) {
 
       //Get questions if a questiongroup is open
       var qu = [];
-      if (app.openRow.questionGroup >= 0) {
+      if (app.openRow.kwps_question_group >= 0) {
         for (var i = 0; i < versions.length; i++) {
-          var questionGroupId = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.questionGroup.toString()});
+          var questionGroupId = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
           var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : questionGroupId.id}), 'toJSON');
           var sortedQuestionsPerVersion = _.sortBy(quJson, "_kwps_sort_order");
           qu.push(sortedQuestionsPerVersion);
@@ -352,10 +352,10 @@ jQuery(function ($) {
 
       //Get Answers if a question is open
       var ans = [];
-      if (app.openRow.question >= 0) {
+      if (app.openRow.kwps_question >= 0) {
         for (var i = 0; i < versions.length; i++) {
-          var openQuestionGroup = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.questionGroup.toString()});
-          var openQuestion = this.collection.findWhere({post_type: "kwps_question", post_parent : openQuestionGroup.id, _kwps_sort_order: app.openRow.question.toString()});
+          var openQuestionGroup = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
+          var openQuestion = this.collection.findWhere({post_type: "kwps_question", post_parent : openQuestionGroup.id, _kwps_sort_order: app.openRow.kwps_question.toString()});
           var ansJson = _.invoke(this.collection.where({post_type: "kwps_answer_option", post_parent: openQuestion.id}), 'toJSON');
           var sortedAnswersPerVersion = _.sortBy(ansJson, "_kwps_sort_order");
           ans.push(sortedAnswersPerVersion);
@@ -476,7 +476,7 @@ jQuery(function ($) {
       });
 
       // INTRO
-      if (intros.length > 0 && intros.length == versions.length && app.openRow.kwps_intro) {
+      if (intros.length > 0 && intros.length == versions.length && app.openRow.main_kwps_intro) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_intro',
@@ -499,12 +499,12 @@ jQuery(function ($) {
         add: (allqGroups && testmodus.get('_kwps_max_question_groups') <= _.size(sortedAllQGroups))? false:true,
         hasMore: (_.size(sortedAllQGroups) > 0)? true:false,
         addText: 'Add question page',
-        opened: app.openRow.kwps_question_group,
+        opened: app.openRow.main_kwps_question_group,
         amount: _.size(sortedAllQGroups)
       });
 
 
-      if ( _.size(sortedAllQGroups) > 0 && app.openRow.kwps_question_group) {
+      if ( _.size(sortedAllQGroups) > 0 && app.openRow.main_kwps_question_group) {
         for (var sortOrderQG in sortedQGroups) {
           // QUESTION GROUP
           data.table.push({
@@ -515,7 +515,7 @@ jQuery(function ($) {
             deletable : true,
             hasMore: true,
             hasAmount: false,
-            hasOpened: (app.openRow.questionGroup == sortOrderQG)? true : false,
+            hasOpened: (app.openRow.kwps_question_group == sortOrderQG)? true : false,
             editable: true, //TODO look if the test is published or not.
             versions: sortedQGroups[sortOrderQG],
             mainRow: true,
@@ -525,7 +525,7 @@ jQuery(function ($) {
 
 
 
-          if(app.openRow.questionGroup == sortOrderQG) {
+          if(app.openRow.kwps_question_group == sortOrderQG) {
             privData.questions = [];
             for (var i = data.questionGroups[sortOrderQG].length - 1; i >= 0; i--) {
               privData.questions = privData.questions.concat(this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[sortOrderQG][i].ID}));
@@ -540,7 +540,7 @@ jQuery(function ($) {
               postType: "kwps_question",
               addText: "Add question",
               colSpan : data.versions.length +1,
-              add: (data.testmodus._kwps_max_questions_per_question_group <= privData.questions.length)? false:true
+              add: (testmodus._kwps_max_questions_per_question_group <= privData.questions.length)? false:true
             })
             
 
@@ -848,21 +848,21 @@ jQuery(function ($) {
     toggleDetails: function(event) {
       var postType = $(event.currentTarget).closest('tr').data('post-type');
       switch (postType) {
-        case "kwps_intro" :
+        case "main_kwps_intro" :
           app.openRow[postType] = !app.openRow[postType];
         break;
-        case "kwps_outro" :
+        case "main_kwps_outro" :
           app.openRow[postType] = !app.openRow[postType];
         break;
         case "kwps_question" :
-          var sortOrder = $(event.currentTarget).data('sort-order');
-          app.openRow[postType] = (app.openRow[postType] == sortOrder)? -1 : sortOrder;
-        break;
-        case "questionGroup" :
-          var sortOrder = $(event.currentTarget).data('sort-order');
+          var sortOrder = $(event.currentTarget).closest('tr').data('sort-order');
           app.openRow[postType] = (app.openRow[postType] == sortOrder)? -1 : sortOrder;
         break;
         case "kwps_question_group" :
+          var sortOrder = $(event.currentTarget).closest('tr').data('sort-order');
+          app.openRow[postType] = (app.openRow[postType] == sortOrder)? -1 : sortOrder;
+        break;
+        case "main_kwps_question_group" :
           app.openRow[postType] = !app.openRow[postType];
         break;
         default:
