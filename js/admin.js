@@ -189,7 +189,7 @@ jQuery(function ($) {
         post_status: "draft",
         post_title : "Version " + (index+1),
         post_parent : post_parent,
-        _kwps_sort_order : index
+        _kwps_sort_order : index.toString()
       });
       model.save({},{
         wait: true,
@@ -208,7 +208,7 @@ jQuery(function ($) {
         post_status: "draft",
         post_title : "Question Group " + (index+1),
         post_parent : post_parent,
-        _kwps_sort_order : index
+        _kwps_sort_order : index.toString()
       });
       model.save({},{
         success: function (model, response, options) {
@@ -226,7 +226,7 @@ jQuery(function ($) {
         post_status: "draft",
         post_content : "question " + (index),
         post_parent : post_parent,
-        _kwps_sort_order : index
+        _kwps_sort_order : index.toString()
       });
       model.save({},{
         success: function (model, response, options) {
@@ -244,7 +244,7 @@ jQuery(function ($) {
         post_status: "draft",
         post_content : "answer " + (index+1),
         post_parent : post_parent,
-        _kwps_sort_order : index,
+        _kwps_sort_order : index.toString(),
         _kwps_answer_option_value : 'value...'
       });
       model.save({},{
@@ -632,7 +632,7 @@ jQuery(function ($) {
         post_title : "Version " + (index+1),
         post_content : "Version " + (index+1),
         post_parent : previousVersion.get('post_parent'),
-        _kwps_sort_order : index
+        _kwps_sort_order : index.toString()
       },
         {
           success: function (newVersion, response, options) {
@@ -643,17 +643,18 @@ jQuery(function ($) {
             for (var i = 0; i < questionGroups.length; i++) {
               var questionGroupOriginal = questionGroups[i];
 
-              that.createQuestionGroup(newVersion.get('ID'), i, function(newQuestionGroup) {
+              that.createQuestionGroup(newVersion.get('ID'), questionGroupOriginal.get('_kwps_sort_order'), function(newQuestionGroup) {
                 var questionsInGroup = that.collection.where({post_type: 'kwps_question', post_parent: questionGroupOriginal.id});  
 
                 for (var i = 0; i < questionsInGroup.length; i++) {
                   var questionOriginal = questionsInGroup[i];
 
-                  that.createQuestion(newQuestionGroup.get('ID'), i, function(newQuestion) {
+                  that.createQuestion(newQuestionGroup.get('ID'), questionGroupOriginal.get('_kwps_sort_order'), function(newQuestion) {
                     var answersInQuestion = that.collection.where({post_type: 'kwps_answer_option', post_parent: questionOriginal.id});  
 
                     for (var i = 0; i < answersInQuestion.length; i++) {
-                      that.createAnswer(newQuestion.get('ID'), i, function(newAnswer) {
+                      var answersInQuestionOriginal = answersInQuestion[i];
+                      that.createAnswer(newQuestion.get('ID'), answersInQuestionOriginal.get('_kwps_sort_order'), function(newAnswer) {
                         console.log('answer created: ' + newAnswer.id);
                       });
                     }
@@ -690,7 +691,7 @@ jQuery(function ($) {
         post_status: "draft",
         post_content : "outro ",
         post_parent : post_parent,
-        _kwps_sort_order : 0
+        _kwps_sort_order : "0"
       });
       model.save({},{
         success: function (model, response, options) {
@@ -709,7 +710,7 @@ jQuery(function ($) {
         post_status: "draft",
         post_title : "Question Group " + index,
         post_parent : post_parent,
-        _kwps_sort_order : sortOrder.toString(),
+        _kwps_sort_order : sortOrder.toString()
       }, {
         wait: true,
         success: function(model, response, options) {
@@ -725,7 +726,7 @@ jQuery(function ($) {
         post_status: "draft",
         post_content : "question",
         post_parent : post_parent,
-        _kwps_sort_order : index
+        _kwps_sort_order : index.toString()
       }, {
         wait: true,
         success: function (model, response, options) {
@@ -741,7 +742,7 @@ jQuery(function ($) {
         post_status: "draft",
         post_content : "answer ",
         post_parent : post_parent,
-        _kwps_sort_order : index,
+        _kwps_sort_order : index.toString(),
         _kwps_answer_option_value : "value ..."
       },
         {
