@@ -17,7 +17,7 @@ jQuery(function($) {
 			});
 
 			//  Search for the class with the ID in it
-			elem.find('#kwps-content').on('click', '.kwps-next', function () {
+			elem.find('.kwps-question-group').on('click', '.kwps-next', function () {
 				// Check if an answer option was selected
 				// Get the name of the radio buttons
 				var getNameOfRadioBtn = elem.find('input:radio').attr('name');
