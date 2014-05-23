@@ -856,7 +856,9 @@ jQuery(function ($) {
     events: {
       'click button#update': 'updateData',
       'click button#add-media-button': 'addMedia',
-      'click td.savesend input.button': 'insertIntoEditor'
+      'click button#add-result-button': 'addResult',
+      'click td.savesend input.button': 'insertIntoEditor',
+      'click button#add-result-to-editor': 'insertChartIntoEditor'
     },
     render: function() {
       var data = {
@@ -877,6 +879,19 @@ jQuery(function ($) {
                   "formatselect underline alignjustify forecolor backcolor paste removeformat charmap outdent indent undo redo | code"]
       });
     },
+    /* BEGIN RESULT INPUT */
+    addResult: function () {
+      console.log('add chart');
+      $('iframe').contents().find('#tinymce').append('<div class="kwps-chart">Chart will be here</div>');
+      // tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show-charts.php?type=image&amp;TB_iframe=true');
+      return false;
+    },
+    insertChartIntoEditor: function (html) {
+      console.log('you clicked to add result to editor');
+      $('iframe').contents().find('#tinymce').append('<div class="kwps-chart">Hello</div>');
+      tb_remove();
+    },
+    /* END RESULT INPUT */
     /* BEGIN MEDIA UPLOAD */
     addMedia: function () {
       tb_show( '', 'media-upload.php?type=image&amp;TB_iframe=true' );

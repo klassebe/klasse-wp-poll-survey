@@ -1,5 +1,5 @@
 <?php echo '<link type="text/css" rel="stylesheet" href="'. plugins_url( '../css/editor.css', __FILE__ ) .'">'; ?>
-<?php echo '<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>'; ?>
+<?php echo '<script src="' . plugins_url( '../js/tinymce/tinymce.min.js', __FILE__ ) .'"></script>'; ?>
 <script src="http://localhost:35729/livereload.js"></script>
 <div class="wrap" id="kwps_test">
 	
