@@ -352,7 +352,9 @@ jQuery(function ($) {
 
       var sortedAns = _.groupBy(_.flatten(ans,true),"_kwps_sort_order");
 
-      var data = {};
+      var data = {
+        kwpsUniquenessTypes: kwpsUniquenessTypes
+      };
 
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');      
