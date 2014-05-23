@@ -42,6 +42,7 @@ require_once __DIR__ . '/includes/test_modus.php';
 require_once __DIR__ . '/includes/duplicate.php';
 require_once __DIR__ . '/includes/locked.php';
 require_once __DIR__ . '/includes/uniqueness.php';
+require_once __DIR__ . '/includes/result.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -128,6 +129,9 @@ add_action( 'wp_ajax_kwps_save_entry', array('\includes\entry','save_from_reques
 add_action( 'wp_ajax_kwps_update_entry', array('\includes\entry','update_from_request'));
 add_action( 'wp_ajax_kwps_delete_entry', array('\includes\entry','delete_from_request'));
 
+
+add_action( 'wp_ajax_kwps_get_result_of_version', array('\includes\result','get_result_of_version'));
+
 add_filter('init', 'kwps_add_api_rewrite_rules');
 
 register_activation_hook(__FILE__, 'kwps_activate');
@@ -151,7 +155,7 @@ function create_default_test_modi(){
         '_kwps_max_questions_per_question_group' => 1,
         '_kwps_max_answer_options_per_question' => -1,
         '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
-        '_kwps_allowed_output_types' => array('output_type_1', 'output_type_2'),
+        '_kwps_allowed_output_types' => array('block-chart-per-question'),
     );
 
     if( ! \includes\Test_Modus::default_test_modus_exists($kwps_poll) ){

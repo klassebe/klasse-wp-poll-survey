@@ -66,55 +66,13 @@ class Entry extends Kwps_Post_Type{
 
         if( static::validate_for_insert($request_data) ) {
             static::save_post($request_data);
-            wp_send_json( static::get_results_by_question( wp_get_post_parent_id( $request_data['post_parent'] )));
+            wp_send_json( $request_data);
         } else {
             wp_send_json(null);
         }
 
         die();
     }
-
-    public static function get_results_by_question($question_id){
-        $args = array(
-            'post_parent' => $question_id,
-            'post_type'   => 'kwps_answer_option', 
-            'posts_per_page' => -1,
-            'post_status' => 'any',
-        );
-
-        $answer_options = get_children($args, ARRAY_A);
-
-        $results = array('entries' => array());
-        $totalEntries = 0;
-
-        foreach ($answer_options as $answer_option) {
-            $args = array(
-            'post_parent' => $answer_option['ID'],
-            'post_type'   => 'kwps_entry', 
-            'posts_per_page' => -1,
-            'post_status' => 'any',
-            );
-
-            $entries = get_children($args, ARRAY_A);
-            // var_dump($answer_option['ID']);
-            // var_dump($entries);
-            array_push($results['entries'], array('answer_option_id' => $answer_option['ID'], 
-                'answer_option_content' => $answer_option['post_content'],'entry_count' => count($entries)));
-            $totalEntries += count($entries);
-        }
-
-        $content_post = get_post($question_id);
-        $content = $content_post->post_content;
-        $content = apply_filters('the_content', $content);
-        $content = str_replace(']]>', ']]&gt;', $content);
-        
-        $poll_question = $content;
-        // var_dump($results);
-        array_push($results, array( 'total_entries' => $totalEntries));
-        array_push($results, array( 'poll_question' => $poll_question));
-        return $results;
-    }
-
 
     /**
      * @param $post_as_array
