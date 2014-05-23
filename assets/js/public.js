@@ -22,7 +22,7 @@ jQuery(function($) {
 				// Get the name of the radio buttons
 				var getNameOfRadioBtn = elem.find('input:radio').attr('name');
 				// Get the value of the selected field
-				var selected = elem.find('.kwps-answer-option input:radio[name=' + getNameOfRadioBtn + ']').val();
+				var selected = elem.find('.kwps-answer-option input:radio[name=' + getNameOfRadioBtn + ']:checked').val();
 				console.log("selected:", selected);
 				if (selected) {
 			    var url = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
@@ -104,10 +104,13 @@ jQuery(function($) {
 						        alert(errMsg);
 						    }
 						});
+					elem.find('.kwps-intro').hide();
+					elem.find('.kwps-question-group').hide();
+					elem.find('.kwps-outro').show();
+				} else {
+					alert('Please select an answer!');
 				}
-				$('.kwps-intro').hide();
-				$('.kwps-outro').show();
-				$('.kwps-question-group').hide();
+				
 			});
 			
 		});
