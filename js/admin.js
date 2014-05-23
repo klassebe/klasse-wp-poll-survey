@@ -376,92 +376,13 @@ jQuery(function ($) {
 
       var data = {};
       var privData = {};
-      privData.intro = [];
-      privData.outro = [];
 
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');
       data.versions = this.collection.where({post_type: "kwps_version"});
-      
-      privData.amountOfVersions = data.versions.length;
-      privData.amountOfQuestionPages = this.collection.where({post_type: "kwps_question_group"}).length;
-
-
 
       
-
-      
-
-      for (var i = 0; i < data.versions.length; i++) {
-        data.versions[i] = data.versions[i].toJSON();
-        var kwpsIntro = this.collection.findWhere({post_type: "kwps_intro", post_parent : data.versions[i].ID});
-        if (kwpsIntro !== undefined) {
-          data.intro = true;
-          data.versions[i].kwpsIntro = kwpsIntro.toJSON();
-          privData.intro[i]= kwpsIntro.toJSON();
-        }
-        var kwpsOutro = this.collection.findWhere({post_type: "kwps_outro", post_parent : data.versions[i].ID});
-        if (kwpsOutro !== undefined) {
-          data.outro = true;
-          data.versions[i].kwpsOutro = kwpsOutro.toJSON();
-          privData.outro[i] = kwpsOutro.toJSON();
-        }
-        if (i === 0) {
-          data.versions[i].main = true;
-        }
-        if (data.versions.length > 1) {
-          data.versions[i].deleteVersion = true;
-        }
-      };
-
-      var questionGroups = this.collection.where({post_type: "kwps_question_group"});
-      for (var i = questionGroups.length - 1; i >= 0; i--) {
-        questionGroups[i] = questionGroups[i].toJSON();
-      };
-      questionGroups = _.toArray(_.groupBy(questionGroups, "_kwps_sort_order"));
-
-      for (var g = questionGroups.length - 1; g >= 0; g--) {
-        if (g == app.openRow.questionGroup) {
-          questionGroups[g].open = true;
-
-          for (var h = 0; h < questionGroups[g].length; h++) {
-            var questions = this.collection.where({post_type: "kwps_question", post_parent : questionGroups[g][h].ID});
-            for (var i = questions.length - 1; i >= 0; i--) {
-              questions[i] = questions[i].toJSON();
-            };
-            questions = _.groupBy(questions, "_kwps_sort_order");
-
-            for (var i in questions) {
-              // if sortorder is equal to openRow show all answers
-              //questions.length = questions[i].length;
-
-              if (i == app.openRow.question) {
-                questions[i].open = true;
-                data.answers = [];
-
-                for (var j = 0; j < questions[i].length; j++) {
-                  var answers = this.collection.where({post_type: "kwps_answer_option", post_parent : questions[i][j].ID});
-                  _.each(answers, function (answer, index, list) {
-                    answers[index] = answer.toJSON();
-                  });
-
-                  data.answers.push(answers);
-                };
-              }
-            };
-          }
-        }
-      }
-
-      privData.questionGroupsLength = questionGroups.length;
-
-      data.questionGroups = questionGroups;
-      data.questions = questions;
-      data.answers = _.flatten(data.answers);
-      data.answers = _.groupBy(data.answers, "_kwps_sort_order");
-      data.kwpsUniquenessTypes = kwpsUniquenessTypes;
-      data.open = app.openRow;
-
+      data.versions = versions
       data.table = [];
 
       // TITLE INTRO
@@ -528,65 +449,53 @@ jQuery(function ($) {
 
 
           if(app.openRow.kwps_question_group == sortOrderQG) {
-            privData.questions = [];
-            for (var i = data.questionGroups[sortOrderQG].length - 1; i >= 0; i--) {
-              privData.questions = privData.questions.concat(this.collection.where({post_type: "kwps_question", post_parent : data.questionGroups[sortOrderQG][i].ID}));
-            };
-            for (var i = privData.questions.length - 1; i >= 0; i--) {
-              privData.questions[i] = privData.questions[i].toJSON();
-            };
-            privData.questions = _.toArray(_.groupBy(privData.questions, "_kwps_sort_order"));
+
+            // TITLE QUESTION 
             data.table.push({
               questionTitle: true,
               title: "Questions",
               postType: "kwps_question",
               addText: "Add question",
-              colSpan : data.versions.length +1,
+              colSpan : versions.length +1,
               add: (testmodus._kwps_max_questions_per_question_group <= _.size(sortedQu))? false:true
             })
             
-
-            for (var i = 0; i < privData.questions.length; i++) {
+            for (var sortOrderQ in sortedQu) {
               data.table.push({
-                versions: privData.questions[i],
+                versions: sortedQu[sortOrderQ],
                 question: true,
-                postType: privData.questions[i][0].post_type,
-                sortOrder: i,
-                number: i+1,
-                amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][0].ID}).length,
-                hasOpened: (app.openRow.kwps_question == i)? true : false
+                postType: "kwps_question",
+                sortOrder: sortOrderQ,
+                number: parseInt(sortOrderQ) +1,
+                amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : qu[0][sortOrderQ].ID}).length,
+                hasOpened: (app.openRow.kwps_question == sortOrderQ)? true : false
               })
-              if (app.openRow.kwps_question >= 0 && i == app.openRow.kwps_question) {
-                privData.answers = [];
+
+              if (app.openRow.kwps_question >= 0 && sortOrderQ == app.openRow.kwps_question) {
+
                 data.table.push({
                   answerTitle: true,
                   title: "Answers",
                   postType: "kwps_answer_option",
                   addText: "Add answer",
-                  questionSortOrder: i,
-                  colSpan : data.versions.length +1
+                  questionSortOrder: sortOrderQ,
+                  colSpan : versions.length +1
                 })
-                for (var j = privData.questions[i].length - 1; j >= 0; j--) {
-                  privData.answers = privData.answers.concat(this.collection.where({post_type: "kwps_answer_option", post_parent : privData.questions[i][j].ID}));
-                };
-                for (var j = privData.answers.length - 1; j >= 0; j--) {
-                  privData.answers[j] = privData.answers[j].toJSON();
-                };
-                privData.answers = _.toArray(_.groupBy(privData.answers, "_kwps_sort_order"));
-                for (var j = 0; j < privData.answers.length; j++) {
+
+                for (var sortOrderA in sortedAns) {
                   data.table.push({
                     answer: true,
                     sorterArrows: true,
-                    first: (j == 0)? true:false,
-                    last: (j == privData.answers.length-1)? true:false,
-                    sortOrder : j,
-                    number: j+1,
-                    versions : privData.answers[j],
+                    first: (sortOrderA == 0)? true:false,
+                    last: (sortOrderA == _.size()-1)? true:false,
+                    sortOrder : sortOrderA,
+                    number: parseInt(sortOrderA) +1,
+                    versions : sortedAns[sortOrderA],
                     postType: 'kwps_answer_option'
                   });
-                };
+                }
               }
-            };
+            }
           }
         };
       };
@@ -595,14 +504,14 @@ jQuery(function ($) {
         title: "Outro",
         postType: "kwps_outro",
         mainTitle: true,
-        add: (this.collection.where({post_type: "kwps_outro"}).length > 0)? false:true,
-        hasMore: (this.collection.where({post_type: "kwps_outro"}).length > 0)? true:false,
+        add: (outros.length > 0)? false:true,
+        hasMore: (outros.length > 0)? true:false,
         addText: 'Add outro',
         opened: app.openRow.main_kwps_outro,
-        amount: privData.outro.length/ privData.amountOfVersions
+        amount: outros.length/ versions.length
       });
 
-      if (this.collection.where({post_type: "kwps_outro"}).length > 0 && privData.outro.length == privData.amountOfVersions && app.openRow.main_kwps_outro) {
+      if (outros.length > 0 && outros.length == versions.length && app.openRow.main_kwps_outro) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_outro',
@@ -610,7 +519,7 @@ jQuery(function ($) {
           hasMore: false,
           hasAmount: false,
           editable: true, //TODO look if the test is published or not.
-          versions: privData.outro,
+          versions: outros,
           mainRow: true,
           sortOrder: 0
         })
