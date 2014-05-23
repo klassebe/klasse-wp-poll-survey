@@ -152,6 +152,12 @@ jQuery(function ($) {
       e.preventDefault();
 
       var postData = $(e.target).serializeObject();
+
+      if(!postData.post_title || !postData.post_parent) {
+        alert('Please fill in all fields');
+        return;
+      }
+
       postData.post_type = 'kwps_test_collection';
       postData.post_status = "draft";
       postData._kwps_logged_in_user_limit = 'free';
