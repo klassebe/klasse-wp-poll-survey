@@ -25,7 +25,7 @@ jQuery(function($) {
 				var selected = elem.find('.kwps-answer-option input:radio[name=' + getNameOfRadioBtn + ']').val();
 				console.log("selected:", selected);
 				if (selected) {
-			    var url = $('#adminUrl').val() + "admin-ajax.php?action=kwps_save_entry";
+			    var url = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
 
 			    var entry = {
 				  		"post_parent": selected,
