@@ -113,8 +113,33 @@ class Version extends Kwps_Post_Type{
         return static::get_html($id);
     }
 
+    public static function save_post($post_data){
+        $post_id = wp_insert_post($post_data);
+        if( ! isset($post_data['_kwps_view_count'] ) ) {
+            $post_data['_kwps_view_count'] = 0;
+        }
+
+        if( $post_id != 0 ){
+            foreach($post_data as $field => $value){
+                if( strpos($field, 'kwps') ) {
+                    update_post_meta($post_id, $field, $value);
+                }
+            }
+        } else {
+            return null;
+        }
+
+        return static::get_as_array($post_id);
+    }
+
     public static function get_html($id){
 	    $version = Version::get_as_array($id);
+        $view_count = (int) $version['_kwps_view_count'];
+        $view_count++;
+        $version['_kwps_view_count'] = $view_count;
+
+        $temps = static::save_post($version);
+
 	    $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
 	    if( is_user_logged_in() ){
