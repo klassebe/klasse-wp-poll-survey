@@ -60,7 +60,7 @@ jQuery(function($) {
 								}
 								getChartData(urlGetChartData, getChart);
 					    },
-					    failure: function(errMsg) {
+					    failure: function (errMsg) {
 					        alert(errMsg);
 					    }
 					});
@@ -72,7 +72,6 @@ jQuery(function($) {
 						  			contentType: "application/json; charset=utf-8",
 						  			dataType: "json",
 						  			success: function (data) {
-							    	console.log("data",data);
 							    	var graphCategories = [];
 							    	var graphData = [];
 							    	var totalEntries = data[0][0].total_entries;
@@ -80,62 +79,163 @@ jQuery(function($) {
 							    		graphCategories.push(value.answer_option_content);
 							    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
 							    	});
+							    	outputPieChart(data, graphCategories, graphData);
 							    	
-							    	// BAR CHART CODE
-							    	elem.find('.kwps-chart').highcharts({
-							            chart: {
-							                type: 'bar'
-							            },
-							            title: {
-							                text: data[0][1].poll_question
-							            },
-							            xAxis: {
-							                categories: graphCategories,
-							                title: {
-							                    text: null
-							                }
-							            },
-							            yAxis: {
-							            	max: 100,
-							                min: 0,
-							                title: {
-							                    text: 'percent',
-							                    align: 'high'
-							                },
-							                labels: {
-							                    overflow: 'justify'
-							                }
-							            },
-							            tooltip: {
-							                valueSuffix: ' %'
-							            },
-							            plotOptions: {
-							                bar: {
-							                    dataLabels: {
-							                        enabled: true
-							                    }
-							                }
-							            },
-							            exporting: {
-													    enabled: false
-													},
-							            legend: {
-							                enabled: false
-							            },
-							            credits: {
-							                enabled: false
-							            },
-							            series: [{
-							            		name: 'Votes',
-							                data: graphData
-							            }]
-							        });
 								    },
 								    async: false
 					  		});
 						elem.find('.kwps-intro').hide();
 						elem.find('.kwps-question-group').hide();
 						elem.find('.kwps-outro').show();
+					};
+
+					/* BAR CHART CODE */
+					var outputBarChart = function (data, graphCategories, graphData) {
+						elem.find('.kwps-chart.chart-bar').highcharts({
+						    chart: {
+						        type: 'bar'
+						    },
+						    title: {
+						        text: data[0][1].poll_question
+						    },
+						    xAxis: {
+						        categories: graphCategories,
+						        title: {
+						            text: null
+						        }
+						    },
+						    yAxis: {
+						    	max: 100,
+						        min: 0,
+						        title: {
+						            text: 'percent',
+						            align: 'high'
+						        },
+						        labels: {
+						            overflow: 'justify'
+						        }
+						    },
+						    tooltip: {
+						        valueSuffix: ' %'
+						    },
+						    plotOptions: {
+						        bar: {
+						            dataLabels: {
+						                enabled: true
+						            }
+						        }
+						    },
+						    exporting: {
+								    enabled: false
+								},
+						    legend: {
+						        enabled: false
+						    },
+						    credits: {
+						        enabled: false
+						    },
+						    series: [{
+						    		name: 'Votes',
+						        data: graphData
+						    }]
+						});
+					};
+					/* PIE CHART CODE */
+					var outputLineChart = function (data, graphCategories, graphData) {
+						elem.find('.kwps-chart.chart-line').highcharts({
+	            title: {
+	              text: data[0][1].poll_question
+	            },
+	            xAxis: {
+	              categories: graphCategories,
+	            },
+	            yAxis: {
+	        			max: 100,
+				        min: 0,
+				        title: {
+				            text: 'percent',
+				            align: 'high'
+				        },
+				        labels: {
+				            overflow: 'justify'
+				        },
+	              plotLines: [{
+	                value: 0,
+	                width: 1,
+	                color: '#808080'
+	              }]
+	            },
+	            tooltip: {
+	              valueSuffix: ' %'
+	            },
+	        		exporting: {
+							  enabled: false
+							},
+	            legend: {
+	              enabled: false
+	            },
+					    credits: {
+					      enabled: false
+					    },
+	            series: [{
+	              name: 'Votes',
+	              data: graphData
+	            }]
+		        });
+					};
+					var outputPieChart = function(data, graphCategories, graphData) {
+						elem.find('.kwps-chart').highcharts({
+			        chart: {
+		            plotBackgroundColor: null,
+		            plotBorderWidth: null,
+		            plotShadow: false
+			        },
+			        title: {
+		            text: data[0][1].poll_question
+			        },
+			        tooltip: {
+			    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			        },
+			        plotOptions: {
+		            pie: {
+	                allowPointSelect: true,
+	                cursor: 'pointer',
+	                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                      color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+	                }
+		            }
+			        },
+			        exporting: {
+							  enabled: false
+							},
+	            legend: {
+	              enabled: false
+	            },
+					    credits: {
+					      enabled: false
+					    },
+			        series: [{
+		            type: 'pie',
+		            name: 'Browser share',
+		            data: [
+	                ['Firefox',   45.0],
+	                ['IE',       26.8],
+	                {
+                    name: 'Chrome',
+                    y: 12.8,
+                    sliced: true,
+                    selected: true
+	                },
+	                ['Safari',    8.5],
+	                ['Opera',     6.2],
+	                ['Others',   0.7]
+		            ]
+			        }]
+			    });
 					};
 				} else {
 					alert('Please select an answer!');
