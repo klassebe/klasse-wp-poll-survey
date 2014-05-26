@@ -30,8 +30,6 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
          } else {
              $post_as_array = array_merge($post_as_array, static::get_meta_data($post_id));
          }
-
-
         return $post_as_array;
     }
 

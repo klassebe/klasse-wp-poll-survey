@@ -41,6 +41,11 @@ class Entry extends Kwps_Post_Type{
         return Answer_Option::get_test_modus($entry['post_parent']);
     }
 
+    public static function get_version($entry_id){
+        $entry = static::get_as_array($entry_id);
+        return Answer_Option::get_version($entry['post_parent']);
+    }
+
     public static function get_html($entry_id){
         $entry = static::get_as_array($entry_id);
 
@@ -130,6 +135,66 @@ class Entry extends Kwps_Post_Type{
 
         return $errors;
     }
+
+    static function is_part_of_completed_test($entry_id){
+        $version = static::get_version( $entry_id );
+        $user_hashes = static::get_all_user_hashes_per_version( $version['ID'] );
+
+        foreach($user_hashes as $user_hash){
+            $user_entries = static::get_all_by_user_hash_and_version($user_hash, $version['ID']);
+
+            if( sizeof( $user_entries ) <= Question::get_count_per_version($version['ID']) ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static function get_all_user_hashes_per_version($version_id){
+        $user_hashes = array();
+
+        $question_groups = Question_Group::get_all_by_post_parent($version_id);
+        foreach($question_groups as $question_group){
+            $questions = Question::get_all_by_post_parent($question_group['ID']);
+            foreach($questions as $question){
+                $answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
+                foreach($answer_options as $answer_option){
+                    $entries = Entry::get_all_by_post_parent($answer_option['ID']);
+                    foreach($entries as $entry){
+                        array_push( $user_hashes,  $entry['_kwps_cookie_value']);
+                    }
+                }
+            }
+        }
+
+        return array_unique($user_hashes);
+    }
+
+    static function get_all_by_user_hash_and_version($user_hash, $version_id){
+        $args = array(
+            'post_type' => static::$post_type,
+            'meta_query' => array(
+                array(
+                    'key' => '_kwps_cookie_value',
+                    'value' => $user_hash,
+                )
+            )
+        );
+        $entries_by_user_hash = get_posts( $args );
+
+        $entries = array();
+
+        foreach($entries_by_user_hash as $entry){
+            $version = static::get_version($entry['ID']);
+            if( $version['ID'] == $version_id ) {
+                array_push($entries, $entry);
+            }
+        }
+
+        return $entries;
+    }
+
 }
 
 /* EOF */

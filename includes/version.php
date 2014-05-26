@@ -138,7 +138,7 @@ class Version extends Kwps_Post_Type{
         $view_count++;
         $version['_kwps_view_count'] = $view_count;
 
-        $temps = static::save_post($version);
+        static::save_post($version);
 
 	    $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
@@ -196,7 +196,7 @@ class Version extends Kwps_Post_Type{
                                 <div class="kwps-answer-option">
                                     <ul>
                                         <?php foreach($question['answer_options'] as $answerOption): ?>
-                                            <li><input id="answer-option-<?php echo $answerOption['ID'] ?>" type="radio" name="answer_option_<?php echo $question['ID'] ?>" value="<?php echo $answerOption['ID'] ?>"><label for="answer-option-<?php echo $answerOption['ID'] ?>"><?php echo $answerOption['post_content'] ?></label></li>
+                                            <li><input id="answer-option-<?php echo $answerOption['ID'] ?>" type="radio" name="question_id_<?php echo $question['ID'] ?>" value="<?php echo $answerOption['ID'] ?>"><label for="answer-option-<?php echo $answerOption['ID'] ?>"><?php echo $answerOption['post_content'] ?></label></li>
                                         <?php endforeach; ?>
                                     </ul>
                                 </div>
@@ -222,5 +222,4 @@ class Version extends Kwps_Post_Type{
 <?php
 		return ob_get_clean();
     }
-
 }
