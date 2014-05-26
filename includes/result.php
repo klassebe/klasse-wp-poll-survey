@@ -34,7 +34,8 @@ class Result {
         return $request_data;
     }
 
-    public static function bar_chart_per_question($version_id) {
+    public static function bar_chart_per_question($entry_id) {
+        $version_id = Entry::get_version($entry_id);
         $question_groups = Question_Group::get_all_by_post_parent($version_id);
         $results = array();
 
@@ -79,5 +80,14 @@ class Result {
         array_push($results, array( 'total_entries' => $totalEntries));
         array_push($results, array( 'question' => $question));
         return $results;
+    }
+
+    public static function get_result_data_for_test_collection($test_collection_id){
+        $versions = Version::get_all_by_post_parent($test_collection_id);
+
+        foreach($versions as $version){
+
+        }
+
     }
 }

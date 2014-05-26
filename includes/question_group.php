@@ -46,6 +46,11 @@ class Question_Group extends Kwps_Post_Type {
         return Version::get_test_modus($question_group['post_parent']);
     }
 
+    public static function get_version($question_group_id){
+        $question_group = static::get_as_array($question_group_id);
+        return Version::get_as_array($question_group['post_parent']);
+    }
+
 
     public static function get_html($id)
     {
