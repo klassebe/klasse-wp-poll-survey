@@ -54,7 +54,7 @@ jQuery(function ($) {
   // Routing
    var router = Backbone.Router.extend({
     routes: {
-      '' : 'newKwpsTest',
+      '' : 'home',
       'edit/:id' : 'edit',
       'result/:id' : 'result',
       'edit/question/:id' : 'editQuestion',
@@ -64,6 +64,11 @@ jQuery(function ($) {
     },
     home : function () {
       // console.log("ROUTING TO: home")
+      if(!GetURLParameter('id')) {
+        window.location = '#new';
+        return;
+      }
+
       if(!app.views.index) {
         if (app.kwpsPollsCollection !== undefined) {
           app.views.index = new app.KwpsView({
