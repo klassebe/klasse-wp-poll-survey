@@ -131,6 +131,7 @@ add_action( 'wp_ajax_kwps_delete_entry', array('\includes\entry','delete_from_re
 
 
 add_action( 'wp_ajax_kwps_get_result_of_version', array('\includes\result','get_result_of_version'));
+add_action( 'wp_ajax_nopriv_kwps_get_result_of_version', array('\includes\result','get_result_of_version'));
 
 add_filter('init', 'kwps_add_api_rewrite_rules');
 
