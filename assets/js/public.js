@@ -55,6 +55,7 @@ jQuery(function($) {
 						    	console.log(data.ID);
 							  	if (data) {
 							  		getChart.ID = data.ID;
+							  		console.log('getChart ID: ',data.ID);
 							  		getChart.output_type ='bar-chart-per-question';
 							  		console.log('eerste call gelukt');
 									} else {
@@ -82,10 +83,16 @@ jQuery(function($) {
 							    	console.log("data",data);
 							    	var graphCategories = [];
 							    	var graphData = [];
-							    	$.each(data.entries, function(index, value) {
-							    		graphCategories.push(value.answer_option_content);
-							    		graphData.push(Math.round((value.entry_count/data[0].total_entries)*100));
+							    	var totalEntries = data[0][0].total_entries;
+							    	console.log("total entries:", totalEntries);
+							    	$.each(data, function(index, value) {
+							    		console.log("value entries:",value.entries);
+							    		$.each(value.entries, function(index2, value2) {
+								    		graphCategories.push(value2.answer_option_content);
+								    		graphData.push(Math.round((value2.entry_count/totalEntries)*100));
+								    	});
 							    	});
+							    	
 							    	console.log("getchart",getChart);
 							    	// BAR CHART CODE
 							    	elem.find('.kwps-chart').highcharts({
