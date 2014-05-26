@@ -54,7 +54,7 @@ jQuery(function ($) {
   // Routing
    var router = Backbone.Router.extend({
     routes: {
-      '' : 'home',
+      '' : 'newKwpsTest',
       'edit/:id' : 'edit',
       'result/:id' : 'result',
       'edit/question/:id' : 'editQuestion',
