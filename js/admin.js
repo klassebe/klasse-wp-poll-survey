@@ -46,6 +46,7 @@ jQuery(function ($) {
   app.templates = {
     controlPanel: kwps_admin_templates.control_panel,
     edit: kwps_admin_templates.edit,
+    result: kwps_admin_templates.control_panel,
     question: kwps_admin_templates.table,
     newKwpsTest: kwps_admin_templates.choose_testmodus
   };
@@ -55,6 +56,7 @@ jQuery(function ($) {
     routes: {
       '' : 'home',
       'edit/:id' : 'edit',
+      'result/:id' : 'result',
       'edit/question/:id' : 'editQuestion',
       'new/:type/:parentId' : 'new',
       'new': 'newKwpsTest',
@@ -67,6 +69,7 @@ jQuery(function ($) {
           collection: app.kwpsPollsCollection
         });
         app.views.index.initialize();
+        //app.views.result = new app.KwpsViewResult({model: {data: 'een beetje data'}});
       } 
     },
     edit :  function (id) {
@@ -358,7 +361,8 @@ jQuery(function ($) {
       var sortedAns = _.groupBy(_.flatten(ans,true),"_kwps_sort_order");
 
       var data = {
-        kwpsUniquenessTypes: kwpsUniquenessTypes
+        kwpsUniquenessTypes: kwpsUniquenessTypes,
+        data: 'een beetje data'
       };
 
       var mainPost = this.collection.get(GetURLParameter('id'));
@@ -840,6 +844,18 @@ jQuery(function ($) {
       });
 
       this.render();
+    }
+  });
+
+  app.KwpsViewResult = Backbone.View.extend({
+    el: '#tabs-results',
+    initialize: function() {
+      this.render();
+    },
+    render: function() {
+      console.log(this.model);
+      console.log(app.templates.result(this.model));
+      $(this.el).html(app.templates.result(this.model));
     }
   });
 
