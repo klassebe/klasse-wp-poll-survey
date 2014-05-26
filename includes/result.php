@@ -85,31 +85,88 @@ class Result {
         $request_data = static::get_post_data_from_request();
         $test_collection_id = $request_data['test_collection_id'];
 
-        wp_send_json( static::get_result_data_of_test_collection($test_collection_id) );
+        $results = static::get_test_collection_results( $test_collection_id );
+        wp_send_json( $results );
 
     }
 
-    public static function get_result_data_of_test_collection( $test_collection_id ){
+    public static function get_test_collection_results( $test_collection_id ){
+        $results = array();
+
+        $versions = Version::get_all_by_post_parent($test_collection_id);
+
+        foreach($versions as $version) {
+            $version_result = static::get_version_results($version);
+            array_push( $results, $version_result );
+        }
+
+        return $results;
+    }
+
+    public static function get_version_results( $version) {
+        $participants_count = static::get_participants_count_of_version( $version['ID'] );
+        $conversion_rate = static::get_conversion_rate_of_version( $version );
+
+        return array(
+            'ID' => $version['ID'],
+            'total_participants' => $participants_count,
+            'conversion_rate' => $conversion_rate,
+        );
+
+    }
+
+    public static function get_participants_count_of_test_collection( $test_collection_id ){
         $total_participants = array();
         $versions = Version::get_all_by_post_parent($test_collection_id);
 
         foreach($versions as $version){
-            $participants_per_version = 0;
-            $user_hashes = Entry::get_all_user_hashes_per_version( $version['ID'] );
-
-            foreach($user_hashes as $user_hash){
-
-                $entries = Entry::get_all_by_user_hash_and_version( $user_hash, $version['ID'] );
-
-                foreach($entries as $entry){
-                    Entry::is_part_of_completed_test( $entry['ID'] );
-                }
-                $participants_per_version++;
-            }
+            $participants_count = static::get_participants_count_of_version( $version['ID'] );
             array_push( $total_participants,
-                array('ID' => $version['ID'], 'total_participants' => $participants_per_version ) );
+                array('ID' => $version['ID'], 'total_participants' => $participants_count ) );
+        }
+        return $total_participants;
+    }
+
+    public static function get_participants_count_of_version( $version_id ) {
+        $participants_count = 0;
+        $user_hashes = Entry::get_all_user_hashes_per_version( $version_id );
+
+        foreach($user_hashes as $user_hash){
+
+            $entries = Entry::get_all_by_user_hash_and_version( $user_hash, $version_id );
+
+            foreach($entries as $entry){
+                if (Entry::is_part_of_completed_test( $entry['ID'] ) ){
+                    $participants_count++;
+                }
+            }
+        }
+        return $participants_count;
+    }
+
+        public static function get_conversion_rate_of_test_collection( $test_collection_id ){
+        $conversion_rates = array();
+        $versions = Version::get_all_by_post_parent($test_collection_id);
+
+        foreach($versions as $version){
+            $conversion_rate = static::get_conversion_rate_of_version($version);
+
+            array_push( $conversion_rates,
+                array('ID' => $version['ID'], 'conversion_rate' => $conversion_rate ) );
         }
 
-        return $total_participants;
+        return $conversion_rates;
+    }
+
+    public static function get_conversion_rate_of_version( $version ){
+        $total_participants = static::get_participants_count_of_version( $version['ID'] );
+        $view_count = (int) $version['_kwps_view_count'];
+        if( $view_count > 0 ){
+            $conversion_rate = $total_participants / $view_count;
+        } else {
+            $conversion_rate = 0;
+        }
+
+        return $conversion_rate;
     }
 }

@@ -43,6 +43,12 @@ class admin_section {
                         $outros = array_merge($outros, Outro::get_all_by_post_parent($version['ID']));
                     }
 
+                    foreach($versions as $key => $value){
+                        $versions[$key]['total_participants'] =
+                            Result::get_participants_count_of_version($value['ID']);
+                        $versions[$key]['conversion_rate'] = Result::get_conversion_rate_of_version($value);
+                    }
+
                     foreach($question_groups as $question_group){
                         $questions = array_merge($questions, Question::get_all_by_post_parent($question_group['ID']));
                     }
