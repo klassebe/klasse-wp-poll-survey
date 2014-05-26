@@ -281,7 +281,8 @@ jQuery(function ($) {
       'change #post_title': 'changeTitle',
       'change .update-main': 'updateTestCollection',
       'change .update-post-title': 'updatePostTitle',
-      'click .move-action:not(.disabled)': 'moveItem'
+      'click .move-action:not(.disabled)': 'moveItem',
+      'click .make-live': 'makeLive'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -298,6 +299,14 @@ jQuery(function ($) {
 
       //Get versions
       var versions = _.sortBy(_.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON'),'_kwps_sort_order');
+
+      versions.forEach(function(version) {
+        if(!version.isLive || version.post_status == "draft") {
+          version.isLive = false;
+        } else {
+          version.isLive = true;
+        }
+      });
 
       //Get intro's
       var intros = [];
@@ -853,6 +862,14 @@ jQuery(function ($) {
       });
 
       this.render();
+    },
+    makeLive: function(event) {
+      event.preventDefault();
+      var versionId = $(event.currentTarget).closest('th').data('version-id');
+      var version = this.collection.findWhere({ID: versionId});
+      version.set('post_status', 'publish');
+      version.save();
+
     }
   });
 
