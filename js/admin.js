@@ -302,7 +302,7 @@ jQuery(function ($) {
 
       versions.forEach(function(version) {
         version.isLive = (version.post_status !== "draft");
-        version.conversion_rate_percentage = version.conversion_rate * 100;
+        version.conversion_rate_percentage = version.conversion_rate.toPrecision(4) * 100;
       });
 
       //Get intro's
