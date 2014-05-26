@@ -301,11 +301,7 @@ jQuery(function ($) {
       var versions = _.sortBy(_.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON'),'_kwps_sort_order');
 
       versions.forEach(function(version) {
-        if(!version.isLive || version.post_status == "draft") {
-          version.isLive = false;
-        } else {
-          version.isLive = true;
-        }
+        version.isLive = (version.post_status !== "draft");
       });
 
       //Get intro's
@@ -869,6 +865,8 @@ jQuery(function ($) {
       var version = this.collection.findWhere({ID: versionId});
       version.set('post_status', 'publish');
       version.save();
+
+      this.render();
 
     }
   });
