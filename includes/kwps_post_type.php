@@ -96,10 +96,8 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
 
 
-    public final static function save_post($post_data){
+    public static function save_post($post_data){
         $post_id = wp_insert_post($post_data);
-
-        $post = get_post($post_id);
 
         if( $post_id != 0 ){
             foreach($post_data as $field => $value){
@@ -111,7 +109,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
             return null;
         }
 
-        return $post;
+        return static::get_as_array($post_id);
     }
 
     public final static function update_from_request(){
