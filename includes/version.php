@@ -138,7 +138,7 @@ class Version extends Kwps_Post_Type{
         $view_count++;
         $version['_kwps_view_count'] = $view_count;
 
-        $temps = static::save_post($version);
+        static::save_post($version);
 
 	    $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
@@ -222,5 +222,4 @@ class Version extends Kwps_Post_Type{
 <?php
 		return ob_get_clean();
     }
-
 }

@@ -41,6 +41,11 @@ class Answer_Option extends Kwps_Post_Type{
         return Question::get_test_modus($answer_option['post_parent']);
     }
 
+    public static function get_version($answer_option_id){
+        $answer_option = static::get_as_array($answer_option_id);
+        return Question::get_version($answer_option['post_parent']);
+    }
+
     public static function get_sort_order($answer_option_id){
         return get_post_meta($answer_option_id, '_kwps_sort_order', true);
     }

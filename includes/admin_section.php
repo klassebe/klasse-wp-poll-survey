@@ -67,10 +67,8 @@ class admin_section {
             }
         } else {
 
-            $tests = $kwps_test_modi;
-
             ?>
-            <script>var kwpsTests=<?php echo json_encode($tests); ?></script>
+            <script>var kwpsTests=<?php echo json_encode($kwps_test_modi); ?></script>
             <?php
         }
 

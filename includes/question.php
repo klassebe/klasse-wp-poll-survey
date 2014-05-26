@@ -40,6 +40,24 @@ class Question extends Kwps_Post_Type{
         return Question_Group::get_test_modus($question['post_parent']);
     }
 
+    public static function get_version($question_id){
+        $question = static::get_as_array($question_id);
+        return Question_Group::get_version($question['post_parent']);
+    }
+
+    public static function get_count_per_version($version_id) {
+        $question_groups = Question_Group::get_all_by_post_parent($version_id);
+
+        $count_per_version = 0;
+
+        foreach( $question_groups as $question_group ) {
+            $questions = Question::get_all_by_post_parent($question_group['ID']);
+            $count_per_version = $count_per_version + sizeof($questions);
+        }
+
+        return $count_per_version;
+    }
+
     public static function get_html($question_id){
         $question = static::get_as_array($question_id);
 
