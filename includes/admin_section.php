@@ -2,6 +2,7 @@
 
 namespace includes;
 require_once __DIR__ . '/testCollections_list_table.php';
+require_once __DIR__ . '/entries_list_table.php';
 require_once __DIR__ . '/uniqueness.php';
 
 
@@ -87,5 +88,12 @@ class admin_section {
         $poll_list->prepare_items();
 
         include_once __DIR__ . '/../views/poll_list.php';
+    }
+
+    public static function manage_entries() {
+        $entry_list = new Entries_List_Table();
+        $entry_list->prepare_items();
+
+        include_once __DIR__ . '/../views/entry_list.php';
     }
 } 
