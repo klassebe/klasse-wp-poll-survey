@@ -26,12 +26,13 @@ jQuery(function($) {
 				console.log("selected:", selected);
 				if (selected) {
 			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
-			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=get_result_of_version";
+			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
 
 			    var entry = {
 				  		"post_parent": selected,
 				  		"_kwps_sort_order": 0
 				  	};
+				  var getChart = {};
 
 				  	$.ajax({
 						    type: "POST",
@@ -41,83 +42,83 @@ jQuery(function($) {
 						    dataType: "json",
 						    success: function(data) {
 							  	if (data) {
-							  		$.ajax({
-							  			type: "POST",
-							  			url: urlGetChartData,
-							  			data: {
-							  				ID : data,
-							  				output_type : 'bar-chart-per-question'
-							  			},
-							  			contentType: "application/json; charset=utf-8",
-							  			dataType: "json",
-							  			success: function (data) {
-							  												    	console.log(entry);
-								    	// TODO: no data is returned from server!
-								    	console.log(data);
-								    	var graphCategories = [];
-								    	var graphData = [];
-								    	$.each(data.entries, function(index, value) {
-								    		graphCategories.push(value.answer_option_content);
-								    		graphData.push(Math.round((value.entry_count/data[0].total_entries)*100));
-								    	});
-
-								    	// BAR CHART CODE
-								    	elem.find('.kwps-chart').highcharts({
-								            chart: {
-								                type: 'bar'
-								            },
-								            title: {
-								                text: data[1].poll_question
-								            },
-								            xAxis: {
-								                categories: graphCategories,
-								                title: {
-								                    text: null
-								                }
-								            },
-								            yAxis: {
-								            	max: 100,
-								                min: 0,
-								                title: {
-								                    text: 'percent',
-								                    align: 'high'
-								                },
-								                labels: {
-								                    overflow: 'justify'
-								                }
-								            },
-								            tooltip: {
-								                valueSuffix: ' %'
-								            },
-								            plotOptions: {
-								                bar: {
-								                    dataLabels: {
-								                        enabled: true
-								                    }
-								                }
-								            },
-								            exporting: {
-														    enabled: false
-														},
-								            legend: {
-								                enabled: false
-								            },
-								            credits: {
-								                enabled: false
-								            },
-								            series: [{
-								            		name: 'Votes',
-								                data: graphData
-								            }]
-								        });
-									    },
-							  		});
+							  		getChart.ID = data.ID;
+							  		getChart.output_type ='bar-chart-per-question';
+							  		console.log('eerste call gelukt');
+									} else {
+										alert('error in data callback');
 									}
 						    },
 						    failure: function(errMsg) {
 						        alert(errMsg);
 						    }
 						});
+				  		$.ajax({
+					  			type: "POST",
+					  			url: urlGetChartData,
+					  			data: JSON.strinify(getChart),
+					  			contentType: "application/json; charset=utf-8",
+					  			dataType: "json",
+					  			success: function (data) {
+						    	console.log(data);
+						    	var graphCategories = [];
+						    	var graphData = [];
+						    	$.each(data.entries, function(index, value) {
+						    		graphCategories.push(value.answer_option_content);
+						    		graphData.push(Math.round((value.entry_count/data[0].total_entries)*100));
+						    	});
+						    	console.log(getChart);
+						    	// BAR CHART CODE
+						    	elem.find('.kwps-chart').highcharts({
+						            chart: {
+						                type: 'bar'
+						            },
+						            title: {
+						                text: data[1].poll_question
+						            },
+						            xAxis: {
+						                categories: graphCategories,
+						                title: {
+						                    text: null
+						                }
+						            },
+						            yAxis: {
+						            	max: 100,
+						                min: 0,
+						                title: {
+						                    text: 'percent',
+						                    align: 'high'
+						                },
+						                labels: {
+						                    overflow: 'justify'
+						                }
+						            },
+						            tooltip: {
+						                valueSuffix: ' %'
+						            },
+						            plotOptions: {
+						                bar: {
+						                    dataLabels: {
+						                        enabled: true
+						                    }
+						                }
+						            },
+						            exporting: {
+												    enabled: false
+												},
+						            legend: {
+						                enabled: false
+						            },
+						            credits: {
+						                enabled: false
+						            },
+						            series: [{
+						            		name: 'Votes',
+						                data: graphData
+						            }]
+						        });
+							    },
+				  		});
 					elem.find('.kwps-intro').hide();
 					elem.find('.kwps-question-group').hide();
 					elem.find('.kwps-outro').show();
