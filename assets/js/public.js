@@ -41,6 +41,7 @@ jQuery(function($) {
 						    contentType: "application/json; charset=utf-8",
 						    dataType: "json",
 						    success: function(data) {
+						    	console.log(data.ID);
 							  	if (data) {
 							  		getChart.ID = data.ID;
 							  		getChart.output_type ='bar-chart-per-question';
@@ -53,10 +54,11 @@ jQuery(function($) {
 						        alert(errMsg);
 						    }
 						});
+						console.log("getChart:",getChart);
 				  		$.ajax({
 					  			type: "POST",
 					  			url: urlGetChartData,
-					  			data: JSON.strinify(getChart),
+					  			data: JSON.stringify(getChart),
 					  			contentType: "application/json; charset=utf-8",
 					  			dataType: "json",
 					  			success: function (data) {
