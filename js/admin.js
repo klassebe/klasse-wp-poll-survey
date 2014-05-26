@@ -907,8 +907,10 @@ jQuery(function ($) {
         label: kwps_translations[this.options.attribute],
         text: this.model.get("post_content"),
         title: this.model.get("post_title"),
-        answer_option_value: this.model.get("_kwps_answer_option_value")
+        answer_option_value: this.model.get("_kwps_answer_option_value"),
+        addResults: (this.model.get('post_type') === "kwps_outro")
       };
+      console.log("model post type:",this.model.get('post_type'));
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({
