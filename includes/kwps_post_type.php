@@ -23,7 +23,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
     }
 
     public static function get_as_array($post_id){
-        $post_as_array = get_post($post_id,ARRAY_A);
+        $post_as_array = get_post($post_id,  ARRAY_A);
 
          if(null == $post_as_array){
              $post_as_array = false;

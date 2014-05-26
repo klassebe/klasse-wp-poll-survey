@@ -133,6 +133,10 @@ add_action( 'wp_ajax_kwps_delete_entry', array('\includes\entry','delete_from_re
 add_action( 'wp_ajax_kwps_get_result_of_version', array('\includes\result','get_result_of_version'));
 add_action( 'wp_ajax_nopriv_kwps_get_result_of_version', array('\includes\result','get_result_of_version'));
 
+add_action( 'wp_ajax_kwps_get_result_of_test_collection',
+    array('\includes\result','ajax_get_result_data_of_test_collection'));
+
+
 add_filter('init', 'kwps_add_api_rewrite_rules');
 
 register_activation_hook(__FILE__, 'kwps_activate');
@@ -284,6 +288,7 @@ function add_plugin_admin_menu() {
     add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array('\includes\admin_section', 'display_tests'));
 //    add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array($this, 'display_tests'));
     add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Add New Test', 'klasse-wp-poll-survey' ), __( 'Add New', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_addnew', array('\includes\admin_section', 'display_form'));
+    add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Manage Entries', 'klasse-wp-poll-survey' ), __( 'Entries', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_manage_entries', array('\includes\admin_section', 'manage_entries'));
 }
 
 /*----------------------------------------------------------------------------*

@@ -2,6 +2,7 @@
 
 namespace includes;
 require_once __DIR__ . '/testCollections_list_table.php';
+require_once __DIR__ . '/entries_list_table.php';
 require_once __DIR__ . '/uniqueness.php';
 
 
@@ -41,6 +42,12 @@ class admin_section {
                         $question_groups = array_merge($question_groups, Question_Group::get_all_by_post_parent($version['ID']));
                         $intros = array_merge($intros, Intro::get_all_by_post_parent($version['ID']));
                         $outros = array_merge($outros, Outro::get_all_by_post_parent($version['ID']));
+                    }
+
+                    foreach($versions as $key => $value){
+                        $versions[$key]['total_participants'] =
+                            Result::get_participants_count_of_version($value['ID']);
+                        $versions[$key]['conversion_rate'] = Result::get_conversion_rate_of_version($value);
                     }
 
                     foreach($question_groups as $question_group){
@@ -87,5 +94,12 @@ class admin_section {
         $poll_list->prepare_items();
 
         include_once __DIR__ . '/../views/poll_list.php';
+    }
+
+    public static function manage_entries() {
+        $entry_list = new Entries_List_Table();
+        $entry_list->prepare_items();
+
+        include_once __DIR__ . '/../views/entry_list.php';
     }
 } 
