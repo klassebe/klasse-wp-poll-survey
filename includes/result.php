@@ -22,7 +22,6 @@ class Result {
                 $results = static::bar_chart_per_question($version_id);
                 break;
         }
-        var_dump($results);
         wp_send_json( $results );
         die;
     }
