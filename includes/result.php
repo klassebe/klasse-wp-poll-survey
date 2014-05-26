@@ -34,8 +34,9 @@ class Result {
     }
 
     public static function bar_chart_per_question($entry_id) {
-        $version_id = Entry::get_version($entry_id);
-        $question_groups = Question_Group::get_all_by_post_parent($version_id);
+        $version= Entry::get_version($entry_id);
+
+        $question_groups = Question_Group::get_all_by_post_parent($version['ID']);
         $results = array();
 
         foreach($question_groups as $question_group){
