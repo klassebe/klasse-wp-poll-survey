@@ -278,9 +278,9 @@ jQuery(function ($) {
       'click .toggle-details': 'toggleDetails',
       'click button.add': 'createNew',
       'click span.del': 'deletePostType',
-      'change #post_title': 'changeTitle',
+      'change #post_title': 'updateTestCollection',
       'change .update-main': 'updateTestCollection',
-      'change .update-post-title': 'updatePostTitle',
+      'change .update-version-post-title': 'updateVersionPostTitle',
       'click .move-action:not(.disabled)': 'moveItem',
       'click .make-live': 'makeLive'
     },
@@ -388,6 +388,7 @@ jQuery(function ($) {
         };
       }
       data.versions = versions;
+      data.collection = testCollection.toJSON();
       
       data.table = [];
 
@@ -812,11 +813,8 @@ jQuery(function ($) {
         new app.KwpsViewEdit({model: app.test, attribute: kwpsAttribute});
       }
     },
-    changeTitle: function(event) {
-      this.model.set('post_title', $(event.target).val());
-    },
     updateTestCollection: function(event) {
-      var mainPost = this.collection.get(GetURLParameter('id'));
+      var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
       var attribute = $(event.target).attr("name");
       var value = $(event.target).val();
 
@@ -824,16 +822,16 @@ jQuery(function ($) {
         value = 1;
       }
 
-      mainPost.set(attribute, value);
-      mainPost.save();
+      testCollection.set(attribute, value);
+      testCollection.save();
     },
-    updatePostTitle: function(event) {
+    updateVersionPostTitle: function(event) {
       var attribute = $(event.target).attr("name");
       var value = $(event.target).val();
-      var ID = $(event.target).data('id');
-      var post = this.collection.get(ID);
-      post.set(attribute, value);
-      post.save();
+      var versionId = $(event.currentTarget).closest('th').data('version-id');
+      var version = this.collection.get(versionId);
+      version.set(attribute, value);
+      version.save();
     },
     moveItem: function(event) {
       var currentSortOrder = $(event.currentTarget).closest('tr').data('sort-order');

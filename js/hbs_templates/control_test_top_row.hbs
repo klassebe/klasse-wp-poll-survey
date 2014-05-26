@@ -3,7 +3,7 @@
     {{#each versions}}
         <th class=" column-title" data-version-id="{{ID}}">
             <div class="column-tab">
-                <input name="{{ID}}" value="{{post_title}}">
+                <input class="update-version-post-title" name="post_title" value="{{post_title}}">
                 {{#if deleteVersion}}
                     <span class="del" data-version-id="{{ID}}">
                         <span data-code="f182" class="dashicons dashicons-trash"></span>
