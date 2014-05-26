@@ -10,7 +10,11 @@ jQuery(function($) {
 			var elem = $( this );
 			console.log(elem.find('.kwps-intro'));
 			if (elem.find('.kwps-intro').length == 0) {
-				elem.find('.kwps-question-group').show();
+				if (elem.find('.kwps-question-group').length == 0) {
+					elem.find('.kwps-outro').show();
+				} else {
+					elem.find('.kwps-question-group').show();
+				}
 			} else {
 				elem.find('.kwps-question-group').hide();
 			}
