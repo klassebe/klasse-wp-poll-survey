@@ -34,8 +34,9 @@ class Result {
     }
 
     public static function bar_chart_per_question($entry_id) {
-        $version_id = Entry::get_version($entry_id);
-        $question_groups = Question_Group::get_all_by_post_parent($version_id);
+        $version = Entry::get_version($entry_id);
+
+        $question_groups = Question_Group::get_all_by_post_parent($version['ID']);
         $results = array();
 
         foreach($question_groups as $question_group){
@@ -80,13 +81,35 @@ class Result {
         array_push($results, array( 'question' => $question));
         return $results;
     }
+    public static function ajax_get_result_data_of_test_collection(){
+        $request_data = static::get_post_data_from_request();
+        $test_collection_id = $request_data['test_collection_id'];
 
-    public static function get_result_data_for_test_collection($test_collection_id){
+        wp_send_json( static::get_result_data_of_test_collection($test_collection_id) );
+
+    }
+
+    public static function get_result_data_of_test_collection( $test_collection_id ){
+        $total_participants = array();
         $versions = Version::get_all_by_post_parent($test_collection_id);
 
         foreach($versions as $version){
+            $participants_per_version = 0;
+            $user_hashes = Entry::get_all_user_hashes_per_version( $version['ID'] );
 
+            foreach($user_hashes as $user_hash){
+
+                $entries = Entry::get_all_by_user_hash_and_version( $user_hash, $version['ID'] );
+
+                foreach($entries as $entry){
+                    Entry::is_part_of_completed_test( $entry['ID'] );
+                }
+                $participants_per_version++;
+            }
+            array_push( $total_participants,
+                array('ID' => $version['ID'], 'total_participants' => $participants_per_version ) );
         }
 
+        return $total_participants;
     }
 }

@@ -31,9 +31,18 @@ class Entry extends Kwps_Post_Type{
         'show_in_menu' => false,
         'show_ui' => true,
         'hierarchical' => true,
-        'exclude_from_search' => true,
+        'exclude_from_search' => false,
         'publicly_queryable' => false,
     );
+
+    public static function get_meta_data($post_id)
+    {
+        $meta_as_array = array();
+        $meta_as_array['_kwps_sort_order'] = get_post_meta($post_id, '_kwps_sort_order', true);
+        $meta_as_array['_kwps_cookie_value'] = get_post_meta($post_id, '_kwps_cookie_value', true);
+        $meta_as_array['_kwps_ip_address'] = get_post_meta($post_id, '_kwps_ip_address', true);
+        return $meta_as_array;
+    }
 
     public static function get_test_modus($entry_id)
     {
@@ -143,7 +152,7 @@ class Entry extends Kwps_Post_Type{
         foreach($user_hashes as $user_hash){
             $user_entries = static::get_all_by_user_hash_and_version($user_hash, $version['ID']);
 
-            if( sizeof( $user_entries ) <= Question::get_count_per_version($version['ID']) ) {
+            if( sizeof( $user_entries ) < Question::get_count_per_version($version['ID']) ) {
                 return false;
             }
         }
@@ -178,15 +187,22 @@ class Entry extends Kwps_Post_Type{
                 array(
                     'key' => '_kwps_cookie_value',
                     'value' => $user_hash,
-                )
-            )
+                ),
+            ),
+            'post_status' => array( 'draft', 'publish'),
         );
         $entries_by_user_hash = get_posts( $args );
+        $entries_by_user_hash_with_meta = array();
+
+        foreach($entries_by_user_hash as $entry_by_user_hash){
+            array_push( $entries_by_user_hash_with_meta, static::get_as_array( $entry_by_user_hash->ID ) );
+        }
+
 
         $entries = array();
 
-        foreach($entries_by_user_hash as $entry){
-            $version = static::get_version($entry['ID']);
+        foreach($entries_by_user_hash_with_meta as $entry){
+            $version = static::get_version( $entry['ID'] );
             if( $version['ID'] == $version_id ) {
                 array_push($entries, $entry);
             }
