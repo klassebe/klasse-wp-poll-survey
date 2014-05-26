@@ -22,10 +22,9 @@ class Result {
                 $results = static::bar_chart_per_question($version_id);
                 break;
         }
-
+        var_dump($results);
         wp_send_json( $results );
         die;
-
     }
 
     public static function get_post_data_from_request(){
@@ -46,7 +45,6 @@ class Result {
                 array_push($results, static::get_results_by_question( $question['ID'] ) );
             }
         }
-
         return $results;
     }
 
