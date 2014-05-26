@@ -8,7 +8,16 @@ jQuery(function($) {
 	$.fn.pollPlugin = function ( options ) {
 		return this.each( function ( ) {
 			var elem = $( this );
-
+			console.log(elem.find('.kwps-intro'));
+			if (elem.find('.kwps-intro').length == 0) {
+				if (elem.find('.kwps-question-group').length == 0) {
+					elem.find('.kwps-outro').show();
+				} else {
+					elem.find('.kwps-question-group').show();
+				}
+			} else {
+				elem.find('.kwps-question-group').hide();
+			}
 			elem.find('.kwps-next').on('click', function () {
 				elem.find('.kwps-intro').hide();
 				elem.find('.kwps-outro').hide();
