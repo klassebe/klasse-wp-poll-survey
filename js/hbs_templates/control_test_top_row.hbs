@@ -1,13 +1,18 @@
 <tr data-post-type="kwps_version">
     <th class="no-delete column-action">&nbsp;</th>
     {{#each versions}}
-        <th class=" column-title">
+        <th class=" column-title" data-version-id="{{ID}}">
             <div class="column-tab">
-                <input name="{{ID}}" value="{{post_title}}">
+                <input class="update-version-post-title" name="post_title" value="{{post_title}}">
                 {{#if deleteVersion}}
                     <span class="del" data-version-id="{{ID}}">
                         <span data-code="f182" class="dashicons dashicons-trash"></span>
                     </span>
+                {{/if}}
+                {{#if isLive}}
+                    Live!
+                {{else}}
+                    <button class="make-live"><span class="dashicons dashicons-rss"></span>{{t "Make live"}}</button>
                 {{/if}}
             </div>
         </th>
