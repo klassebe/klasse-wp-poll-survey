@@ -64,13 +64,17 @@ jQuery(function ($) {
     },
     home : function () {
       // console.log("ROUTING TO: home")
-      if (app.kwpsPollsCollection !== undefined) {
-        app.views.index = new app.KwpsView({
-          collection: app.kwpsPollsCollection
-        });
-        app.views.index.initialize();
-        //app.views.result = new app.KwpsViewResult({model: {data: 'een beetje data'}});
-      } 
+      if(!app.views.index) {
+        if (app.kwpsPollsCollection !== undefined) {
+          app.views.index = new app.KwpsView({
+            collection: app.kwpsPollsCollection
+          });
+          app.views.index.initialize();
+          //app.views.result = new app.KwpsViewResult({model: {data: 'een beetje data'}});
+        }
+      } else {
+        app.views.index.render();
+      }
     },
     edit :  function (id) {
       // console.log("ROUTING TO: edit");
