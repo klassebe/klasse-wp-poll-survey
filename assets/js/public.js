@@ -31,13 +31,13 @@ jQuery(function($) {
 				var getNameOfRadioBtn = elem.find('input:radio').attr('name');
 				// Get the value of the selected field
 				var selected = elem.find('.kwps-answer-option input[type="radio"][name=' + getNameOfRadioBtn + ']:checked').val();
-				console.log("selected:", selected);
 				if (selected) {
 			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
 			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
 
 			    var entry = {
 				  		"post_parent": selected,
+				  		"post_status": "publish",
 				  		"_kwps_sort_order": 0
 				  	};
 				  var getChart = {
@@ -45,33 +45,26 @@ jQuery(function($) {
 				  		output_type : ''
 				  };
 
-				  	$.ajax({
-						    type: "POST",
-						    url: urlSaveEntry,
-						    data: JSON.stringify(entry),
-						    contentType: "application/json; charset=utf-8",
-						    dataType: "json",
-						    success: function(data) {
-						    	console.log(data.ID);
-							  	if (data) {
-							  		getChart.ID = data.ID;
-							  		getChart.output_type ='bar-chart-per-question';
-							  		console.log('eerste call gelukt');
-									} else {
-										alert('error in data callback');
-									}
-									setTimeout(function() {
-										getChartData(urlGetChartData, getChart);
-										console.log("timeout is done from first call");
-									}, 1000);
-						    },
-						    failure: function(errMsg) {
-						        alert(errMsg);
-						    }
-						});
+			  	$.ajax({
+					    type: "POST",
+					    url: urlSaveEntry,
+					    data: JSON.stringify(entry),
+					    contentType: "application/json; charset=utf-8",
+					    dataType: "json",
+					    success: function(data) {
+						  	if (data) {
+						  		getChart.ID = data.ID;
+						  		getChart.output_type ='bar-chart-per-question';
+								} else {
+									alert('error in data callback');
+								}
+								getChartData(urlGetChartData, getChart);
+					    },
+					    failure: function(errMsg) {
+					        alert(errMsg);
+					    }
+					});
 					var getChartData = function (urlGetChartData, getChart) {
-						console.log("getChart",getChart);
-						console.log('url',urlGetChartData);
 							$.ajax({
 						  			type: "POST",
 						  			url: urlGetChartData,
@@ -82,18 +75,19 @@ jQuery(function($) {
 							    	console.log("data",data);
 							    	var graphCategories = [];
 							    	var graphData = [];
-							    	$.each(data.entries, function(index, value) {
+							    	var totalEntries = data[0][0].total_entries;
+							    	$.each(data[0].entries, function(index, value) {
 							    		graphCategories.push(value.answer_option_content);
-							    		graphData.push(Math.round((value.entry_count/data[0].total_entries)*100));
+							    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
 							    	});
-							    	console.log("getchart",getChart);
+							    	
 							    	// BAR CHART CODE
 							    	elem.find('.kwps-chart').highcharts({
 							            chart: {
 							                type: 'bar'
 							            },
 							            title: {
-							                text: data[1].poll_question
+							                text: data[0][1].poll_question
 							            },
 							            xAxis: {
 							                categories: graphCategories,
@@ -137,16 +131,12 @@ jQuery(function($) {
 							            }]
 							        });
 								    },
+								    async: false
 					  		});
 						elem.find('.kwps-intro').hide();
 						elem.find('.kwps-question-group').hide();
 						elem.find('.kwps-outro').show();
-						};
-								
-					// console.log("getChart:",getChart);
-					
-					// console.log(getChart);
-
+					};
 				} else {
 					alert('Please select an answer!');
 				}

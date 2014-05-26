@@ -278,10 +278,11 @@ jQuery(function ($) {
       'click .toggle-details': 'toggleDetails',
       'click button.add': 'createNew',
       'click span.del': 'deletePostType',
-      'change #post_title': 'changeTitle',
+      'change #post_title': 'updateTestCollection',
       'change .update-main': 'updateTestCollection',
-      'change .update-post-title': 'updatePostTitle',
-      'click .move-action:not(.disabled)': 'moveItem'
+      'change .update-version-post-title': 'updateVersionPostTitle',
+      'click .move-action:not(.disabled)': 'moveItem',
+      'click .make-live': 'makeLive'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -298,6 +299,10 @@ jQuery(function ($) {
 
       //Get versions
       var versions = _.sortBy(_.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON'),'_kwps_sort_order');
+
+      versions.forEach(function(version) {
+        version.isLive = (version.post_status !== "draft");
+      });
 
       //Get intro's
       var intros = [];
@@ -383,6 +388,7 @@ jQuery(function ($) {
         };
       }
       data.versions = versions;
+      data.collection = testCollection.toJSON();
       
       data.table = [];
 
@@ -807,11 +813,8 @@ jQuery(function ($) {
         new app.KwpsViewEdit({model: app.test, attribute: kwpsAttribute});
       }
     },
-    changeTitle: function(event) {
-      this.model.set('post_title', $(event.target).val());
-    },
     updateTestCollection: function(event) {
-      var mainPost = this.collection.get(GetURLParameter('id'));
+      var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
       var attribute = $(event.target).attr("name");
       var value = $(event.target).val();
 
@@ -819,16 +822,16 @@ jQuery(function ($) {
         value = 1;
       }
 
-      mainPost.set(attribute, value);
-      mainPost.save();
+      testCollection.set(attribute, value);
+      testCollection.save();
     },
-    updatePostTitle: function(event) {
+    updateVersionPostTitle: function(event) {
       var attribute = $(event.target).attr("name");
       var value = $(event.target).val();
-      var ID = $(event.target).data('id');
-      var post = this.collection.get(ID);
-      post.set(attribute, value);
-      post.save();
+      var versionId = $(event.currentTarget).closest('th').data('version-id');
+      var version = this.collection.get(versionId);
+      version.set(attribute, value);
+      version.save();
     },
     moveItem: function(event) {
       var currentSortOrder = $(event.currentTarget).closest('tr').data('sort-order');
@@ -853,6 +856,16 @@ jQuery(function ($) {
       });
 
       this.render();
+    },
+    makeLive: function(event) {
+      event.preventDefault();
+      var versionId = $(event.currentTarget).closest('th').data('version-id');
+      var version = this.collection.findWhere({ID: versionId});
+      version.set('post_status', 'publish');
+      version.save();
+
+      this.render();
+
     }
   });
 
