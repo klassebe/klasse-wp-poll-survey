@@ -12,6 +12,8 @@ if(!class_exists('Base_List_Table')){
     require_once(__DIR__ . '/../includes/base-list-table.php' );
 }
 
+require_once('test_collection.php');
+
 
 /************************** CREATE A PACKAGE CLASS *****************************
  *******************************************************************************
@@ -312,13 +314,7 @@ class Test_Collections_List_Table extends Base_List_Table {
 
 
         /**
-         * Instead of querying a database, we're going to fetch the example data
-         * property we created for use in this plugin. This makes this example
-         * package slightly different than one you might build on your own. In
-         * this example, we'll be using array manipulation to sort and paginate
-         * our data. In a real-world implementation, you will probably want to
-         * use sort and pagination data to build a custom query instead, as you'll
-         * be able to use your precisely-queried data immediately.
+         *
          */
         $arguments = array(
             'post_type' => 'kwps_test_collection',
@@ -338,7 +334,7 @@ class Test_Collections_List_Table extends Base_List_Table {
                 'post_modified' => $object->post_modified,
             );
 
-            $row_data['view_count'] = get_post_meta($object->ID, '_kwps_view_count', true);
+            $row_data['view_count'] = Test_Collection::get_view_count($object->ID);
 
             array_push($data, $row_data);
         }
