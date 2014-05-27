@@ -71,6 +71,18 @@ class Test_Collection extends Kwps_Post_Type{
         return Test_Modus::get_as_array($test_collection['post_parent']);
     }
 
+    public static function get_view_count($test_collection_id){
+        $view_count_total = 0;
+        $versions = Version::get_all_by_post_parent($test_collection_id);
+
+        foreach($versions as $version){
+            $view_count = (int) $version['_kwps_view_count'];
+            $view_count_total = $view_count_total + $view_count;
+        }
+
+        return $view_count_total;
+    }
+
 
     static function validate_for_insert($post_as_array = array()) {
         $errors = array();
