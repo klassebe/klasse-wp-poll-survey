@@ -127,13 +127,10 @@ add_action( 'wp_ajax_kwps_delete_intro_result', array('\includes\intro_result','
 
 add_action( 'wp_ajax_kwps_save_outro', array('\includes\outro','save_from_request'));
 add_action( 'wp_ajax_kwps_update_outro', array('\includes\outro','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_outro', array('\includes\outro','delete_from_request'));
 
 // nopriv prefix to make sure this function is callable for unregistered users
 add_action( 'wp_ajax_nopriv_kwps_save_entry', array('\includes\entry','save_from_request'));
 add_action( 'wp_ajax_kwps_save_entry', array('\includes\entry','save_from_request'));
-add_action( 'wp_ajax_kwps_update_entry', array('\includes\entry','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_entry', array('\includes\entry','delete_from_request'));
 
 
 add_action( 'wp_ajax_kwps_get_result_of_version', array('\includes\result','get_result_of_version'));

@@ -81,9 +81,9 @@ class Entry extends Kwps_Post_Type{
         $errors = static::validate_for_insert($request_data);
         if( sizeof( $errors ) == 0 ) {
             $post = static::save_post($request_data);
-            wp_send_json( $post );
+            wp_send_json_succes( $post );
         } else {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 400);
+            header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
             wp_send_json_error($errors);
         }
 
