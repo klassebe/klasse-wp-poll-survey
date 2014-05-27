@@ -9,5 +9,8 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-concat": "~0.4.0"
+  },
+  "dependencies": {
+    "grunt-contrib-jshint": "~0.10.0"
   }
 }

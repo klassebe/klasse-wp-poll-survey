@@ -44,6 +44,9 @@ module.exports = function(grunt) {
     clean: {
       dist: ["./js/dist"],
       temp: ["./js/temp"]
+    },
+    jshint: {
+      all: ['./js/*.js']
     }
   });
 
@@ -52,8 +55,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task(s).
   grunt.registerTask('default', ['watch']);
+  grunt.registerTask('build', ['jshint', 'handlebars','clean:dist','concat:dist','uglify','clean:temp']);
 
 };

@@ -75,11 +75,11 @@ class Question_Group extends Kwps_Post_Type {
 
         foreach($required_fields as $field){
             if(! isset($post_as_array[$field])) {
-                array_push($errors, array( $field, 'Required') );
+                array_push($errors, array( 'field' => $field, 'message' => 'Required') );
             } else {
                 if( is_string($post_as_array[$field])){
                     if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors, array( $field, 'Required') );
+                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
                     }
                 }
             }
@@ -88,7 +88,7 @@ class Question_Group extends Kwps_Post_Type {
         foreach($numeric_fields as $field){
             if( isset( $post_as_array[$field]) ) {
                 if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors , array( $field, 'Needs to be a number') );
+                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
                 }
             }
         }
@@ -103,7 +103,7 @@ class Question_Group extends Kwps_Post_Type {
                 $all_question_groups_of_version = Question_Group::get_all_by_post_parent($version['ID']);
 
                 if( sizeof($all_question_groups_of_version) >= $kwps_max_question_groups){
-                    array_push( $errors, array( 'All', 'Maximum question groups already reached' ) );
+                    array_push( $errors, array( 'field' => 'All', 'message' =>'Maximum question groups already reached' ) );
                 }
             }
         }

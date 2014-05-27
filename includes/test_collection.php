@@ -71,6 +71,18 @@ class Test_Collection extends Kwps_Post_Type{
         return Test_Modus::get_as_array($test_collection['post_parent']);
     }
 
+    public static function get_view_count($test_collection_id){
+        $view_count_total = 0;
+        $versions = Version::get_all_by_post_parent($test_collection_id);
+
+        foreach($versions as $version){
+            $view_count = (int) $version['_kwps_view_count'];
+            $view_count_total = $view_count_total + $view_count;
+        }
+
+        return $view_count_total;
+    }
+
 
     static function validate_for_insert($post_as_array = array()) {
         $errors = array();
@@ -89,11 +101,11 @@ class Test_Collection extends Kwps_Post_Type{
 
         foreach($required_fields as $field){
             if(! isset($post_as_array[$field])) {
-                array_push($errors, array( $field, 'Required') );
+                array_push($errors, array( 'field' => $field, 'message' => 'Required') );
             } else {
                 if( is_string($post_as_array[$field])){
                     if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors, array( $field, 'Required') );
+                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
                     }
                 }
             }
@@ -102,7 +114,7 @@ class Test_Collection extends Kwps_Post_Type{
         foreach($numeric_fields as $field){
             if( isset( $post_as_array[$field]) ) {
                 if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors , array( $field, 'Needs to be a number') );
+                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
                 }
             }
         }
@@ -110,7 +122,7 @@ class Test_Collection extends Kwps_Post_Type{
         foreach( static::$allowed_dropdown_values as $field => $allowed_values ){
             if( isset( $post_as_array[$field] ) ) {
                 if( !in_array( $post_as_array[$field], $allowed_values) ) {
-                    array_push( $errors , array( $field, 'Value is not allowed') );
+                    array_push( $errors , array( 'field' => $field, 'message' => 'Value is not allowed') );
                 }
             }
         }

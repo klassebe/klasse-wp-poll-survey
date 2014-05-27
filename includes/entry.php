@@ -81,9 +81,10 @@ class Entry extends Kwps_Post_Type{
         $errors = static::validate_for_insert($request_data);
         if( sizeof( $errors ) == 0 ) {
             $post = static::save_post($request_data);
-            wp_send_json( $post );
+            wp_send_json_succes( $post );
         } else {
-            wp_send_json(null);
+            header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
+            wp_send_json_error($errors);
         }
 
         die();
@@ -105,11 +106,11 @@ class Entry extends Kwps_Post_Type{
 
         foreach($required_fields as $field){
             if(! isset($post_as_array[$field])) {
-                array_push($errors, array( $field, 'Required') );
+                array_push($errors, array( 'field' => $field, 'message' => 'Required') );
             } else {
                 if( is_string($post_as_array[$field])){
                     if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors, array( $field, 'Required') );
+                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
                     }
                 }
             }
@@ -118,7 +119,7 @@ class Entry extends Kwps_Post_Type{
         foreach($numeric_fields as $field){
             if( isset( $post_as_array[$field]) ) {
                 if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors , array( $field, 'Needs to be a number') );
+                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
                 }
             }
         }
@@ -133,11 +134,11 @@ class Entry extends Kwps_Post_Type{
 
             if( is_user_logged_in() ){
                 if( ! Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_in_user_limit']) ){
-                    array_push( $errors, array('All', 'You have the reached limit to participate') );
+                    array_push( $errors, array('field' => 'All', 'message' => 'You have the reached limit to participate') );
                 }
             } else {
                 if( ! Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_out_user_limit']) ){
-                    array_push( $errors, array('All', 'You have reached the limit to participate') );
+                    array_push( $errors, array('field' => 'All', 'message' => 'You have reached the limit to participate') );
                 }
             }
         }

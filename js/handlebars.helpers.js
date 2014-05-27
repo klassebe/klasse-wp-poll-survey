@@ -13,10 +13,10 @@
 
   //translate helper
   Handlebars.registerHelper("t", function(key) {
-    if (kwps_translations != undefined) {
-      return (kwps_translations[key] != undefined)? kwps_translations[key] : key;
+    if (kwps_translations !== undefined) {
+      return (kwps_translations[key] !== undefined)? kwps_translations[key] : key;
     } else {
-      return key
+      return key;
     }
   });
   
@@ -51,7 +51,7 @@
     var result = tmp.textContent || tmp.innerText || "";
     var substrResult = result.substring(0, length);
     return  (substrResult.length <= length)? substrResult : substrResult + "...";
-  })
+  });
 
   Handlebars.registerHelper('sorter', function (index, obj) {
     var size = 0,
@@ -60,15 +60,15 @@
         if (obj.hasOwnProperty(key)) size++;
     }
     var result;
-    if(index == 0) {
-      result = '<span class="up passive"></span>'
+    if(index === 0) {
+      result = '<span class="up passive"></span>';
     } else {
-      result = '<span class="up"></span>'
+      result = '<span class="up"></span>';
     }
     if (index == size-1) {
-      result = result + '<span class="down passive"></span>'
+      result = result + '<span class="down passive"></span>';
     } else {
-      result = result + '<span class="down"></span>'
+      result = result + '<span class="down"></span>';
     }
     return result;
   });
@@ -86,7 +86,7 @@
     if (option === value) {
       return ' selected';
     } else {
-      return ''
+      return '';
     }
   });
 

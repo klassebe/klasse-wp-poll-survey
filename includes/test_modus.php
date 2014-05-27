@@ -72,7 +72,7 @@
                 } else {
                     if( is_string($post_as_array[$field])){
                         if( strlen($post_as_array[$field]) == 0 ) {
-                            array_push($errors, array( $field, 'Required') );
+                            array_push($errors, array( 'field' => $field, 'message' => 'Required') );
                         }
                     }
                 }
@@ -81,7 +81,7 @@
             foreach($numeric_fields as $field){
                 if( isset( $post_as_array[$field]) ) {
                     if(! is_numeric( $post_as_array[$field] ) ){
-                        array_push( $errors , array( $field, 'Needs to be a number') );
+                        array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
                     }
                 }
             }
