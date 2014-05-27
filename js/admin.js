@@ -992,17 +992,17 @@ jQuery(function ($) {
     },
     /* BEGIN RESULT INPUT */
     addResult: function () {
-      console.log('add chart');
-      $('iframe').contents().find('#tinymce').append('<div class="kwps-chart">Chart will be here</div>');
-      // tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show-charts.php?type=image&amp;TB_iframe=true');
+      // $('iframe').contents().find('#tinymce').append('<div class="kwps-chart">Chart will be here</div>');
+      tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show-charts.php?type=image&amp;TB_iframe=true');
       return false;
     },
     insertChartIntoEditor: function (html) {
       console.log('you clicked to add result to editor');
-      $('iframe').contents().find('#tinymce').append('<div class="kwps-chart">Hello</div>');
-      tb_remove();
+      $('iframe', window.parent.document).contents().find('#tinymce').append('<div class="kwps-chart">Hello</div>');
+      self.parent.tb_remove();
     },
     /* END RESULT INPUT */
+
     /* BEGIN MEDIA UPLOAD */
     addMedia: function () {
       tb_show( '', 'media-upload.php?type=image&amp;TB_iframe=true' );
