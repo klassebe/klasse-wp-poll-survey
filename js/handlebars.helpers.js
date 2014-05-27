@@ -57,7 +57,7 @@
     var size = 0,
         key;
     for (key in obj) {
-        if (obj.hasOwnProperty(key)) size++;
+        (obj.hasOwnProperty(key))? size++ : false;
     }
     var result;
     if(index === 0) {

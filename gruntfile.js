@@ -9,8 +9,8 @@ module.exports = function(grunt) {
         tasks: ['handlebars','clean:dist','concat:dist','uglify','clean:temp'],
         options: {
           spawn: false,
-          livereload: true,
-        },
+          livereload: true
+        }
       }
     },
     handlebars: {
@@ -46,7 +46,12 @@ module.exports = function(grunt) {
       temp: ["./js/temp"]
     },
     jshint: {
-      all: ['./js/*.js']
+      all: {
+        options: {
+          jshintrc: '.jshintrc' // relative to Gruntfile
+        },
+        src: './js/admin.js'
+      }
     }
   });
 
