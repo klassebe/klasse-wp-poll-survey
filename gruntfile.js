@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['**/*.hbs','./js/admin.js'],
-        tasks: ['handlebars','clean:dist','concat:dist','uglify','clean:temp'],
+        tasks: ['jshint', 'handlebars','clean:dist','concat:dist','uglify','clean:temp'],
         options: {
           spawn: false,
           livereload: true
@@ -50,7 +50,7 @@ module.exports = function(grunt) {
         options: {
           jshintrc: '.jshintrc' // relative to Gruntfile
         },
-        src: './js/admin.js'
+        src: './js/*.js'
       }
     }
   });
