@@ -18,23 +18,31 @@
                         {{else}}
                             <span class="dashicons dashicons-arrow-right toggle-details" data-type="question" data-sort-order="{{sortOrder}}"></span>
                         {{/if}}
+                        {{#if deletable}}
                         <a class="delete-question">
                             <span class="del" data-post-type="kwps_qsdlfkj">
                                 <span data-code="f182" class="dashicons dashicons-trash"></span>
                             </span>
                         </a>
+                        {{/if}}
                         {{number}}
                     </div>
                     
                 </td>
                 {{#each versions}}
                 <td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
+                    {{#if editable}}
                     <strong>
                         <a class="row-title" href="#edit/{{ID}}"
                            title="Edit “{{post_content}}”">{{subStringStripper post_content 120}}</a>
                     </strong>
 
                     <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
+                    {{else}}
+                        <strong>
+                            {{subStringStripper post_content 120}}
+                        </strong>
+                    {{/if}}
                 </td>
                 {{/each}}
                 <td>{{amountOfSiblings}}</td>

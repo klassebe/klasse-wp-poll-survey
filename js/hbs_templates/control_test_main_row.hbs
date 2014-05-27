@@ -35,6 +35,7 @@
     </td>
     {{#each versions}}
         <td id="_kwps_intro_{{ID}}" class="post-title page-title column-title">
+            {{#if editable}}
             <strong>
                 <a class="row-title" href="#edit/{{ID}}"
                    title="Edit “”">
@@ -44,6 +45,11 @@
             </strong>
 
             <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
+            {{else}}
+                <strong>
+                    {{subStringStripper post_content 120}}
+                </strong>
+            {{/if}}
         </td>
     {{/each}}
     

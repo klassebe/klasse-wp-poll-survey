@@ -312,6 +312,7 @@ jQuery(function ($) {
 
       versions.forEach(function(version) {
         version.isLive = (version.post_status !== "draft");
+        version.editable = !version.isLive;
         if(version.isLive) {
           version.conversion_rate_percentage = version.conversion_rate.toPrecision(4) * 100;
         }
@@ -324,8 +325,10 @@ jQuery(function ($) {
         if (y === undefined) {
           break;
         }
+        y.set('editable', !versions[i].isLive);
         intros[i] = y.toJSON();
       }
+
 
       //Get intro results
       var introResults = [];
@@ -334,6 +337,7 @@ jQuery(function ($) {
         if (introResult === undefined) {
           break;
         }
+        introResult.set('editable', !versions[i].isLive);
         introResults[i] = introResult.toJSON();
       }
 
@@ -341,11 +345,12 @@ jQuery(function ($) {
       //Get outro's
       var outros = [];
       for (i = 0; i < versions.length; i++) {
-        y = this.collection.findWhere({post_type: "kwps_outro", post_parent : versions[i].ID});
-        if (y === undefined) {
+        var outro = this.collection.findWhere({post_type: "kwps_outro", post_parent : versions[i].ID});
+        if (outro === undefined) {
           break;
         }
-        outros[i] = y.toJSON();
+        outro.set('editable', !versions[i].isLive);
+        outros[i] = outro.toJSON();
       }
 
 
@@ -432,10 +437,10 @@ jQuery(function ($) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_intro',
-          deletable : true,
+          deletable : !_.some(versions, function(version) {return version.isLive;}),
           hasMore: false,
           hasAmount: false,
-          editable: true, //TODO look if the test is published or not.
+          editable: !_.some(versions, function(version) {return version.isLive;}),
           versions: intros,
           mainRow: true,
           sortOrder: 0
@@ -460,10 +465,10 @@ jQuery(function ($) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_intro_result',
-          deletable : true,
+          deletable : !_.some(versions, function(version) {return version.isLive;}),
           hasMore: false,
           hasAmount: false,
-          editable: true, //TODO look if the test is published or not.
+          editable: !_.some(versions, function(version) {return version.isLive;}),
           versions: introResults,
           mainRow: true,
           sortOrder: 0
@@ -476,7 +481,7 @@ jQuery(function ($) {
         title: "Question pages",
         postType: "kwps_question_group",
         mainTitle: true,
-        add: (allqGroups && testmodus.get('_kwps_max_question_groups') <= _.size(sortedAllQGroups))? false:true,
+        add: (allqGroups && testmodus.get('_kwps_max_question_groups') > _.size(sortedAllQGroups) && !_.some(versions, function(version) {return version.isLive;})),
         hasMore: (_.size(sortedAllQGroups) > 0),
         addText: 'Add question page',
         opened: app.openRow.main_kwps_question_group,
@@ -486,17 +491,22 @@ jQuery(function ($) {
       if ( _.size(sortedAllQGroups) > 0 && app.openRow.main_kwps_question_group) {
         for (var sortOrderQG in sortedQGroups) {
 
+          _.each(sortedQGroups[sortOrderQG], function(questionGroup) {
+            var parentVersion = this.collection.findWhere({ID: questionGroup.post_parent});
+            questionGroup.editable = (parentVersion.get('post_status') !== 'publish');
+          }, this);
+
           // QUESTION GROUP
           data.table.push({
             first: (sortOrderQG === '0'),
             last: (sortOrderQG === allqGroups.length/ versions.length-1),
             sorterArrows : (allqGroups.length/ versions.length > 1),
             postType: "kwps_question_group",
-            deletable : true,
+            deletable: !_.some(versions, function(version) {return version.isLive;}),
+            editable: false,
             hasMore: true,
             hasAmount: false,
             hasOpened: (app.openRow.kwps_question_group === sortOrderQG),
-            editable: true, //TODO look if the test is published or not.
             versions: sortedQGroups[sortOrderQG],
             mainRow: true,
             sortOrder: sortOrderQG,
@@ -514,14 +524,21 @@ jQuery(function ($) {
               questionGroupSortOrder : sortOrderQG,
               addText: "Add question",
               colSpan : versions.length +1,
-              add: (testmodus.get('_kwps_max_questions_per_question_group') > _.size(sortedQu))
+              add: (testmodus.get('_kwps_max_questions_per_question_group') > _.size(sortedQu) && !_.some(versions, function(version) {return version.isLive;}))
             });
             
             for (var sortOrderQ in sortedQu) {
+              _.each(sortedQu[sortOrderQ], function(question) {
+                var parentQuestionGroup = this.collection.findWhere({ID: question.post_parent});
+                var parentVersion = this.collection.findWhere({ID: parentQuestionGroup.get("post_parent")});
+                question.editable = (parentVersion.get('post_status') !== 'publish');
+              }, this);
+
               data.table.push({
                 versions: sortedQu[sortOrderQ],
                 question: true,
                 postType: "kwps_question",
+                deletable: !_.some(versions, function(version) {return version.isLive;}),
                 sortOrder: sortOrderQ,
                 number: parseInt(sortOrderQ) +1,
                 //amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : qu[0].ID}).length,
@@ -540,6 +557,16 @@ jQuery(function ($) {
                 });
 
                 for (var sortOrderA in sortedAns) {
+
+
+                  _.each(sortedAns[sortOrderA], function(answer) {
+                    var parentQuestion = this.collection.findWhere({ID: answer.post_parent});
+                    var parentQuestionGroup = this.collection.findWhere({ID: parentQuestion.get("post_parent")});
+                    var parentVersion = this.collection.findWhere({ID: parentQuestionGroup.get("post_parent")});
+                    answer.editable = (parentVersion.get('post_status') !== 'publish');
+                  }, this);
+
+
                   data.table.push({
                     answer: true,
                     sorterArrows: true,
@@ -576,7 +603,6 @@ jQuery(function ($) {
           deletable : false,
           hasMore: false,
           hasAmount: false,
-          editable: true, //TODO look if the test is published or not.
           versions: outros,
           mainRow: true,
           sortOrder: 0
@@ -709,6 +735,7 @@ jQuery(function ($) {
           success: function (newVersion, response, options) {
             that.createIntro(newVersion.get('ID'), false);
             that.createOutro(newVersion.get('ID'), false);
+            that.createIntroResult(newVersion.get('ID'));
             var questionGroups = that.collection.where({post_type: 'kwps_question_group', post_parent: previousVersion.get('ID')});  
 
             for (i = 0; i < questionGroups.length; i++) {
