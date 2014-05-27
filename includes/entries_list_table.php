@@ -69,20 +69,20 @@ class Entries_List_Table extends Base_List_Table {
      **************************************************************************/
     function column_default($item, $column_name){
         switch($column_name){
-            case 'post_title':
+            case 'cookie_value':
                 return $this->column_name($item);
             case 'post_modified':
                 return $item[$column_name];
-            case 'view_count':
-                return $item[$column_name];
-            case 'user_id':
-                return $item[$column_name];
-            case 'crea_date':
-                return $item[$column_name];
+            case 'version':
+                return $this->formatVersion($item[$column_name]);
             default:
                 return print_r($item,true); //Show the whole array for troubleshooting purposes
         }
     }
+
+	function formatVersion($item) {
+		return $item;
+	}
 
 
     /** ************************************************************************
@@ -109,7 +109,7 @@ class Entries_List_Table extends Base_List_Table {
         $actions = array(
 //            http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=edit
 
-            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
+//            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
 //            'edit'      => sprintf('<a href="%spost.php?post=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
 //            'edit'      => sprintf('<a href="?page=%s&action=%s&id=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
 
@@ -118,12 +118,12 @@ class Entries_List_Table extends Base_List_Table {
 //            'delete'      =>  sprintf('<a href="%spost.php?post=%s&action=%s">Delete</a>',get_admin_url(), $item['ID'] ,'trash' ) ,
 //            'delete'      =>  sprintf('<a href="%s">Delete</a>',$delete_url_with_nonce ) ,
 
-            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-test_collection') ),
+//            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-test_collection') ),
         );
 
         //Return the post_title contents
         return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
-            /*$1%s*/ $item['post_title'],
+            /*$1%s*/ $item['cookie_value'],
             /*$2%s*/ $item['ID'],
             /*$3%s*/ $this->row_actions($actions)
         );
@@ -163,11 +163,9 @@ class Entries_List_Table extends Base_List_Table {
      **************************************************************************/
     function get_columns(){
         $columns = array(
-            'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-            'post_title'     => 'Title',
-            'view_count'    => 'Views',
-//            'user_id'  => 'Author',
+            'cookie_value'     => 'Cookie',
             'post_modified'    => 'Date',
+            'version'    => 'Version',
         );
         return $columns;
     }
@@ -189,10 +187,9 @@ class Entries_List_Table extends Base_List_Table {
      **************************************************************************/
     function get_sortable_columns() {
         $sortable_columns = array(
-            'post_title'     => array('post_title',false),     //true means it's already sorted
-            'post_modified'    => array('post_modified',false),
-            'view_count'    => array('view_count',false),
-//            'user_id'  => array('user_id',false)
+            'cookie_value'     => array('cookie_value',false),     //true means it's already sorted
+            'post_modified'    => array('post_modified',true),
+            'version'    => array('version',false),
         );
         return $sortable_columns;
     }
@@ -214,7 +211,6 @@ class Entries_List_Table extends Base_List_Table {
      **************************************************************************/
     function get_bulk_actions() {
         $actions = array(
-            'delete'    => 'Delete'
         );
         return $actions;
     }
@@ -232,11 +228,11 @@ class Entries_List_Table extends Base_List_Table {
         //Detect when a bulk action is being triggered...
         if( 'delete'===$this->current_action() ) {
             if( isset( $_REQUEST['id']) ){
-                if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'delete-test_collection' ) ){
+                if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'delete-kwps_entry' ) ){
                     $post_id = (int) $_REQUEST['id'];
                     wp_delete_post( $post_id );
                 }
-            } elseif( isset( $_REQUEST['test_collection'] ) ) {
+            } elseif( isset( $_REQUEST['kwps_entry'] ) ) {
                 if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-' . $this->_args['plural'] ) ){
                     foreach( $_REQUEST['test_collection'] as $post_id ){
                         $post_id_int = (int) $post_id;
@@ -321,7 +317,7 @@ class Entries_List_Table extends Base_List_Table {
          * be able to use your precisely-queried data immediately.
          */
         $arguments = array(
-            'post_type' => 'kwps_test_collection',
+            'post_type' => 'kwps_entry',
             'orderby' => $order_by,
             'order' => $order,
             'post_per_page' => 5,
@@ -333,12 +329,13 @@ class Entries_List_Table extends Base_List_Table {
         $post_data = get_posts($arguments);
         $data = array();
         foreach($post_data as $object){
-            $row_data = array('ID' => $object->ID,
-                'post_title' => $object->post_title,
-                'post_modified' => $object->post_modified,
+            $row_data = array(
+	            'ID' => $object->ID,
+	            'post_modified' => $object->post_modified,
+	            'version' => $object->ID,
             );
 
-            $row_data['view_count'] = get_post_meta($object->ID, '_kwps_view_count', true);
+            $row_data['cookie_value'] = get_post_meta($object->ID, '_kwps_cookie_value', true);
 
             array_push($data, $row_data);
         }
