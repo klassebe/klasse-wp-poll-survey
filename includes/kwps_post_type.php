@@ -76,10 +76,10 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         $errors = static::validate_for_insert($request_data);
 
         if( sizeof( $errors ) > 0 ) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-            wp_send_json($errors);
+            header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
+            wp_send_json_error($errors);
         } else {
-            wp_send_json( static::save_post($request_data) );
+            wp_send_json_success( static::save_post($request_data) );
         }
 
         die();

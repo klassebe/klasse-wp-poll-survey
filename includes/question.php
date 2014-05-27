@@ -106,7 +106,7 @@ class Question extends Kwps_Post_Type{
             } else {
                 if( is_string($post_as_array[$field])){
                     if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors, array( $field, 'Required') );
+                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
                     }
                 }
             }
@@ -115,7 +115,7 @@ class Question extends Kwps_Post_Type{
         foreach($numeric_fields as $field){
             if( isset( $post_as_array[$field]) ) {
                 if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors , array( $field, 'Needs to be a number') );
+                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
                 }
             }
         }
@@ -130,7 +130,7 @@ class Question extends Kwps_Post_Type{
 
             if( 0 < $max_questions_per_question_group ){
                 if( sizeof($all_questions_of_same_group) >= $test_modus['_kwps_max_questions_per_question_group']){
-                    array_push( $errors, array( 'All', 'Maximum questions already reached' ) );
+                    array_push( $errors, array( 'field' => 'All', 'message' => 'Maximum questions already reached' ) );
                 }
             }
         }

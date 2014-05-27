@@ -101,11 +101,11 @@ class Test_Collection extends Kwps_Post_Type{
 
         foreach($required_fields as $field){
             if(! isset($post_as_array[$field])) {
-                array_push($errors, array( $field, 'Required') );
+                array_push($errors, array( 'field' => $field, 'message' => 'Required') );
             } else {
                 if( is_string($post_as_array[$field])){
                     if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors, array( $field, 'Required') );
+                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
                     }
                 }
             }
@@ -114,7 +114,7 @@ class Test_Collection extends Kwps_Post_Type{
         foreach($numeric_fields as $field){
             if( isset( $post_as_array[$field]) ) {
                 if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors , array( $field, 'Needs to be a number') );
+                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
                 }
             }
         }
@@ -122,7 +122,7 @@ class Test_Collection extends Kwps_Post_Type{
         foreach( static::$allowed_dropdown_values as $field => $allowed_values ){
             if( isset( $post_as_array[$field] ) ) {
                 if( !in_array( $post_as_array[$field], $allowed_values) ) {
-                    array_push( $errors , array( $field, 'Value is not allowed') );
+                    array_push( $errors , array( 'field' => $field, 'message' => 'Value is not allowed') );
                 }
             }
         }
