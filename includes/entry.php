@@ -83,7 +83,8 @@ class Entry extends Kwps_Post_Type{
             $post = static::save_post($request_data);
             wp_send_json( $post );
         } else {
-            wp_send_json(null);
+            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+            wp_send_json($errors);
         }
 
         die();
