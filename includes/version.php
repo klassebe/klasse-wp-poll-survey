@@ -156,20 +156,43 @@ class Version extends Kwps_Post_Type{
 	    );
 	    $data['intro'] = Intro::get_one_by_post_parent($id);
 	    $data['outro'] = Outro::get_one_by_post_parent($id);
+	    $data['intro_result'] = Intro_Result::get_one_by_post_parent($id);
 	    $data['question_groups'] = Question_Group::get_all_by_post_parent($id);
 
-	    foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
+        $allowed_to_fill_out_test = false;
+        foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
 		    $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
 
 		    foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
 			    if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
 				    $data['settings']['first_question_id_allowed'] = $question['ID'];
+                    $allowed_to_fill_in_test = true;
 			    }
 			    $data['question_groups'][$questionGroupKey]['questions'][$questionKey]['answer_options'] = Answer_Option::get_all_by_post_parent($question['ID']);
 		    }
 	    }
 
 	    ob_start();
+
+
+        if( $version['post_status'] == 'locked' || !$allowed_to_fill_out_test) {
+            ?>
+            <div class="kwps-version">
+                <?php if(!empty($data['intro_result'])): ?>
+                    <div class="kwps-page kwps-intro-result">
+                        <div class="kwps-content">
+                            <?php echo $data['intro_result']['post_content']; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php
+        }
+        elseif( $version['post_status'] == 'draft' && !current_user_can('edit_posts') ) {
+            ?>
+            <div class="kwps-version">You need to be logged in to view this version</div>
+        <?php
+        } else {
 ?>
         <div class="kwps-version">
             <?php if(!empty($data['intro'])): ?>
@@ -218,8 +241,8 @@ class Version extends Kwps_Post_Type{
             <?php endif; ?>
             <input type="hidden" class="admin-url" value="<?php echo admin_url(); ?>">
         </div>
-
 <?php
+        }
 		return ob_get_clean();
     }
 }
