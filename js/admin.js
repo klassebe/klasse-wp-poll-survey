@@ -826,10 +826,13 @@ jQuery(function ($) {
         {
           wait: true,
           success: function (model, response, options) {
-          if(cb) {
-            cb(model);
-          }        
-        }
+            if(cb) {
+              cb(model);
+            }
+          },
+          error: function() {
+            alert('ERROR');
+          }
       });
     },
     showActions: function(event) {
