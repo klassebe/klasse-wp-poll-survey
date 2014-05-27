@@ -506,7 +506,7 @@ jQuery(function ($) {
             deletable: !_.some(versions, function(version) {return version.isLive;}),
             hasMore: true,
             hasAmount: false,
-            hasOpened: (app.openRow.kwps_question_group === sortOrderQG),
+            hasOpened: (app.openRow.kwps_question_group.toString() === sortOrderQG),
             versions: sortedQGroups[sortOrderQG],
             mainRow: true,
             sortOrder: sortOrderQG,
@@ -544,7 +544,7 @@ jQuery(function ($) {
                 sortOrder: sortOrderQ,
                 number: parseInt(sortOrderQ) +1,
                 //amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : qu[0].ID}).length,
-                hasOpened: (app.openRow.kwps_question === sortOrderQ)
+                hasOpened: (app.openRow.kwps_question.toString() === sortOrderQ)
               });
 
               if (app.openRow.kwps_question >= 0 && sortOrderQ === app.openRow.kwps_question.toString()) {
