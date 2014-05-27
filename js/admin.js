@@ -1,7 +1,5 @@
 jQuery(function ($) {
 
-  $('#tabs').tabs();
-
   function GetURLParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
@@ -37,6 +35,7 @@ jQuery(function ($) {
   app.openRow = {
     main_kwps_outro: false,
     main_kwps_intro: false,
+    main_kwps_intro_result: false,
     main_kwps_question_group: false,
     kwps_question_group: -1,
     kwps_question: -1
@@ -315,6 +314,16 @@ jQuery(function ($) {
         intros[i] = y.toJSON();
       };
 
+      //Get intro results
+      var introResults = [];
+      for (var i = 0; i < versions.length; i++) {
+        var introResult = this.collection.findWhere({post_type: "kwps_intro_result", post_parent : versions[i].ID});
+        if (introResult == undefined) {
+          break;
+        }
+        introResults[i] = introResult.toJSON();
+      };
+
 
       //Get outro's
       var outros = [];
@@ -376,8 +385,7 @@ jQuery(function ($) {
       var sortedAns = _.groupBy(_.flatten(ans,true),"_kwps_sort_order");
 
       var data = {
-        kwpsUniquenessTypes: kwpsUniquenessTypes,
-        data: 'een beetje data'
+        kwpsUniquenessTypes: kwpsUniquenessTypes
       };
 
       var mainPost = this.collection.get(GetURLParameter('id'));
@@ -416,6 +424,34 @@ jQuery(function ($) {
           hasAmount: false,
           editable: true, //TODO look if the test is published or not.
           versions: intros,
+          mainRow: true,
+          sortOrder: 0
+        });
+      }
+
+      // TITLE INTRO RESULT
+      data.table.push({
+        colSpan : versions.length +1,
+        title: "Intro Result",
+        postType: "kwps_intro_result",
+        mainTitle: true,
+        add: (introResults.length <= 0),
+        hasMore: (introResults.length > 0),
+        addText: 'Add Intro Result',
+        opened: app.openRow.main_kwps_intro_result,
+        amount: introResults.length/ versions.length
+      });
+
+      // INTRO RESULT
+      if (introResults.length > 0 && introResults.length == versions.length && app.openRow.main_kwps_intro_result) {
+        data.table.push({
+          sorterArrows : false,
+          postType: 'kwps_intro_result',
+          deletable : true,
+          hasMore: false,
+          hasAmount: false,
+          editable: true, //TODO look if the test is published or not.
+          versions: introResults,
           mainRow: true,
           sortOrder: 0
         });
@@ -587,6 +623,12 @@ jQuery(function ($) {
             this.createIntro(kwpsPolls[i].id);
           }
           break;
+        case 'main_kwps_intro_result':
+        case 'kwps_intro_result':
+          for(var i = 0; i < kwpsPollLen; i++) {
+            this.createIntroResult(kwpsPolls[i].id);
+          }
+          break;
         case 'main_kwps_outro':
         case 'kwps_outro':
           for(var i = 0; i < kwpsPollLen; i++) {
@@ -699,6 +741,24 @@ jQuery(function ($) {
         }
       });
     },
+    createIntroResult: function (post_parent, edit) {
+      app.kwpsPollsCollection.create({
+        post_type: "kwps_intro_result",
+        post_status: "draft",
+        post_content : "intro result",
+        post_parent : post_parent,
+        _kwps_sort_order : "0"
+      }, {
+        wait: true,
+        success: function (model, response, options) {
+          app.kwpsPollsCollection.add(model);
+          if (edit) {
+            app.router.navigate('edit/'+ model.id, {trigger: true});
+
+          }
+        }
+      });
+    },
     createOutro: function (post_parent, edit) {
       var that = this;
       var model = new KwpsModel({
@@ -782,21 +842,15 @@ jQuery(function ($) {
       var postType = $(event.currentTarget).closest('tr').data('post-type');
       switch (postType) {
         case "main_kwps_intro" :
-          app.openRow[postType] = !app.openRow[postType];
-        break;
+        case "main_kwps_intro_result" :
         case "main_kwps_outro" :
+        case "main_kwps_question_group" :
           app.openRow[postType] = !app.openRow[postType];
-        break;
+          break;
         case "kwps_question" :
-          var sortOrder = $(event.currentTarget).closest('tr').data('sort-order');
-          app.openRow[postType] = (app.openRow[postType] == sortOrder)? -1 : sortOrder;
-        break;
         case "kwps_question_group" :
           var sortOrder = $(event.currentTarget).closest('tr').data('sort-order');
           app.openRow[postType] = (app.openRow[postType] == sortOrder)? -1 : sortOrder;
-        break;
-        case "main_kwps_question_group" :
-          app.openRow[postType] = !app.openRow[postType];
         break;
         default:
           console.log('no post type was given', postType);
@@ -910,7 +964,6 @@ jQuery(function ($) {
         answer_option_value: this.model.get("_kwps_answer_option_value"),
         addResults: (this.model.get('post_type') === "kwps_outro")
       };
-      console.log("model post type:",this.model.get('post_type'));
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({

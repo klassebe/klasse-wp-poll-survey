@@ -36,6 +36,7 @@ require_once __DIR__ . '/includes/question.php';
 require_once __DIR__ . '/includes/question_group.php';
 require_once __DIR__ . '/includes/entry.php';
 require_once __DIR__ . '/includes/intro.php';
+require_once __DIR__ . '/includes/intro_result.php';
 require_once __DIR__ . '/includes/outro.php';
 require_once __DIR__ . '/includes/answer_option.php';
 require_once __DIR__ . '/includes/test_modus.php';
@@ -74,6 +75,7 @@ add_action('init', array('\includes\question','register_post_type'));
 add_action('init', array('\includes\question_group','register_post_type'));
 add_action('init', array('\includes\entry','register_post_type'));
 add_action('init', array('\includes\intro','register_post_type'));
+add_action('init', array('\includes\intro_result','register_post_type'));
 add_action('init', array('\includes\outro','register_post_type'));
 add_action('init', array('\includes\test_modus','register_post_type'));
 add_action('init', array('\includes\test_collection','register_post_type'));
@@ -118,6 +120,10 @@ add_action( 'wp_ajax_kwps_delete_answer_option', array('\includes\answer_option'
 add_action( 'wp_ajax_kwps_save_intro', array('\includes\intro','save_from_request'));
 add_action( 'wp_ajax_kwps_update_intro', array('\includes\intro','update_from_request'));
 add_action( 'wp_ajax_kwps_delete_intro', array('\includes\intro','delete_from_request'));
+
+add_action( 'wp_ajax_kwps_save_intro_result', array('\includes\intro_result','save_from_request'));
+add_action( 'wp_ajax_kwps_update_intro_result', array('\includes\intro_result','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_intro_result', array('\includes\intro_result','delete_from_request'));
 
 add_action( 'wp_ajax_kwps_save_outro', array('\includes\outro','save_from_request'));
 add_action( 'wp_ajax_kwps_update_outro', array('\includes\outro','update_from_request'));
@@ -224,33 +230,6 @@ function enqueue_scripts() {
  *
  * @since    1.0.0
  */
-// function enqueue_scripts_admin() {
-//     wp_enqueue_script( 'jquery' );
-//     wp_enqueue_script( 'jquery-ui-core' );
-//     wp_enqueue_script( 'jquery-ui-tabs' );
-//     wp_enqueue_script( 'backbone' );
-//     // wp_enqueue_script( 'tiny_mce' );
-//     // wp_enqueue_script( 'editorremov' );
-//     // wp_enqueue_script( 'editor-functions' );
-//     wp_enqueue_script( 'media-upload' );
-//     wp_enqueue_script( 'thickbox' );
-
-//     wp_register_script( 'klasse-wp-poll-survey-handlebars', plugins_url( 'js/bower_components/handlebars/handlebars.js', __FILE__ ), array( 'jquery' ));
-//     wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery', 'media-upload', 'thickbox' ));
-
-
-//     $translation_array = array(
-//         '_kwps_intro' => __( 'Intro' ),
-//         '_kwps_outro' => __( 'Outro' ),
-//         '_kwps_question' => __( 'Question' )
-//     );
-//     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
-
-//     wp_enqueue_script( 'klasse-wp-poll-survey-handlebars');
-//     wp_enqueue_script( 'klasse-wp-poll-survey-backbone-associations');
-//     wp_enqueue_script( 'klasse-wp-poll-survey-admin');
-// }
-
 function enqueue_scripts_admin() {
     wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( 'js/dist/kwps_admin.js', __FILE__ ), array( 'jquery', 'backbone', 'thickbox', 'media-upload' ));
 
