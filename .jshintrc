@@ -29,7 +29,8 @@
     "tinymce",
     "tb_remove",
     "tb_show",
-    "kwps_admin_templates"
+    "kwps_admin_templates",
+    "self"
   ],
 
 
