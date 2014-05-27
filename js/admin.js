@@ -204,6 +204,7 @@ jQuery(function ($) {
           app.kwpsPollsCollection.add(model);
           for (var i = 0; i < 1; i++) {
             that.createQuestionGroup(model.get('ID'), i);
+            that.createOutro(model.get('ID'), i);
           }
         }
       });
@@ -258,6 +259,16 @@ jQuery(function ($) {
           app.kwpsPollsCollection.add(model);
         }
       });
+    },
+    createOutro: function (post_parent) {
+      var that = this;
+      app.kwpsPollsCollection.create({
+        post_type: "kwps_outro",
+        post_status: "draft",
+        post_content : "outro ",
+        post_parent : post_parent,
+        _kwps_sort_order : "0"
+      });
     }
   });
 
@@ -301,7 +312,9 @@ jQuery(function ($) {
 
       versions.forEach(function(version) {
         version.isLive = (version.post_status !== "draft");
-        version.conversion_rate_percentage = version.conversion_rate.toPrecision(4) * 100;
+        if(version.isLive) {
+          version.conversion_rate_percentage = version.conversion_rate.toPrecision(4) * 100;
+        }
       });
 
       //Get intro's
@@ -561,7 +574,7 @@ jQuery(function ($) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_outro',
-          deletable : true,
+          deletable : false,
           hasMore: false,
           hasAmount: false,
           editable: true, //TODO look if the test is published or not.
@@ -779,7 +792,6 @@ jQuery(function ($) {
       });
     },
     createQuestionGroup: function (post_parent, index, sortOrder, cb) {
-      console.log(sortOrder)
       this.collection.create({
         post_type: "kwps_question_group",
         post_status: "draft",
@@ -1009,6 +1021,11 @@ jQuery(function ($) {
       tinymce.triggerSave();
       content = $(event.target).closest('form').find('textarea').val();
       type = this.model.get("post_type");
+
+      if(content === "") {
+        alert('Content cannot be empty');
+        return false;
+      }
 
       if (type === 'kwps_question_group') {
         title = $(event.target).closest('form').find('input[name=qg-title]').val();
