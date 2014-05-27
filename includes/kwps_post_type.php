@@ -79,7 +79,8 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
             header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
             wp_send_json_error($errors);
         } else {
-            wp_send_json_success( static::save_post($request_data) );
+            $post = static::save_post($request_data);
+            wp_send_json_success( $post );
         }
 
         die();
