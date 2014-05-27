@@ -215,6 +215,7 @@ jQuery(function ($) {
         post_type: "kwps_question_group",
         post_status: "draft",
         post_title : "Question Group " + (index+1),
+        post_content : "Question Group " + (index+1),
         post_parent : post_parent,
         _kwps_sort_order : index.toString()
       });
@@ -425,7 +426,7 @@ jQuery(function ($) {
         title: "Intro",
         postType: "kwps_intro",
         mainTitle: true,
-        add: (intros.length <= 0),
+        add: (intros.length <= 0 && !_.some(versions, function(version) {return version.isLive;})),
         hasMore: (intros.length > 0),
         addText: 'Add Intro',
         opened: app.openRow.main_kwps_intro,
@@ -453,7 +454,7 @@ jQuery(function ($) {
         title: "Intro Result",
         postType: "kwps_intro_result",
         mainTitle: true,
-        add: (introResults.length <= 0),
+        add: (introResults.length <= 0 && !_.some(versions, function(version) {return version.isLive;})),
         hasMore: (introResults.length > 0),
         addText: 'Add Intro Result',
         opened: app.openRow.main_kwps_intro_result,
@@ -481,7 +482,7 @@ jQuery(function ($) {
         title: "Question pages",
         postType: "kwps_question_group",
         mainTitle: true,
-        add: (allqGroups && testmodus.get('_kwps_max_question_groups') > _.size(sortedAllQGroups) && !_.some(versions, function(version) {return version.isLive;})),
+        add: (allqGroups && (testmodus.get('_kwps_max_question_groups') < 0 || testmodus.get('_kwps_max_question_groups') > _.size(sortedAllQGroups)) && !_.some(versions, function(version) {return version.isLive;})),
         hasMore: (_.size(sortedAllQGroups) > 0),
         addText: 'Add question page',
         opened: app.openRow.main_kwps_question_group,
@@ -503,7 +504,6 @@ jQuery(function ($) {
             sorterArrows : (allqGroups.length/ versions.length > 1),
             postType: "kwps_question_group",
             deletable: !_.some(versions, function(version) {return version.isLive;}),
-            editable: false,
             hasMore: true,
             hasAmount: false,
             hasOpened: (app.openRow.kwps_question_group === sortOrderQG),
@@ -524,7 +524,7 @@ jQuery(function ($) {
               questionGroupSortOrder : sortOrderQG,
               addText: "Add question",
               colSpan : versions.length +1,
-              add: (testmodus.get('_kwps_max_questions_per_question_group') > _.size(sortedQu) && !_.some(versions, function(version) {return version.isLive;}))
+              add: (testmodus.get('_kwps_max_questions_per_question_group') < 0 || testmodus.get('_kwps_max_questions_per_question_group') > _.size(sortedQu).toString() && !_.some(versions, function(version) {return version.isLive;}))
             });
             
             for (var sortOrderQ in sortedQu) {
@@ -534,7 +534,9 @@ jQuery(function ($) {
                 question.editable = (parentVersion.get('post_status') !== 'publish');
               }, this);
 
+              // QUESTION
               data.table.push({
+                sorterArrows : (sortedQu.length / versions.length > 1),
                 versions: sortedQu[sortOrderQ],
                 question: true,
                 postType: "kwps_question",
@@ -547,13 +549,15 @@ jQuery(function ($) {
 
               if (app.openRow.kwps_question >= 0 && sortOrderQ === app.openRow.kwps_question.toString()) {
 
+                // TITLE ANSWER
                 data.table.push({
                   answerTitle: true,
                   title: "Answers",
                   postType: "kwps_answer_option",
                   addText: "Add answer",
                   questionSortOrder: sortOrderQ,
-                  colSpan : versions.length +1
+                  colSpan : versions.length +1,
+                  add: ((testmodus.get('_kwps_max_answer_options_per_question') < 0 || testmodus.get('_kwps_max_answer_options_per_question') > _.size(sortedAns).toString()) && !_.some(versions, function(version) {return version.isLive;}))
                 });
 
                 for (var sortOrderA in sortedAns) {
@@ -566,10 +570,10 @@ jQuery(function ($) {
                     answer.editable = (parentVersion.get('post_status') !== 'publish');
                   }, this);
 
-
+                  // ANSWER
                   data.table.push({
                     answer: true,
-                    sorterArrows: true,
+                    sorterArrows : (sortedAns.length / versions.length > 1),
                     first: (sortOrderA === 0),
                     last: (sortOrderA === _.size(sortedAns)-1),
                     sortOrder : sortOrderA,
@@ -589,7 +593,7 @@ jQuery(function ($) {
         title: "Outro",
         postType: "kwps_outro",
         mainTitle: true,
-        add: (outros.length <= 0),
+        add: (outros.length <= 0 && !_.some(versions, function(version) {return version.isLive;})),
         hasMore: (outros.length > 0),
         addText: 'Add outro',
         opened: app.openRow.main_kwps_outro,
@@ -618,10 +622,7 @@ jQuery(function ($) {
       this.render();
     },
     deleteRow: function(postType, sortOrder) {
-      console.log(postType);
-      console.log(sortOrder);
       var postsToDelete = this.collection.where({post_type: postType, _kwps_sort_order: sortOrder.toString()});
-
       for (i = 0; i < postsToDelete.length; i++) {
         postsToDelete[i].destroy();
       }
