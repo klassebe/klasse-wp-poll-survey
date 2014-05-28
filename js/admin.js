@@ -697,9 +697,7 @@ jQuery(function ($) {
           for (i = versionsOfOpenedQuestionGroup.length - 1; i >= 0; i--) {
             this.createQuestion(versionsOfOpenedQuestionGroup[i].id , highestSortOrder +1, function (newQuestion) {
               for (i = 0; i < 2; i++) {
-                that.createAnswer(newQuestion.get('ID'), i, function(newAnswer) {
-                  console.log('answer created: ' + newAnswer.id);
-                });
+                that.createAnswer(newQuestion.get('ID'), i);
               }
             });
           }
@@ -826,6 +824,7 @@ jQuery(function ($) {
         post_type: "kwps_question_group",
         post_status: "draft",
         post_title : "Question Group " + (parseInt(sortOrder) + 1),
+        post_content : "Question Group " + (parseInt(sortOrder) + 1),
         post_parent : post_parent,
         _kwps_sort_order : sortOrder.toString()
       }, {
@@ -940,10 +939,26 @@ jQuery(function ($) {
       } else {
         newSortOrder = currentSortOrder+1;
       }
-      var postType = $(event.currentTarget).closest('tr').data('post-type');
 
-      var toMove = this.collection.where({post_type: postType, _kwps_sort_order: currentSortOrder.toString()});
-      var toCorrect = this.collection.where({post_type: postType, _kwps_sort_order: newSortOrder.toString()});
+      var postType = $(event.currentTarget).closest('tr').data('post-type');
+      var toMove = [],
+        toCorrect = [];
+      if(postType === 'kwps_question' || postType === 'kwps_answer_option') {
+
+        var parentPostType = this.getParent(postType);
+        var parentPostTypeSortOrder = app.openRow[parentPostType];
+        var parentPosts = this.collection.where({post_type: parentPostType, _kwps_sort_order: parentPostTypeSortOrder.toString()});
+
+        parentPosts.forEach(function(parentPost) {
+          toMove = _.union(toMove, this.collection.where({post_type: postType, _kwps_sort_order: currentSortOrder.toString(), post_parent: parentPost.get('ID')}));
+          toCorrect = _.union(toCorrect, this.collection.where({post_type: postType, _kwps_sort_order: newSortOrder.toString(), post_parent: parentPost.get('ID')}));
+        }, this);
+
+      } else {
+        toMove = this.collection.where({post_type: postType, _kwps_sort_order: currentSortOrder.toString()});
+        toCorrect = this.collection.where({post_type: postType, _kwps_sort_order: newSortOrder.toString()});
+      }
+
 
       toMove.forEach(function(post) {
         post.set('_kwps_sort_order', newSortOrder.toString());
@@ -956,6 +971,33 @@ jQuery(function ($) {
       });
 
       this.render();
+    },
+    getParent: function(postType) {
+      var parentPostType;
+      switch (postType) {
+        case 'kwps_version':
+          parentPostType = 'kwps_collection';
+          break;
+        case 'kwps_question_group':
+          parentPostType = 'kwps_version';
+          break;
+        case 'kwps_intro':
+          parentPostType = 'kwps_version';
+          break;
+        case 'kwps_outro':
+          parentPostType = 'kwps_version';
+          break;
+        case 'kwps_question':
+          parentPostType = 'kwps_question_group';
+          break;
+        case 'kwps_answer_option':
+          parentPostType = 'kwps_question';
+          break;
+        default:
+          console.log('no post type was given', postType);
+      }
+
+      return parentPostType;
     },
     makeLive: function(event) {
       event.preventDefault();
