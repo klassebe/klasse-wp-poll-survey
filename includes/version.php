@@ -15,6 +15,11 @@ class Version extends Kwps_Post_Type{
 
     public static $numeric_fields = array();
 
+    public static $meta_data_fields = array(
+        '_kwps_sort_order',
+        '_kwps_view_count',
+    );
+
     public static $label = 'kwps-version';
 
     public static $post_type = 'kwps_version';
@@ -45,13 +50,6 @@ class Version extends Kwps_Post_Type{
             'show_ui' => false,
             'hierarchical' => true,
     );
-
-    public static function get_meta_data($post_id){
-        $meta_as_array = array();
-        $meta_as_array['_kwps_sort_order'] = get_post_meta($post_id, '_kwps_sort_order', true);
-        $meta_as_array['_kwps_view_count'] = get_post_meta($post_id, '_kwps_view_count', true);
-        return $meta_as_array;
-    }
 
     public static function get_test_modus($version_id)
     {
@@ -207,7 +205,20 @@ class Version extends Kwps_Post_Type{
             <?php if(!empty($data['outro'])): ?>
                 <div class="kwps-page kwps-outro">
                     <div class="kwps-content">
-                        <?php echo $data['outro']['post_content']; ?>
+                        <?php 
+                            /* SEARCH THE SHORTCODE AND REPLACE IT */
+                            $replacement_arr = [];
+                            $pattern_arr = [];
+                            $pattern = '/\[.*\]/';
+                            $subject = $data['outro']['post_content'];
+                            preg_match($pattern, $subject, $kwps_result_matches);
+                            foreach ($kwps_result_matches as $kwps_result_match) {
+                                $replacement_arr[] = do_shortcode($kwps_result_match);
+                                $pattern_arr[] = '/\\' . substr($kwps_result_match,0,-1) . '\]/';
+                            }
+                            $output = preg_replace($pattern_arr, $replacement_arr, $subject);
+                            echo $output;
+                        ?>
                     </div>
                 </div>
             <?php endif; ?>

@@ -47,6 +47,12 @@ class Test_Collection extends Kwps_Post_Type{
         ),
     );
 
+    public static $meta_data_fields = array(
+        '_kwps_logged_in_user_limit',
+        '_kwps_logged_out_user_limit',
+        '_kwps_sort_order',
+    );
+
     public static $post_type_args = array(
         'public' => true,
         'supports' => array(
@@ -68,14 +74,6 @@ class Test_Collection extends Kwps_Post_Type{
         'show_ui' => false,
         'hierarchical' => true,
     );
-
-    public static function get_meta_data($test_collection_id){
-        return array(
-            '_kwps_logged_in_user_limit' => get_post_meta($test_collection_id, '_kwps_logged_in_user_limit', true),
-            '_kwps_logged_out_user_limit' => get_post_meta($test_collection_id, '_kwps_logged_out_user_limit', true),
-            '_kwps_sort_order' => get_post_meta($test_collection_id, '_kwps_sort_order', true),
-        );
-    }
 
     public static function get_test_modus($test_collection_id)
     {

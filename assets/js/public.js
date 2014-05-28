@@ -52,12 +52,8 @@ jQuery(function($) {
 					    contentType: "application/json; charset=utf-8",
 					    dataType: "json",
 					    success: function(data) {
-						  	if (data) {
-						  		getChart.ID = data.ID;
-						  		getChart.output_type ='bar-chart-per-question';
-								} else {
-									alert('error in data callback');
-								}
+					  		getChart.ID = data.data.ID;
+					  		getChart.output_type ='bar-chart-per-question';
 								getChartData(urlGetChartData, getChart);
 					    },
 					    failure: function (errMsg) {
@@ -79,7 +75,7 @@ jQuery(function($) {
 							    		graphCategories.push(value.answer_option_content);
 							    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
 							    	});
-							    	outputPieChart(data, graphCategories, graphData);
+							    	outputBarChart(data, graphCategories, graphData);
 							    	
 								    },
 								    async: false
@@ -88,7 +84,19 @@ jQuery(function($) {
 						elem.find('.kwps-question-group').hide();
 						elem.find('.kwps-outro').show();
 					};
-
+					var disableChartSettings = function () {
+						return {
+									exporting: {
+									    enabled: false
+									},
+							    legend: {
+							        enabled: false
+							    },
+							    credits: {
+							        enabled: false
+							    }
+							  }
+					}
 					/* BAR CHART CODE */
 					var outputBarChart = function (data, graphCategories, graphData) {
 						elem.find('.kwps-chart.chart-bar').highcharts({
@@ -125,15 +133,7 @@ jQuery(function($) {
 						            }
 						        }
 						    },
-						    exporting: {
-								    enabled: false
-								},
-						    legend: {
-						        enabled: false
-						    },
-						    credits: {
-						        enabled: false
-						    },
+						    // disableChartSettings(),
 						    series: [{
 						    		name: 'Votes',
 						        data: graphData
@@ -168,15 +168,7 @@ jQuery(function($) {
 	            tooltip: {
 	              valueSuffix: ' %'
 	            },
-	        		exporting: {
-							  enabled: false
-							},
-	            legend: {
-	              enabled: false
-	            },
-					    credits: {
-					      enabled: false
-					    },
+	        		// disableChartSettings(),
 	            series: [{
 	              name: 'Votes',
 	              data: graphData
@@ -209,15 +201,7 @@ jQuery(function($) {
 	                }
 		            }
 			        },
-			        exporting: {
-							  enabled: false
-							},
-	            legend: {
-	              enabled: false
-	            },
-					    credits: {
-					      enabled: false
-					    },
+			        // disableChartSettings(),
 			        series: [{
 		            type: 'pie',
 		            name: 'Browser share',

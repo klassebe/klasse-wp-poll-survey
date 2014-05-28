@@ -14,6 +14,11 @@ class Answer_Option extends Kwps_Post_Type{
         '_kwps_sort_order',
     );
 
+    public static $meta_data_fields = array(
+        '_kwps_sort_order',
+        '_kwps_answer_option_value',
+    );
+
     public static $post_type = 'kwps_answer_option';
 
     public static $rewrite = array(
@@ -73,14 +78,6 @@ class Answer_Option extends Kwps_Post_Type{
     {
         $question_id = wp_get_post_parent_id($answer_option_id);
         return Question::validate_for_delete($question_id);
-    }
-
-    public static function get_meta_data($post_id)
-    {
-        $meta_as_array = array();
-        $meta_as_array['_kwps_sort_order'] = get_post_meta($post_id, '_kwps_sort_order', true);
-        $meta_as_array['_kwps_answer_option_value'] = get_post_meta($post_id, '_kwps_answer_option_value', true);
-        return $meta_as_array;
     }
 
     public static function get_all_html($question_id)

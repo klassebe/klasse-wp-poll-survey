@@ -144,7 +144,7 @@ class Result {
         return $participants_count;
     }
 
-        public static function get_conversion_rate_of_test_collection( $test_collection_id ){
+    public static function get_conversion_rate_of_test_collection( $test_collection_id ){
         $conversion_rates = array();
         $versions = Version::get_all_by_post_parent($test_collection_id);
 
@@ -169,4 +169,12 @@ class Result {
 
         return $conversion_rate;
     }
+    public static function shortcode( $atts ) {
+        extract( shortcode_atts( array(
+            'result' => 0,
+        ), $atts ) );
+
+        return '<div class="kwps-result ' . $result . '">Chart</div>';
+    }
 }
+/* EOF */

@@ -14,6 +14,12 @@ class Entry extends Kwps_Post_Type{
         'post_parent',
     );
 
+    public static $meta_data_fields = array(
+        '_kwps_sort_order',
+        '_kwps_cookie_value',
+        '_kwps_ip_address',
+    );
+
     public static $rewrite = array(
             'slug' => 'entries',
             'with_front' => false,
@@ -40,15 +46,6 @@ class Entry extends Kwps_Post_Type{
         'exclude_from_search' => false,
         'publicly_queryable' => false,
     );
-
-    public static function get_meta_data($post_id)
-    {
-        $meta_as_array = array();
-        $meta_as_array['_kwps_sort_order'] = get_post_meta($post_id, '_kwps_sort_order', true);
-        $meta_as_array['_kwps_cookie_value'] = get_post_meta($post_id, '_kwps_cookie_value', true);
-        $meta_as_array['_kwps_ip_address'] = get_post_meta($post_id, '_kwps_ip_address', true);
-        return $meta_as_array;
-    }
 
     public static function get_test_modus($entry_id)
     {

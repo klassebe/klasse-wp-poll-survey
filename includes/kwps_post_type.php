@@ -10,6 +10,8 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
     public static $numeric_fields = array();
 
+    public static $meta_data_fields = array('_kwps_sort_order');
+
     public static $post_type = '';
 
     public static $rewrite = array(
@@ -40,7 +42,11 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
     public static function get_meta_data($post_id)
     {
         $meta_as_array = array();
-        $meta_as_array['_kwps_sort_order'] = get_post_meta($post_id, '_kwps_sort_order', true);
+
+        foreach(static::$meta_data_fields as $field){
+            $meta_as_array[$field] = get_post_meta($post_id, $field, true);
+        }
+
         return $meta_as_array;
     }
 
