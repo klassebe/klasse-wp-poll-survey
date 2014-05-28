@@ -52,12 +52,9 @@ jQuery(function($) {
 					    contentType: "application/json; charset=utf-8",
 					    dataType: "json",
 					    success: function(data) {
-						  	if (data) {
-						  		getChart.ID = data.ID;
-						  		getChart.output_type ='bar-chart-per-question';
-								} else {
-									alert('error in data callback');
-								}
+					    	console.log(data.data);
+					  		getChart.ID = data.data.ID;
+					  		getChart.output_type ='bar-chart-per-question';
 								getChartData(urlGetChartData, getChart);
 					    },
 					    failure: function (errMsg) {
