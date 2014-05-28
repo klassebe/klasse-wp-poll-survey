@@ -209,14 +209,17 @@ class Version extends Kwps_Post_Type{
                     <div class="kwps-content">
                         <?php 
                             /* SEARCH THE SHORTCODE AND REPLACE IT */
+                            $replacement_arr = [];
+                            $pattern_arr = [];
                             $pattern = '/\[.*\]/';
                             $subject = $data['outro']['post_content'];
                             preg_match($pattern, $subject, $kwps_result_matches);
                             foreach ($kwps_result_matches as $kwps_result_match) {
-                                echo do_shortcode($kwps_result_match);
+                                $replacement_arr[] = do_shortcode($kwps_result_match);
+                                $pattern_arr[] = '/\\' . substr($kwps_result_match,0,-1) . '\]/';
                             }
-                            
-                            echo $data['outro']['post_content']; 
+                            $output = preg_replace($pattern_arr, $replacement_arr, $subject);
+                            echo $output;
                         ?>
                     </div>
                 </div>
