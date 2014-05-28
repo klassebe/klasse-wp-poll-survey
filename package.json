@@ -1,5 +1,5 @@
 {
-  "name": "my-project-name",
+  "name": "klasse-wordpress-poll-survey",
   "version": "0.1.0",
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -11,6 +11,5 @@
     "grunt-contrib-concat": "~0.4.0"
   },
   "dependencies": {
-    "grunt-contrib-jshint": "~0.10.0"
   }
 }
