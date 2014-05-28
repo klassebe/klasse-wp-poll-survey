@@ -705,11 +705,12 @@ jQuery(function ($) {
         case 'kwps_answer_option':
           sortOrder = $(e.currentTarget).closest('tr').data('sort-order');
           for(i = 0; i < kwpsPollLen; i++) {
-            var questionGroups = this.collection.where({post_type: 'kwps_question_group', post_parent: kwpsPolls[i].id});
+            var questionGroups = this.collection.where({post_type: 'kwps_question_group', post_parent: kwpsPolls[i].id, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
             for(var j = 0; j < questionGroups.length; j++) {
               var questions = this.collection.where({post_type: 'kwps_question', post_parent: questionGroups[j].id, _kwps_sort_order: sortOrder.toString()});
               for(var k = 0; k < questions.length; k++) {
                 var index = this.collection.where({post_type: 'kwps_answer_option', post_parent: questions[k].id}).length;
+                console.log(index);
                 this.createAnswer(questions[k].id, index);
               }
             }
