@@ -13,6 +13,9 @@ class Question extends Kwps_Post_Type{
         '_kwps_sort_order',
     );
 
+    public static $meta_data_fields = array('_kwps_sort_order');
+
+
     public static $post_type = 'kwps_question';
 
     public static $rewrite = array(
