@@ -88,7 +88,19 @@ jQuery(function($) {
 						elem.find('.kwps-question-group').hide();
 						elem.find('.kwps-outro').show();
 					};
-
+					var disableChartSettings = function () {
+						return {
+									exporting: {
+									    enabled: false
+									},
+							    legend: {
+							        enabled: false
+							    },
+							    credits: {
+							        enabled: false
+							    }
+							  }
+					}
 					/* BAR CHART CODE */
 					var outputBarChart = function (data, graphCategories, graphData) {
 						elem.find('.kwps-chart.chart-bar').highcharts({
@@ -125,15 +137,7 @@ jQuery(function($) {
 						            }
 						        }
 						    },
-						    exporting: {
-								    enabled: false
-								},
-						    legend: {
-						        enabled: false
-						    },
-						    credits: {
-						        enabled: false
-						    },
+						    // disableChartSettings(),
 						    series: [{
 						    		name: 'Votes',
 						        data: graphData
@@ -168,15 +172,7 @@ jQuery(function($) {
 	            tooltip: {
 	              valueSuffix: ' %'
 	            },
-	        		exporting: {
-							  enabled: false
-							},
-	            legend: {
-	              enabled: false
-	            },
-					    credits: {
-					      enabled: false
-					    },
+	        		// disableChartSettings(),
 	            series: [{
 	              name: 'Votes',
 	              data: graphData
@@ -209,15 +205,7 @@ jQuery(function($) {
 	                }
 		            }
 			        },
-			        exporting: {
-							  enabled: false
-							},
-	            legend: {
-	              enabled: false
-	            },
-					    credits: {
-					      enabled: false
-					    },
+			        // disableChartSettings(),
 			        series: [{
 		            type: 'pie',
 		            name: 'Browser share',

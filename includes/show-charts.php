@@ -64,7 +64,7 @@ jQuery(function ($) {
 	});
 	$('#add-result-to-editor').on('click', function () {
 		if (selectedResult) {
-			$('iframe', window.parent.document).contents().find('#tinymce').append('[kwps-result result='+ selectedResult + ']');
+			$('iframe', window.parent.document).contents().find('#tinymce').append('[kwps_result result='+ selectedResult + ']');
 			self.parent.tb_remove();
 		} else {
 			alert('Please select a result view to import');
