@@ -6,13 +6,11 @@
                 <rect x="20" y="0" fill="#FFBA00" width="10" height="60"></rect>
             </svg>
         </div>
-        {{#if editable}}
-            {{#if sorterArrows}}
+        {{#if sorterArrows}}
             <div class="move">
                 <span class="move-action up {{#if first}}disabled{{/if}}"></span>
                 <span class="move-action down {{#if last}}disabled{{/if}}"></span>
             </div>
-            {{/if}}
         {{/if}}
         <div class="action" style="padding: 10px; float:left;">
             {{#if deletable}}

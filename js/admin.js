@@ -536,7 +536,9 @@ jQuery(function ($) {
 
               // QUESTION
               data.table.push({
-                sorterArrows : (sortedQu.length / versions.length > 1),
+                sorterArrows : (_.size(sortedQu) > 1),
+                first: (parseInt(sortOrderQ) === 0),
+                last: (parseInt(sortOrderQ) === _.size(sortedQu)-1),
                 versions: sortedQu[sortOrderQ],
                 question: true,
                 postType: "kwps_question",
@@ -573,9 +575,9 @@ jQuery(function ($) {
                   // ANSWER
                   data.table.push({
                     answer: true,
-                    sorterArrows : (sortedAns.length / versions.length > 1),
-                    first: (sortOrderA === 0),
-                    last: (sortOrderA === _.size(sortedAns)-1),
+                    sorterArrows : (_.size(sortedAns) > 1),
+                    first: (parseInt(sortOrderA) === 0),
+                    last: (parseInt(sortOrderA) === _.size(sortedAns)-1),
                     sortOrder : sortOrderA,
                     number: parseInt(sortOrderA) +1,
                     versions : sortedAns[sortOrderA],
