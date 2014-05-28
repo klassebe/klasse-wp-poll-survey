@@ -624,11 +624,45 @@ jQuery(function ($) {
       this.render();
     },
     deleteRow: function(postType, sortOrder) {
+      var parentPostType = this.getParent(postType);
+      var parentPostTypeSortOrder = app.openRow[parentPostType];
+      var whereAttributes = {post_type: parentPostType};
+
+      if(parentPostTypeSortOrder) {
+        whereAttributes._kwps_sort_order = parentPostTypeSortOrder.toString();
+      }
+
+      var parentPosts = this.collection.where(whereAttributes);
+      var postsToMove = [];
       var postsToDelete = this.collection.where({post_type: postType, _kwps_sort_order: sortOrder.toString()});
       for (i = 0; i < postsToDelete.length; i++) {
         postsToDelete[i].destroy();
       }
       this.collection.remove(postsToDelete);
+
+      parentPosts.forEach(function(parentPost) {
+        var allRemainingPostsInParent = this.collection.where({post_type: postType, post_parent: parentPost.get('ID')});
+
+        var newPosts = _.filter(allRemainingPostsInParent, function(post) {
+          return post.get('_kwps_sort_order') > sortOrder.toString();
+        });
+        postsToMove = _.union(postsToMove, newPosts);
+
+      }, this);
+
+      var that = this;
+      postsToMove.forEach(function(postToMove) {
+        var currentSortOrder = postToMove.get('_kwps_sort_order');
+        var newSortOrder = currentSortOrder - 1;
+        postToMove.set('_kwps_sort_order', newSortOrder);
+        postToMove.save({
+          wait: true,
+          success: function() {
+            that.render();
+          }
+        });
+      });
+
     },
     deletePostType: function(e) {
       e.preventDefault();
@@ -710,7 +744,6 @@ jQuery(function ($) {
               var questions = this.collection.where({post_type: 'kwps_question', post_parent: questionGroups[j].id, _kwps_sort_order: sortOrder.toString()});
               for(var k = 0; k < questions.length; k++) {
                 var index = this.collection.where({post_type: 'kwps_answer_option', post_parent: questions[k].id}).length;
-                console.log(index);
                 this.createAnswer(questions[k].id, index);
               }
             }
