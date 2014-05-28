@@ -7,6 +7,14 @@ require_once 'question.php';
 require_once 'answer_option.php';
 
 class Version extends Kwps_Post_Type{
+    public static $required_fields = array(
+        'post_status',
+        'post_parent',
+        '_kwps_sort_order',
+    );
+
+    public static $numeric_fields = array();
+
     public static $label = 'kwps-version';
 
     public static $post_type = 'kwps_version';
@@ -49,42 +57,6 @@ class Version extends Kwps_Post_Type{
     {
         $version = static::get_as_array($version_id);
         return Test_Collection::get_test_modus($version['post_parent']);
-    }
-
-    static function validate_for_insert($post_as_array = array()) {
-        $errors = array();
-
-        $numeric_fields = array(
-//            '_kwps_sort_order',
-        );
-
-        $required_fields = array(
-            'post_status',
-            'post_parent',
-            '_kwps_sort_order',
-        );
-
-        foreach($required_fields as $field){
-            if(! isset($post_as_array[$field])) {
-                array_push($errors, array( $field, 'Required') );
-            } else {
-                if( is_string($post_as_array[$field])){
-                    if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
-                    }
-                }
-            }
-        }
-
-        foreach($numeric_fields as $field){
-            if( isset( $post_as_array[$field]) ) {
-                if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
-                }
-            }
-        }
-
-        return $errors;
     }
 
     public static function validate_for_delete($post_id = 0)

@@ -5,6 +5,14 @@ require_once 'kwps_post_type.php';
 
 class Question extends Kwps_Post_Type{
 
+    public static $numeric_fields = array();
+
+    public static $required_fields = array(
+        'post_content',
+        'post_parent',
+        '_kwps_sort_order',
+    );
+
     public static $post_type = 'kwps_question';
 
     public static $rewrite = array(
@@ -88,43 +96,21 @@ class Question extends Kwps_Post_Type{
      * @return bool
      */
     static function validate_for_insert($post_as_array = array()) {
+        $errors = static::check_required_fields($post_as_array);
+        $errors = array_merge($errors, static::check_numeric_fields($post_as_array));
+        $errors = array_merge($errors, static::check_max_questions_per_question_group($post_as_array));
+
+        return $errors;
+    }
+
+    private static function check_max_questions_per_question_group($post){
         $errors = array();
 
-        $numeric_fields = array(
-//            '_kwps_sort_order',
-        );
-
-        $required_fields = array(
-            'post_content',
-            'post_parent',
-            '_kwps_sort_order',
-        );
-
-        foreach($required_fields as $field){
-            if(! isset($post_as_array[$field])) {
-                array_push($errors, array( $field, 'Required') );
-            } else {
-                if( is_string($post_as_array[$field])){
-                    if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
-                    }
-                }
-            }
-        }
-
-        foreach($numeric_fields as $field){
-            if( isset( $post_as_array[$field]) ) {
-                if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
-                }
-            }
-        }
-
-        if( isset( $post_as_array['post_parent'] ) ){
-            $question_group = Question_Group::get_as_array($post_as_array['post_parent']);
+        if( isset( $post['post_parent'] ) ){
+            $question_group = Question_Group::get_as_array($post['post_parent']);
             $test_modus = Question_Group::get_test_modus($question_group['ID']);
 
-            $all_questions_of_same_group = Question::get_all_by_post_parent($post_as_array['post_parent']);
+            $all_questions_of_same_group = Question::get_all_by_post_parent($post['post_parent']);
 
             $max_questions_per_question_group = (int) $test_modus['_kwps_max_questions_per_question_group'];
 

@@ -13,6 +13,18 @@ require_once 'kwps_post_type.php';
 
 class Test_Collection extends Kwps_Post_Type{
 
+    public static $numeric_fields = array(
+        '_kwps_sort_order'
+    );
+
+    public static $required_fields = array(
+            'post_status',
+            'post_parent',
+            '_kwps_sort_order',
+            '_kwps_logged_in_user_limit',
+            '_kwps_logged_out_user_limit',
+        );
+
     public static $post_type = 'kwps_test_collection';
 
     public static $rewrite = array(
@@ -85,48 +97,22 @@ class Test_Collection extends Kwps_Post_Type{
 
 
     static function validate_for_insert($post_as_array = array()) {
+        $errors = static::check_required_fields($post_as_array);
+        $errors = array_merge($errors, static::check_numeric_fields($post_as_array));
+        $errors = array_merge($errors, static::check_allowed_dropdown_values($post_as_array));
+
+        return $errors;
+    }
+
+    private static function check_allowed_dropdown_values($post){
         $errors = array();
-
-        $numeric_fields = array(
-//            '_kwps_sort_order'
-        );
-
-        $required_fields = array(
-            'post_status',
-            'post_parent',
-            '_kwps_sort_order',
-            '_kwps_logged_in_user_limit',
-            '_kwps_logged_out_user_limit',
-        );
-
-        foreach($required_fields as $field){
-            if(! isset($post_as_array[$field])) {
-                array_push($errors, array( 'field' => $field, 'message' => 'Required') );
-            } else {
-                if( is_string($post_as_array[$field])){
-                    if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
-                    }
-                }
-            }
-        }
-
-        foreach($numeric_fields as $field){
-            if( isset( $post_as_array[$field]) ) {
-                if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
-                }
-            }
-        }
-
         foreach( static::$allowed_dropdown_values as $field => $allowed_values ){
-            if( isset( $post_as_array[$field] ) ) {
-                if( !in_array( $post_as_array[$field], $allowed_values) ) {
+            if( isset( $post[$field] ) ) {
+                if( !in_array( $post[$field], $allowed_values) ) {
                     array_push( $errors , array( 'field' => $field, 'message' => 'Value is not allowed') );
                 }
             }
         }
-
         return $errors;
     }
 
