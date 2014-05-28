@@ -6,6 +6,10 @@ require_once __DIR__ . '/post_type_interface.php';
 
 abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
+    public static $required_fields = array();
+
+    public static $numeric_fields = array();
+
     public static $post_type = '';
 
     public static $rewrite = array(
@@ -75,15 +79,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         $request_data = static::get_post_data_from_request();
         $errors = static::validate_for_insert($request_data);
 
-        if( sizeof( $errors ) > 0 ) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
-            wp_send_json_error($errors);
-        } else {
-            $post = static::save_post($request_data);
-            wp_send_json( $post );
-        }
-
-        die();
+        static::process_request_data($request_data, $errors);
     }
 
     public static function get_post_data_from_request(){
@@ -94,7 +90,41 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         return $request_data;
     }
 
+    static function validate_for_insert($post_as_array = array()) {
+        $errors = static::check_required_fields($post_as_array);
+        $errors = array_merge($errors, static::check_numeric_fields($post_as_array));
 
+        return $errors;
+    }
+
+    public static function check_required_fields($post){
+        $errors = array();
+        foreach(static::$required_fields as $field){
+            if(! isset($post[$field])) {
+                array_push($errors, array( 'field' => $field, 'message' => 'Required') );
+            } else {
+                if( is_string($post[$field])){
+                    if( strlen($post[$field]) == 0 ) {
+                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
+                    }
+                }
+            }
+        }
+        return $errors;
+    }
+
+    public static function check_numeric_fields($post){
+        $errors = array();
+        foreach(static::$numeric_fields as $field){
+            if( isset( $post[$field]) ) {
+                if(! is_numeric( $post[$field] ) ){
+                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
+                }
+            }
+        }
+
+        return $errors;
+    }
 
     public static function save_post($post_data){
         $post_id = wp_insert_post($post_data);
@@ -110,6 +140,18 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         }
 
         return static::get_as_array($post_id);
+    }
+
+    public static function process_request_data($request_data, $errors){
+        if( sizeof( $errors ) > 0 ) {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
+            wp_send_json_error($errors);
+        } else {
+            $post = static::save_post($request_data);
+            wp_send_json_success( $post );
+        }
+
+        die();
     }
 
     public final static function update_from_request(){

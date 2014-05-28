@@ -2,6 +2,22 @@
     namespace includes;
 
     abstract class Test_Modus extends Kwps_Post_Type{
+
+        public static $required_fields = array(
+            'post_title',
+            '_kwps_max_question_groups',
+            '_kwps_max_questions_per_question_group',
+            '_kwps_max_answer_options_per_question',
+            '_kwps_allowed_input_types',
+            '_kwps_allowed_output_types',
+        );
+
+        public static $numeric_fields = array(
+            '_kwps_max_question_groups',
+            '_kwps_max_questions_per_question_group',
+            '_kwps_max_answer_options_per_question',
+        );
+
         public static $answer_option_types = array(
             'free-text-only',   // free text, no value assigned
             'scale',            // free text, each question has the same answer_options, free text + integer value
@@ -46,47 +62,6 @@
             $post_type_args['rewrite'] = static::$rewrite;
 
             register_post_type(static::$post_type, $post_type_args);
-        }
-
-        static function validate_for_insert($post_as_array = array()) {
-            $errors = array();
-
-            $numeric_fields = array(
-                '_kwps_max_question_groups',
-                '_kwps_max_questions_per_question_group',
-                '_kwps_max_answer_options_per_question',
-            );
-
-            $required_fields = array(
-                'post_title',
-                '_kwps_max_question_groups',
-                '_kwps_max_questions_per_question_group',
-                '_kwps_max_answer_options_per_question',
-                '_kwps_allowed_input_types',
-                '_kwps_allowed_output_types',
-            );
-
-            foreach($required_fields as $field){
-                if(! isset($post_as_array[$field])) {
-                    array_push($errors, array( $field, 'Required') );
-                } else {
-                    if( is_string($post_as_array[$field])){
-                        if( strlen($post_as_array[$field]) == 0 ) {
-                            array_push($errors, array( 'field' => $field, 'message' => 'Required') );
-                        }
-                    }
-                }
-            }
-
-            foreach($numeric_fields as $field){
-                if( isset( $post_as_array[$field]) ) {
-                    if(! is_numeric( $post_as_array[$field] ) ){
-                        array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
-                    }
-                }
-            }
-
-            return $errors;
         }
 
         public static function get_meta_data($post_id)

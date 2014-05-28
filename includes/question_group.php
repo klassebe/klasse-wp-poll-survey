@@ -11,6 +11,14 @@ namespace includes;
 
 class Question_Group extends Kwps_Post_Type {
 
+    public static $numeric_fields = array();
+
+    public static $required_fields = array(
+        'post_title',
+        'post_parent',
+        '_kwps_sort_order',
+    );
+
     public static $post_type = 'kwps_question_group';
 
     public static $rewrite = array(
@@ -61,40 +69,18 @@ class Question_Group extends Kwps_Post_Type {
 
     public static function validate_for_insert($post_as_array = array())
     {
+        $errors = static::check_required_fields($post_as_array);
+        $errors = array_merge($errors, static::check_numeric_fields($post_as_array));
+        $errors = array_merge($errors, static::check_max_question_groups($post_as_array));
+
+        return $errors;
+    }
+
+    private static function check_max_question_groups($post){
         $errors = array();
 
-        $numeric_fields = array(
-//            '_kwps_sort_order',
-        );
-
-        $required_fields = array(
-            'post_title',
-            'post_parent',
-            '_kwps_sort_order',
-        );
-
-        foreach($required_fields as $field){
-            if(! isset($post_as_array[$field])) {
-                array_push($errors, array( 'field' => $field, 'message' => 'Required') );
-            } else {
-                if( is_string($post_as_array[$field])){
-                    if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
-                    }
-                }
-            }
-        }
-
-        foreach($numeric_fields as $field){
-            if( isset( $post_as_array[$field]) ) {
-                if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
-                }
-            }
-        }
-
-        if( isset( $post_as_array['post_parent'] ) ){
-            $version = Version::get_as_array($post_as_array['post_parent']);
+        if( isset( $post['post_parent'] ) ){
+            $version = Version::get_as_array($post['post_parent']);
             $test_modus = Version::get_test_modus($version['ID']);
 
             $kwps_max_question_groups = $test_modus['_kwps_max_question_groups'];
@@ -107,8 +93,6 @@ class Question_Group extends Kwps_Post_Type {
                 }
             }
         }
-
-
         return $errors;
     }
 
