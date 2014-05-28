@@ -8,10 +8,12 @@
         </div>
         <div style="padding: 10px; float:left;">
             {{t title}}
+            {{#if add}}
             <button class="button add">
                 <span class="dashicons dashicons-plus"></span>
                 {{t addText}}
             </button>
+            {{/if}}
         </div> 
     </th>
     <th class="no-delete row-title" style="height:20px;">{{number}}</th>

@@ -5,12 +5,12 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       scripts: {
-        files: ['**/*.hbs','./js/admin.js'],
-        tasks: ['handlebars','clean:dist','concat:dist','uglify','clean:temp'],
+        files: ['**/*.hbs','./js/*.js'],
+        tasks: ['jshint', 'handlebars','clean:dist','concat:dist','uglify','clean:temp'],
         options: {
           spawn: false,
-          livereload: true,
-        },
+          livereload: true
+        }
       }
     },
     handlebars: {
@@ -44,6 +44,14 @@ module.exports = function(grunt) {
     clean: {
       dist: ["./js/dist"],
       temp: ["./js/temp"]
+    },
+    jshint: {
+      all: {
+        options: {
+          jshintrc: '.jshintrc' // relative to Gruntfile
+        },
+        src: './js/*.js'
+      }
     }
   });
 
@@ -52,8 +60,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task(s).
   grunt.registerTask('default', ['watch']);
+  grunt.registerTask('build', ['jshint', 'handlebars','clean:dist','concat:dist','uglify','clean:temp']);
 
 };

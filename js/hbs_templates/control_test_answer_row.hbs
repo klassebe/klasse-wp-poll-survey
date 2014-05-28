@@ -7,28 +7,37 @@
             </svg>
         </div>
         {{#if sorterArrows}}
-        <div class="move">
-            <span class="move-action up {{#if first}}disabled{{/if}}"></span>
-            <span class="move-action down {{#if last}}disabled{{/if}}"></span>
-        </div>
+            <div class="move">
+                <span class="move-action up {{#if first}}disabled{{/if}}"></span>
+                <span class="move-action down {{#if last}}disabled{{/if}}"></span>
+            </div>
         {{/if}}
         <div class="action" style="padding: 10px; float:left;">
+            {{#if deletable}}
             <a class="delete-answer-option">
                 <span class="del">
                     <span data-code="f182" class="dashicons dashicons-trash"></span>
                 </span>
             </a>
+            {{/if}}
             {{number}}
         </div>
     </td>
     {{#each versions}}
     <td id="_kwps_answer_option_{{ID}}" class="post-title page-title column-title">
-        <strong>
-            <a class="row-title" href="#edit/{{ID}}"
-               title="{{t "Edit"}}">{{subStringStripper post_content 120}}</a>
-        </strong>
+        {{#if editable}}
+            <strong>
+                <a class="row-title" href="#edit/{{ID}}"
+                   title="{{t "Edit"}}">{{subStringStripper post_content 120}}</a>
+            </strong>
 
-        <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
+            <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
+        {{else}}
+            <strong>
+                {{subStringStripper post_content 120}}
+            </strong>
+        {{/if}}
+
     </td>
     {{/each}}
     <td>

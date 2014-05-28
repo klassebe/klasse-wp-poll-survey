@@ -3,11 +3,16 @@
     {{#each versions}}
         <th class=" column-title" data-version-id="{{ID}}">
             <div class="column-tab">
+                {{#if editable}}
                 <input class="update-version-post-title" name="post_title" value="{{post_title}}">
+
                 {{#if deleteVersion}}
                     <span class="del" data-version-id="{{ID}}">
-                        <span data-code="f182" class="dashicons dashicons-trash"></span>
-                    </span>
+                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                </span>
+                    {{/if}}
+                {{else}}
+                {{post_title}}
                 {{/if}}
                 {{#if isLive}}
                     Live!

@@ -1,42 +1,49 @@
 <tr class="post-1 type-post status-publish format-standard hentry category-uncategorized iedit author-self level-0" style="background: #DAEFF8;" data-post-type="kwps_question" data-sort-order="{{sortOrder}}">
-                <td class="column-action" style="border: none; padding: 0px;height: 60px;">
-                    <div style="width:20px; height: 60px; float:left;">
-                        <svg x="0px" y="0px" viewBox="0 0 20 60">
-                            <rect x="0" y="0" fill="#FFFFFF" width="10" height="60"></rect>
-                            <rect x="10" y="0" fill="#1E8CBE" width="10" height="60"></rect>
-                        </svg>
-                    </div>
-                    {{#if sorterArrows}}
-                        <div class="move">
-                            <span class="move-action up {{#if first}}disabled{{/if}}"></span>
-                            <span class="move-action down {{#if last}}disabled{{/if}}"></span>
-                        </div>
-                    {{/if}}
-                    <div class="action" style="padding: 10px; float:left;">
-                        {{#if hasOpened}}
-                            <span class="dashicons dashicons-arrow-down toggle-details"></span>
-                        {{else}}
-                            <span class="dashicons dashicons-arrow-right toggle-details" data-type="question" data-sort-order="{{sortOrder}}"></span>
-                        {{/if}}
-                        <a class="delete-question">
-                            <span class="del" data-post-type="kwps_qsdlfkj">
-                                <span data-code="f182" class="dashicons dashicons-trash"></span>
-                            </span>
-                        </a>
-                        {{number}}
-                    </div>
-                    
-                </td>
-                {{#each versions}}
-                <td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
-                    <strong>
-                        <a class="row-title" href="#edit/{{ID}}"
-                           title="Edit “{{post_content}}”">{{subStringStripper post_content 120}}</a>
-                    </strong>
+    <td class="column-action" style="border: none; padding: 0px;height: 60px;">
+        <div style="width:20px; height: 60px; float:left;">
+            <svg x="0px" y="0px" viewBox="0 0 20 60">
+                <rect x="0" y="0" fill="#FFFFFF" width="10" height="60"></rect>
+                <rect x="10" y="0" fill="#1E8CBE" width="10" height="60"></rect>
+            </svg>
+        </div>
+        {{#if sorterArrows}}
+            <div class="move">
+                <span class="move-action up {{#if first}}disabled{{/if}}"></span>
+                <span class="move-action down {{#if last}}disabled{{/if}}"></span>
+            </div>
+        {{/if}}
+        <div class="action" style="padding: 10px; float:left;">
+            {{#if hasOpened}}
+                <span class="dashicons dashicons-arrow-down toggle-details"></span>
+            {{else}}
+                <span class="dashicons dashicons-arrow-right toggle-details" data-type="question" data-sort-order="{{sortOrder}}"></span>
+            {{/if}}
+            {{#if deletable}}
+            <a class="delete-question">
+                <span class="del" data-post-type="kwps_qsdlfkj">
+                    <span data-code="f182" class="dashicons dashicons-trash"></span>
+                </span>
+            </a>
+            {{/if}}
+            {{number}}
+        </div>
 
-                    <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
-                </td>
-                {{/each}}
-                <td>{{amountOfSiblings}}</td>
-            </tr>
-            
+    </td>
+    {{#each versions}}
+    <td id="_kwps_question_{{ID}}" class="post-title page-title column-title">
+        {{#if editable}}
+        <strong>
+            <a class="row-title" href="#edit/{{ID}}"
+               title="Edit “{{post_content}}”">{{subStringStripper post_content 120}}</a>
+        </strong>
+
+        <div class="actions" style="display: none"><a href="#edit/{{ID}}">edit</a></div>
+        {{else}}
+            <strong>
+                {{subStringStripper post_content 120}}
+            </strong>
+        {{/if}}
+    </td>
+    {{/each}}
+    <td>{{amountOfSiblings}}</td>
+</tr>

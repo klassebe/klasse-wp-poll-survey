@@ -13,14 +13,12 @@
 
   //translate helper
   Handlebars.registerHelper("t", function(key) {
-    if (kwps_translations != undefined) {
-      return (kwps_translations[key] != undefined)? kwps_translations[key] : key;
+    if (kwps_translations !== undefined) {
+      return (kwps_translations[key] !== undefined)? kwps_translations[key] : key;
     } else {
-      return key
+      return key;
     }
   });
-  
-
 
   // debug helper
   // usage: {{debug}} or {{debug someValue}}
@@ -36,90 +34,39 @@
     }
   });
 
-  Handlebars.registerHelper("getColumnCount", function(versions) {
-    versions = parseInt(versions.length);
-    return versions + 2;
-  });
-
-  Handlebars.registerHelper('setIndex', function(value){
-    this.index = Number(value + 1);
-  });
-
   Handlebars.registerHelper('subStringStripper', function (html, length){
     var tmp = document.createElement("DIV");
     tmp.innerHTML = html;
     var result = tmp.textContent || tmp.innerText || "";
     var substrResult = result.substring(0, length);
     return  (substrResult.length <= length)? substrResult : substrResult + "...";
-  })
+  });
 
   Handlebars.registerHelper('sorter', function (index, obj) {
     var size = 0,
-        key;
+        key,
+        result;
     for (key in obj) {
-        if (obj.hasOwnProperty(key)) size++;
+        if(obj.hasOwnProperty(key)) { size++ }
     }
-    var result;
-    if(index == 0) {
-      result = '<span class="up passive"></span>'
+    if(index === 0) {
+      result = '<span class="up passive"></span>';
     } else {
-      result = '<span class="up"></span>'
+      result = '<span class="up"></span>';
     }
-    if (index == size-1) {
-      result = result + '<span class="down passive"></span>'
+    if (index === size-1) {
+      result = result + '<span class="down passive"></span>';
     } else {
-      result = result + '<span class="down"></span>'
+      result = result + '<span class="down"></span>';
     }
     return result;
   });
 
-  Handlebars.registerHelper('lastItem', function ( className ,index, obj){
-    var size = 0,
-        key;
-    for (key in obj) {
-        if (obj.hasOwnProperty(key)) size++;
-    }
-    return (index == size-1)? className: "";
-  });
 
   Handlebars.registerHelper('selected', function(option, value){
     if (option === value) {
       return ' selected';
     } else {
-      return ''
+      return '';
     }
-  });
-
-  Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
-
-    switch (operator) {
-      case '==':
-        return (v1 == v2) ? options.fn(this) : options.inverse(this);
-      case '===':
-        return (v1 === v2) ? options.fn(this) : options.inverse(this);
-      case '<':
-        return (v1 < v2) ? options.fn(this) : options.inverse(this);
-      case '<=':
-        return (v1 <= v2) ? options.fn(this) : options.inverse(this);
-      case '>':
-        return (v1 > v2) ? options.fn(this) : options.inverse(this);
-      case '>=':
-        return (v1 >= v2) ? options.fn(this) : options.inverse(this);
-      case '&&':
-        return (v1 && v2) ? options.fn(this) : options.inverse(this);
-      case '||':
-        return (v1 || v2) ? options.fn(this) : options.inverse(this);
-      default:
-        return options.inverse(this);
-    }
-  });
-
-  Handlebars.registerHelper('ifLength', function(obj, max, options) {
-    var size = 0,
-      key;
-    for (key in obj) {
-      if (obj.hasOwnProperty(key)) size++;
-    }
-
-    return (size < max || max < 0) ? options.fn(this) : options.inverse(this);
   });
