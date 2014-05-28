@@ -207,7 +207,17 @@ class Version extends Kwps_Post_Type{
             <?php if(!empty($data['outro'])): ?>
                 <div class="kwps-page kwps-outro">
                     <div class="kwps-content">
-                        <?php echo $data['outro']['post_content']; ?>
+                        <?php 
+                            /* SEARCH THE SHORTCODE AND REPLACE IT */
+                            $pattern = '/\[.*\]/';
+                            $subject = $data['outro']['post_content'];
+                            preg_match($pattern, $subject, $kwps_result_matches);
+                            foreach ($kwps_result_matches as $kwps_result_match) {
+                                echo do_shortcode($kwps_result_match);
+                            }
+                            
+                            echo $data['outro']['post_content']; 
+                        ?>
                     </div>
                 </div>
             <?php endif; ?>

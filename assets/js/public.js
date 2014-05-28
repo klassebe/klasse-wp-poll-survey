@@ -52,7 +52,6 @@ jQuery(function($) {
 					    contentType: "application/json; charset=utf-8",
 					    dataType: "json",
 					    success: function(data) {
-					    	console.log(data.data);
 					  		getChart.ID = data.data.ID;
 					  		getChart.output_type ='bar-chart-per-question';
 								getChartData(urlGetChartData, getChart);
@@ -76,7 +75,7 @@ jQuery(function($) {
 							    		graphCategories.push(value.answer_option_content);
 							    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
 							    	});
-							    	outputPieChart(data, graphCategories, graphData);
+							    	outputBarChart(data, graphCategories, graphData);
 							    	
 								    },
 								    async: false
