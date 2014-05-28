@@ -578,6 +578,7 @@ jQuery(function ($) {
                     sorterArrows : (_.size(sortedAns) > 1),
                     first: (parseInt(sortOrderA) === 0),
                     last: (parseInt(sortOrderA) === _.size(sortedAns)-1),
+                    deletable: !_.some(versions, function(version) {return version.isLive;}),
                     sortOrder : sortOrderA,
                     number: parseInt(sortOrderA) +1,
                     versions : sortedAns[sortOrderA],
@@ -624,6 +625,10 @@ jQuery(function ($) {
       this.render();
     },
     deleteRow: function(postType, sortOrder) {
+      if(app.openRow[postType] === sortOrder) {
+        app.openRow[postType] = -1;
+      }
+
       var parentPostType = this.getParent(postType);
       var parentPostTypeSortOrder = app.openRow[parentPostType];
       var whereAttributes = {post_type: parentPostType};
@@ -655,12 +660,8 @@ jQuery(function ($) {
         var currentSortOrder = postToMove.get('_kwps_sort_order');
         var newSortOrder = currentSortOrder - 1;
         postToMove.set('_kwps_sort_order', newSortOrder);
-        postToMove.save({
-          wait: true,
-          success: function() {
-            that.render();
-          }
-        });
+        postToMove.save();
+        that.render();
       });
 
     },
