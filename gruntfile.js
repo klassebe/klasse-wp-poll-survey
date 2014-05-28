@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['**/*.hbs','./js/*.js'],
-        tasks: ['jshint', 'handlebars','clean:dist','concat:dist','uglify','clean:temp'],
+        tasks: ['jshint', 'handlebars','clean:dist','concat:dist'],
         options: {
           spawn: false,
           livereload: true
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          "./js/temp/templates.js": "./js/hbs_templates/*.hbs",
+          "./js/temp/templates.js": "./js/hbs_templates/*.hbs"
         }
       }
     },
