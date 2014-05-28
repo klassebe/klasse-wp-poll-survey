@@ -25,6 +25,14 @@
             //'scored_options',   // free text, each answer option has a numerical value
         );
 
+        public static $meta_data_fields = array(
+            '_kwps_max_question_groups',
+            '_kwps_max_questions_per_question_group',
+            '_kwps_max_answer_options_per_question',
+            '_kwps_allowed_input_types',
+            '_kwps_allowed_output_types',
+        );
+
         public static $output_types = array();
 
         public static $post_type = 'kwps_test_modus';
@@ -62,17 +70,6 @@
             $post_type_args['rewrite'] = static::$rewrite;
 
             register_post_type(static::$post_type, $post_type_args);
-        }
-
-        public static function get_meta_data($post_id)
-        {
-            $meta_as_array = array();
-            $meta_as_array['_kwps_max_question_groups'] = get_post_meta($post_id, '_kwps_max_question_groups', true);
-            $meta_as_array['_kwps_max_questions_per_question_group'] = get_post_meta($post_id, '_kwps_max_questions_per_question_group', true);
-            $meta_as_array['_kwps_max_answer_options_per_question'] = get_post_meta($post_id, '_kwps_max_answer_options_per_question', true);
-            $meta_as_array['_kwps_allowed_input_types'] = get_post_meta($post_id, '_kwps_allowed_input_types', true);
-            $meta_as_array['_kwps_allowed_output_types'] = get_post_meta($post_id, '_kwps_allowed_output_types', true);
-            return $meta_as_array;
         }
 
         public static function get_rules($post_type = ''){
