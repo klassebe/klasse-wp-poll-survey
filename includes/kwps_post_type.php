@@ -154,7 +154,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
             wp_send_json_error($errors);
         } else {
             $post = static::save_post($request_data);
-            wp_send_json_success( $post );
+            wp_send_json( $post );
         }
 
         die();
