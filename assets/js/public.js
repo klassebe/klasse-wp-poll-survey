@@ -75,7 +75,16 @@ jQuery(function($) {
 							    		graphCategories.push(value.answer_option_content);
 							    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
 							    	});
-							    	outputBarChart(data, graphCategories, graphData);
+                    if (elem.find('.bar-chart')) {
+                      outputBarChart(data, graphCategories, graphData);
+                    }
+                    if (elem.find('.pie-chart')) {
+                      outputPieChart(data, graphCategories, graphData);
+                    }
+                    if (elem.find('.line-chart')) {
+                      outputLineChart(data, graphCategories, graphData);
+                    }
+							    	
 							    	
 								    },
 								    async: false
@@ -84,22 +93,10 @@ jQuery(function($) {
 						elem.find('.kwps-question-group').hide();
 						elem.find('.kwps-outro').show();
 					};
-					var disableChartSettings = function () {
-						return {
-									exporting: {
-									    enabled: false
-									},
-							    legend: {
-							        enabled: false
-							    },
-							    credits: {
-							        enabled: false
-							    }
-							  }
-					}
+
 					/* BAR CHART CODE */
 					var outputBarChart = function (data, graphCategories, graphData) {
-						elem.find('.kwps-chart.chart-bar').highcharts({
+						elem.find('.kwps-result.bar-chart').highcharts({
 						    chart: {
 						        type: 'bar'
 						    },
@@ -133,7 +130,15 @@ jQuery(function($) {
 						            }
 						        }
 						    },
-						    // disableChartSettings(),
+						    exporting: {
+								    enabled: false
+								},
+						    legend: {
+						        enabled: false
+						    },
+						    credits: {
+						        enabled: false
+						    },
 						    series: [{
 						    		name: 'Votes',
 						        data: graphData
@@ -142,7 +147,7 @@ jQuery(function($) {
 					};
 					/* PIE CHART CODE */
 					var outputLineChart = function (data, graphCategories, graphData) {
-						elem.find('.kwps-chart.chart-line').highcharts({
+						elem.find('.kwps-result.line-chart').highcharts({
 	            title: {
 	              text: data[0][1].poll_question
 	            },
@@ -150,9 +155,9 @@ jQuery(function($) {
 	              categories: graphCategories,
 	            },
 	            yAxis: {
-	        			max: 100,
-				        min: 0,
-				        title: {
+                max: 100,
+                min: 0,
+                title: {
 				            text: 'percent',
 				            align: 'high'
 				        },
@@ -168,7 +173,15 @@ jQuery(function($) {
 	            tooltip: {
 	              valueSuffix: ' %'
 	            },
-	        		// disableChartSettings(),
+	        		exporting: {
+							    enabled: false
+							},
+					    legend: {
+					        enabled: false
+					    },
+					    credits: {
+					        enabled: false
+					    },
 	            series: [{
 	              name: 'Votes',
 	              data: graphData
@@ -176,7 +189,7 @@ jQuery(function($) {
 		        });
 					};
 					var outputPieChart = function(data, graphCategories, graphData) {
-						elem.find('.kwps-chart').highcharts({
+						elem.find('.kwps-result.pie-chart').highcharts({
 			        chart: {
 		            plotBackgroundColor: null,
 		            plotBorderWidth: null,
@@ -201,7 +214,15 @@ jQuery(function($) {
 	                }
 		            }
 			        },
-			        // disableChartSettings(),
+			        exporting: {
+                  enabled: false
+              },
+              legend: {
+                  enabled: false
+              },
+              credits: {
+                  enabled: false
+              },
 			        series: [{
 		            type: 'pie',
 		            name: 'Browser share',
@@ -209,6 +230,15 @@ jQuery(function($) {
 			        }]
 			    });
 					};
+          var outputQuizRespons = function (data, answer) {
+            elem.find('.kwps-result.quiz-respons').html(data.respons);
+            if (answer) {
+              elem.find('.kwps-result.quiz-respons').html(data.answer);
+            }
+          }
+          var outputMedianScore = function () {
+            elem.find('.kwps-result.');
+          }
 				} else {
 					alert('Please select an answer!');
 				}
