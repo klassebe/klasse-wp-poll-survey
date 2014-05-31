@@ -211,8 +211,8 @@ class Version extends Kwps_Post_Type{
                             $pattern_arr = [];
                             $pattern = '/\[.*\]/';
                             $subject = $data['outro']['post_content'];
-                            preg_match($pattern, $subject, $kwps_result_matches);
-                            foreach ($kwps_result_matches as $kwps_result_match) {
+                            preg_match_all($pattern, $subject, $kwps_result_matches);
+                            foreach ($kwps_result_matches[0] as $kwps_result_match) {
                                 $replacement_arr[] = do_shortcode($kwps_result_match);
                                 $pattern_arr[] = '/\\' . substr($kwps_result_match,0,-1) . '\]/';
                             }
