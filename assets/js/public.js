@@ -33,12 +33,18 @@ jQuery(function($) {
 				var kwpsAnswerOptions = elem.find('.kwps-answer-option');
 				var kwpsAnswerOptionsNum = elem.find('.kwps-answer-option').length;
 				var selected = true;
+				var entries = [];
 				for (var i = 0; i < kwpsAnswerOptionsNum; i++) {
 					/* CHECK FIELD ATTR AND IF ONE OF THEM WAS CHECKED */
 					//  Gets the question name per answer option to later check if it has a checked value per name
 					var getQuestionName = kwpsAnswerOptions[i].children[0].children[0].firstChild.name;
 					var oneSelectCheck = elem.find('input[type="radio"][name=' + getQuestionName + ']:checked').val();
 					if (oneSelectCheck) {
+						entries.push({
+				  		"post_parent": oneSelectCheck,
+				  		"post_status": "publish",
+				  		"_kwps_sort_order": 0
+				  	});
 						selected = true;
 					} else {
 						selected = false;
@@ -49,12 +55,12 @@ jQuery(function($) {
 				if (selected) {
 			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
 			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
-
-			    var entry = {
-				  		"post_parent": selected,
-				  		"post_status": "publish",
-				  		"_kwps_sort_order": 0
-				  	};
+			    console.log(entries);
+			    // var entry = {
+				  	// 	"post_parent": selectedAnswers,
+				  	// 	"post_status": "publish",
+				  	// 	"_kwps_sort_order": 0
+				  	// };
 				  var getChart = {
 				  		ID : '',
 				  		output_type : ''
@@ -63,7 +69,7 @@ jQuery(function($) {
 			  	$.ajax({
 					    type: "POST",
 					    url: urlSaveEntry,
-					    data: JSON.stringify(entry),
+					    data: JSON.stringify(entries),
 					    contentType: "application/json; charset=utf-8",
 					    dataType: "json",
 					    success: function(data) {
