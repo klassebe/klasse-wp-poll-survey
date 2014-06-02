@@ -34,6 +34,7 @@ require_once __DIR__ . '/includes/test_collection.php';
 require_once __DIR__ . '/includes/version.php';
 require_once __DIR__ . '/includes/question.php';
 require_once __DIR__ . '/includes/question_group.php';
+require_once __DIR__ . '/includes/result_profile.php';
 require_once __DIR__ . '/includes/entry.php';
 require_once __DIR__ . '/includes/intro.php';
 require_once __DIR__ . '/includes/intro_result.php';
@@ -79,6 +80,7 @@ add_action('init', array('\includes\intro_result','register_post_type'));
 add_action('init', array('\includes\outro','register_post_type'));
 add_action('init', array('\includes\test_modus','register_post_type'));
 add_action('init', array('\includes\test_collection','register_post_type'));
+add_action('init', array('\includes\result_profile','register_post_type'));
 
 add_action( 'init', array('\includes\duplicate','register_post_status' ));
 add_action( 'init', array('\includes\locked','register_post_status' ));
@@ -108,6 +110,10 @@ add_action( 'wp_ajax_kwps_delete_version', array('\includes\version','delete_fro
 add_action( 'wp_ajax_kwps_save_question_group', array('\includes\question_group','save_from_request'));
 add_action( 'wp_ajax_kwps_update_question_group', array('\includes\question_group','update_from_request'));
 add_action( 'wp_ajax_kwps_delete_question_group', array('\includes\question_group','delete_from_request'));
+
+add_action( 'wp_ajax_kwps_save_result_profile', array('\includes\result_profile','save_from_request'));
+add_action( 'wp_ajax_kwps_update_result_profile', array('\includes\result_profile','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_result_profile', array('\includes\result_profile','delete_from_request'));
 
 add_action( 'wp_ajax_kwps_save_question', array('\includes\question','save_from_request'));
 add_action( 'wp_ajax_kwps_update_question', array('\includes\question','update_from_request'));
@@ -168,15 +174,34 @@ function create_default_test_modi(){
         '_kwps_allowed_output_types' => array('bar-chart-per-question'),
     );
 
+    $kwps_personality_test = array(
+        'post_title' => 'kwps-personality-test',
+        'post_status' => 'publish',
+        'post_type' => 'kwps_test_modus',
+        '_kwps_max_question_groups' => -1,
+        '_kwps_max_questions_per_question_group' => -1,
+        '_kwps_max_answer_options_per_question' => -1,
+        '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
+        '_kwps_allowed_output_types' => array('result-profile'),
+    );
+
     if( ! \includes\Test_Modus::default_test_modus_exists($kwps_poll) ){
         $error = \includes\Test_Modus::save_post($kwps_poll);
     }
 
     if( isset($error) && null == $error ){
+        //TODO add html to report error
         var_dump($error);
     }
 
+    if( ! \includes\Test_Modus::default_test_modus_exists($kwps_personality_test) ){
+        $error = \includes\Test_Modus::save_post($kwps_personality_test);
+    }
 
+    if( isset($error) && null == $error ){
+        //TODO add html to report error
+        var_dump($error);
+    }
 }
 
 function kwps_deactivate(){

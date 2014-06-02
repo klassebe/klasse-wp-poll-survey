@@ -37,8 +37,10 @@ jQuery(function ($) {
     main_kwps_intro: true,
     main_kwps_intro_result: true,
     main_kwps_question_group: true,
+    main_kwps_result_profile: true,
     kwps_question_group: -1,
-    kwps_question: -1
+    kwps_question: -1,
+    kwps_result_profile: -1
   };
   app.views = {};
 
@@ -393,6 +395,23 @@ jQuery(function ($) {
 
       var sortedQu = _.groupBy(_.flatten(qu,true),"_kwps_sort_order");
 
+
+      //Get Result Profiles
+      var resultProfiles = [];
+      if(_.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile')) {
+        for(i = 0; i < versions.length; i++) {
+          var resultProfilesJson = _.invoke(this.collection.where({post_type: "kwps_result_profile", post_parent : versions[i].ID}), 'toJSON');
+          var sortedResultProfilesJsonPerVersion = _.sortBy(resultProfilesJson, "_kwps_sort_order");
+          resultProfiles.push(sortedResultProfilesJsonPerVersion);
+        }
+      }
+
+      var sortedResultProfiles = _.groupBy(_.flatten(resultProfiles,true),"_kwps_sort_order");
+
+      var allResultProfiles = _.invoke(this.collection.where({post_type: "kwps_result_profile"}), 'toJSON');
+
+      var sortedAllResultProfiles =_.groupBy(_.flatten(allResultProfiles,true),"_kwps_sort_order");
+
       //Get Answers if a question is open
       var ans = [];
       if (app.openRow.kwps_question >= 0) {
@@ -595,6 +614,50 @@ jQuery(function ($) {
         }
       }
 
+      // TITLE RESULT PROFILE
+      if(_.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile')) {
+        data.table.push({
+          colSpan: versions.length + 1,
+          title: "Result Profiles",
+          postType: "kwps_result_profile",
+          mainTitle: true,
+          add: (allResultProfiles && !_.some(versions, function (version) {
+            return version.isLive;
+          })),
+          hasMore: (_.size(sortedAllResultProfiles) > 0),
+          addText: 'Add result profile',
+          opened: app.openRow.main_kwps_result_profile,
+          amount: _.size(sortedAllResultProfiles)
+        });
+      }
+
+      if ( _.size(sortedAllResultProfiles) > 0 && app.openRow.main_kwps_result_profile) {
+        for (var sortOrderRP in sortedResultProfiles) {
+
+          _.each(sortedResultProfiles[sortOrderRP], function (resultProfile) {
+            var parentVersion = this.collection.findWhere({ID: resultProfile.post_parent});
+            resultProfile.editable = (parentVersion.get('post_status') !== 'publish');
+          }, this);
+
+          // RESULT PROFILE
+          data.table.push({
+            first: (sortOrderRP === '0'),
+            last: (sortOrderRP === allResultProfiles.length/ versions.length-1),
+            sorterArrows : (allResultProfiles.length/ versions.length > 1),
+            postType: "kwps_result_profile",
+            deletable: !_.some(versions, function(version) {return version.isLive;}),
+            hasMore: false,
+            hasAmount: false,
+            hasOpened: (app.openRow.kwps_result_profile.toString() === sortOrderRP),
+            versions: sortedResultProfiles[sortOrderRP],
+            mainRow: true,
+            sortOrder: sortOrderRP,
+            number: parseInt(sortOrderRP) +1
+            //amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent: qGroups[0][sortOrderQG].ID}).length
+          });
+        }
+      }
+
       data.table.push({
         colSpan : data.versions.length +1,
         title: "Outro",
@@ -724,6 +787,14 @@ jQuery(function ($) {
             this.createQuestionGroup(kwpsPolls[i].id, i, sortOrder);
           }
           break;
+        case 'main_kwps_result_profile':
+        case 'kwps_result_profile':
+          sortOrder = _.max(_.invoke(this.collection.where({post_type: 'kwps_result_profile'}),"toJSON"), function (a) {return a._kwps_sort_order;});
+          sortOrder = (sortOrder === -Infinity || sortOrder === Infinity)? 0: parseInt(sortOrder._kwps_sort_order)+1;
+          for(i = 0; i < kwpsPollLen; i++) {
+            this.createResultProfile(kwpsPolls[i].id, i, sortOrder);
+          }
+          break;
         case 'kwps_question':
           var sortOrderOfQuestionGroup = $(e.currentTarget).closest('tr').data('sort-order');
           var versionsOfOpenedQuestionGroup = this.collection.where({post_type: 'kwps_question_group', _kwps_sort_order: sortOrderOfQuestionGroup.toString()});
@@ -776,8 +847,14 @@ jQuery(function ($) {
             that.createIntro(newVersion.get('ID'), false);
             that.createOutro(newVersion.get('ID'), false);
             that.createIntroResult(newVersion.get('ID'));
-            var questionGroups = that.collection.where({post_type: 'kwps_question_group', post_parent: previousVersion.get('ID')});  
 
+            var resultProfiles = that.collection.where({post_type: 'kwps_result_profile', post_parent: previousVersion.get('ID')});
+            for (i = 0; i < resultProfiles.length; i++) {
+              var resultProfilesOriginal = resultProfiles[i];
+              that.createResultProfile(newVersion.get('ID'),i, resultProfilesOriginal.get('_kwps_sort_order'));
+            }
+
+            var questionGroups = that.collection.where({post_type: 'kwps_question_group', post_parent: previousVersion.get('ID')});  
             for (i = 0; i < questionGroups.length; i++) {
               var questionGroupOriginal = questionGroups[i];
               that.createQuestionGroup(newVersion.get('ID'),i, questionGroupOriginal.get('_kwps_sort_order'), function(newQuestionGroup) {
@@ -866,6 +943,25 @@ jQuery(function ($) {
         post_content : "Question Group " + (parseInt(sortOrder) + 1),
         post_parent : post_parent,
         _kwps_sort_order : sortOrder.toString()
+      }, {
+        wait: true,
+        success: function(model, response, options) {
+          if(cb) {
+            cb(model);
+          }
+        }
+      });
+    },
+    createResultProfile: function (post_parent, index, sortOrder, cb) {
+      this.collection.create({
+        post_type: "kwps_result_profile",
+        post_status: "draft",
+        post_title : "Result Profile " + (parseInt(sortOrder) + 1),
+        post_content : "Result Profile " + (parseInt(sortOrder) + 1),
+        post_parent : post_parent,
+        _kwps_sort_order : sortOrder.toString(),
+        _kwps_min_value: 0,
+        _kwps_max_value: 0
       }, {
         wait: true,
         success: function(model, response, options) {
