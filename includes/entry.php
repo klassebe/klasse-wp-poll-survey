@@ -77,24 +77,37 @@ class Entry extends Kwps_Post_Type{
 
     public static function save_from_request(){
         $request_data = static::get_post_data_from_request();
-        $request_data['_kwps_cookie_value'] = $_COOKIE['klasse_wp_poll_survey'];
-        $request_data['_kwps_ip_address'] = Uniqueness::get_ip_of_user();
-        $request_data['post_author'] = get_current_user_id();
+        foreach($request_data as $key => $value){
+            $request_data[$key]['post_type'] = static::$post_type;
+            $request_data[$key]['_kwps_cookie_value'] = $_COOKIE['klasse_wp_poll_survey'];
+            $request_data[$key]['_kwps_ip_address'] = Uniqueness::get_ip_of_user();
+            $request_data[$key]['post_author'] = get_current_user_id();
+        }
 
         $errors = static::validate_for_insert($request_data);
         static::process_request_data($request_data, $errors);
+    }
+
+    public static function get_post_data_from_request(){
+        $json = file_get_contents("php://input");
+        $request_data = json_decode($json, true);
+
+        return $request_data;
     }
 
     /**
      * @param $post_as_array
      * @return bool
      */
-    static function validate_for_insert($post_as_array = array()) {
-        $errors = static::check_required_fields($post_as_array);
-        $errors = array_merge($errors, static::check_numeric_fields($post_as_array));
-        $errors = array_merge($errors, static::check_is_allowed_by_uniqueness($post_as_array));
-
-
+    static function validate_for_insert($array_of_entries = array()) {
+        foreach($array_of_entries as $entry){
+            $errors = static::check_required_fields($entry);
+            $errors = array_merge($errors, static::check_numeric_fields($entry));
+            $errors = array_merge($errors, static::check_is_allowed_by_uniqueness($entry));
+            foreach($errors as $key => $value){
+                $errors[$key]['post_parent'] = $entry['post_parent'];
+            }
+        }
 
         return $errors;
     }
