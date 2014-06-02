@@ -34,6 +34,7 @@ require_once __DIR__ . '/includes/test_collection.php';
 require_once __DIR__ . '/includes/version.php';
 require_once __DIR__ . '/includes/question.php';
 require_once __DIR__ . '/includes/question_group.php';
+require_once __DIR__ . '/includes/result_profile.php';
 require_once __DIR__ . '/includes/entry.php';
 require_once __DIR__ . '/includes/intro.php';
 require_once __DIR__ . '/includes/intro_result.php';
@@ -79,6 +80,7 @@ add_action('init', array('\includes\intro_result','register_post_type'));
 add_action('init', array('\includes\outro','register_post_type'));
 add_action('init', array('\includes\test_modus','register_post_type'));
 add_action('init', array('\includes\test_collection','register_post_type'));
+add_action('init', array('\includes\result_profile','register_post_type'));
 
 add_action( 'init', array('\includes\duplicate','register_post_status' ));
 add_action( 'init', array('\includes\locked','register_post_status' ));
@@ -108,6 +110,10 @@ add_action( 'wp_ajax_kwps_delete_version', array('\includes\version','delete_fro
 add_action( 'wp_ajax_kwps_save_question_group', array('\includes\question_group','save_from_request'));
 add_action( 'wp_ajax_kwps_update_question_group', array('\includes\question_group','update_from_request'));
 add_action( 'wp_ajax_kwps_delete_question_group', array('\includes\question_group','delete_from_request'));
+
+add_action( 'wp_ajax_kwps_save_result_profile', array('\includes\result_profile','save_from_request'));
+add_action( 'wp_ajax_kwps_update_result_profile', array('\includes\result_profile','update_from_request'));
+add_action( 'wp_ajax_kwps_delete_result_profile', array('\includes\result_profile','delete_from_request'));
 
 add_action( 'wp_ajax_kwps_save_question', array('\includes\question','save_from_request'));
 add_action( 'wp_ajax_kwps_update_question', array('\includes\question','update_from_request'));

@@ -33,6 +33,7 @@ class admin_section {
                     $versions = Version::get_all_by_post_parent($current_post->ID);
 
                     $question_groups = array();
+                    $result_profiles = array();
                     $questions = array();
                     $intros = array();
                     $intro_results = array();
@@ -41,6 +42,7 @@ class admin_section {
 
                     foreach($versions as $version){
                         $question_groups = array_merge($question_groups, Question_Group::get_all_by_post_parent($version['ID']));
+	                    $result_profiles = array_merge($result_profiles, Result_Profile::get_all_by_post_parent($version['ID']));
                         $intros = array_merge($intros, Intro::get_all_by_post_parent($version['ID']));
 	                    $intro_results = array_merge($intro_results, Intro_Result::get_all_by_post_parent($version['ID']));
                         $outros = array_merge($outros, Outro::get_all_by_post_parent($version['ID']));
@@ -61,8 +63,8 @@ class admin_section {
                     }
 
                     $tests = array_merge(
-                        $tests, $versions, $question_groups, $questions, $intros, $intro_results, $outros,
-                        $answer_options, $kwps_test_modi
+                        $tests, $versions, $question_groups, $result_profiles, $questions, $intros, $intro_results,
+                        $outros, $answer_options, $kwps_test_modi
                     );
                 ?>
                     <script>var kwpsTests=<?php echo json_encode($tests); ?></script>
