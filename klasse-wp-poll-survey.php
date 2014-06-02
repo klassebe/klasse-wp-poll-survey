@@ -284,7 +284,12 @@ function enqueue_scripts_admin() {
 	    'Add question' => __( 'Add question'),
 	    'Answers' => __('Answers'),
         'Add answer' => __( 'Add answer'),
-	    'Add outro' => __('Add outro')
+	    'Add outro' => __('Add outro'),
+	    'Update' => __('Update'),
+	    'Add results' => __('Add results'),
+	    'Add media' => __('Add media'),
+	    'Value' => __('Value'),
+	    'Title' => __('Title')
 	);
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 

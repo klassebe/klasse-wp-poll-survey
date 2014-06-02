@@ -2,11 +2,11 @@
 <div>  
 	<form id="update-model">
         {{#if title}}
-            <div>Title: <input type="text" name="qg-title" id="kwps-question-group-title" value="{{title}}"></div>
+            <div>{{t "Title"}}: <input type="text" name="qg-title" id="kwps-question-group-title" value="{{title}}"></div>
         {{/if}}
 
         {{#if answer_option_value}}
-            <div>Value: <input type="text" name="ao-value" id="kwps-answer-option-value" value="{{answer_option_value}}"></div>
+            <div>{{t "Value"}}: <input type="text" name="ao-value" id="kwps-answer-option-value" value="{{answer_option_value}}"></div>
         {{/if}}
         <br>
         <button id="add-media-button"><span class="add-media-icon"></span>{{t "Add media"}}</button>
@@ -16,6 +16,6 @@
         <div id="editor-tiny">   
 		 <textarea name='text' rows="20">{{text}}</textarea>
         </div>
-		<button id="update">{{t "update"}}</button>
+		<button id="update">{{t "Update"}}</button>
 	</form>
 </div>
