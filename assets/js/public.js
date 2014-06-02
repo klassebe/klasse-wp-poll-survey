@@ -1,9 +1,9 @@
 'use strict';
 
 jQuery(function($) {
-
-	$('.kwps-outro').hide();
-	$('.kwps-question-group').hide();
+	$('.kwps-page').hide();
+	// $('.kwps-outro').hide();
+	// $('.kwps-question-group').hide();
 
 	$.fn.pollPlugin = function ( options ) {
 		return this.each( function ( ) {
@@ -12,33 +12,52 @@ jQuery(function($) {
 				if (elem.find('.kwps-question-group').length == 0) {
 					elem.find('.kwps-outro').show();
 				} else {
-					elem.find('.kwps-question-group').show();
+					// elem.find('.kwps-question-group').show();
+					$(this).closest('.kwps-page').next().show();
 				}
 			} else {
 				elem.find('.kwps-intro').show();
-				elem.find('.kwps-question-group').hide();
+				// elem.find('.kwps-question-group').hide();
 			}
 			elem.find('.kwps-next').on('click', function () {
 				elem.find('.kwps-intro').hide();
 				elem.find('.kwps-outro').hide();
-				elem.find('.kwps-question-group').show();
+				// Check if there is already a question group being showed
+				var questGroup = $(this).closest('.kwps-page');
+
+				if (questGroup.closest('.kwps-question-group').css('display', 'none')) {
+					questGroup.next().closest('.kwps-question-group').show();
+				} 
 			});
 
 			//  Search for the class with the ID in it
 			elem.find('.kwps-question-group').on('click', '.kwps-next', function () {
+
 				// Check if an answer option was selected
 				// Get the name of the radio buttons
-				var getNameOfRadioBtn = elem.find('input:radio').attr('name');
-				/* GET NUMBER OF KWPS ANSWER OPTION DIVs */
-				var kwpsAnswerOptions = elem.find('.kwps-answer-option');
-				var kwpsAnswerOptionsNum = elem.find('.kwps-answer-option').length;
+				// var getNameOfRadioBtn = elem.find('input:radio').attr('name');
+				/* GET NUMBER OF KWPS ANSWER OPTION DIVs WITHIN THIS KWPS QUESTION GROUP PAGE */
+				var that = $(this);
+				var questionGroup = that.closest('.kwps-question-group');
+				var questionsLen = questionGroup[0].children[1].children.length;
+				var questions = questionGroup[0].children[1].children;
+				var questionVal = [];
+				for (var i = 0; i < questionsLen; i++) {
+					questionVal.push(questions[i].children[0]);
+				}
+
+				var kwpsAnswerOptions = questionVal;
+				var kwpsAnswerOptionsLen = questionVal.length;
 				var selected = true;
 				var entries = [];
-				for (var i = 0; i < kwpsAnswerOptionsNum; i++) {
+				var getQuestionName, oneSelectCheck;
+
+				//  ONLY CHECK CURRENT VISIBLE PAGE
+				for (i = 0; i < kwpsAnswerOptionsLen; i++) {
 					/* CHECK FIELD ATTR AND IF ONE OF THEM WAS CHECKED */
 					//  Gets the question name per answer option to later check if it has a checked value per name
-					var getQuestionName = kwpsAnswerOptions[i].children[0].children[0].firstChild.name;
-					var oneSelectCheck = elem.find('input[type="radio"][name=' + getQuestionName + ']:checked').val();
+					getQuestionName = kwpsAnswerOptions[i].children[0].children[0].firstChild.name;
+					oneSelectCheck = elem.find('input[type="radio"][name=' + getQuestionName + ']:checked').val();
 					if (oneSelectCheck) {
 						entries.push({
 				  		"post_parent": oneSelectCheck,
@@ -53,6 +72,10 @@ jQuery(function($) {
 				}
 
 				if (selected) {
+					elem.find('.kwps-page').hide;
+
+					// $(this).hide();
+					// $(this).next().show();
 			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
 			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
 				  var getChart = {
@@ -75,6 +98,9 @@ jQuery(function($) {
 					        alert(errMsg);
 					    }
 					});
+					// Check if there still is a view open that needs to be sent to the DB,
+					// If so, then add the variables to an array and then after all is done,
+					// get the results from the DB and show outro
 					var getChartData = function (urlGetChartData, getChart) {
 							$.ajax({
 						  			type: "POST",
@@ -104,9 +130,24 @@ jQuery(function($) {
 								    },
 								    async: false
 					  		});
+						
 						elem.find('.kwps-intro').hide();
-						elem.find('.kwps-question-group').hide();
-						elem.find('.kwps-outro').show();
+
+						//  Check if all kwps question group divs are hidden
+						var questGroupItems = elem.find('.kwps-question-group');
+						var questGroupLen = elem.find('.kwps-question-group').length;
+
+						if (questGroupItems) {
+							for (var i = 0; i < questGroupLen; i++) {
+								console.log(questGroupItems[i].style.cssText);
+								if (questGroupItems[i].style.cssText === 'display: block;') {
+									elem.find('.kwps-outro').hide();
+									break;
+								} else {
+									elem.find('.kwps-outro').show();
+								}
+							}
+						} 
 					};
 
 					/* BAR CHART CODE */
@@ -255,7 +296,9 @@ jQuery(function($) {
             elem.find('.kwps-result.');
           }
 				} else {
-					alert('Please select an answer!');
+					elem.find('.kwps-page').hide();
+					$(this).closest('.kwps-question-group').show();
+					alert('Please select an answer for every question!');
 				}
 				
 			});
