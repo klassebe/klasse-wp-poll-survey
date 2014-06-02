@@ -55,12 +55,6 @@ jQuery(function($) {
 				if (selected) {
 			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
 			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
-			    console.log(entries);
-			    // var entry = {
-				  	// 	"post_parent": selectedAnswers,
-				  	// 	"post_status": "publish",
-				  	// 	"_kwps_sort_order": 0
-				  	// };
 				  var getChart = {
 				  		ID : '',
 				  		output_type : ''
@@ -73,7 +67,7 @@ jQuery(function($) {
 					    contentType: "application/json; charset=utf-8",
 					    dataType: "json",
 					    success: function(data) {
-					  		getChart.ID = data.ID;
+					  		getChart.ID = data[0].ID;
 					  		getChart.output_type ='bar-chart-per-question';
 								getChartData(urlGetChartData, getChart);
 					    },
