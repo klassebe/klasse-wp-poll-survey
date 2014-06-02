@@ -1,0 +1,291 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Klasse WordPress Poll & Survey\n"
+"POT-Creation-Date: 2014-06-02 13:37+0100\n"
+"PO-Revision-Date: 2014-06-02 13:38+0100\n"
+"Last-Translator: AppSaloon - koen <koen@appsaloon.be>\n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/base-list-table.php:193
+msgid "No items found."
+msgstr "Geen items gevonden.\t"
+
+#: includes/base-list-table.php:317
+msgid "Bulk Actions"
+msgstr "Bulkacties"
+
+#: includes/base-list-table.php:327
+msgid "Apply"
+msgstr "Uitvoeren"
+
+#: includes/base-list-table.php:411
+msgid "Show all dates"
+msgstr "Toon alle data"
+
+#. translators: 1: month name, 2: 4-digit year
+#: includes/base-list-table.php:424
+#, php-format
+msgid "%1$s %2$d"
+msgstr "%1$s %2$d"
+
+#: includes/base-list-table.php:440
+msgid "List View"
+msgstr "Lijst"
+
+#: includes/base-list-table.php:441
+msgid "Excerpt View"
+msgstr "Abstracts"
+
+#: includes/base-list-table.php:467
+#, php-format
+msgid "%s pending"
+msgstr "%s in wachtrij"
+
+#: includes/base-list-table.php:535 includes/base-list-table.php:950
+#, php-format
+msgid "1 item"
+msgid_plural "%s items"
+msgstr[0] "1 item"
+msgstr[1] "%s items"
+
+#: includes/base-list-table.php:553
+msgid "Go to the first page"
+msgstr "Ga naar eerste pagina"
+
+#: includes/base-list-table.php:560
+msgid "Go to the previous page"
+msgstr "Ga naar vorige pagina"
+
+#: includes/base-list-table.php:569
+msgid "Current page"
+msgstr "Huidige pagina"
+
+#: includes/base-list-table.php:575
+#, php-format
+msgctxt "paging"
+msgid "%1$s of %2$s"
+msgstr "%1$s vab %2$s"
+
+#: includes/base-list-table.php:579
+msgid "Go to the next page"
+msgstr "Ga naar volgende pagina"
+
+#: includes/base-list-table.php:586
+msgid "Go to the last page"
+msgstr "Ga naar laatste pagina"
+
+#: includes/base-list-table.php:722
+msgid "Select All"
+msgstr "Alles selecteren"
+
+#: includes/kwps_post_status.php:22
+#, php-format
+msgid " <span class=\"count\">(%s)</span>"
+msgid_plural " <span class=\"count\">(%s)</span>"
+msgstr[0] " <span class=\"count\">(%s)</span>"
+msgstr[1] " <span class=\"count\">(%s)</span>"
+
+#: includes/uniqueness.php:42 includes/uniqueness.php:63
+#: includes/uniqueness.php:85
+msgid "Free"
+msgstr "Vrij"
+
+#: includes/uniqueness.php:46 includes/uniqueness.php:67
+msgid "Once, based on cookie"
+msgstr "Eenmalig, gebaseerd op cookie"
+
+#: includes/uniqueness.php:50 includes/uniqueness.php:71
+msgid "Once, based on IP"
+msgstr "Eenmalig, gebaseerd op IP-adres"
+
+#: includes/uniqueness.php:54
+msgid "Once, based login"
+msgstr "Eenmalig, gebaseerd op login"
+
+#: includes/uniqueness.php:75
+msgid "Only logged in users allowed"
+msgstr "Enkel aangemelde gebruikers zijn toegelaten"
+
+#: includes/uniqueness.php:86
+msgid "Completely free to anyone"
+msgstr "Volledig vrij voor iedereen"
+
+#: includes/uniqueness.php:90
+msgid "Limit on cookie"
+msgstr "Limiteer op cookie"
+
+#: includes/uniqueness.php:91
+msgid "Based on session cookie"
+msgstr "Gebaseerd op sessie cookie"
+
+#: includes/uniqueness.php:96
+msgid "Limit on IP-address"
+msgstr "Gelimiteerd op IP-adres"
+
+#: includes/uniqueness.php:97
+msgid "Based on ip address"
+msgstr "Gebaseerd op IP-adres"
+
+#: includes/uniqueness.php:101
+msgid "Must be logged in"
+msgstr "Je moet aangemeld zijn"
+
+#: includes/uniqueness.php:102
+msgid "Only logged in users"
+msgstr "Enkel aangemelde gebruikers"
+
+#: klasse-wp-poll-survey.php:236
+msgid "Intro"
+msgstr "Intro"
+
+#: klasse-wp-poll-survey.php:237
+msgid "Outro"
+msgstr "Outro"
+
+#: klasse-wp-poll-survey.php:238
+msgid "Question"
+msgstr "Vraag"
+
+#: klasse-wp-poll-survey.php:239 views/add.php:10
+msgid "New Test"
+msgstr "Nieuwe Test"
+
+#: klasse-wp-poll-survey.php:240
+msgid "Builder"
+msgstr "Bouwer"
+
+#: klasse-wp-poll-survey.php:241
+msgid "Settings"
+msgstr "Instellingen"
+
+#: klasse-wp-poll-survey.php:242
+msgid "Poll & Survey Control panel"
+msgstr "Poll & Survey beheerpaneel"
+
+#: klasse-wp-poll-survey.php:243
+msgid "Name"
+msgstr "Naam"
+
+#: klasse-wp-poll-survey.php:244
+msgid "Create"
+msgstr "Maak"
+
+#: klasse-wp-poll-survey.php:245
+msgid "Edit"
+msgstr "Wijzig"
+
+#: klasse-wp-poll-survey.php:246
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: klasse-wp-poll-survey.php:247
+msgid "View entries"
+msgstr "Beheer invoer"
+
+#: klasse-wp-poll-survey.php:248
+msgid "Results"
+msgstr "Resultaten"
+
+#: klasse-wp-poll-survey.php:249
+msgid "View count"
+msgstr "Aantal keren bekeken\t"
+
+#: klasse-wp-poll-survey.php:250
+msgid "Conversion Rate"
+msgstr "Conversie"
+
+#: klasse-wp-poll-survey.php:251
+msgid "Total Participants"
+msgstr "Aantal deelnemers"
+
+#: klasse-wp-poll-survey.php:252
+msgid "Make live"
+msgstr "Maak live"
+
+#: klasse-wp-poll-survey.php:253
+msgid "Add Intro"
+msgstr "Voeg intro toe"
+
+#: klasse-wp-poll-survey.php:254
+msgid "Intro Result"
+msgstr "Pagina na invullen"
+
+#: klasse-wp-poll-survey.php:255
+msgid "Add Intro Result"
+msgstr "Voeg tekst na invullen toe"
+
+#: klasse-wp-poll-survey.php:256
+msgid "Question pages"
+msgstr "Pagina's"
+
+#: klasse-wp-poll-survey.php:257
+msgid "Add question page"
+msgstr "Voeg pagina toe"
+
+#: klasse-wp-poll-survey.php:258
+msgid "Questions"
+msgstr "Vragen"
+
+#: klasse-wp-poll-survey.php:259
+msgid "Add question"
+msgstr "Vraag toevoegen"
+
+#: klasse-wp-poll-survey.php:260
+msgid "Answers"
+msgstr "Antwoorden"
+
+#: klasse-wp-poll-survey.php:261
+msgid "Add answer"
+msgstr "Antwoord toevoegen"
+
+#: klasse-wp-poll-survey.php:262
+msgid "Add outro"
+msgstr "Outro toevoegen"
+
+#: klasse-wp-poll-survey.php:288
+msgid "Tests"
+msgstr "Tests"
+
+#: klasse-wp-poll-survey.php:288
+msgid "Poll & Survey"
+msgstr "Poll & Survey"
+
+#: klasse-wp-poll-survey.php:290
+msgid "Add new test"
+msgstr "Voeg nieuwe test toe"
+
+#: klasse-wp-poll-survey.php:290
+msgid "Add new"
+msgstr "Voeg toe"
+
+#: klasse-wp-poll-survey.php:291 views/add.php:17
+msgid "Manage entries"
+msgstr "Beheer invoer"
+
+#: klasse-wp-poll-survey.php:291
+msgid "Entries"
+msgstr "Invoer"
+
+#: views/add.php:15
+msgid "Edit content"
+msgstr "Wijzing inhoud"
+
+#: views/add.php:16
+msgid "Manage results"
+msgstr "Beheer resultaten"
+
+#: views/add.php:18
+msgid "Manage settings"
+msgstr "Beheer instellingen"

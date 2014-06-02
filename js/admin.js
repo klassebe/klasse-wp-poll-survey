@@ -33,10 +33,10 @@ jQuery(function ($) {
   var app = {};
   app.url = 'admin-ajax.php?action=';
   app.openRow = {
-    main_kwps_outro: false,
-    main_kwps_intro: false,
-    main_kwps_intro_result: false,
-    main_kwps_question_group: false,
+    main_kwps_outro: true,
+    main_kwps_intro: true,
+    main_kwps_intro_result: true,
+    main_kwps_question_group: true,
     kwps_question_group: -1,
     kwps_question: -1
   };
@@ -221,6 +221,8 @@ jQuery(function ($) {
       });
       model.save({},{
         success: function (model) {
+          app.openRow.main_kwps_question_group = true;
+          app.openRow.kwps_question_group = 0;
           app.kwpsPollsCollection.add(model);
           for (i = 0; i < 1; i++) {
             that.createQuestion(model.get('ID'), i, model.get('post_type'));
@@ -239,6 +241,8 @@ jQuery(function ($) {
       });
       model.save({},{
         success: function (model) {
+          app.openRow.main_kwps_question = true;
+          app.openRow.kwps_question = 0;
           app.kwpsPollsCollection.add(model);
           for (i = 0; i < 2; i++) {
             that.createAnswer(model.get('ID'), i, post_type);
@@ -578,6 +582,7 @@ jQuery(function ($) {
                     sorterArrows : (_.size(sortedAns) > 1),
                     first: (parseInt(sortOrderA) === 0),
                     last: (parseInt(sortOrderA) === _.size(sortedAns)-1),
+                    deletable: !_.some(versions, function(version) {return version.isLive;}),
                     sortOrder : sortOrderA,
                     number: parseInt(sortOrderA) +1,
                     versions : sortedAns[sortOrderA],
@@ -624,11 +629,45 @@ jQuery(function ($) {
       this.render();
     },
     deleteRow: function(postType, sortOrder) {
+      if(app.openRow[postType] === sortOrder) {
+        app.openRow[postType] = -1;
+      }
+
+      var parentPostType = this.getParent(postType);
+      var parentPostTypeSortOrder = app.openRow[parentPostType];
+      var whereAttributes = {post_type: parentPostType};
+
+      if(parentPostTypeSortOrder) {
+        whereAttributes._kwps_sort_order = parentPostTypeSortOrder.toString();
+      }
+
+      var parentPosts = this.collection.where(whereAttributes);
+      var postsToMove = [];
       var postsToDelete = this.collection.where({post_type: postType, _kwps_sort_order: sortOrder.toString()});
       for (i = 0; i < postsToDelete.length; i++) {
         postsToDelete[i].destroy();
       }
       this.collection.remove(postsToDelete);
+
+      parentPosts.forEach(function(parentPost) {
+        var allRemainingPostsInParent = this.collection.where({post_type: postType, post_parent: parentPost.get('ID')});
+
+        var newPosts = _.filter(allRemainingPostsInParent, function(post) {
+          return post.get('_kwps_sort_order') > sortOrder.toString();
+        });
+        postsToMove = _.union(postsToMove, newPosts);
+
+      }, this);
+
+      var that = this;
+      postsToMove.forEach(function(postToMove) {
+        var currentSortOrder = postToMove.get('_kwps_sort_order');
+        var newSortOrder = currentSortOrder - 1;
+        postToMove.set('_kwps_sort_order', newSortOrder);
+        postToMove.save();
+        that.render();
+      });
+
     },
     deletePostType: function(e) {
       e.preventDefault();
@@ -710,7 +749,6 @@ jQuery(function ($) {
               var questions = this.collection.where({post_type: 'kwps_question', post_parent: questionGroups[j].id, _kwps_sort_order: sortOrder.toString()});
               for(var k = 0; k < questions.length; k++) {
                 var index = this.collection.where({post_type: 'kwps_answer_option', post_parent: questions[k].id}).length;
-                console.log(index);
                 this.createAnswer(questions[k].id, index);
               }
             }

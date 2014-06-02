@@ -3,16 +3,16 @@
     {{#each versions}}
         <th style="border-top: 1px solid #D6D6D6;" class=" column-title  bottom">
             <div class="column-tab">
-                Shortcode: [kwps_version id={{ID}}]
+                {{t "Shortcode"}}: [kwps_version id={{ID}}]
             </div>
             {{#if isLive}}
                 <div>
-                    <span><a href="#">View Entries</a></span>
-                    <h3>Results: </h3>
+                    <span><a href="#">{{t "View entries"}}</a></span>
+                    <h3>{{t "Results"}}: </h3>
                     <ul>
-                        <li>View count: {{_kwps_view_count}}</li>
-                        <li>Conversion Rate: {{conversion_rate_percentage}}%</li>
-                        <li>Total Participants: {{total_participants}}</li>
+                        <li>{{t "View count"}}: {{_kwps_view_count}}</li>
+                        <li>{{t "Conversion Rate"}}: {{conversion_rate_percentage}}%</li>
+                        <li>{{t "Total Participants"}}: {{total_participants}}</li>
                     </ul>
                 </div>
             {{/if}}
