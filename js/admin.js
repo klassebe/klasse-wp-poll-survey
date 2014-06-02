@@ -1186,8 +1186,10 @@ jQuery(function ($) {
       data.label = kwps_translations[this.options.attribute];
       data.addResults = (this.model.get('post_type') === "kwps_outro");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
+      data.answer_option_value = this.model.get("_kwps_answer_option_value");
 
-      $(this.el).html(app.templates.edit(data));
+
+        $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({
         menubar: false,
