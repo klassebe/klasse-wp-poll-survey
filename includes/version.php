@@ -179,7 +179,7 @@ class Version extends Kwps_Post_Type{
 
             <?php foreach($data['question_groups'] as $questionGroup): ?>
                 <div class="kwps-page kwps-question-group ">
-                    <div>
+                    <div class="kwps-question-group-title">
                         <?php echo $questionGroup['post_title']; ?>
                     </div>
                     <div class="kwps-questions">
@@ -194,10 +194,11 @@ class Version extends Kwps_Post_Type{
                                     </ul>
                                 </div>
                             </div>
-                            <div class="kwps-button">
-                                <button class="kwps-next">Next</button>
-                            </div>
+
                         <?php endforeach; ?>
+                    </div>
+                    <div class="kwps-button">
+                        <button class="kwps-next">Next</button>
                     </div>
                 </div>
             <?php endforeach; ?>
