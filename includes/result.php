@@ -174,7 +174,7 @@ class Result {
             'result' => 0,
         ), $atts ) );
 
-        return '<div class="kwps-result ' . $result . '">Chart</div>';
+        return '<div class="kwps-result ' . $result . '"> ' . $result . '</div>';
     }
 }
 /* EOF */
