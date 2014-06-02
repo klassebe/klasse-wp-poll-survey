@@ -29,8 +29,23 @@ jQuery(function($) {
 				// Check if an answer option was selected
 				// Get the name of the radio buttons
 				var getNameOfRadioBtn = elem.find('input:radio').attr('name');
-				// Get the value of the selected field
-				var selected = elem.find('.kwps-answer-option input[type="radio"][name=' + getNameOfRadioBtn + ']:checked').val();
+				/* GET NUMBER OF KWPS ANSWER OPTION DIVs */
+				var kwpsAnswerOptions = elem.find('.kwps-answer-option');
+				var kwpsAnswerOptionsNum = elem.find('.kwps-answer-option').length;
+				var selected = true;
+				for (var i = 0; i < kwpsAnswerOptionsNum; i++) {
+					/* CHECK FIELD ATTR AND IF ONE OF THEM WAS CHECKED */
+					//  Gets the question name per answer option to later check if it has a checked value per name
+					var getQuestionName = kwpsAnswerOptions[i].children[0].children[0].firstChild.name;
+					var oneSelectCheck = elem.find('input[type="radio"][name=' + getQuestionName + ']:checked').val();
+					if (oneSelectCheck) {
+						selected = true;
+					} else {
+						selected = false;
+						break;
+					}
+				}
+
 				if (selected) {
 			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
 			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
