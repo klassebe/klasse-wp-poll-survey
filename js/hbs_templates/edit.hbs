@@ -2,19 +2,25 @@
 <div>  
 	<form id="update-model">
         {{#if title}}
-            <div>{{t "Title"}}: <input type="text" name="qg-title" id="kwps-question-group-title" value="{{title}}"></div>
+            <div>{{t "Title"}}: <input type="text" name="post_title" id="kwps-question-group-title" value="{{post_title}}"></div>
         {{/if}}
 
         {{#if answer_option_value}}
-            <div>{{t "Value"}}: <input type="text" name="ao-value" id="kwps-answer-option-value" value="{{answer_option_value}}"></div>
+            <div>{{t "Value"}}: <input type="text" name="_kwps_answer_option_value" id="kwps-answer-option-value" value="{{_kwps_answer_option_value}}"></div>
         {{/if}}
+
+        {{#if min_max}}
+            <div>{{t "Min value"}}: <input type="text" name="_kwps_min_value" id="kwps-answer-option-value" value="{{_kwps_min_value}}"></div>
+            <div>{{t "Max value"}}: <input type="text" name="_kwps_max_value" id="kwps-answer-option-value" value="{{_kwps_max_value}}"></div>
+        {{/if}}
+
         <br>
         <button id="add-media-button"><span class="add-media-icon"></span>{{t "Add media"}}</button>
         {{#if addResults}}
         <button id="add-result-button">{{t "Add results"}}</button>
         {{/if}}
         <div id="editor-tiny">   
-		 <textarea name='text' rows="20">{{text}}</textarea>
+		 <textarea name='post_content' rows="20">{{post_content}}</textarea>
         </div>
 		<button id="update">{{t "Update"}}</button>
 	</form>

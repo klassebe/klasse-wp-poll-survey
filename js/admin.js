@@ -1178,14 +1178,15 @@ jQuery(function ($) {
       'click button#add-result-to-editor': 'insertChartIntoEditor'
     },
     render: function() {
-      var data = {
-        attribute: this.options.attribute,
-        label: kwps_translations[this.options.attribute],
-        text: this.model.get("post_content"),
-        title: this.model.get("post_title"),
-        answer_option_value: this.model.get("_kwps_answer_option_value"),
-        addResults: (this.model.get('post_type') === "kwps_outro")
-      };
+      var testCollection = app.kwpsPollsCollection.findWhere({post_type: "kwps_test_collection"});
+      var testmodus = app.kwpsPollsCollection.findWhere({ID: testCollection.get('post_parent')});
+
+      var data =  this.model.toJSON();
+      data.attribute = this.options.attribute;
+      data.label = kwps_translations[this.options.attribute];
+      data.addResults = (this.model.get('post_type') === "kwps_outro");
+      data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
+
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({
@@ -1223,34 +1224,30 @@ jQuery(function ($) {
     },
     /* END MEDIA UPLOAD */
     updateData: function(event) {
-      var type, title, content, value;
       event.preventDefault();
       tinymce.triggerSave();
-      content = $(event.target).closest('form').find('textarea').val();
-      type = this.model.get("post_type");
 
-      if(content === "") {
+      var data = $('#update-model').serializeObject();
+
+      if(data.post_content === "") {
         alert('Content cannot be empty');
         return false;
       }
 
-      if (type === 'kwps_question_group') {
-        title = $(event.target).closest('form').find('input[name=qg-title]').val();
-      } else if (type === 'kwps_answer_option') {
-        value = $(event.target).closest('form').find('input[name=ao-value]').val();
-        if (!value) {
-          value = 'value...';
-        }
+      if(data._kwps_min_value) {
+        data._kwps_min_value = parseInt(data._kwps_min_value);
+      }
+      if(data._kwps_max_value) {
+        data._kwps_max_value = parseInt(data._kwps_max_value);
       }
 
-      this.model.save({
-        "post_content": content,
-        "post_title" : title,
-        "_kwps_answer_option_value" : value
+      var that = this;
+      this.model.save(data, {
+        success: function() {
+          that.cleanup();
+          window.location = '#';
+        }
       });
-
-      this.cleanup();
-      window.location = '#';
     }
   });
 
