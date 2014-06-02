@@ -33,10 +33,10 @@ jQuery(function ($) {
   var app = {};
   app.url = 'admin-ajax.php?action=';
   app.openRow = {
-    main_kwps_outro: false,
-    main_kwps_intro: false,
-    main_kwps_intro_result: false,
-    main_kwps_question_group: false,
+    main_kwps_outro: true,
+    main_kwps_intro: true,
+    main_kwps_intro_result: true,
+    main_kwps_question_group: true,
     kwps_question_group: -1,
     kwps_question: -1
   };
