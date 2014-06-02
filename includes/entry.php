@@ -121,7 +121,9 @@ class Entry extends Kwps_Post_Type{
             $errors = array_merge($errors, static::check_numeric_fields($entry));
             $errors = array_merge($errors, static::check_is_allowed_by_uniqueness($entry));
             foreach($errors as $key => $value){
-                $errors[$key]['post_parent'] = $entry['post_parent'];
+                if( isset($entry['post_parent']) ){
+                    $errors[$key]['post_parent'] = $entry['post_parent'];
+                }
             }
         }
 
