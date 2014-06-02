@@ -12,6 +12,8 @@ if(!class_exists('Base_List_Table')){
     require_once(__DIR__ . '/../includes/base-list-table.php' );
 }
 
+require_once 'entry.php';
+
 
 /************************** CREATE A PACKAGE CLASS *****************************
  *******************************************************************************
@@ -329,10 +331,11 @@ class Entries_List_Table extends Base_List_Table {
         $post_data = get_posts($arguments);
         $data = array();
         foreach($post_data as $object){
+            $version = Entry::get_version($object->ID);
             $row_data = array(
 	            'ID' => $object->ID,
 	            'post_modified' => $object->post_modified,
-	            'version' => $object->ID,
+	            'version' => $version['ID'],
             );
 
             $row_data['cookie_value'] = get_post_meta($object->ID, '_kwps_cookie_value', true);
