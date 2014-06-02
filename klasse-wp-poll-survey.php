@@ -168,15 +168,34 @@ function create_default_test_modi(){
         '_kwps_allowed_output_types' => array('bar-chart-per-question'),
     );
 
+    $kwps_personality_test = array(
+        'post_title' => 'kwps-personality-test',
+        'post_status' => 'publish',
+        'post_type' => 'kwps_test_modus',
+        '_kwps_max_question_groups' => -1,
+        '_kwps_max_questions_per_question_group' => -1,
+        '_kwps_max_answer_options_per_question' => -1,
+        '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
+        '_kwps_allowed_output_types' => array('result-profile'),
+    );
+
     if( ! \includes\Test_Modus::default_test_modus_exists($kwps_poll) ){
         $error = \includes\Test_Modus::save_post($kwps_poll);
     }
 
     if( isset($error) && null == $error ){
+        //TODO add html to report error
         var_dump($error);
     }
 
+    if( ! \includes\Test_Modus::default_test_modus_exists($kwps_personality_test) ){
+        $error = \includes\Test_Modus::save_post($kwps_personality_test);
+    }
 
+    if( isset($error) && null == $error ){
+        //TODO add html to report error
+        var_dump($error);
+    }
 }
 
 function kwps_deactivate(){
