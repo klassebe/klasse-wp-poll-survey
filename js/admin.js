@@ -221,6 +221,8 @@ jQuery(function ($) {
       });
       model.save({},{
         success: function (model) {
+          app.openRow.main_kwps_question_group = true;
+          app.openRow.kwps_question_group = 0;
           app.kwpsPollsCollection.add(model);
           for (i = 0; i < 1; i++) {
             that.createQuestion(model.get('ID'), i, model.get('post_type'));
@@ -239,6 +241,8 @@ jQuery(function ($) {
       });
       model.save({},{
         success: function (model) {
+          app.openRow.main_kwps_question = true;
+          app.openRow.kwps_question = 0;
           app.kwpsPollsCollection.add(model);
           for (i = 0; i < 2; i++) {
             that.createAnswer(model.get('ID'), i, post_type);
