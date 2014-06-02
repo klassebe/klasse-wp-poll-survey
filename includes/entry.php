@@ -95,6 +95,22 @@ class Entry extends Kwps_Post_Type{
         return $request_data;
     }
 
+    public static function process_request_data($request_data, $errors){
+        if( sizeof( $errors ) > 0 ) {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
+            wp_send_json_error($errors);
+        } else {
+            $posts = array();
+            foreach($request_data as $data){
+                $post = static::save_post($data);
+                $posts[] = $post;
+            }
+            wp_send_json( $posts );
+        }
+
+        die();
+    }
+
     /**
      * @param $post_as_array
      * @return bool
