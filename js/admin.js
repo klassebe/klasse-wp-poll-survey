@@ -365,7 +365,7 @@ jQuery(function ($) {
       versions.forEach(function(version) {
         version.isLive = (version.post_status !== "draft");
         version.editable = !version.isLive;
-        if(version.isLive) {
+        if(version.isLive && version.conversion_rate_percentage) {
           version.conversion_rate_percentage = version.conversion_rate.toPrecision(4) * 100;
         }
       });
