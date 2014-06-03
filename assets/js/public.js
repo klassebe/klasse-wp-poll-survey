@@ -109,9 +109,6 @@ jQuery(function($) {
 					    dataType: "json",
 					    success: function(data) {
 					  		getChart.ID = data[0].ID;
-					  		// spreek functie aan die entry opslaat
-					  		getChart.output_type ='bar-chart-per-question';
-								// getChartData(urlGetChartData, getChart);
 								getResults(getChart);
 					    },
 					    failure: function (errMsg) {
