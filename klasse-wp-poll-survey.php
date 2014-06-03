@@ -165,7 +165,8 @@ function kwps_activate(){
 
 function create_default_test_modi(){
     $kwps_poll = array(
-        'post_title' => 'kwps-poll',
+        'post_title' => 'Poll',
+        'post_name' => 'kwps-poll',
         'post_status' => 'publish',
         'post_type' => 'kwps_test_modus',
         '_kwps_max_question_groups' => 1,
@@ -176,7 +177,8 @@ function create_default_test_modi(){
     );
 
     $kwps_personality_test = array(
-        'post_title' => 'kwps-personality-test',
+        'post_title' => 'Personality Test',
+        'post_name' => 'kwps-personality-test',
         'post_status' => 'publish',
         'post_type' => 'kwps_test_modus',
         '_kwps_max_question_groups' => -1,
@@ -309,7 +311,10 @@ function enqueue_scripts_admin() {
 	    'Result Profile' => __('Result Profile', 'klasse-wp-poll-survey'),
 	    'Result Profiles' => __('Result Profiles', 'klasse-wp-poll-survey'),
 	    'Question' => __('Question', 'klasse-wp-poll-survey'),
-	    'Answer Option' => __('Answer Option', 'klasse-wp-poll-survey')
+	    'Answer Option' => __('Answer Option', 'klasse-wp-poll-survey'),
+	    'Personality Test' => __('Personality Test', 'klasse-wp-poll-survey'),
+	    'Poll' => __('Poll', 'klasse-wp-poll-survey'),
+	    'Next' => __('Next', 'klasse-wp-poll-survey')
 	);
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
