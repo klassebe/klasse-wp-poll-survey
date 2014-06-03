@@ -15,7 +15,8 @@
 	}
 	#bar-chart,
 	#pie-chart,
-	#stacked-bar-chart {
+	#stacked-bar-chart,
+	#quiz-respons {
 		padding: 5px;
 	}
 	.selected {
@@ -28,22 +29,29 @@
 	<div id="bar-chart" class="media-item left">
 		<label>
 			<h4>Bar Chart</h4>
-			<input type="radio" name="charts" value="bar_chart">
+			<input type="radio" name="results" value="bar_chart">
 			<img class="thumbnail" src="images/bar_chart.png" alt="bar-chart-per-question" height="128" width="128">
 		</label>
 	</div>
 	<div id="pie-chart" class="media-item left">
 		<label>
 			<h4>Pie Chart</h4>
-			<input type="radio" name="charts" value="pie_chart">
+			<input type="radio" name="results" value="pie_chart">
 			<img class="thumbnail" src="images/pie_chart.png" alt="pie-chart-per-question" height="128" width="160">
 		</label>
 	</div>
 	<div id="stacked-bar-chart" class="media-item left">
 		<label>
 			<h4>Stacked Bar Chart</h4>
-			<input type="radio" name="charts" value="stacked_bar_chart">
+			<input type="radio" name="results" value="stacked_bar_chart">
 			<img class="thumbnail" src="images/stacked_bar_chart.png" alt="stacked-bar-chart-per-question" height="128" width="128">
+		</label>
+	</div>
+	<div id="quiz-respons" class="media-item left">
+		<label>
+			<h4>Quiz Respons</h4>
+			<input type="radio" name="results" value="quiz_respons">
+			<img class="thumbnail" src="images/stacked_bar_chart.png" alt="quiz-respons" height="128" width="128">
 		</label>
 	</div>
 </div>
