@@ -50,7 +50,6 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         return $meta_as_array;
     }
 
-
     public static function get_all_by_post_parent($test_id){
         $child_objects = get_posts( array('post_type' => static::$post_type,
             'post_parent' => $test_id,
@@ -67,7 +66,6 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         return $children;
     }
 
-
     public static function get_one_by_post_parent($test_id){
         $children = static::get_all_by_post_parent($test_id);
 
@@ -78,7 +76,6 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 	    }
         return $child;
     }
-
 
     public static function save_from_request(){
 
@@ -170,7 +167,6 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
         die();
     }
-
 
     public final static function delete_from_request(){
         $request_data = static::get_post_data_from_request();

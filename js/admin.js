@@ -48,6 +48,7 @@ jQuery(function ($) {
 
   /* BACKBONE STUFF */
   var app = {};
+  app.translations = kwps_translations;
   app.url = 'admin-ajax.php?action=';
   app.openRow = {
     main_kwps_outro: true,
@@ -344,7 +345,8 @@ jQuery(function ($) {
       'change .update-main': 'updateTestCollection',
       'change .update-version-post-title': 'updateVersionPostTitle',
       'click .move-action:not(.disabled)': 'moveItem',
-      'click .make-live': 'makeLive'
+      'click .make-live': 'makeLive',
+      'click .clear-entries': 'clearEntries'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -1189,6 +1191,22 @@ jQuery(function ($) {
       version.save();
 
       this.render();
+
+    },
+    clearEntries: function(event) {
+      event.preventDefault();
+      if(confirm(kwps_translations['This will delete all entries. Are you sure?'])) {
+        var id = $(event.currentTarget).closest('th').data('post-id');
+        $.post(
+          app.url + 'kwps_delete_entries_from_version',JSON.stringify(
+          {
+            post_parent: id
+          }),
+          function(data) {
+            console.log('deleted: ' + data.count);
+          }
+        );
+      }
 
     }
   });

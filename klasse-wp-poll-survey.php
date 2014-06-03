@@ -137,6 +137,7 @@ add_action( 'wp_ajax_kwps_update_outro', array('\includes\outro','update_from_re
 // nopriv prefix to make sure this function is callable for unregistered users
 add_action( 'wp_ajax_nopriv_kwps_save_entry', array('\includes\entry','save_from_request'));
 add_action( 'wp_ajax_kwps_save_entry', array('\includes\entry','save_from_request'));
+add_action( 'wp_ajax_kwps_delete_entries_from_version', array('\includes\entry','delete_from_version'));
 
 
 add_action( 'wp_ajax_kwps_get_result_of_version', array('\includes\result','get_result_of_version'));
@@ -297,7 +298,9 @@ function enqueue_scripts_admin() {
 	    'Max value is required' => __('Max value is required'),
 	    'Title is required' => __('Title is required'),
 	    'Name is required' => __('Name is required'),
-	    'Type is required' => __('Type is required')
+	    'Type is required' => __('Type is required'),
+	    'Clear entries' => __('Clear entries'),
+	    'This will delete all entries. Are you sure?' => __('This will delete all entries. Are you sure?')
 	);
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
