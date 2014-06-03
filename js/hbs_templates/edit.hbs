@@ -24,8 +24,11 @@
         {{#if addResults}}
         <button id="add-result-button">{{t "Add results"}}</button>
         {{/if}}
-        <div id="editor-tiny" class="form-group">
-		 <textarea name='post_content' rows="20">{{post_content}}</textarea><span class="help-block hidden"></span>
+        <div class="form-group">
+            <div id="editor-tiny">
+                <textarea name='post_content' rows="20">{{post_content}}</textarea>
+            </div>
+            <span class="help-block hidden"></span>
         </div>
 		<button id="update">{{t "Update"}}</button>
 	</form>
