@@ -289,7 +289,13 @@ function enqueue_scripts_admin() {
 	    'Add results' => __('Add results'),
 	    'Add media' => __('Add media'),
 	    'Value' => __('Value'),
-	    'Title' => __('Title')
+	    'Title' => __('Title'),
+	    'Value is required' => __('Value is required'),
+	    'Min value' => __('Min value'),
+	    'Max value' => __('Max value'),
+	    'Min value is required' => __('Min value is required'),
+	    'Max value is required' => __('Max value is required'),
+	    'Title is required' => __('Title is required')
 	);
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
