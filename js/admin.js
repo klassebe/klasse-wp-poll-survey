@@ -1228,6 +1228,7 @@ jQuery(function ($) {
     updateData: function(event) {
       event.preventDefault();
       tinymce.triggerSave();
+      
 
       var data = $('#update-model').serializeObject();
 

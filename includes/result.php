@@ -21,6 +21,12 @@ class Result {
             case 'bar-chart-per-question' :
                 $results = static::bar_chart_per_question($version_id);
                 break;
+            case 'pie-chart-per-question' :
+                $results = static::bar_chart_per_question($version_id);
+                break;
+            case 'line-chart-per-question' :
+                $results = static::bar_chart_per_question($version_id);
+                break;
         }
         wp_send_json( $results );
         die;

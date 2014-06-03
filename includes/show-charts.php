@@ -29,21 +29,21 @@
 		<label>
 			<h4>Bar Chart</h4>
 			<input type="radio" name="charts" value="bar_chart">
-			<img class="thumbnail" src="images/bar_chart.png" alt="bar-chart" height="128" width="128">
+			<img class="thumbnail" src="images/bar_chart.png" alt="bar-chart-per-question" height="128" width="128">
 		</label>
 	</div>
 	<div id="pie-chart" class="media-item left">
 		<label>
 			<h4>Pie Chart</h4>
 			<input type="radio" name="charts" value="pie_chart">
-			<img class="thumbnail" src="images/bar_chart.png" alt="pie-chart" height="128" width="128">
+			<img class="thumbnail" src="images/bar_chart.png" alt="pie-chart-per-question" height="128" width="128">
 		</label>
 	</div>
 	<div id="line-chart" class="media-item left">
 		<label>
 			<h4>Line Chart</h4>
 			<input type="radio" name="charts" value="line_chart">
-			<img class="thumbnail" src="images/line_chart.png" alt="line-chart" height="128" width="128">
+			<img class="thumbnail" src="images/line_chart.png" alt="line-chart-per-question" height="128" width="128">
 		</label>
 	</div>
 </div>

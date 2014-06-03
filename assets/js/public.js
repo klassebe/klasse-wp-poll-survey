@@ -74,8 +74,6 @@ jQuery(function($) {
 				if (selected) {
 					elem.find('.kwps-page').hide;
 
-					// $(this).hide();
-					// $(this).next().show();
 			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
 			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
 				  var getChart = {
@@ -91,8 +89,10 @@ jQuery(function($) {
 					    dataType: "json",
 					    success: function(data) {
 					  		getChart.ID = data[0].ID;
+					  		// spreek functie aan die entry opslaat
 					  		getChart.output_type ='bar-chart-per-question';
-								getChartData(urlGetChartData, getChart);
+								// getChartData(urlGetChartData, getChart);
+								getResults(getChart);
 					    },
 					    failure: function (errMsg) {
 					        alert(errMsg);
@@ -101,7 +101,35 @@ jQuery(function($) {
 					// Check if there still is a view open that needs to be sent to the DB,
 					// If so, then add the variables to an array and then after all is done,
 					// get the results from the DB and show outro
-					var getChartData = function (urlGetChartData, getChart) {
+
+					var getResults = function (entryData) {
+
+						var questGroupItems = elem.find('.kwps-question-group');
+						var questGroupLen = elem.find('.kwps-question-group').length;
+						var resultRequests = [];
+
+						//  Check if all kwps question group divs are hidden
+						if (questGroupItems) {
+							for (var i = 0; i < questGroupLen; i++) {
+								if (questGroupItems[i].style.cssText === 'display: block;') {
+									elem.find('.kwps-outro').hide();
+									break;
+								} else {
+									// Start doing the requests per div class and set it as output type
+									$.each(elem.find('.kwps-result'), function (key, value) {
+										// add all classes to an array that are next to kwps-result
+										getChart.output_type = value.classList[1];
+										getChartData(getChart, resultRequests);
+										resultRequests.push(value.classList[1]);
+									});
+									getChartData();
+									elem.find('.kwps-outro').show();
+								}
+							}
+						} 
+					};
+
+					var getChartData = function (getChart, resultRequests) {
 							$.ajax({
 						  			type: "POST",
 						  			url: urlGetChartData,
@@ -109,50 +137,33 @@ jQuery(function($) {
 						  			contentType: "application/json; charset=utf-8",
 						  			dataType: "json",
 						  			success: function (data) {
-							    	var graphCategories = [];
-							    	var graphData = [];
-							    	var totalEntries = data[0][0].total_entries;
-							    	$.each(data[0].entries, function(index, value) {
-							    		graphCategories.push(value.answer_option_content);
-							    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
-							    	});
-                    if (elem.find('.bar-chart')) {
-                      outputBarChart(data, graphCategories, graphData);
-                    }
-                    if (elem.find('.pie-chart')) {
-                      outputPieChart(data, graphCategories, graphData);
-                    }
-                    if (elem.find('.line-chart')) {
-                      outputLineChart(data, graphCategories, graphData);
-                    }
-							    	
-							    	
+								    	var graphCategories = [];
+								    	var graphData = [];
+								    	var totalEntries = data[0][0].total_entries;
+								    	$.each(data[0].entries, function(index, value) {
+								    		graphCategories.push(value.answer_option_content);
+								    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
+								    	});
+								    	$.each
+	                    if (elem.find('.bar-chart-per-question')) {
+	                      outputBarChart(data, graphCategories, graphData);
+	                    }
+	                    if (elem.find('.pie-chart-per-question')) {
+	                      outputPieChart(data, graphCategories, graphData);
+	                    }
+	                    if (elem.find('.line-chart-per-question')) {
+	                      outputLineChart(data, graphCategories, graphData);
+	                    }
+
 								    },
 								    async: false
-					  		});
-						
+					  		});			
 						elem.find('.kwps-intro').hide();
-
-						//  Check if all kwps question group divs are hidden
-						var questGroupItems = elem.find('.kwps-question-group');
-						var questGroupLen = elem.find('.kwps-question-group').length;
-
-						if (questGroupItems) {
-							for (var i = 0; i < questGroupLen; i++) {
-								console.log(questGroupItems[i].style.cssText);
-								if (questGroupItems[i].style.cssText === 'display: block;') {
-									elem.find('.kwps-outro').hide();
-									break;
-								} else {
-									elem.find('.kwps-outro').show();
-								}
-							}
-						} 
 					};
 
 					/* BAR CHART CODE */
 					var outputBarChart = function (data, graphCategories, graphData) {
-						elem.find('.kwps-result.bar-chart').highcharts({
+						elem.find('.kwps-result.bar-chart-per-question').highcharts({
 						    chart: {
 						        type: 'bar'
 						    },
@@ -203,7 +214,7 @@ jQuery(function($) {
 					};
 					/* PIE CHART CODE */
 					var outputLineChart = function (data, graphCategories, graphData) {
-						elem.find('.kwps-result.line-chart').highcharts({
+						elem.find('.kwps-result.line-chart-per-question').highcharts({
 	            title: {
 	              text: data[0][1].poll_question
 	            },
@@ -245,7 +256,7 @@ jQuery(function($) {
 		        });
 					};
 					var outputPieChart = function(data, graphCategories, graphData) {
-						elem.find('.kwps-result.pie-chart').highcharts({
+						elem.find('.kwps-result.pie-chart-per-question').highcharts({
 			        chart: {
 		            plotBackgroundColor: null,
 		            plotBorderWidth: null,
