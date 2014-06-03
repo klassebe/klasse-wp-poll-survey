@@ -142,7 +142,6 @@ jQuery(function($) {
 										getChartData(getChart, resultRequests);
 										resultRequests.push(value.classList[1]);
 									});
-									getChartData();
 									elem.find('.kwps-outro').show();
 								}
 							}
