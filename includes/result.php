@@ -24,7 +24,7 @@ class Result {
             case 'pie-chart-per-question' :
                 $results = static::bar_chart_per_question($version_id);
                 break;
-            case 'line-chart-per-question' :
+            case 'stacked-bar-per-question' :
                 $results = static::bar_chart_per_question($version_id);
                 break;
         }
