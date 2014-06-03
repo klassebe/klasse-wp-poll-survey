@@ -669,7 +669,7 @@ jQuery(function ($) {
       if(_.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile')) {
         data.table.push({
           colSpan: versions.length + 1,
-          title: "Result Profiles",
+          title: 'Result Profiles',
           postType: "kwps_result_profile",
           mainTitle: true,
           add: (allResultProfiles && !_.some(versions, function (version) {

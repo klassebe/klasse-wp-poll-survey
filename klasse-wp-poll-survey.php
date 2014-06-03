@@ -321,7 +321,8 @@ function enqueue_scripts_admin() {
 	    'Once, based on cookie' => __('Once, based on cookie', 'klasse-wp-poll-survey'),
 	    'Once, based on IP' => __('Once, based on IP', 'klasse-wp-poll-survey'),
 	    'Once, based login' => __('Once, based login', 'klasse-wp-poll-survey'),
-	    'Limit entries' => __('Limit entries', 'klasse-wp-poll-survey')
+	    'Limit entries' => __('Limit entries', 'klasse-wp-poll-survey'),
+	    'Add result profile' => __('Add result profile', 'klasse-wp-poll-survey')
 	);
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
