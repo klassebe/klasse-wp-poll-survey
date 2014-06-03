@@ -1,5 +1,18 @@
 'use strict';
 
+function GetURLParameter(sParam) {
+  var sPageURL = window.location.search.substring(1);
+  var sURLVariables = sPageURL.split('&');
+  for (var i = 0; i < sURLVariables.length; i++)
+  {
+    var sParameterName = sURLVariables[i].split('=');
+    if (sParameterName[0] === sParam)
+    {
+      return sParameterName[1];
+    }
+  }
+}
+
 jQuery(function($) {
 	$('.kwps-page').hide();
 	// $('.kwps-outro').hide();
@@ -51,6 +64,7 @@ jQuery(function($) {
 				var selected = true;
 				var entries = [];
 				var getQuestionName, oneSelectCheck;
+        var _kwps_hash = GetURLParameter('kwps_hash');
 
 				//  ONLY CHECK CURRENT VISIBLE PAGE
 				for (i = 0; i < kwpsAnswerOptionsLen; i++) {
@@ -59,11 +73,17 @@ jQuery(function($) {
 					getQuestionName = kwpsAnswerOptions[i].children[0].children[0].firstChild.name;
 					oneSelectCheck = elem.find('input[type="radio"][name=' + getQuestionName + ']:checked').val();
 					if (oneSelectCheck) {
-						entries.push({
-				  		"post_parent": oneSelectCheck,
-				  		"post_status": "publish",
-				  		"_kwps_sort_order": 0
-				  	});
+            var data = {
+              "post_parent": oneSelectCheck,
+              "post_status": "publish",
+              "_kwps_sort_order": 0
+            };
+
+            if(_kwps_hash) {
+              data._kwps_hash = _kwps_hash;
+            }
+
+						entries.push(data);
 						selected = true;
 					} else {
 						selected = false;
