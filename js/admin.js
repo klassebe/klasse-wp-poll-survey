@@ -163,6 +163,7 @@ jQuery(function ($) {
     el: '#kwps_test',
     initialize: function (options) {
       this.options = options || {};
+      this.model = new KwpsModel();
       _.bindAll(this, 'cleanup');
       this.render();
     },
@@ -183,30 +184,57 @@ jQuery(function ($) {
 
       var postData = $(e.target).serializeObject();
 
-      if(!postData.post_title || !postData.post_parent) {
-        alert('Please fill in all fields');
-        return;
-      }
-
       postData.post_type = 'kwps_test_collection';
       postData.post_status = "draft";
       postData._kwps_logged_in_user_limit = 'free';
       postData._kwps_logged_out_user_limit = 'free';
 
-      var that = this;
-      var model = new KwpsModel(postData);
-      model.save({},{
-        wait: true,
-        success: function (model) {
-          app.kwpsPollsCollection.add(model);
-          for (i = 0; i < 1; i++) {
-            that.createVersion(model.get('ID'), i);
-          }
-          var url = window.location.pathname + window.location.search + "&action=edit&id=" + model.get('ID');
-          window.history.pushState( model.get('ID') , "Edit" , url);
-          app.router.navigate('', {trigger: true});
+      Backbone.Validation.bind(this, {
+        valid: function (view, attr, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+
+          $group.removeClass('has-error');
+          $group.find('.help-block').html('').addClass('hidden');
+        },
+        invalid: function (view, attr, error, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+          $group.addClass('has-error');
+          $group.find('.help-block').html(error).removeClass('hidden');
         }
       });
+
+
+      this.model.validation = {
+        post_title: {
+          required: true,
+          msg: kwps_translations['Name is required']
+        },
+        post_parent: {
+          required: true,
+          min: 1,
+          msg: kwps_translations['Type is required']
+        }
+      };
+
+
+      var that = this;
+      this.model.set(postData);
+      if(this.model.isValid(true)) {
+        this.model.save({}, {
+          wait: true,
+          success: function (model) {
+            app.kwpsPollsCollection.add(model);
+            for (i = 0; i < 1; i++) {
+              that.createVersion(model.get('ID'), i);
+            }
+            var url = window.location.pathname + window.location.search + "&action=edit&id=" + model.get('ID');
+            window.history.pushState(model.get('ID'), "Edit", url);
+            app.router.navigate('', {trigger: true});
+          }
+        });
+      }
     },
     createVersion: function (post_parent, index) {
       var that = this;

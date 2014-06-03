@@ -295,7 +295,9 @@ function enqueue_scripts_admin() {
 	    'Max value' => __('Max value'),
 	    'Min value is required' => __('Min value is required'),
 	    'Max value is required' => __('Max value is required'),
-	    'Title is required' => __('Title is required')
+	    'Title is required' => __('Title is required'),
+	    'Name is required' => __('Name is required'),
+	    'Type is required' => __('Type is required')
 	);
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
