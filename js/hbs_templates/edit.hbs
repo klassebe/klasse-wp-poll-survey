@@ -1,17 +1,22 @@
 <h2>{{label}}</h2>
+<div>
+    <ul id="errors">
+
+    </ul>
+</div>
 <div>  
 	<form id="update-model">
         {{#if post_title}}
-            <div>{{t "Title"}}: <input type="text" name="post_title" id="kwps-question-group-title" value="{{post_title}}"></div>
+            <div class="form-group">{{t "Title"}}: <input type="text" name="post_title" id="kwps-question-group-title" value="{{post_title}}"><span class="help-block hidden"></span></div>
         {{/if}}
 
-        {{#if answer_option_value}}
-            <div>{{t "Value"}}: <input type="text" name="_kwps_answer_option_value" id="kwps-answer-option-value" value="{{_kwps_answer_option_value}}"></div>
+        {{#if _kwps_answer_option_value}}
+            <div class="form-group">{{t "Value"}}: <input type="text" name="_kwps_answer_option_value" id="kwps-answer-option-value" value="{{_kwps_answer_option_value}}"><span class="help-block hidden"></span></div>
         {{/if}}
 
         {{#if min_max}}
-            <div>{{t "Min value"}}: <input type="text" name="_kwps_min_value" id="kwps-answer-option-value" value="{{_kwps_min_value}}"></div>
-            <div>{{t "Max value"}}: <input type="text" name="_kwps_max_value" id="kwps-answer-option-value" value="{{_kwps_max_value}}"></div>
+            <div class="form-group">{{t "Min value"}}: <input type="text" name="_kwps_min_value" id="kwps-answer-option-value" value="{{_kwps_min_value}}"><span class="help-block hidden"></span></div>
+            <div class="form-group">{{t "Max value"}}: <input type="text" name="_kwps_max_value" id="kwps-answer-option-value" value="{{_kwps_max_value}}"><span class="help-block hidden"></span></div>
         {{/if}}
 
         <br>
@@ -19,8 +24,11 @@
         {{#if addResults}}
         <button id="add-result-button">{{t "Add results"}}</button>
         {{/if}}
-        <div id="editor-tiny">   
-		 <textarea name='post_content' rows="20">{{post_content}}</textarea>
+        <div class="form-group">
+            <div id="editor-tiny">
+                <textarea name='post_content' rows="20">{{post_content}}</textarea>
+            </div>
+            <span class="help-block hidden"></span>
         </div>
 		<button id="update">{{t "Update"}}</button>
 	</form>

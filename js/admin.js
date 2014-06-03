@@ -28,6 +28,23 @@ jQuery(function ($) {
     return obj;
   };
 
+  _.extend(Backbone.Validation.callbacks, {
+    valid: function (view, attr, selector) {
+      var $el = view.$('[name=' + attr + ']'),
+        $group = $el.closest('.form-group');
+
+      $group.removeClass('has-error');
+      $group.find('.help-block').html('').addClass('hidden');
+    },
+    invalid: function (view, attr, error, selector) {
+      console.log('hierin');
+      var $el = view.$('[name=' + attr + ']'),
+        $group = $el.closest('.form-group');
+
+      $group.addClass('has-error');
+      $group.find('.help-block').html(error).removeClass('hidden');
+    }
+  });
 
   /* BACKBONE STUFF */
   var app = {};
@@ -146,6 +163,7 @@ jQuery(function ($) {
     el: '#kwps_test',
     initialize: function (options) {
       this.options = options || {};
+      this.model = new KwpsModel();
       _.bindAll(this, 'cleanup');
       this.render();
     },
@@ -166,30 +184,57 @@ jQuery(function ($) {
 
       var postData = $(e.target).serializeObject();
 
-      if(!postData.post_title || !postData.post_parent) {
-        alert('Please fill in all fields');
-        return;
-      }
-
       postData.post_type = 'kwps_test_collection';
       postData.post_status = "draft";
       postData._kwps_logged_in_user_limit = 'free';
       postData._kwps_logged_out_user_limit = 'free';
 
-      var that = this;
-      var model = new KwpsModel(postData);
-      model.save({},{
-        wait: true,
-        success: function (model) {
-          app.kwpsPollsCollection.add(model);
-          for (i = 0; i < 1; i++) {
-            that.createVersion(model.get('ID'), i);
-          }
-          var url = window.location.pathname + window.location.search + "&action=edit&id=" + model.get('ID');
-          window.history.pushState( model.get('ID') , "Edit" , url);
-          app.router.navigate('', {trigger: true});
+      Backbone.Validation.bind(this, {
+        valid: function (view, attr, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+
+          $group.removeClass('has-error');
+          $group.find('.help-block').html('').addClass('hidden');
+        },
+        invalid: function (view, attr, error, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+          $group.addClass('has-error');
+          $group.find('.help-block').html(error).removeClass('hidden');
         }
       });
+
+
+      this.model.validation = {
+        post_title: {
+          required: true,
+          msg: kwps_translations['Name is required']
+        },
+        post_parent: {
+          required: true,
+          min: 1,
+          msg: kwps_translations['Type is required']
+        }
+      };
+
+
+      var that = this;
+      this.model.set(postData);
+      if(this.model.isValid(true)) {
+        this.model.save({}, {
+          wait: true,
+          success: function (model) {
+            app.kwpsPollsCollection.add(model);
+            for (i = 0; i < 1; i++) {
+              that.createVersion(model.get('ID'), i);
+            }
+            var url = window.location.pathname + window.location.search + "&action=edit&id=" + model.get('ID');
+            window.history.pushState(model.get('ID'), "Edit", url);
+            app.router.navigate('', {trigger: true});
+          }
+        });
+      }
     },
     createVersion: function (post_parent, index) {
       var that = this;
@@ -1181,15 +1226,73 @@ jQuery(function ($) {
       var testCollection = app.kwpsPollsCollection.findWhere({post_type: "kwps_test_collection"});
       var testmodus = app.kwpsPollsCollection.findWhere({ID: testCollection.get('post_parent')});
 
+
+      Backbone.Validation.bind(this, {
+        valid: function (view, attr, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+
+          $group.removeClass('has-error');
+          $group.find('.help-block').html('').addClass('hidden');
+        },
+        invalid: function (view, attr, error, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+          $group.addClass('has-error');
+          $group.find('.help-block').html(error).removeClass('hidden');
+        }
+      });
+
       var data =  this.model.toJSON();
       data.attribute = this.options.attribute;
       data.label = kwps_translations[this.options.attribute];
       data.addResults = (this.model.get('post_type') === "kwps_outro");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
-      data.answer_option_value = this.model.get("_kwps_answer_option_value");
+      data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
 
+      var validation = {
+        post_content: {
+          required: true
+        },
+        post_parent: {
+          required: true
+        },
+        _kwps_sort_order: {
+          required: true,
+            min: 0
+        }
+      };
 
-        $(this.el).html(app.templates.edit(data));
+      if(data.post_title) {
+        validation.post_title = {
+          required: true,
+          msg: kwps_translations['Title is required']
+        };
+      }
+
+      if(data.min_max) {
+        validation._kwps_min_value = {
+          required: true,
+          min: 0,
+          msg: kwps_translations['Min value is required']
+        };
+        validation._kwps_max_value = {
+          required: true,
+          min: 0,
+          msg: kwps_translations['Max value is required']
+        };
+      }
+
+      if(data._kwps_answer_option_value) {
+        validation._kwps_answer_option_value = {
+          required: true,
+          msg: kwps_translations['Value is required']
+        };
+      }
+
+      this.model.validation = validation;
+
+      $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({
         menubar: false,
@@ -1232,11 +1335,6 @@ jQuery(function ($) {
 
       var data = $('#update-model').serializeObject();
 
-      if(data.post_content === "") {
-        alert('Content cannot be empty');
-        return false;
-      }
-
       if(data._kwps_min_value) {
         data._kwps_min_value = parseInt(data._kwps_min_value);
       }
@@ -1244,13 +1342,17 @@ jQuery(function ($) {
         data._kwps_max_value = parseInt(data._kwps_max_value);
       }
 
-      var that = this;
-      this.model.save(data, {
-        success: function() {
-          that.cleanup();
-          window.location = '#';
-        }
-      });
+      this.model.set(data);
+
+      if(this.model.isValid(true)) {
+        var that = this;
+        this.model.save(data, {
+          success: function() {
+            that.cleanup();
+            window.location = '#';
+          }
+        });
+      }
     }
   });
 
