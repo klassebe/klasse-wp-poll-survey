@@ -314,7 +314,14 @@ function enqueue_scripts_admin() {
 	    'Answer Option' => __('Answer Option', 'klasse-wp-poll-survey'),
 	    'Personality Test' => __('Personality Test', 'klasse-wp-poll-survey'),
 	    'Poll' => __('Poll', 'klasse-wp-poll-survey'),
-	    'Next' => __('Next', 'klasse-wp-poll-survey')
+	    'Next' => __('Next', 'klasse-wp-poll-survey'),
+	    'Logged in user' => __('Logged in user', 'klasse-wp-poll-survey'),
+	    'Logged out user' => __('Logged out user', 'klasse-wp-poll-survey'),
+	    'Free' => __('Free', 'klasse-wp-poll-survey'),
+	    'Once, based on cookie' => __('Once, based on cookie', 'klasse-wp-poll-survey'),
+	    'Once, based on IP' => __('Once, based on IP', 'klasse-wp-poll-survey'),
+	    'Once, based login' => __('Once, based login', 'klasse-wp-poll-survey'),
+	    'Limit entries' => __('Limit entries', 'klasse-wp-poll-survey')
 	);
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 

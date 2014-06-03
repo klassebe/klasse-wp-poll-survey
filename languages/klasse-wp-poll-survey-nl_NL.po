@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Klasse WordPress Poll & Survey\n"
-"POT-Creation-Date: 2014-06-03 23:11+0100\n"
-"PO-Revision-Date: 2014-06-03 23:11+0100\n"
+"POT-Creation-Date: 2014-06-03 23:18+0100\n"
+"PO-Revision-Date: 2014-06-03 23:18+0100\n"
 "Last-Translator: AppSaloon - koen <koen@appsaloon.be>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -119,19 +119,21 @@ msgid "Date"
 msgstr "Datum"
 
 #: includes/uniqueness.php:42 includes/uniqueness.php:63
-#: includes/uniqueness.php:85
+#: includes/uniqueness.php:85 klasse-wp-poll-survey.php:320
 msgid "Free"
 msgstr "Vrij"
 
 #: includes/uniqueness.php:46 includes/uniqueness.php:67
+#: klasse-wp-poll-survey.php:321
 msgid "Once, based on cookie"
 msgstr "Eenmalig, gebaseerd op cookie"
 
 #: includes/uniqueness.php:50 includes/uniqueness.php:71
+#: klasse-wp-poll-survey.php:322
 msgid "Once, based on IP"
 msgstr "Eenmalig, gebaseerd op IP-adres"
 
-#: includes/uniqueness.php:54
+#: includes/uniqueness.php:54 klasse-wp-poll-survey.php:323
 msgid "Once, based login"
 msgstr "Eenmalig, gebaseerd op login"
 
@@ -364,27 +366,39 @@ msgstr "Persoonlijkheidstest"
 msgid "Poll"
 msgstr "Poll"
 
-#: klasse-wp-poll-survey.php:343
+#: klasse-wp-poll-survey.php:318
+msgid "Logged in user"
+msgstr "Aangemelde gebruikers"
+
+#: klasse-wp-poll-survey.php:319
+msgid "Logged out user"
+msgstr "Niet-aangemelde gebruikers"
+
+#: klasse-wp-poll-survey.php:324
+msgid "Limit entries"
+msgstr "Beperk invoer"
+
+#: klasse-wp-poll-survey.php:350
 msgid "Tests"
 msgstr "Tests"
 
-#: klasse-wp-poll-survey.php:343
+#: klasse-wp-poll-survey.php:350
 msgid "Poll & Survey"
 msgstr "Poll & Survey"
 
-#: klasse-wp-poll-survey.php:345
+#: klasse-wp-poll-survey.php:352
 msgid "Add new test"
 msgstr "Voeg nieuwe test toe"
 
-#: klasse-wp-poll-survey.php:345
+#: klasse-wp-poll-survey.php:352
 msgid "Add new"
 msgstr "Voeg toe"
 
-#: klasse-wp-poll-survey.php:346 views/add.php:17
+#: klasse-wp-poll-survey.php:353 views/add.php:17
 msgid "Manage entries"
 msgstr "Beheer invoer"
 
-#: klasse-wp-poll-survey.php:346
+#: klasse-wp-poll-survey.php:353
 msgid "Entries"
 msgstr "Invoer"
 

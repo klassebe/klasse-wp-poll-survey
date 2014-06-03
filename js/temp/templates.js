@@ -7,7 +7,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
 function program1(depth0,data) {
   
-  var buffer = "", stack1, helper;
+  var buffer = "", stack1, helper, options;
   buffer += "\n\n            <label for=\"kwpsTestModi_";
   if (helper = helpers.ID) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.ID); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
@@ -20,10 +20,8 @@ function program1(depth0,data) {
   if (helper = helpers.ID) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.ID); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\"> ";
-  if (helper = helpers.post_title) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.post_title); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
+    + "\"> "
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.post_title), options) : helperMissing.call(depth0, "t", (depth0 && depth0.post_title), options)))
     + "</label>\n		";
   return buffer;
   }
@@ -784,8 +782,11 @@ function program5(depth0,data) {
 
 function program7(depth0,data) {
   
-  
-  return "\n                    Live!\n                ";
+  var buffer = "", helper, options;
+  buffer += "\n                    "
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Live!", options) : helperMissing.call(depth0, "t", "Live!", options)))
+    + "\n                ";
+  return buffer;
   }
 
 function program9(depth0,data) {
@@ -894,7 +895,7 @@ function program7(depth0,data) {
 this["kwps_admin_templates"]["settings"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
+  var buffer = "", stack1, helper, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
 
 function program1(depth0,data,depth1) {
   
@@ -905,10 +906,8 @@ function program1(depth0,data,depth1) {
   buffer += escapeExpression(stack1)
     + "\"\n            "
     + escapeExpression((helper = helpers.selected || (depth0 && depth0.selected),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0['function']), ((stack1 = (depth1 && depth1.collection)),stack1 == null || stack1 === false ? stack1 : stack1._kwps_logged_in_user_limit), options) : helperMissing.call(depth0, "selected", (depth0 && depth0['function']), ((stack1 = (depth1 && depth1.collection)),stack1 == null || stack1 === false ? stack1 : stack1._kwps_logged_in_user_limit), options)))
-    + " >";
-  if (helper = helpers.label) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.label); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
+    + " >"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.label), options) : helperMissing.call(depth0, "t", (depth0 && depth0.label), options)))
     + "</option>\n            ";
   return buffer;
   }
@@ -922,18 +921,22 @@ function program3(depth0,data,depth1) {
   buffer += escapeExpression(stack1)
     + "\"\n            "
     + escapeExpression((helper = helpers.selected || (depth0 && depth0.selected),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0['function']), ((stack1 = (depth1 && depth1.collection)),stack1 == null || stack1 === false ? stack1 : stack1._kwps_logged_out_user_limit), options) : helperMissing.call(depth0, "selected", (depth0 && depth0['function']), ((stack1 = (depth1 && depth1.collection)),stack1 == null || stack1 === false ? stack1 : stack1._kwps_logged_out_user_limit), options)))
-    + " >";
-  if (helper = helpers.label) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.label); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
+    + " >"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.label), options) : helperMissing.call(depth0, "t", (depth0 && depth0.label), options)))
     + "</option>\n            ";
   return buffer;
   }
 
-  buffer += "<div>\n    <h2>Limit entries</h2>\n\n    <div>\n        <label for=\"kwps_logged_in_user_limit\">Logged in user</label>\n        <select id=\"kwps_logged_in_user_limit\" name=\"_kwps_logged_in_user_limit\" class=\"update-main\">\n            ";
+  buffer += "<div>\n    <h2>"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Limit entries", options) : helperMissing.call(depth0, "t", "Limit entries", options)))
+    + "</h2>\n\n    <div>\n        <label for=\"kwps_logged_in_user_limit\">"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Logged in user", options) : helperMissing.call(depth0, "t", "Logged in user", options)))
+    + "</label>\n        <select id=\"kwps_logged_in_user_limit\" name=\"_kwps_logged_in_user_limit\" class=\"update-main\">\n            ";
   stack1 = helpers.each.call(depth0, ((stack1 = (depth0 && depth0.kwpsUniquenessTypes)),stack1 == null || stack1 === false ? stack1 : stack1.logged_in), {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        </select>\n    </div>\n    <div>\n        <label for=\"kwps_logged_out_user_limit\">Logged out user</label>\n        <select id=\"kwps_logged_out_user_limit\" name=\"_kwps_logged_out_user_limit\" class=\"update-main\">\n            ";
+  buffer += "\n        </select>\n    </div>\n    <div>\n        <label for=\"kwps_logged_out_user_limit\">"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Logged out user", options) : helperMissing.call(depth0, "t", "Logged out user", options)))
+    + "</label>\n        <select id=\"kwps_logged_out_user_limit\" name=\"_kwps_logged_out_user_limit\" class=\"update-main\">\n            ";
   stack1 = helpers.each.call(depth0, ((stack1 = (depth0 && depth0.kwpsUniquenessTypes)),stack1 == null || stack1 === false ? stack1 : stack1.logged_out), {hash:{},inverse:self.noop,fn:self.programWithDepth(3, program3, data, depth0),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        </select>\n    </div>\n</div>\n";
