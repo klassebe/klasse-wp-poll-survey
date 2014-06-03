@@ -15,7 +15,7 @@
 	}
 	#bar-chart,
 	#pie-chart,
-	#line-chart {
+	#stacked-bar-chart {
 		padding: 5px;
 	}
 	.selected {
@@ -39,7 +39,7 @@
 			<img class="thumbnail" src="images/pie_chart.png" alt="pie-chart-per-question" height="128" width="160">
 		</label>
 	</div>
-	<div id="line-chart" class="media-item left">
+	<div id="stacked-bar-chart" class="media-item left">
 		<label>
 			<h4>Stacked Bar Chart</h4>
 			<input type="radio" name="charts" value="stacked_bar_chart">
