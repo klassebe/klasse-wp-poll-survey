@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Klasse WordPress Poll & Survey\n"
-"POT-Creation-Date: 2014-06-03 11:42+0100\n"
-"PO-Revision-Date: 2014-06-03 11:43+0100\n"
+"POT-Creation-Date: 2014-06-03 12:09+0100\n"
+"PO-Revision-Date: 2014-06-03 12:09+0100\n"
 "Last-Translator: AppSaloon - koen <koen@appsaloon.be>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -298,27 +298,35 @@ msgstr "Max waarde is verplicht"
 msgid "Title is required"
 msgstr "Titel is verplicht"
 
-#: klasse-wp-poll-survey.php:324
+#: klasse-wp-poll-survey.php:299
+msgid "Name is required"
+msgstr "Naam is verplicht"
+
+#: klasse-wp-poll-survey.php:300
+msgid "Type is required"
+msgstr "Type is verplicht"
+
+#: klasse-wp-poll-survey.php:326
 msgid "Tests"
 msgstr "Tests"
 
-#: klasse-wp-poll-survey.php:324
+#: klasse-wp-poll-survey.php:326
 msgid "Poll & Survey"
 msgstr "Poll & Survey"
 
-#: klasse-wp-poll-survey.php:326
+#: klasse-wp-poll-survey.php:328
 msgid "Add new test"
 msgstr "Voeg nieuwe test toe"
 
-#: klasse-wp-poll-survey.php:326
+#: klasse-wp-poll-survey.php:328
 msgid "Add new"
 msgstr "Voeg toe"
 
-#: klasse-wp-poll-survey.php:327 views/add.php:17
+#: klasse-wp-poll-survey.php:329 views/add.php:17
 msgid "Manage entries"
 msgstr "Beheer invoer"
 
-#: klasse-wp-poll-survey.php:327
+#: klasse-wp-poll-survey.php:329
 msgid "Entries"
 msgstr "Invoer"
 
