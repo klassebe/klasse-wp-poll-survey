@@ -8,7 +8,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
     public static $required_fields = array();
 
-    public static $numeric_fields = array();
+    public static $numeric_fields = array('_kwps_sort_order');
 
     public static $meta_data_fields = array('_kwps_sort_order');
 
@@ -45,6 +45,9 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
         foreach(static::$meta_data_fields as $field){
             $meta_as_array[$field] = get_post_meta($post_id, $field, true);
+	        if(in_array($field, static::$numeric_fields)) {
+		        $meta_as_array[$field] = (int) $meta_as_array[$field];
+	        }
         }
 
         return $meta_as_array;
