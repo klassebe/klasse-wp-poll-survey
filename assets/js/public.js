@@ -160,7 +160,7 @@ jQuery(function($) {
 								    		graphCategories.push(value.answer_option_content);
 								    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
 								    	});
-								    	$.each
+
 	                    if (elem.find('.bar-chart-per-question')) {
 	                      outputBarChart(data, graphCategories, graphData);
 	                    }
