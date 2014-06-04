@@ -140,8 +140,8 @@ add_action( 'wp_ajax_kwps_save_entry', array('\includes\entry','save_from_reques
 add_action( 'wp_ajax_kwps_delete_entries_from_version', array('\includes\entry','delete_from_version'));
 
 
-add_action( 'wp_ajax_kwps_get_result_of_version', array('\includes\result','get_result_of_version'));
-add_action( 'wp_ajax_nopriv_kwps_get_result_of_version', array('\includes\result','get_result_of_version'));
+add_action( 'wp_ajax_kwps_get_result_of_version', array('\includes\result','get_result_of_version_by_entry_id'));
+add_action( 'wp_ajax_nopriv_kwps_get_result_of_version', array('\includes\result','get_result_of_version_by_entry_id'));
 
 add_action( 'wp_ajax_kwps_get_result_of_test_collection',
     array('\includes\result','ajax_get_result_data_of_test_collection'));
@@ -165,7 +165,7 @@ function kwps_activate(){
 
 function create_default_test_modi(){
     $kwps_poll = array(
-        'post_title' => 'Poll',
+        'post_title' => 'kwps-poll',
         'post_name' => 'kwps-poll',
         'post_status' => 'publish',
         'post_type' => 'kwps_test_modus',
@@ -177,7 +177,7 @@ function create_default_test_modi(){
     );
 
     $kwps_personality_test = array(
-        'post_title' => 'Personality Test',
+        'post_title' => 'kwps-personality-test',
         'post_name' => 'kwps-personality-test',
         'post_status' => 'publish',
         'post_type' => 'kwps_test_modus',

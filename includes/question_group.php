@@ -19,6 +19,10 @@ class Question_Group extends Kwps_Post_Type {
         '_kwps_sort_order',
     );
 
+    public static $additional_validation_methods = array(
+        'check_max_question_groups',
+    );
+
     public static $meta_data_fields = array('_kwps_sort_order');
 
     public static $post_type = 'kwps_question_group';
@@ -68,17 +72,7 @@ class Question_Group extends Kwps_Post_Type {
         return '';
     }
 
-
-    public static function validate_for_insert($post_as_array = array())
-    {
-        $errors = static::check_required_fields($post_as_array);
-        $errors = array_merge($errors, static::check_numeric_fields($post_as_array));
-        $errors = array_merge($errors, static::check_max_question_groups($post_as_array));
-
-        return $errors;
-    }
-
-    private static function check_max_question_groups($post){
+    public static function check_max_question_groups($post){
         $errors = array();
 
         if( isset( $post['post_parent'] ) ){
@@ -96,12 +90,6 @@ class Question_Group extends Kwps_Post_Type {
             }
         }
         return $errors;
-    }
-
-    public static function validate_for_update($post_as_array)
-    {
-        // TODO: Implement validate_for_update() method.
-        return true;
     }
 
     public static function validate_for_delete($post_id = 0)

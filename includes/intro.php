@@ -5,6 +5,20 @@ namespace includes;
 require_once 'kwps_post_type.php';
 
 class Intro extends Kwps_Post_Type{
+
+    public static $required_fields = array(
+        'post_content',
+        'post_status',
+        'post_parent',
+        '_kwps_sort_order',
+    );
+
+    public static $numeric_fields = array(
+        '_kwps_sort_order',
+    );
+
+    public static $additional_validation_methods = array();
+
     public static $label = 'kwps-intro';
     public static $rewrite = array(
             'slug' => 'intros',
@@ -57,67 +71,5 @@ class Intro extends Kwps_Post_Type{
     public static function validate_for_delete($intro_id = 0)
     {
         return false;        
-    }
-
-    static function validate_for_insert($post_as_array = array()) {
-        $errors = array();
-
-        $numeric_fields = array(
-            '_kwps_sort_order',
-        );
-
-        $required_fields = array(
-            'post_content',
-            'post_status',
-            'post_parent',
-            '_kwps_sort_order',
-        );
-
-        foreach($required_fields as $field){
-            if(! isset($post_as_array[$field])) {
-                array_push($errors, array( $field, 'Required') );
-            } else {
-                if( is_string($post_as_array[$field])){
-                    if( strlen($post_as_array[$field]) == 0 ) {
-                        array_push($errors, array( 'field' => $field, 'message' => 'Required') );
-                    }
-                }
-            }
-        }
-
-        foreach($numeric_fields as $field){
-            if( isset( $post_as_array[$field]) ) {
-                if(! is_numeric( $post_as_array[$field] ) ){
-                    array_push( $errors , array( 'field' => $field, 'message' => 'Needs to be a number') );
-                }
-            }
-        }
-
-        return $errors;
-    }
-
-    /**
-     * @param $post_as_array
-     * @return bool
-     */
-    static function validate_for_update($post_as_array = array()) {
-        $required_fields = array(
-            'ID',
-            'post_content',
-            'post_status',
-            'post_parent'
-        );
-
-        foreach($required_fields as $field)
-            if(! isset($post_as_array[$field])) {
-                return false;
-            } else {
-                if( is_string($post_as_array[$field])){
-                    if( strlen($post_as_array[$field]) == 0 ) {
-                        return false;
-                    }
-                }
-            }
-        return true;
     }
 }

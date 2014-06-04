@@ -10,7 +10,7 @@ namespace includes;
 
 
 class Result {
-    public static function get_result_of_version(){
+    public static function get_result_of_version_by_entry_id(){
         $request_data = static::get_post_data_from_request();
 
         $version_id = $request_data['ID'];

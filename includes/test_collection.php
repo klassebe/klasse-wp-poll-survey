@@ -25,6 +25,10 @@ class Test_Collection extends Kwps_Post_Type{
             '_kwps_logged_out_user_limit',
         );
 
+    public static $additional_validation_methods = array(
+        'check_allowed_dropdown_values',
+    );
+
     public static $post_type = 'kwps_test_collection';
 
     public static $rewrite = array(
@@ -93,16 +97,7 @@ class Test_Collection extends Kwps_Post_Type{
         return $view_count_total;
     }
 
-
-    static function validate_for_insert($post_as_array = array()) {
-        $errors = static::check_required_fields($post_as_array);
-        $errors = array_merge($errors, static::check_numeric_fields($post_as_array));
-        $errors = array_merge($errors, static::check_allowed_dropdown_values($post_as_array));
-
-        return $errors;
-    }
-
-    private static function check_allowed_dropdown_values($post){
+    public static function check_allowed_dropdown_values($post){
         $errors = array();
         foreach( static::$allowed_dropdown_values as $field => $allowed_values ){
             if( isset( $post[$field] ) ) {
@@ -112,12 +107,6 @@ class Test_Collection extends Kwps_Post_Type{
             }
         }
         return $errors;
-    }
-
-    public static function validate_for_update($post_as_array)
-    {
-        // TODO: Implement validate_for_update() method.
-        return true;
     }
 
     public static function validate_for_delete($post_id = 0)
