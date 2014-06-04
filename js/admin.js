@@ -305,7 +305,7 @@ jQuery(function ($) {
         post_content : kwps_translations["Answer Option"] + " " + (index+1),
         post_parent : post_parent,
         _kwps_sort_order : index,
-        _kwps_answer_option_value : ''
+        _kwps_answer_option_value : 0
       });
       model.save({},{
         success: function (model) {
@@ -1281,6 +1281,7 @@ jQuery(function ($) {
       data.label = kwps_translations[this.options.attribute];
       data.addResults = (this.model.get('post_type') === "kwps_outro");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
+      data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
       data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
 
       var validation = {
