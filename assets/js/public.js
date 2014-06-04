@@ -93,8 +93,9 @@ jQuery(function($) {
 					elem.find('.kwps-page').hide;
 
 			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
-			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
-				  var entryChart = {
+			    var urlGetVersionResult = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
+			    var urlGetProfileResult = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_profile";
+				  var entryData = {
 				  		ID : '',
 				  		output_type : ''
 				  };
@@ -148,17 +149,31 @@ jQuery(function($) {
 					var getChart = function (entryData) {
 							$.ajax({
 					  			type: "POST",
-					  			url: urlGetChartData,
+					  			url: urlGetVersionResult,
 					  			data: JSON.stringify(entryData),
 					  			contentType: "application/json; charset=utf-8",
 					  			dataType: "json",
 					  			success: function (data) {
 					  				// The class is passed through output type
 					  				// so look for that div and append the highchart to it
-                    elem.find(entryData.output_type).highcharts(data);
+                    elem.find('.'+entryData.output_type).highcharts(data);
 							    },
 							    async: false
 					  		});			
+						elem.find('.kwps-intro').hide();
+					};
+					var getRawData = function (entryData) {
+						$.ajax({
+							type: "POST",
+							url: urlGetProfileResult,
+							data: JSON.stringify(entryData),
+							contentType: "application/json; charset=utf-8",
+							dataType: "json",
+							success: function (data) {
+								elem.find('.'+entryData.output_type).text(data[0].message);
+							},
+							async: false
+						});
 						elem.find('.kwps-intro').hide();
 					};
 
