@@ -73,12 +73,6 @@ class Result_Profile extends Kwps_Post_Type {
         return '';
     }
 
-    public static function validate_for_update($post_as_array)
-    {
-        // TODO: Implement validate_for_update() method.
-        return true;
-    }
-
     public static function validate_for_delete($post_id = 0)
     {
         // TODO: Implement validate_for_delete() method.

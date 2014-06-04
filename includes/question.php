@@ -13,6 +13,10 @@ class Question extends Kwps_Post_Type{
         '_kwps_sort_order',
     );
 
+    public static $additional_validation_methods = array(
+        'check_max_questions_per_question_group',
+    );
+
     public static $meta_data_fields = array('_kwps_sort_order');
 
 
@@ -93,20 +97,7 @@ class Question extends Kwps_Post_Type{
         }
     }
 
-
-    /**
-     * @param $post_as_array
-     * @return bool
-     */
-    static function validate_for_insert($post_as_array = array()) {
-        $errors = static::check_required_fields($post_as_array);
-        $errors = array_merge($errors, static::check_numeric_fields($post_as_array));
-        $errors = array_merge($errors, static::check_max_questions_per_question_group($post_as_array));
-
-        return $errors;
-    }
-
-    private static function check_max_questions_per_question_group($post){
+    public static function check_max_questions_per_question_group($post){
         $errors = array();
 
         if( isset( $post['post_parent'] ) ){
@@ -125,29 +116,5 @@ class Question extends Kwps_Post_Type{
         }
 
         return $errors;
-    }
-
-    /**
-     * @param $post_as_array
-     * @return bool
-     */
-    static function validate_for_update($post_as_array = array()) {
-        $required_fields = array(
-            'ID',
-            'post_content',
-            'post_parent'
-        );
-
-        foreach($required_fields as $field)
-            if(! isset($post_as_array[$field])) {
-                return false;
-            } else {
-                if( is_string($post_as_array[$field])){
-                    if( strlen($post_as_array[$field]) == 0 ) {
-                        return false;
-                    }
-                }
-            }
-        return true;
     }
 }

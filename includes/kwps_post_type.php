@@ -10,6 +10,8 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
     public static $numeric_fields = array();
 
+    public static $additional_validation_methods = array();
+
     public static $meta_data_fields = array('_kwps_sort_order');
 
     public static $post_type = '';
@@ -100,6 +102,10 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         $errors = static::check_required_fields($post_as_array);
         $errors = array_merge($errors, static::check_numeric_fields($post_as_array));
 
+        foreach(static::$additional_validation_methods as $validation_method){
+            $errors = array_merge( $errors, static::$validation_method( $post_as_array ) );
+        }
+
         return $errors;
     }
 
@@ -162,13 +168,24 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
     public final static function update_from_request(){
         $request_data = static::get_post_data_from_request();
-        if(static::validate_for_update($request_data)){
-            wp_send_json( static::save_post($request_data) );
-        } else {
-            wp_send_json(null);
-        }
+        $errors = static::validate_for_update($request_data);
 
-        die();
+        static::process_request_data($request_data, $errors);
+    }
+
+    public static function validate_for_update($request_data){
+        $errors = array();
+        if( isset( $request_data['ID'] ) ) {
+            $orig_post = static::get_as_array($request_data['ID']);
+            if( $orig_post['post_status'] == 'publish' ) {
+                $errors[] = array( 'field' => 'All', 'Message' => 'You cannot update once published');
+            } else {
+                $errors = static::validate_for_insert($request_data);
+            }
+        } else {
+            $errors[] = array( 'field' => 'ID', 'Message' => 'Required');
+        }
+        return $errors;
     }
 
 

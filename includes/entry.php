@@ -14,6 +14,10 @@ class Entry extends Kwps_Post_Type{
         'post_parent',
     );
 
+    public static $additional_validation_methods = array(
+        'check_is_allowed_by_uniqueness',
+    );
+
     public static $meta_data_fields = array(
         '_kwps_sort_order',
         '_kwps_cookie_value',
@@ -66,8 +70,7 @@ class Entry extends Kwps_Post_Type{
 
     public static function validate_for_update($post_as_array)
     {
-        // TODO: Implement validate_for_update() method.
-        return true;
+        return array( array( 'field' => 'All', 'message' => 'This type can never be updated' ) );
     }
 
     public static function validate_for_delete($entry_id = 0){
@@ -84,7 +87,7 @@ class Entry extends Kwps_Post_Type{
             $request_data[$key]['post_author'] = get_current_user_id();
         }
 
-        $errors = static::validate_for_insert($request_data);
+        $errors = static::validate_for__bulk_insert($request_data);
         static::process_request_data($request_data, $errors);
     }
 
@@ -111,15 +114,10 @@ class Entry extends Kwps_Post_Type{
         die();
     }
 
-    /**
-     * @param $post_as_array
-     * @return bool
-     */
-    static function validate_for_insert($array_of_entries = array()) {
+    static function validate_for__bulk_insert($array_of_entries = array()) {
         foreach($array_of_entries as $entry){
-            $errors = static::check_required_fields($entry);
-            $errors = array_merge($errors, static::check_numeric_fields($entry));
-            $errors = array_merge($errors, static::check_is_allowed_by_uniqueness($entry));
+            $errors = static::validate_for_insert( $entry );
+
             foreach($errors as $key => $value){
                 if( isset($entry['post_parent']) ){
                     $errors[$key]['post_parent'] = $entry['post_parent'];
@@ -130,7 +128,7 @@ class Entry extends Kwps_Post_Type{
         return $errors;
     }
 
-    private static function check_is_allowed_by_uniqueness($post){
+    public static function check_is_allowed_by_uniqueness($post){
         $errors = array();
 
         if( isset( $post['post_parent'] ) ){

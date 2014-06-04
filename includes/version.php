@@ -63,17 +63,6 @@ class Version extends Kwps_Post_Type{
         return true;
     }
 
-
-    public static function validate_for_update($post_as_array){
-        $post = get_post($post_as_array['ID'], ARRAY_A);
-
-        if(null != $post){
-            return true;    
-        } else {
-            return false;
-        }
-    }
-
     public static function shortcode($atts){
         extract( shortcode_atts( array(
             'id' => 0,
