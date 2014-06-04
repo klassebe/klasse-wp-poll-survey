@@ -1,15 +1,18 @@
 <form id="create-new-test">
 	<label>{{t "Name"}}</label>
-	<input name="post_title" required="true">
+    <div class="form-group">
+	<input name="post_title"><span class="help-block hidden"></span>
+    </div>
+    <div class="form-group">
 	<ul>
 		{{#each kwpsTestModi}}
-		<li>
-			<input type="radio" value="{{ID}}" name="post_parent" id="kwpsTestModi_{{ID}}" required="true">
-            <label for="kwpsTestModi_{{ID}}">{{post_title}}</label>
-		</li>
+
+            <label for="kwpsTestModi_{{ID}}"><input type="radio" value="{{ID}}" name="post_parent" id="kwpsTestModi_{{ID}}"> {{t post_title}}</label>
 		{{/each}}
 
-	</ul>
+	</ul>            <span class="help-block hidden"></span>
+
+    </div>
 	<div>
 		<button type="submit">{{t "Create"}}</button>
 	</div>

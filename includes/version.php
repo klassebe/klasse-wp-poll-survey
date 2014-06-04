@@ -160,7 +160,7 @@ class Version extends Kwps_Post_Type{
                         <?php echo $data['intro']['post_content']; ?>
                     </div>
                     <div class="kwps-button">
-                        <button class="kwps-next">Next</button>
+                        <button class="kwps-next"><?php _e('Next', 'klasse-wp-poll-survey') ?></button>
                     </div>
                 </div>
             <?php endif; ?>
@@ -187,7 +187,7 @@ class Version extends Kwps_Post_Type{
                         <?php endforeach; ?>
                     </div>
                     <div class="kwps-button">
-                        <button class="kwps-next">Next</button>
+                        <button class="kwps-next"><?php _e('Next', 'klasse-wp-poll-survey') ?></button>
                     </div>
                 </div>
             <?php endforeach; ?>

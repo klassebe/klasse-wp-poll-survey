@@ -22,6 +22,7 @@ class Entry extends Kwps_Post_Type{
         '_kwps_sort_order',
         '_kwps_cookie_value',
         '_kwps_ip_address',
+	    '_kwps_hash'
     );
 
     public static $rewrite = array(
@@ -218,6 +219,37 @@ class Entry extends Kwps_Post_Type{
 
         return $entries;
     }
+
+	public static function delete_from_version() {
+
+		if(!current_user_can('edit_posts')) {
+			header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden', true, 403);
+			wp_send_json_error(array('success' => false, 'error' => 'You have no permissions'));
+		}
+
+		$request_data = static::get_post_data_from_request();
+		$version_id = $request_data['post_parent'];
+
+		$user_hashes = self::get_all_user_hashes_per_version( $version_id );
+
+		$i = 0;
+		foreach( $user_hashes as $user_hash ){
+			$user_entries = static::get_all_by_user_hash_and_version( $user_hash, $version_id );
+
+			foreach( $user_entries as $user_entry ) {
+				$user_entry['post_status'] = 'trash';
+				static::save_post( $user_entry );
+				$i++;
+			}
+		}
+
+		$version = static::get_as_array( $version_id );
+		$version['_kwps_view_count'] = 0;
+		static::save_post( $version );
+
+		wp_send_json( array('success' => true, 'count' => $i) );
+
+	}
 
 }
 

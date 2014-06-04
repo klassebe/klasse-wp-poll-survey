@@ -1,13 +1,13 @@
 <tr>
     <th style="border-top: 1px solid #D6D6D6;">&nbsp;</th>
     {{#each versions}}
-        <th style="border-top: 1px solid #D6D6D6;" class=" column-title  bottom">
+        <th style="border-top: 1px solid #D6D6D6;" class="column-title bottom" data-post-id="{{ID}}">
             <div class="column-tab">
                 {{t "Shortcode"}}: [kwps_version id={{ID}}]
             </div>
+
             {{#if isLive}}
                 <div>
-                    <span><a href="#">{{t "View entries"}}</a></span>
                     <h3>{{t "Results"}}: </h3>
                     <ul>
                         <li>{{t "View count"}}: {{_kwps_view_count}}</li>
@@ -15,6 +15,8 @@
                         <li>{{t "Total Participants"}}: {{total_participants}}</li>
                     </ul>
                 </div>
+            {{else}}
+                <span><a href="#" class="clear-entries">{{t "Clear entries"}}</a></span>
             {{/if}}
         </th>
     {{/each}}

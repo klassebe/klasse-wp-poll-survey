@@ -111,7 +111,7 @@ class Test_Collections_List_Table extends Base_List_Table {
         $actions = array(
 //            http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=edit
 
-            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
+            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s">' . __('Edit') . '</a>',get_admin_url(), $item['ID'] ,'edit'),
 //            'edit'      => sprintf('<a href="%spost.php?post=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
 //            'edit'      => sprintf('<a href="?page=%s&action=%s&id=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
 
@@ -120,7 +120,7 @@ class Test_Collections_List_Table extends Base_List_Table {
 //            'delete'      =>  sprintf('<a href="%spost.php?post=%s&action=%s">Delete</a>',get_admin_url(), $item['ID'] ,'trash' ) ,
 //            'delete'      =>  sprintf('<a href="%s">Delete</a>',$delete_url_with_nonce ) ,
 
-            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-test_collection') ),
+            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . __('Delete') . '</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-test_collection') ),
         );
 
         //Return the post_title contents
@@ -166,10 +166,10 @@ class Test_Collections_List_Table extends Base_List_Table {
     function get_columns(){
         $columns = array(
             'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-            'post_title'     => 'Title',
-            'view_count'    => 'Views',
+            'post_title'     => __('Title', 'klasse-wp-poll-survey'),
+            'view_count'    => __('Views', 'klasse-wp-poll-survey'),
 //            'user_id'  => 'Author',
-            'post_modified'    => 'Date',
+            'post_modified'    => __('Date', 'klasse-wp-poll-survey'),
         );
         return $columns;
     }
@@ -216,7 +216,7 @@ class Test_Collections_List_Table extends Base_List_Table {
      **************************************************************************/
     function get_bulk_actions() {
         $actions = array(
-            'delete'    => 'Delete'
+            'delete'    => __('Delete', 'klasse-wp-poll-survey')
         );
         return $actions;
     }

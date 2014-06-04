@@ -28,9 +28,27 @@ jQuery(function ($) {
     return obj;
   };
 
+  _.extend(Backbone.Validation.callbacks, {
+    valid: function (view, attr, selector) {
+      var $el = view.$('[name=' + attr + ']'),
+        $group = $el.closest('.form-group');
+
+      $group.removeClass('has-error');
+      $group.find('.help-block').html('').addClass('hidden');
+    },
+    invalid: function (view, attr, error, selector) {
+      console.log('hierin');
+      var $el = view.$('[name=' + attr + ']'),
+        $group = $el.closest('.form-group');
+
+      $group.addClass('has-error');
+      $group.find('.help-block').html(error).removeClass('hidden');
+    }
+  });
 
   /* BACKBONE STUFF */
   var app = {};
+  app.translations = kwps_translations;
   app.url = 'admin-ajax.php?action=';
   app.openRow = {
     main_kwps_outro: true,
@@ -146,6 +164,7 @@ jQuery(function ($) {
     el: '#kwps_test',
     initialize: function (options) {
       this.options = options || {};
+      this.model = new KwpsModel();
       _.bindAll(this, 'cleanup');
       this.render();
     },
@@ -166,39 +185,66 @@ jQuery(function ($) {
 
       var postData = $(e.target).serializeObject();
 
-      if(!postData.post_title || !postData.post_parent) {
-        alert('Please fill in all fields');
-        return;
-      }
-
       postData.post_type = 'kwps_test_collection';
       postData.post_status = "draft";
       postData._kwps_logged_in_user_limit = 'free';
       postData._kwps_logged_out_user_limit = 'free';
 
-      var that = this;
-      var model = new KwpsModel(postData);
-      model.save({},{
-        wait: true,
-        success: function (model) {
-          app.kwpsPollsCollection.add(model);
-          for (i = 0; i < 1; i++) {
-            that.createVersion(model.get('ID'), i);
-          }
-          var url = window.location.pathname + window.location.search + "&action=edit&id=" + model.get('ID');
-          window.history.pushState( model.get('ID') , "Edit" , url);
-          app.router.navigate('', {trigger: true});
+      Backbone.Validation.bind(this, {
+        valid: function (view, attr, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+
+          $group.removeClass('has-error');
+          $group.find('.help-block').html('').addClass('hidden');
+        },
+        invalid: function (view, attr, error, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+          $group.addClass('has-error');
+          $group.find('.help-block').html(error).removeClass('hidden');
         }
       });
+
+
+      this.model.validation = {
+        post_title: {
+          required: true,
+          msg: kwps_translations['Name is required']
+        },
+        post_parent: {
+          required: true,
+          min: 1,
+          msg: kwps_translations['Type is required']
+        }
+      };
+
+
+      var that = this;
+      this.model.set(postData);
+      if(this.model.isValid(true)) {
+        this.model.save({}, {
+          wait: true,
+          success: function (model) {
+            app.kwpsPollsCollection.add(model);
+            for (i = 0; i < 1; i++) {
+              that.createVersion(model.get('ID'), i);
+            }
+            var url = window.location.pathname + window.location.search + "&action=edit&id=" + model.get('ID');
+            window.history.pushState(model.get('ID'), "Edit", url);
+            app.router.navigate('', {trigger: true});
+          }
+        });
+      }
     },
     createVersion: function (post_parent, index) {
       var that = this;
       var model = new KwpsModel({
         post_type: "kwps_version",
         post_status: "draft",
-        post_title : "Version " + (index+1),
+        post_title : kwps_translations.Version + " " + (index+1),
         post_parent : post_parent,
-        _kwps_sort_order : index.toString()
+        _kwps_sort_order : index
       });
       model.save({},{
         wait: true,
@@ -216,10 +262,10 @@ jQuery(function ($) {
       var model = new KwpsModel({
         post_type: "kwps_question_group",
         post_status: "draft",
-        post_title : "Question Group " + (index+1),
-        post_content : "Question Group " + (index+1),
+        post_title : kwps_translations["Question Group"] + " " + (index+1),
+        post_content : kwps_translations["Question Group"] + " " + (index+1),
         post_parent : post_parent,
-        _kwps_sort_order : index.toString()
+        _kwps_sort_order : index
       });
       model.save({},{
         success: function (model) {
@@ -237,9 +283,9 @@ jQuery(function ($) {
       var model = new KwpsModel({
         post_type: "kwps_question",
         post_status: "draft",
-        post_content : "question " + (index),
+        post_content : kwps_translations.Question + " " + (index),
         post_parent : post_parent,
-        _kwps_sort_order : index.toString()
+        _kwps_sort_order : index
       });
       model.save({},{
         success: function (model) {
@@ -256,10 +302,10 @@ jQuery(function ($) {
       var model = new KwpsModel({
         post_type: "kwps_answer_option",
         post_status: "draft",
-        post_content : "answer " + (index+1),
+        post_content : kwps_translations["Answer Option"] + " " + (index+1),
         post_parent : post_parent,
-        _kwps_sort_order : index.toString(),
-        _kwps_answer_option_value : 'value...'
+        _kwps_sort_order : index,
+        _kwps_answer_option_value : ''
       });
       model.save({},{
         success: function (model) {
@@ -272,7 +318,7 @@ jQuery(function ($) {
       app.kwpsPollsCollection.create({
         post_type: "kwps_outro",
         post_status: "draft",
-        post_content : "outro ",
+        post_content : kwps_translations.Outro,
         post_parent : post_parent,
         _kwps_sort_order : "0"
       });
@@ -299,7 +345,8 @@ jQuery(function ($) {
       'change .update-main': 'updateTestCollection',
       'change .update-version-post-title': 'updateVersionPostTitle',
       'click .move-action:not(.disabled)': 'moveItem',
-      'click .make-live': 'makeLive'
+      'click .make-live': 'makeLive',
+      'click .clear-entries': 'clearEntries'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -320,8 +367,10 @@ jQuery(function ($) {
       versions.forEach(function(version) {
         version.isLive = (version.post_status !== "draft");
         version.editable = !version.isLive;
-        if(version.isLive) {
+        if(version.isLive && version.conversion_rate_percentage) {
           version.conversion_rate_percentage = version.conversion_rate.toPrecision(4) * 100;
+        } else {
+          version.conversion_rate_percentage = 0;
         }
       });
 
@@ -381,7 +430,7 @@ jQuery(function ($) {
       var qu = [];
       if (app.openRow.kwps_question_group >= 0) {
         for (i = 0; i < versions.length; i++) {
-          var questionGroupId = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
+          var questionGroupId = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group});
           if (questionGroupId !== undefined) {
             var quJson = _.invoke(this.collection.where({post_type: "kwps_question", post_parent : questionGroupId.id}), 'toJSON');
             var sortedQuestionsPerVersion = _.sortBy(quJson, "_kwps_sort_order");
@@ -416,8 +465,8 @@ jQuery(function ($) {
       var ans = [];
       if (app.openRow.kwps_question >= 0) {
         for (i = 0; i < versions.length; i++) {
-          var openQuestionGroup = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
-          var openQuestion = this.collection.findWhere({post_type: "kwps_question", post_parent : openQuestionGroup.id, _kwps_sort_order: app.openRow.kwps_question.toString()});
+          var openQuestionGroup = this.collection.findWhere({post_type: "kwps_question_group", post_parent : versions[i].ID, _kwps_sort_order: app.openRow.kwps_question_group});
+          var openQuestion = this.collection.findWhere({post_type: "kwps_question", post_parent : openQuestionGroup.id, _kwps_sort_order: app.openRow.kwps_question});
           var ansJson = _.invoke(this.collection.where({post_type: "kwps_answer_option", post_parent: openQuestion.id}), 'toJSON');
           var sortedAnswersPerVersion = _.sortBy(ansJson, "_kwps_sort_order");
           ans.push(sortedAnswersPerVersion);
@@ -514,6 +563,7 @@ jQuery(function ($) {
 
       if ( _.size(sortedAllQGroups) > 0 && app.openRow.main_kwps_question_group) {
         for (var sortOrderQG in sortedQGroups) {
+          sortOrderQG = parseInt(sortOrderQG);
 
           _.each(sortedQGroups[sortOrderQG], function(questionGroup) {
             var parentVersion = this.collection.findWhere({ID: questionGroup.post_parent});
@@ -522,14 +572,14 @@ jQuery(function ($) {
 
           // QUESTION GROUP
           data.table.push({
-            first: (sortOrderQG === '0'),
-            last: (sortOrderQG === allqGroups.length/ versions.length-1),
+            first: (sortOrderQG === 0),
+            last: (sortOrderQG === allqGroups.length/versions.length-1),
             sorterArrows : (allqGroups.length/ versions.length > 1),
             postType: "kwps_question_group",
             deletable: !_.some(versions, function(version) {return version.isLive;}),
             hasMore: true,
             hasAmount: false,
-            hasOpened: (app.openRow.kwps_question_group.toString() === sortOrderQG),
+            hasOpened: (app.openRow.kwps_question_group === sortOrderQG),
             versions: sortedQGroups[sortOrderQG],
             mainRow: true,
             sortOrder: sortOrderQG,
@@ -537,7 +587,7 @@ jQuery(function ($) {
             //amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent: qGroups[0][sortOrderQG].ID}).length
           });
 
-          if(app.openRow.kwps_question_group.toString() === sortOrderQG) {
+          if(app.openRow.kwps_question_group === sortOrderQG) {
 
             // TITLE QUESTION
             data.table.push({
@@ -551,6 +601,7 @@ jQuery(function ($) {
             });
             
             for (var sortOrderQ in sortedQu) {
+              sortOrderQ = parseInt(sortOrderQ);
               _.each(sortedQu[sortOrderQ], function(question) {
                 var parentQuestionGroup = this.collection.findWhere({ID: question.post_parent});
                 var parentVersion = this.collection.findWhere({ID: parentQuestionGroup.get("post_parent")});
@@ -569,10 +620,10 @@ jQuery(function ($) {
                 sortOrder: sortOrderQ,
                 number: parseInt(sortOrderQ) +1,
                 //amountOfSiblings : this.collection.where({post_type: "kwps_answer_option", post_parent : qu[0].ID}).length,
-                hasOpened: (app.openRow.kwps_question.toString() === sortOrderQ)
+                hasOpened: (app.openRow.kwps_question === sortOrderQ)
               });
 
-              if (app.openRow.kwps_question >= 0 && sortOrderQ === app.openRow.kwps_question.toString()) {
+              if (app.openRow.kwps_question >= 0 && sortOrderQ === app.openRow.kwps_question) {
 
                 // TITLE ANSWER
                 data.table.push({
@@ -586,7 +637,7 @@ jQuery(function ($) {
                 });
 
                 for (var sortOrderA in sortedAns) {
-
+                  sortOrderA = parseInt(sortOrderA);
 
                   _.each(sortedAns[sortOrderA], function(answer) {
                     var parentQuestion = this.collection.findWhere({ID: answer.post_parent});
@@ -618,7 +669,7 @@ jQuery(function ($) {
       if(_.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile')) {
         data.table.push({
           colSpan: versions.length + 1,
-          title: "Result Profiles",
+          title: 'Result Profiles',
           postType: "kwps_result_profile",
           mainTitle: true,
           add: (allResultProfiles && !_.some(versions, function (version) {
@@ -648,7 +699,7 @@ jQuery(function ($) {
             deletable: !_.some(versions, function(version) {return version.isLive;}),
             hasMore: false,
             hasAmount: false,
-            hasOpened: (app.openRow.kwps_result_profile.toString() === sortOrderRP),
+            hasOpened: (app.openRow.kwps_result_profile === sortOrderRP),
             versions: sortedResultProfiles[sortOrderRP],
             mainRow: true,
             sortOrder: sortOrderRP,
@@ -701,12 +752,12 @@ jQuery(function ($) {
       var whereAttributes = {post_type: parentPostType};
 
       if(parentPostTypeSortOrder) {
-        whereAttributes._kwps_sort_order = parentPostTypeSortOrder.toString();
+        whereAttributes._kwps_sort_order = parentPostTypeSortOrder;
       }
 
       var parentPosts = this.collection.where(whereAttributes);
       var postsToMove = [];
-      var postsToDelete = this.collection.where({post_type: postType, _kwps_sort_order: sortOrder.toString()});
+      var postsToDelete = this.collection.where({post_type: postType, _kwps_sort_order: sortOrder});
       for (i = 0; i < postsToDelete.length; i++) {
         postsToDelete[i].destroy();
       }
@@ -716,7 +767,7 @@ jQuery(function ($) {
         var allRemainingPostsInParent = this.collection.where({post_type: postType, post_parent: parentPost.get('ID')});
 
         var newPosts = _.filter(allRemainingPostsInParent, function(post) {
-          return post.get('_kwps_sort_order') > sortOrder.toString();
+          return post.get('_kwps_sort_order') > sortOrder;
         });
         postsToMove = _.union(postsToMove, newPosts);
 
@@ -797,7 +848,7 @@ jQuery(function ($) {
           break;
         case 'kwps_question':
           var sortOrderOfQuestionGroup = $(e.currentTarget).closest('tr').data('sort-order');
-          var versionsOfOpenedQuestionGroup = this.collection.where({post_type: 'kwps_question_group', _kwps_sort_order: sortOrderOfQuestionGroup.toString()});
+          var versionsOfOpenedQuestionGroup = this.collection.where({post_type: 'kwps_question_group', _kwps_sort_order: sortOrderOfQuestionGroup});
           var highestSortOrder = 0;
           for (i = versionsOfOpenedQuestionGroup.length - 1; i >= 0; i--) {
             var connectedQuestionsToOpenedQuestionGroup = _.invoke(this.collection.where({post_type: "kwps_question", post_parent: versionsOfOpenedQuestionGroup[i].id}), 'toJSON');
@@ -815,9 +866,9 @@ jQuery(function ($) {
         case 'kwps_answer_option':
           sortOrder = $(e.currentTarget).closest('tr').data('sort-order');
           for(i = 0; i < kwpsPollLen; i++) {
-            var questionGroups = this.collection.where({post_type: 'kwps_question_group', post_parent: kwpsPolls[i].id, _kwps_sort_order: app.openRow.kwps_question_group.toString()});
+            var questionGroups = this.collection.where({post_type: 'kwps_question_group', post_parent: kwpsPolls[i].id, _kwps_sort_order: app.openRow.kwps_question_group});
             for(var j = 0; j < questionGroups.length; j++) {
-              var questions = this.collection.where({post_type: 'kwps_question', post_parent: questionGroups[j].id, _kwps_sort_order: sortOrder.toString()});
+              var questions = this.collection.where({post_type: 'kwps_question', post_parent: questionGroups[j].id, _kwps_sort_order: sortOrder});
               for(var k = 0; k < questions.length; k++) {
                 var index = this.collection.where({post_type: 'kwps_answer_option', post_parent: questions[k].id}).length;
                 this.createAnswer(questions[k].id, index);
@@ -837,8 +888,8 @@ jQuery(function ($) {
       app.kwpsPollsCollection.create({
         post_type: "kwps_version",
         post_status: "draft",
-        post_title : "Version " + (index+1),
-        post_content : "Version " + (index+1),
+        post_title : kwps_translations.Version + " " + (index+1),
+        post_content : kwps_translations.Version + " " + (index+1),
         post_parent : previousVersion.get('post_parent'),
         _kwps_sort_order : index.toString()
       },
@@ -884,7 +935,7 @@ jQuery(function ($) {
       var model = new KwpsModel({
         post_type: "kwps_intro",
         post_status: "draft",
-        post_content : "intro ",
+        post_content : kwps_translations.Intro,
         post_parent : post_parent,
         _kwps_sort_order : "0"
       });
@@ -902,7 +953,7 @@ jQuery(function ($) {
       app.kwpsPollsCollection.create({
         post_type: "kwps_intro_result",
         post_status: "draft",
-        post_content : "intro result",
+        post_content : kwps_translations['Intro result'],
         post_parent : post_parent,
         _kwps_sort_order : "0"
       }, {
@@ -921,7 +972,7 @@ jQuery(function ($) {
       var model = new KwpsModel({
         post_type: "kwps_outro",
         post_status: "draft",
-        post_content : "outro ",
+        post_content : kwps_translations.Outro,
         post_parent : post_parent,
         _kwps_sort_order : "0"
       });
@@ -939,10 +990,10 @@ jQuery(function ($) {
       this.collection.create({
         post_type: "kwps_question_group",
         post_status: "draft",
-        post_title : "Question Group " + (parseInt(sortOrder) + 1),
-        post_content : "Question Group " + (parseInt(sortOrder) + 1),
+        post_title : kwps_translations["Question Group"] + " " + (parseInt(sortOrder) + 1),
+        post_content : kwps_translations["Question Group"] + " " + (parseInt(sortOrder) + 1),
         post_parent : post_parent,
-        _kwps_sort_order : sortOrder.toString()
+        _kwps_sort_order : sortOrder
       }, {
         wait: true,
         success: function(model, response, options) {
@@ -956,10 +1007,10 @@ jQuery(function ($) {
       this.collection.create({
         post_type: "kwps_result_profile",
         post_status: "draft",
-        post_title : "Result Profile " + (parseInt(sortOrder) + 1),
-        post_content : "Result Profile " + (parseInt(sortOrder) + 1),
+        post_title : kwps_translations["Result Profile"] + " " + (parseInt(sortOrder) + 1),
+        post_content : kwps_translations["Result Profile"] + " " + (parseInt(sortOrder) + 1),
         post_parent : post_parent,
-        _kwps_sort_order : sortOrder.toString(),
+        _kwps_sort_order : sortOrder,
         _kwps_min_value: 0,
         _kwps_max_value: 0
       }, {
@@ -975,9 +1026,9 @@ jQuery(function ($) {
       app.kwpsPollsCollection.create({
         post_type: "kwps_question",
         post_status: "draft",
-        post_content : "question" + (index + 1),
+        post_content : kwps_translations.Question + " " + (index + 1),
         post_parent : post_parent,
-        _kwps_sort_order : index.toString()
+        _kwps_sort_order : index
       }, {
         wait: true,
         success: function (model, response, options) {
@@ -994,10 +1045,10 @@ jQuery(function ($) {
       app.kwpsPollsCollection.create({
         post_type: "kwps_answer_option",
         post_status: "draft",
-        post_content : "answer ",
+        post_content : kwps_translations["Answer Option"] + " " + (index + 1),
         post_parent : post_parent,
-        _kwps_sort_order : index.toString(),
-        _kwps_answer_option_value : "value ..."
+        _kwps_sort_order : index,
+        _kwps_answer_option_value : ""
       },
         {
           wait: true,
@@ -1082,26 +1133,26 @@ jQuery(function ($) {
 
         var parentPostType = this.getParent(postType);
         var parentPostTypeSortOrder = app.openRow[parentPostType];
-        var parentPosts = this.collection.where({post_type: parentPostType, _kwps_sort_order: parentPostTypeSortOrder.toString()});
+        var parentPosts = this.collection.where({post_type: parentPostType, _kwps_sort_order: parentPostTypeSortOrder});
 
         parentPosts.forEach(function(parentPost) {
-          toMove = _.union(toMove, this.collection.where({post_type: postType, _kwps_sort_order: currentSortOrder.toString(), post_parent: parentPost.get('ID')}));
-          toCorrect = _.union(toCorrect, this.collection.where({post_type: postType, _kwps_sort_order: newSortOrder.toString(), post_parent: parentPost.get('ID')}));
+          toMove = _.union(toMove, this.collection.where({post_type: postType, _kwps_sort_order: currentSortOrder, post_parent: parentPost.get('ID')}));
+          toCorrect = _.union(toCorrect, this.collection.where({post_type: postType, _kwps_sort_order: newSortOrder, post_parent: parentPost.get('ID')}));
         }, this);
 
       } else {
-        toMove = this.collection.where({post_type: postType, _kwps_sort_order: currentSortOrder.toString()});
-        toCorrect = this.collection.where({post_type: postType, _kwps_sort_order: newSortOrder.toString()});
+        toMove = this.collection.where({post_type: postType, _kwps_sort_order: currentSortOrder});
+        toCorrect = this.collection.where({post_type: postType, _kwps_sort_order: newSortOrder});
       }
 
 
       toMove.forEach(function(post) {
-        post.set('_kwps_sort_order', newSortOrder.toString());
+        post.set('_kwps_sort_order', newSortOrder);
         post.save();
       });
 
       toCorrect.forEach(function(post) {
-        post.set('_kwps_sort_order', currentSortOrder.toString());
+        post.set('_kwps_sort_order', currentSortOrder);
         post.save();
       });
 
@@ -1143,6 +1194,21 @@ jQuery(function ($) {
 
       this.render();
 
+    },
+    clearEntries: function(event) {
+      event.preventDefault();
+      if(confirm(kwps_translations['This will delete all entries. Are you sure?'])) {
+        var id = $(event.currentTarget).closest('th').data('post-id');
+        $.post(
+          app.url + 'kwps_delete_entries_from_version',JSON.stringify(
+          {
+            post_parent: id
+          }),
+          function(data) {
+            console.log('deleted: ' + data.count);
+          }
+        );
+      }
     }
   });
 
@@ -1181,15 +1247,73 @@ jQuery(function ($) {
       var testCollection = app.kwpsPollsCollection.findWhere({post_type: "kwps_test_collection"});
       var testmodus = app.kwpsPollsCollection.findWhere({ID: testCollection.get('post_parent')});
 
+
+      Backbone.Validation.bind(this, {
+        valid: function (view, attr, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+
+          $group.removeClass('has-error');
+          $group.find('.help-block').html('').addClass('hidden');
+        },
+        invalid: function (view, attr, error, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+          $group.addClass('has-error');
+          $group.find('.help-block').html(error).removeClass('hidden');
+        }
+      });
+
       var data =  this.model.toJSON();
       data.attribute = this.options.attribute;
       data.label = kwps_translations[this.options.attribute];
       data.addResults = (this.model.get('post_type') === "kwps_outro");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
-      data.answer_option_value = this.model.get("_kwps_answer_option_value");
+      data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
 
+      var validation = {
+        post_content: {
+          required: true
+        },
+        post_parent: {
+          required: true
+        },
+        _kwps_sort_order: {
+          required: true,
+            min: 0
+        }
+      };
 
-        $(this.el).html(app.templates.edit(data));
+      if(data.post_title) {
+        validation.post_title = {
+          required: true,
+          msg: kwps_translations['Title is required']
+        };
+      }
+
+      if(data.min_max) {
+        validation._kwps_min_value = {
+          required: true,
+          min: 0,
+          msg: kwps_translations['Min value is required']
+        };
+        validation._kwps_max_value = {
+          required: true,
+          min: 0,
+          msg: kwps_translations['Max value is required']
+        };
+      }
+
+      if(data._kwps_answer_option_value) {
+        validation._kwps_answer_option_value = {
+          required: true,
+          msg: kwps_translations['Value is required']
+        };
+      }
+
+      this.model.validation = validation;
+
+      $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({
         menubar: false,
@@ -1228,13 +1352,9 @@ jQuery(function ($) {
     updateData: function(event) {
       event.preventDefault();
       tinymce.triggerSave();
+      
 
       var data = $('#update-model').serializeObject();
-
-      if(data.post_content === "") {
-        alert('Content cannot be empty');
-        return false;
-      }
 
       if(data._kwps_min_value) {
         data._kwps_min_value = parseInt(data._kwps_min_value);
@@ -1243,13 +1363,17 @@ jQuery(function ($) {
         data._kwps_max_value = parseInt(data._kwps_max_value);
       }
 
-      var that = this;
-      this.model.save(data, {
-        success: function() {
-          that.cleanup();
-          window.location = '#';
-        }
-      });
+      this.model.set(data);
+
+      if(this.model.isValid(true)) {
+        var that = this;
+        this.model.save(data, {
+          success: function() {
+            that.cleanup();
+            window.location = '#';
+          }
+        });
+      }
     }
   });
 

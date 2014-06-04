@@ -1,7 +1,7 @@
 <div class="wrap">
 
     <div id="icon-users" class="icon32"><br/></div>
-    <h2><?php echo get_admin_page_title() ?> <a href="?page=klasse-wp-poll-survey_addnew#new" class="add-new-h2">Add New</a></h2>
+    <h2><?php _e(get_admin_page_title()) ?> <a href="?page=klasse-wp-poll-survey_addnew#new" class="add-new-h2"><?php _e('New test') ?></a></h2>
 
     <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
     <form id="kwps-filter" method="get">

@@ -8,7 +8,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
     public static $required_fields = array();
 
-    public static $numeric_fields = array();
+    public static $numeric_fields = array('_kwps_sort_order');
 
     public static $additional_validation_methods = array();
 
@@ -47,11 +47,13 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 
         foreach(static::$meta_data_fields as $field){
             $meta_as_array[$field] = get_post_meta($post_id, $field, true);
+	        if(in_array($field, static::$numeric_fields)) {
+		        $meta_as_array[$field] = (int) $meta_as_array[$field];
+	        }
         }
 
         return $meta_as_array;
     }
-
 
     public static function get_all_by_post_parent($test_id){
         $child_objects = get_posts( array('post_type' => static::$post_type,
@@ -69,7 +71,6 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         return $children;
     }
 
-
     public static function get_one_by_post_parent($test_id){
         $children = static::get_all_by_post_parent($test_id);
 
@@ -80,7 +81,6 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
 	    }
         return $child;
     }
-
 
     public static function save_from_request(){
 
@@ -187,7 +187,6 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         }
         return $errors;
     }
-
 
     public final static function delete_from_request(){
         $request_data = static::get_post_data_from_request();
