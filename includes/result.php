@@ -22,7 +22,7 @@ class Result {
                 $results = static::bar_chart_per_question($entry_id);
                 break;
             case 'pie-chart-per-question' :
-                $results = static::bar_chart_per_question($entry_id);
+                $results = static::pie_chart_per_question($entry_id);
                 break;
             case 'stacked-bar-per-question' :
                 $results = static::bar_chart_per_question($entry_id);
@@ -51,6 +51,21 @@ class Result {
             foreach($questions as $question){
                 array_push($results, static::get_results_by_question( $question['ID'] ) );
             }
+        }
+        return $results;
+    }
+    public static function pie_chart_per_question($entry_id) {
+        $version= Entry::get_version($entry_id);
+
+        $question_groups = Question_Group::get_all_by_post_parent($version['ID']);
+        $results = array();
+
+        foreach($question_groups as $question_group){
+            $questions = Question::get_all_by_post_parent( $question_group['ID'] );
+            foreach($questions as $question){
+                array_push($results, static::get_results_by_question( $question['ID'] ) );
+            }
+            array_push($results, array( 'question_group' => $question_group['post_content']));
         }
         return $results;
     }
