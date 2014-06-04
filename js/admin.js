@@ -808,6 +808,7 @@ jQuery(function ($) {
         case 'kwps_question_group':
         case 'kwps_intro':
         case 'kwps_outro':
+        case 'kwps_result_profile':
           var sortOrder = $(e.currentTarget).closest('tr').data('sort-order');
           this.deleteRow(postType, sortOrder);
           break;
@@ -1177,12 +1178,9 @@ jQuery(function ($) {
           parentPostType = 'kwps_collection';
           break;
         case 'kwps_question_group':
-          parentPostType = 'kwps_version';
-          break;
         case 'kwps_intro':
-          parentPostType = 'kwps_version';
-          break;
         case 'kwps_outro':
+        case 'kwps_result_profile':
           parentPostType = 'kwps_version';
           break;
         case 'kwps_question':

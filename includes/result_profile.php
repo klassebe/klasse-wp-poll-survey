@@ -12,6 +12,7 @@ namespace includes;
 class Result_Profile extends Kwps_Post_Type {
 
     public static $numeric_fields = array(
+	    '_kwps_sort_order',
 	    '_kwps_min_value',
 	    '_kwps_max_value'
     );
