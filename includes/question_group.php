@@ -11,7 +11,7 @@ namespace includes;
 
 class Question_Group extends Kwps_Post_Type {
 
-    public static $numeric_fields = array();
+    public static $numeric_fields = array('_kwps_sort_order');
 
     public static $required_fields = array(
         'post_title',
