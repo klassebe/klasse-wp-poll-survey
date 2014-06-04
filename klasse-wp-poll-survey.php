@@ -46,6 +46,7 @@ require_once __DIR__ . '/includes/locked.php';
 require_once __DIR__ . '/includes/uniqueness.php';
 require_once __DIR__ . '/includes/result.php';
 require_once __DIR__ . '/includes/result_profile.php';
+require_once __DIR__ . '/includes/bar_chart.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -148,6 +149,8 @@ add_action( 'wp_ajax_kwps_get_result_of_test_collection',
     array('\includes\result','ajax_get_result_data_of_test_collection'));
 
 add_action( 'wp_ajax_kwps_get_result_profile', array('\includes\result_profile','ajax_get_by_entry_id'));
+add_action( 'wp_ajax_kwps_get_bar_chart_per_question',
+    array('\includes\bar_chart','ajax_get_chart_per_question_by_entry_id'));
 
 
 
