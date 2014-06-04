@@ -13,19 +13,19 @@ class Result {
     public static function get_result_of_version_by_entry_id(){
         $request_data = static::get_post_data_from_request();
 
-        $version_id = $request_data['ID'];
+        $entry_id = $request_data['ID'];
         $output_type = $request_data['output_type'];
 
 // TODO change cases to call correct methods
         switch($output_type){
             case 'bar-chart-per-question' :
-                $results = static::bar_chart_per_question($version_id);
+                $results = static::bar_chart_per_question($entry_id);
                 break;
             case 'pie-chart-per-question' :
-                $results = static::bar_chart_per_question($version_id);
+                $results = static::bar_chart_per_question($entry_id);
                 break;
             case 'stacked-bar-per-question' :
-                $results = static::bar_chart_per_question($version_id);
+                $results = static::bar_chart_per_question($entry_id);
                 break;
         }
         wp_send_json( $results );
