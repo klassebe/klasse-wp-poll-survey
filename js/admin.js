@@ -489,6 +489,7 @@ jQuery(function ($) {
       }
       data.versions = versions;
       data.collection = testCollection.toJSON();
+      data.testmodus = testmodus.toJSON();
       
       data.table = [];
 
@@ -502,7 +503,8 @@ jQuery(function ($) {
         hasMore: (intros.length > 0),
         addText: 'Add Intro',
         opened: app.openRow.main_kwps_intro,
-        amount: intros.length/ versions.length
+        amount: intros.length/ versions.length,
+        maxAmount: 1
       });
 
       // INTRO
@@ -530,7 +532,8 @@ jQuery(function ($) {
         hasMore: (introResults.length > 0),
         addText: 'Add Intro Result',
         opened: app.openRow.main_kwps_intro_result,
-        amount: introResults.length/ versions.length
+        amount: introResults.length/ versions.length,
+        maxAmount: 1
       });
 
       // INTRO RESULT
@@ -558,7 +561,8 @@ jQuery(function ($) {
         hasMore: (_.size(sortedAllQGroups) > 0),
         addText: 'Add question page',
         opened: app.openRow.main_kwps_question_group,
-        amount: _.size(sortedAllQGroups)
+        amount: _.size(sortedAllQGroups),
+        maxAmount: (testmodus.get('_kwps_max_question_groups') > 0)? testmodus.get('_kwps_max_question_groups') : "&infin;"
       });
 
       if ( _.size(sortedAllQGroups) > 0 && app.openRow.main_kwps_question_group) {
@@ -597,7 +601,9 @@ jQuery(function ($) {
               questionGroupSortOrder : sortOrderQG,
               addText: "Add question",
               colSpan : versions.length +1,
-              add: (testmodus.get('_kwps_max_questions_per_question_group') < 0 || testmodus.get('_kwps_max_questions_per_question_group') > _.size(sortedQu).toString() && !_.some(versions, function(version) {return version.isLive;}))
+              add: (testmodus.get('_kwps_max_questions_per_question_group') < 0 || testmodus.get('_kwps_max_questions_per_question_group') > _.size(sortedQu).toString() && !_.some(versions, function(version) {return version.isLive;})),
+              amount: _.size(sortedQu),
+              maxAmount: (testmodus.get('_kwps_max_questions_per_question_group') > 0)? testmodus.get('_kwps_max_questions_per_question_group') : "&infin;"
             });
             
             for (var sortOrderQ in sortedQu) {
@@ -633,7 +639,9 @@ jQuery(function ($) {
                   addText: "Add answer",
                   questionSortOrder: sortOrderQ,
                   colSpan : versions.length +1,
-                  add: ((testmodus.get('_kwps_max_answer_options_per_question') < 0 || testmodus.get('_kwps_max_answer_options_per_question') > _.size(sortedAns).toString()) && !_.some(versions, function(version) {return version.isLive;}))
+                  add: ((testmodus.get('_kwps_max_answer_options_per_question') < 0 || testmodus.get('_kwps_max_answer_options_per_question') > _.size(sortedAns).toString()) && !_.some(versions, function(version) {return version.isLive;})),
+                  amount: _.size(sortedAns),
+                  maxAmount: (testmodus.get('_kwps_max_answer_options_per_question') > 0)? testmodus.get('_kwps_max_answer_options_per_question') : "&infin;"
                 });
 
                 for (var sortOrderA in sortedAns) {
@@ -678,7 +686,8 @@ jQuery(function ($) {
           hasMore: (_.size(sortedAllResultProfiles) > 0),
           addText: 'Add result profile',
           opened: app.openRow.main_kwps_result_profile,
-          amount: _.size(sortedAllResultProfiles)
+          amount: _.size(sortedAllResultProfiles),
+          maxAmount: "&infin;"
         });
       }
 
@@ -709,6 +718,7 @@ jQuery(function ($) {
         }
       }
 
+      // TITLE OUTRO
       data.table.push({
         colSpan : data.versions.length +1,
         title: "Outro",
@@ -718,9 +728,11 @@ jQuery(function ($) {
         hasMore: (outros.length > 0),
         addText: 'Add outro',
         opened: app.openRow.main_kwps_outro,
-        amount: outros.length/ versions.length
+        amount: outros.length/ versions.length,
+        maxAmount: 1
       });
 
+      //OUTRO
       if (outros.length > 0 && outros.length === versions.length && app.openRow.main_kwps_outro) {
         data.table.push({
           sorterArrows : false,

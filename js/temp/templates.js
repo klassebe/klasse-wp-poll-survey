@@ -43,8 +43,10 @@ helpers = this.merge(helpers, Handlebars.helpers); partials = this.merge(partial
   var buffer = "", stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 
-  buffer += "<div id=\"icon-tests\" class=\"icon32\"><br/>\n</div>\n<h2>"
-    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Poll & Survey Control panel", options) : helperMissing.call(depth0, "t", "Poll & Survey Control panel", options)))
+  buffer += "<div id=\"icon-tests\" class=\"icon32\"><br/>\n</div>\n\n<h2>"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, ((stack1 = (depth0 && depth0.testmodus)),stack1 == null || stack1 === false ? stack1 : stack1.post_title), options) : helperMissing.call(depth0, "t", ((stack1 = (depth0 && depth0.testmodus)),stack1 == null || stack1 === false ? stack1 : stack1.post_title), options)))
+    + " "
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "control panel", options) : helperMissing.call(depth0, "t", "control panel", options)))
     + "</h2>\n\n<div class=\"test-input\">\n    <input type=\"text\" name=\"post_title\" id=\"post_title\" value=\""
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.collection)),stack1 == null || stack1 === false ? stack1 : stack1.post_title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" placeholder=\""
@@ -276,6 +278,16 @@ function program1(depth0,data) {
   return buffer;
   }
 
+function program3(depth0,data) {
+  
+  var buffer = "", stack1, helper;
+  buffer += " / ";
+  if (helper = helpers.maxAmount) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.maxAmount); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  return buffer;
+  }
+
   buffer += "<tr class=\"post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background:#FFB500\" data-post-type=\"";
   if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
@@ -294,10 +306,12 @@ function program1(depth0,data) {
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.add), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        </div> \n    </th>\n    <th class=\"no-delete row-title\" style=\"height:20px;\">";
-  if (helper = helpers.number) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.number); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "</th>\n</tr>";
+  if (helper = helpers.amount) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.amount); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1);
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.maxAmount), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</th>\n</tr>";
   return buffer;
   });
 
@@ -544,6 +558,16 @@ function program6(depth0,data) {
   return buffer;
   }
 
+function program8(depth0,data) {
+  
+  var buffer = "", stack1, helper;
+  buffer += " / ";
+  if (helper = helpers.maxAmount) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.maxAmount); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  return buffer;
+  }
+
   buffer += "<tr class=\"title\" data-post-type=\"main_";
   if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
@@ -563,8 +587,10 @@ function program6(depth0,data) {
   buffer += "\n    </th>\n    <th class=\"row-title\">";
   if (helper = helpers.amount) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.amount); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "</th>\n</tr>";
+  buffer += escapeExpression(stack1);
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.maxAmount), {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</th>\n</tr>";
   return buffer;
   });
 
@@ -703,6 +729,16 @@ function program1(depth0,data) {
   return buffer;
   }
 
+function program3(depth0,data) {
+  
+  var buffer = "", stack1, helper;
+  buffer += " / ";
+  if (helper = helpers.maxAmount) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.maxAmount); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  return buffer;
+  }
+
   buffer += " <tr class=\"post-1 type-post title status-publish format-standard hentry category-uncategorized iedit author-self level-0\" style=\"background: #1E8CBE;\" data-post-type=\"";
   if (helper = helpers.postType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.postType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
@@ -720,7 +756,13 @@ function program1(depth0,data) {
     + "\n            ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.add), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        </div>  \n    </th>\n    <th class=\"no-delete row-title\" style=\"height:20px; border-top: none;\"></th>\n</tr>";
+  buffer += "\n        </div>  \n    </th>\n    <th class=\"no-delete row-title\" style=\"height:20px; border-top: none;\">";
+  if (helper = helpers.amount) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.amount); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1);
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.maxAmount), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</th>\n</tr>";
   return buffer;
   });
 
