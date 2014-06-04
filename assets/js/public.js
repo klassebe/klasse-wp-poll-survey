@@ -135,8 +135,8 @@ jQuery(function($) {
 									$.each(elem.find('.kwps-result'), function (key, value) {
 										// add all classes to an array that are next to kwps-result
 										getChart.output_type = value.classList[1];
-										getChartData(getChart, resultRequests);
 										resultRequests.push(value.classList[1]);
+										getChartData(getChart);
 									});
 									elem.find('.kwps-outro').show();
 								}
@@ -144,7 +144,7 @@ jQuery(function($) {
 						} 
 					};
 
-					var getChartData = function (getChart, resultRequests) {
+					var getChartData = function (getChart) {
 							$.ajax({
 						  			type: "POST",
 						  			url: urlGetChartData,
@@ -152,25 +152,23 @@ jQuery(function($) {
 						  			contentType: "application/json; charset=utf-8",
 						  			dataType: "json",
 						  			success: function (data) {
-								    	var graphCategories = [];
-								    	var graphData = [];
-								    	var totalEntries = data[0][0].total_entries;
-								    	$.each(data[0].entries, function(index, value) {
-								    		graphCategories.push(value.answer_option_content);
-								    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
-								    	});
 
-								    	// TODO: create switch to loop the array for request data
-
-	                    if (elem.find('.bar-chart-per-question')) {
-	                      outputBarChart(data, graphCategories, graphData);
-	                    }
-	                    if (elem.find('.pie-chart-per-question')) {
-	                      outputPieChart(data, graphCategories, graphData);
-	                    }
-	                    if (elem.find('.stacked-bar-chart-per-question')) {
-	                      outputStackedBarChart(data, graphCategories, graphData);
-	                    }
+								    	switch (getChart.output_type) {
+								    		case 'bar-chart-per-question':
+								    			outputBarChart(data);
+								    			break;
+								    		case 'pie-chart-per-question':
+								    			outputPieChart(data);
+								    			break;
+								    		default:
+								    			console.log('no chart corresponding was found');
+								    	}
+	                    // if (elem.find(getChart.output_type)) {
+	                    //   outputBarChart(data);
+	                    // }
+	                    // if (elem.find('.pie-chart-per-question')) {
+	                    //   outputPieChart(data);
+	                    // }
 
 								    },
 								    async: false
@@ -179,13 +177,20 @@ jQuery(function($) {
 					};
 
 					/* BAR CHART CODE */
-					var outputBarChart = function (data, graphCategories, graphData) {
+					var outputBarChart = function (data) {
+
+						var graphCategories = [], graphData = [];
+						var totalEntries = data[0][0].total_entries;
+						$.each(data[0].entries, function(index, value) {
+			    		graphCategories.push(value.answer_option_content);
+			    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
+			    	});
 						elem.find('.kwps-result.bar-chart-per-question').highcharts({
 						    chart: {
 						        type: 'bar'
 						    },
 						    title: {
-						        text: data[0][1].poll_question
+						        text: data[0][1].question
 						    },
 						    xAxis: {
 						        categories: graphCategories,
@@ -229,52 +234,24 @@ jQuery(function($) {
 						    }]
 						});
 					};
-					/* STACKED BAR CHART CODE */
-					var outputStackedBarChart = function (data, graphCategories, graphData) {
-						elem.find('.kwps-result.stacked-bar-chart-per-question').highcharts({
-							chart: {
-								type: 'bar'
-							},
-	            title: {
-	              text: data[0][1].poll_question
-	            },
-	            xAxis: {
-	              categories: graphCategories,
-	            },
-	            yAxis: {
-                max: 100,
-                min: 0,
-                title: {
-				            text: 'percent',
-				            align: 'high'
-				        },
-				        labels: {
-				            overflow: 'justify'
-				        }
-				      },
-              plotOptions: {
-                series: {
-                	stacking: 'normal'
-                }
-	            },
-	            
-	        		exporting: {
-							    enabled: false
-							},
-					    legend: {
-					        enabled: false
-					    },
-					    credits: {
-					        enabled: false
-					    },
-	            series: [{
-	              name: 'Votes',
-	              data: graphData
-	            }]
-		        });
-					};
 					/* PIE CHART CODE */
-					var outputPieChart = function(data, graphCategories, graphData) {
+					var outputPieChart = function(data) {
+						console.log(data);
+						var graphCategory, pieData =[], graphData, pieWrap = [];
+						var totalEntries = data[0][0].total_entries;
+
+						$.each(data[0].entries, function(index, value) {
+							var piePiece = [];
+			    		graphCategory = value.answer_option_content;
+			    		graphData = Math.round((value.entry_count/totalEntries)*100);
+			    		piePiece.push(graphCategory , graphData);
+			    		console.log(piePiece);
+			    		pieData.push(piePiece);
+			    		console.log('---------');
+			    		console.log(pieData);
+			    	});
+
+						// console.log(pieData);
 						elem.find('.kwps-result.pie-chart-per-question').highcharts({
 			        chart: {
 		            plotBackgroundColor: null,
@@ -282,7 +259,7 @@ jQuery(function($) {
 		            plotShadow: false
 			        },
 			        title: {
-		            text: data[0][1].poll_question
+		            text: data[0][1].question
 			        },
 			        tooltip: {
 			    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -312,10 +289,57 @@ jQuery(function($) {
 			        series: [{
 		            type: 'pie',
 		            name: 'Browser share',
-		            data: graphData
+		            data: pieData
 			        }]
-			    });
+				    });
 					};
+					// /* STACKED BAR CHART CODE */
+					// var outputStackedBarChart = function (data) {
+					// 	var graphCategories = [], graphData = [];
+
+					// 	elem.find('.kwps-result.stacked-bar-chart-per-question').highcharts({
+					// 		chart: {
+					// 			type: 'bar'
+					// 		},
+	    //         title: {
+	    //           text: data[0][1].question
+	    //         },
+	    //         xAxis: {
+	    //           categories: graphCategories,
+	    //         },
+	    //         yAxis: {
+     //            max: 100,
+     //            min: 0,
+     //            title: {
+				 //            text: 'percent',
+				 //            align: 'high'
+				 //        },
+				 //        labels: {
+				 //            overflow: 'justify'
+				 //        }
+				 //      },
+     //          plotOptions: {
+     //            series: {
+     //            	stacking: 'normal'
+     //            }
+	    //         },
+	            
+	    //     		exporting: {
+					// 		    enabled: false
+					// 		},
+					//     legend: {
+					//         enabled: false
+					//     },
+					//     credits: {
+					//         enabled: false
+					//     },
+	    //         series: [{
+	    //           name: 'Votes',
+	    //           data: graphData
+	    //         }]
+		   //      });
+					// };
+
           var outputQuizRespons = function (data, answer) {
             elem.find('.kwps-result.quiz-respons').html(data.respons);
             if (answer) {
