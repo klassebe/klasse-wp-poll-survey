@@ -15,23 +15,25 @@ function GetURLParameter(sParam) {
 
 jQuery(function($) {
 	$('.kwps-page').hide();
-	// $('.kwps-outro').hide();
-	// $('.kwps-question-group').hide();
 
 	$.fn.pollPlugin = function ( options ) {
 		return this.each( function ( ) {
 			var elem = $( this );
-			if (elem.find('.kwps-intro').length == 0) {
-				if (elem.find('.kwps-question-group').length == 0) {
-					elem.find('.kwps-outro').show();
+			if (elem.find('.kwps-intro-result').length === 0) {
+				if (elem.find('.kwps-intro').length == 0) {
+					if (elem.find('.kwps-question-group').length == 0) {
+						elem.find('.kwps-outro').show();
+					} else {
+						elem.find('.kwps-question-group').show();
+					}
 				} else {
-					// elem.find('.kwps-question-group').show();
-					$(this).closest('.kwps-page').next().show();
+					elem.find('.kwps-intro').show();
 				}
 			} else {
-				elem.find('.kwps-intro').show();
-				// elem.find('.kwps-question-group').hide();
+				elem.find('.kwps-intro-result').show();
 			}
+				
+
 			elem.find('.kwps-next').on('click', function () {
 				elem.find('.kwps-intro').hide();
 				elem.find('.kwps-outro').hide();
@@ -46,9 +48,6 @@ jQuery(function($) {
 			//  Search for the class with the ID in it
 			elem.find('.kwps-question-group').on('click', '.kwps-next', function () {
 
-				// Check if an answer option was selected
-				// Get the name of the radio buttons
-				// var getNameOfRadioBtn = elem.find('input:radio').attr('name');
 				/* GET NUMBER OF KWPS ANSWER OPTION DIVs WITHIN THIS KWPS QUESTION GROUP PAGE */
 				var that = $(this);
 				var questionGroup = that.closest('.kwps-question-group');
@@ -161,7 +160,7 @@ jQuery(function($) {
 								    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
 								    	});
 
-								    	// Afhankelijk van output type zal data anders zijn dus hierop switch
+								    	// TODO: create switch to loop the array for request data
 
 	                    if (elem.find('.bar-chart-per-question')) {
 	                      outputBarChart(data, graphCategories, graphData);
