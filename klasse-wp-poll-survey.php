@@ -308,7 +308,7 @@ function enqueue_scripts_admin() {
 	    'Name is required' => __('Name is required', 'klasse-wp-poll-survey'),
 	    'Type is required' => __('Type is required', 'klasse-wp-poll-survey'),
 	    'Clear entries' => __('Clear entries', 'klasse-wp-poll-survey'),
-	    'delete_confirm' => __('This will delete all entries. Are you sure?', 'klasse-wp-poll-survey'),
+	    'This will delete all entries. Are you sure?' => __('This will delete all entries. Are you sure?', 'klasse-wp-poll-survey'),
 	    'Version' => __('Version', 'klasse-wp-poll-survey'),
 	    'Intro' => __('Intro', 'klasse-wp-poll-survey'),
 	    'Outro' => __('Outro', 'klasse-wp-poll-survey'),
