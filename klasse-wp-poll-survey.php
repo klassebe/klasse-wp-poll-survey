@@ -165,7 +165,7 @@ function kwps_activate(){
 
 function create_default_test_modi(){
     $kwps_poll = array(
-        'post_title' => 'Poll',
+        'post_title' => 'kwps-poll',
         'post_name' => 'kwps-poll',
         'post_status' => 'publish',
         'post_type' => 'kwps_test_modus',
@@ -177,7 +177,7 @@ function create_default_test_modi(){
     );
 
     $kwps_personality_test = array(
-        'post_title' => 'Personality Test',
+        'post_title' => 'kwps-personality-test',
         'post_name' => 'kwps-personality-test',
         'post_status' => 'publish',
         'post_type' => 'kwps_test_modus',
