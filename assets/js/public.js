@@ -161,6 +161,8 @@ jQuery(function($) {
 								    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
 								    	});
 
+								    	// Afhankelijk van output type zal data anders zijn dus hierop switch
+
 	                    if (elem.find('.bar-chart-per-question')) {
 	                      outputBarChart(data, graphCategories, graphData);
 	                    }
