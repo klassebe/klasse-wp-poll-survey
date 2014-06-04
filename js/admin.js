@@ -305,7 +305,7 @@ jQuery(function ($) {
         post_content : kwps_translations["Answer Option"] + " " + (index+1),
         post_parent : post_parent,
         _kwps_sort_order : index,
-        _kwps_answer_option_value : ''
+        _kwps_answer_option_value : 0
       });
       model.save({},{
         success: function (model) {
