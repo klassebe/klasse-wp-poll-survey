@@ -32,7 +32,6 @@ jQuery(function($) {
 			} else {
 				elem.find('.kwps-intro-result').show();
 			}
-				
 
 			elem.find('.kwps-next').on('click', function () {
 				elem.find('.kwps-intro').hide();
@@ -95,7 +94,7 @@ jQuery(function($) {
 
 			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
 			    var urlGetChartData = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
-				  var getChart = {
+				  var entryChart = {
 				  		ID : '',
 				  		output_type : ''
 				  };
@@ -107,8 +106,8 @@ jQuery(function($) {
 					    contentType: "application/json; charset=utf-8",
 					    dataType: "json",
 					    success: function(data) {
-					  		getChart.ID = data[0].ID;
-								getResults(getChart);
+					  		entryData.ID = data[0].ID;
+								getResults(entryData);
 					    },
 					    failure: function (errMsg) {
 					        alert(errMsg);
@@ -122,7 +121,6 @@ jQuery(function($) {
 
 						var questGroupItems = elem.find('.kwps-question-group');
 						var questGroupLen = elem.find('.kwps-question-group').length;
-						var resultRequests = [];
 
 						//  Check if all kwps question group divs are hidden
 						if (questGroupItems) {
@@ -133,10 +131,13 @@ jQuery(function($) {
 								} else {
 									// Start doing the requests per div class and set it as output type
 									$.each(elem.find('.kwps-result'), function (key, value) {
-										// add all classes to an array that are next to kwps-result
-										getChart.output_type = value.classList[1];
-										resultRequests.push(value.classList[1]);
-										getChartData(getChart);
+										entryData.output_type = value.classList[1];
+										if (entryData.output_type.match('/chart/')) {
+											getChart(entryData);
+										} else {
+											getRawData(entryData);
+										}
+										
 									});
 									elem.find('.kwps-outro').show();
 								}
@@ -144,201 +145,22 @@ jQuery(function($) {
 						} 
 					};
 
-					var getChartData = function (getChart) {
+					var getChart = function (entryData) {
 							$.ajax({
-						  			type: "POST",
-						  			url: urlGetChartData,
-						  			data: JSON.stringify(getChart),
-						  			contentType: "application/json; charset=utf-8",
-						  			dataType: "json",
-						  			success: function (data) {
-
-								    	switch (getChart.output_type) {
-								    		case 'bar-chart-per-question':
-								    			outputBarChart(data);
-								    			break;
-								    		case 'pie-chart-per-question':
-								    			outputPieChart(data);
-								    			break;
-								    		default:
-								    			console.log('no chart corresponding was found');
-								    	}
-	                    // if (elem.find(getChart.output_type)) {
-	                    //   outputBarChart(data);
-	                    // }
-	                    // if (elem.find('.pie-chart-per-question')) {
-	                    //   outputPieChart(data);
-	                    // }
-
-								    },
-								    async: false
+					  			type: "POST",
+					  			url: urlGetChartData,
+					  			data: JSON.stringify(entryData),
+					  			contentType: "application/json; charset=utf-8",
+					  			dataType: "json",
+					  			success: function (data) {
+					  				// The class is passed through output type
+					  				// so look for that div and append the highchart to it
+                    elem.find(entryData.output_type).highcharts(data);
+							    },
+							    async: false
 					  		});			
 						elem.find('.kwps-intro').hide();
 					};
-
-					/* BAR CHART CODE */
-					var outputBarChart = function (data) {
-
-						var graphCategories = [], graphData = [];
-						var totalEntries = data[0][0].total_entries;
-						$.each(data[0].entries, function(index, value) {
-			    		graphCategories.push(value.answer_option_content);
-			    		graphData.push(Math.round((value.entry_count/totalEntries)*100));
-			    	});
-						elem.find('.kwps-result.bar-chart-per-question').highcharts({
-						    chart: {
-						        type: 'bar'
-						    },
-						    title: {
-						        text: data[0][1].question
-						    },
-						    xAxis: {
-						        categories: graphCategories,
-						        title: {
-						            text: null
-						        }
-						    },
-						    yAxis: {
-						    	max: 100,
-						        min: 0,
-						        title: {
-						            text: 'percent',
-						            align: 'high'
-						        },
-						        labels: {
-						            overflow: 'justify'
-						        }
-						    },
-						    tooltip: {
-						        valueSuffix: ' %'
-						    },
-						    plotOptions: {
-						        bar: {
-						            dataLabels: {
-						                enabled: true
-						            }
-						        }
-						    },
-						    exporting: {
-								    enabled: false
-								},
-						    legend: {
-						        enabled: false
-						    },
-						    credits: {
-						        enabled: false
-						    },
-						    series: [{
-						    		name: 'Votes',
-						        data: graphData
-						    }]
-						});
-					};
-					/* PIE CHART CODE */
-					var outputPieChart = function(data) {
-						console.log(data);
-						var graphCategory, pieData =[], graphData, pieWrap = [];
-						var totalEntries = data[0][0].total_entries;
-
-						$.each(data[0].entries, function(index, value) {
-							var piePiece = [];
-			    		graphCategory = value.answer_option_content;
-			    		graphData = Math.round((value.entry_count/totalEntries)*100);
-			    		piePiece.push(graphCategory , graphData);
-			    		console.log(piePiece);
-			    		pieData.push(piePiece);
-			    		console.log('---------');
-			    		console.log(pieData);
-			    	});
-
-						// console.log(pieData);
-						elem.find('.kwps-result.pie-chart-per-question').highcharts({
-			        chart: {
-		            plotBackgroundColor: null,
-		            plotBorderWidth: null,
-		            plotShadow: false
-			        },
-			        title: {
-		            text: data[0][1].question
-			        },
-			        tooltip: {
-			    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-			        },
-			        plotOptions: {
-		            pie: {
-	                allowPointSelect: true,
-	                cursor: 'pointer',
-	                dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                    style: {
-                      color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                    }
-	                }
-		            }
-			        },
-			        exporting: {
-                  enabled: false
-              },
-              legend: {
-                  enabled: false
-              },
-              credits: {
-                  enabled: false
-              },
-			        series: [{
-		            type: 'pie',
-		            name: 'Browser share',
-		            data: pieData
-			        }]
-				    });
-					};
-					// /* STACKED BAR CHART CODE */
-					// var outputStackedBarChart = function (data) {
-					// 	var graphCategories = [], graphData = [];
-
-					// 	elem.find('.kwps-result.stacked-bar-chart-per-question').highcharts({
-					// 		chart: {
-					// 			type: 'bar'
-					// 		},
-	    //         title: {
-	    //           text: data[0][1].question
-	    //         },
-	    //         xAxis: {
-	    //           categories: graphCategories,
-	    //         },
-	    //         yAxis: {
-     //            max: 100,
-     //            min: 0,
-     //            title: {
-				 //            text: 'percent',
-				 //            align: 'high'
-				 //        },
-				 //        labels: {
-				 //            overflow: 'justify'
-				 //        }
-				 //      },
-     //          plotOptions: {
-     //            series: {
-     //            	stacking: 'normal'
-     //            }
-	    //         },
-	            
-	    //     		exporting: {
-					// 		    enabled: false
-					// 		},
-					//     legend: {
-					//         enabled: false
-					//     },
-					//     credits: {
-					//         enabled: false
-					//     },
-	    //         series: [{
-	    //           name: 'Votes',
-	    //           data: graphData
-	    //         }]
-		   //      });
-					// };
 
           var outputQuizRespons = function (data, answer) {
             elem.find('.kwps-result.quiz-respons').html(data.respons);
@@ -361,6 +183,5 @@ jQuery(function($) {
 
 	};
 
-	// TODO: Has to be attached to the id of every class 'kwps_poll'
 	$('.kwps-version').pollPlugin();
 });
