@@ -72,28 +72,6 @@
             register_post_type(static::$post_type, $post_type_args);
         }
 
-        public static function get_rules($post_type = ''){
-            $args = array('post_title' => $post_type);
-            $posts = get_posts($args);
-
-            if(sizeof($posts) < 1){
-                return false;
-            } else {
-                $max_question_groups = get_post_meta($posts[0]['ID'], '_kwps_max_question_groups', true);
-                $max_questions_per_question_group = get_post_meta($posts[0]['ID'], '_kwps_max_questions_per_question_group', true);
-                $max_answer_options_per_question = get_post_meta($posts[0]['ID'], '_kwps_max_answer_options_per_question', true);
-                $allowed_input_types = get_post_meta($posts[0]['ID'], '_kwps_allowed_input_types', true);
-                $allowed_output_types = get_post_meta($posts[0]['ID'], '_kwps_allowed_output_types', true);
-                return array(
-                    'max_question_groups' => $max_question_groups,
-                    'max_questions_per_question_group' => $max_questions_per_question_group,
-                    'max_answer_options_per_question' => $max_answer_options_per_question,
-                    'allowed_input_types' => $allowed_input_types,
-                    'allowed_output_types' => $allowed_output_types,
-                );
-            }
-        }
-
         public static function set_to_duplicate_when_title_exists($status){
             if( isset($_POST) && sizeof($_POST) > 0 ) {
                 global $post;
@@ -118,7 +96,7 @@
         private static function title_length_is_ok(){
             global $post;
 
-            return strlen($post->post_title) > 0;
+            return strlen($post->post_name) > 0;
         }
 
         public static function has_duplicate(){
@@ -135,7 +113,7 @@
 
             if( sizeof($posts) > 0 ){
                 foreach($posts as $retrieved_post){
-                    if($retrieved_post->ID != $post->ID && $retrieved_post->post_title == $post->post_title){
+                    if($retrieved_post->ID != $post->ID && $retrieved_post->post_name == $post->post_name){
                         return true;
                     }
                 }
@@ -157,7 +135,7 @@
             if( sizeof($posts) > 0 ){
                 foreach($posts as $retrieved_post){
 //                    if($retrieved_post->ID != $post->ID && $retrieved_post->post_title == $post->post_title){
-                    if( $retrieved_post->post_title == $post['post_title'] ){
+                    if( $retrieved_post->post_name == $post['post_name'] ){
                         return true;
                     }
                 }
@@ -176,7 +154,7 @@
                         echo '<div class="error"><p>Post saved as draft - Title is empty</p></div>';
                     }
 
-                    if( \includes\Test_Modus::has_duplicate($post->ID, $post->post_title)){
+                    if( \includes\Test_Modus::has_duplicate($post->ID, $post->post_name)){
                         echo '<div class="error">';
                         echo '<p>Test Modus was saved as duplicate - new settings will not be used</p>';
                         echo '<p>Either rename this Test Modus or remove the Test Modus already in use</p>';
