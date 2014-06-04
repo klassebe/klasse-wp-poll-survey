@@ -236,13 +236,22 @@ class Test_Collections_List_Table extends Base_List_Table {
             if( isset( $_REQUEST['id']) ){
                 if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'delete-test_collection' ) ){
                     $post_id = (int) $_REQUEST['id'];
-                    wp_delete_post( $post_id );
+					$collection = Test_Collection::get_as_array($post_id);
+	                $collection['post_status'] = 'trash';
+					Test_Collection::save_post($collection);
+
+	                foreach(Version::get_all_by_post_parent($post_id) as $version) {
+		                $version['post_status'] = 'trash';
+		                Version::save_post($version);
+	                }
                 }
             } elseif( isset( $_REQUEST['test_collection'] ) ) {
                 if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-' . $this->_args['plural'] ) ){
                     foreach( $_REQUEST['test_collection'] as $post_id ){
-                        $post_id_int = (int) $post_id;
-                        wp_delete_post( $post_id_int );
+	                    $post_id = (int) $post_id;
+	                    $collection = Test_Collection::get_as_array($post_id);
+	                    $collection['post_status'] = 'trash';
+	                    Test_Collection::save_post($collection);
                     }
                 }
             }
