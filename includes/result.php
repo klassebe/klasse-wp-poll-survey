@@ -16,7 +16,7 @@ class Result {
         $version_id = $request_data['ID'];
         $output_type = $request_data['output_type'];
 
-
+// TODO change cases to call correct methods
         switch($output_type){
             case 'bar-chart-per-question' :
                 $results = static::bar_chart_per_question($version_id);
