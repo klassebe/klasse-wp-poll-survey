@@ -45,6 +45,7 @@ require_once __DIR__ . '/includes/duplicate.php';
 require_once __DIR__ . '/includes/locked.php';
 require_once __DIR__ . '/includes/uniqueness.php';
 require_once __DIR__ . '/includes/result.php';
+require_once __DIR__ . '/includes/result_profile.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -146,6 +147,9 @@ add_action( 'wp_ajax_nopriv_kwps_get_result_of_version', array('\includes\result
 add_action( 'wp_ajax_kwps_get_result_of_test_collection',
     array('\includes\result','ajax_get_result_data_of_test_collection'));
 
+add_action( 'wp_ajax_kwps_get_result_profile', array('\includes\result_profile','ajax_get_by_entry_id'));
+
+
 
 add_filter('init', 'kwps_add_api_rewrite_rules');
 
@@ -174,6 +178,7 @@ function create_default_test_modi(){
         '_kwps_max_answer_options_per_question' => -1,
         '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
         '_kwps_allowed_output_types' => array('bar-chart-per-question'),
+        '_kwps_answer_options_require_value' => 0,
     );
 
     $kwps_personality_test = array(
@@ -186,6 +191,7 @@ function create_default_test_modi(){
         '_kwps_max_answer_options_per_question' => -1,
         '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
         '_kwps_allowed_output_types' => array('result-profile'),
+        '_kwps_answer_options_require_value' => 1,
     );
 
     if( ! \includes\Test_Modus::default_test_modus_exists($kwps_poll) ){

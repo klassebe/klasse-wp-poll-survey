@@ -24,7 +24,11 @@ class Result_Profile extends Kwps_Post_Type {
 	    '_kwps_max_value'
     );
 
-    public static $meta_data_fields = array('_kwps_sort_order');
+    public static $meta_data_fields = array(
+        '_kwps_sort_order',
+        '_kwps_min_value',
+        '_kwps_max_value',
+    );
 
     public static $post_type = 'kwps_result_profile';
 
@@ -64,6 +68,58 @@ class Result_Profile extends Kwps_Post_Type {
     public static function get_version($result_profile_id){
 	    $result_profile = static::get_as_array($result_profile_id);
         return Version::get_as_array($result_profile['post_parent']);
+    }
+
+    public static function ajax_get_by_entry_id(){
+        $request_data = static::get_post_data_from_request();
+
+        $errors = array();
+
+        if( ! isset($request_data['ID']) ) {
+            $errors[] = array( 'field' => 'ID', 'message' => 'Required' );
+        } else {
+            $entry = Entry::get_as_array( $request_data['ID'] );
+            if( Entry::$post_type != $entry['post_type'] ) {
+                $errors[] = array('field' => 'ID', 'message' => 'Not a valid entry ID' );
+            }
+        }
+
+        static::process_get_request($request_data, $errors);
+    }
+
+    public static function process_get_request($request_data, $errors){
+        if( sizeof( $errors ) > 0 ) {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
+            wp_send_json_error($errors);
+        } else {
+            $result_profile = static::get_result_profile( $request_data['ID'] );
+            wp_send_json( $result_profile );
+        }
+
+        die();
+    }
+
+    public static function get_result_profile($entry_id){
+        $version = Entry::get_version($entry_id);
+        $result_profiles = Result_Profile::get_all_by_post_parent( $version['ID'] );
+
+        $current_user_entries =
+            Entry::get_all_by_user_hash_and_version( $_COOKIE['klasse_wp_poll_survey'], $version['ID'] );
+
+        $sum_of_values = 0;
+        foreach($current_user_entries as $entry){
+            $answer_option = Answer_Option::get_as_array( $entry['post_parent'] );
+            $sum_of_values += $answer_option['_kwps_answer_option_value'];
+        }
+
+        foreach($result_profiles as $result_profile){
+            if ($sum_of_values >= $result_profile['_kwps_min_value']
+                && $sum_of_values < $result_profile['_kwps_max_value'] ){
+                    return $result_profile;
+            }
+        }
+
+        return array( array('field' => 'All', 'message' => 'No valid result profile found') );
     }
 
 

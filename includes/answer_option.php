@@ -6,7 +6,10 @@ require_once 'kwps_post_type.php';
 
 class Answer_Option extends Kwps_Post_Type{
 
-    public static $numeric_fields = array('_kwps_sort_order');
+    public static $numeric_fields = array(
+        '_kwps_sort_order',
+        '_kwps_answer_option_value',
+    );
 
     public static $required_fields = array(
         'post_content',
@@ -16,6 +19,7 @@ class Answer_Option extends Kwps_Post_Type{
 
     public static $additional_validation_methods = array(
         'check_max_answer_options_per_question',
+        'check_kwps_answer_option_value_required'
     );
 
     public static $meta_data_fields = array(
@@ -107,6 +111,32 @@ class Answer_Option extends Kwps_Post_Type{
             if( 0 < $test_modus['_kwps_max_answer_options_per_question'] ){
                 if( sizeof($all_answer_options_of_same_question) >= $test_modus['_kwps_max_answer_options_per_question']){
                     array_push( $errors, array( 'All', 'Maximum answer options already reached' ) );
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    public static function check_kwps_answer_option_value_required($post){
+        $test_modus = Question::get_test_modus($post['post_parent']);
+        $errors = array();
+
+        if( $test_modus['_kwps_answer_options_require_value'] > 0 ) {
+
+            if(! isset($post['_kwps_answer_option_value'])) {
+                array_push($errors, array( 'field' => '_kwps_answer_option_value', 'message' => 'Required') );
+            } else {
+                if( is_string($post['_kwps_answer_option_value'])){
+                    if( strlen($post['_kwps_answer_option_value']) == 0 ) {
+                        array_push($errors, array( 'field' => '_kwps_answer_option_value', 'message' => 'Required') );
+                    }
+                }
+            }
+
+            if( isset( $post['_kwps_answer_option_value']) ) {
+                if(! is_numeric( $post['_kwps_answer_option_value'] ) ){
+                    array_push( $errors , array( 'field' => '_kwps_answer_option_value', 'message' => 'Needs to be a number') );
                 }
             }
         }

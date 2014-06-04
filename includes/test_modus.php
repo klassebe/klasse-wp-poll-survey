@@ -10,6 +10,7 @@
             '_kwps_max_answer_options_per_question',
             '_kwps_allowed_input_types',
             '_kwps_allowed_output_types',
+            '_kwps_answer_options_require_value',
         );
 
         public static $numeric_fields = array(
@@ -31,6 +32,7 @@
             '_kwps_max_answer_options_per_question',
             '_kwps_allowed_input_types',
             '_kwps_allowed_output_types',
+            '_kwps_answer_options_require_value',
         );
 
         public static $output_types = array();
