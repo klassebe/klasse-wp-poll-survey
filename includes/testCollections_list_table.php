@@ -107,6 +107,7 @@ class Test_Collections_List_Table extends Base_List_Table {
 
         //Build row actions
         $delete_url = sprintf("%spost.php?post=%s&action=%s", get_admin_url() ,$item['ID'], 'delete');
+        $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s", get_admin_url() ,$item['ID'], 'edit');
         $delete_url_with_nonce = wp_nonce_url($delete_url);
         $actions = array(
 //            http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=edit
@@ -124,7 +125,7 @@ class Test_Collections_List_Table extends Base_List_Table {
         );
 
         //Return the post_title contents
-        return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
+        return sprintf('<a href="' . $edit_url . '">%1$s</a><span style="color:silver">(id:%2$s)</span>%3$s',
             /*$1%s*/ $item['post_title'],
             /*$2%s*/ $item['ID'],
             /*$3%s*/ $this->row_actions($actions)
