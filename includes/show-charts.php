@@ -54,6 +54,13 @@
 			<img class="thumbnail" src="images/stacked_bar_chart.png" alt="quiz-respons" height="128" width="128">
 		</label>
 	</div>
+	<div id="result-profile" class="media-item left">
+		<label>
+			<h4>Result Profile</h4>
+			<input type="radio" name="results" value="result_profile">
+			<img class="thumbnail" src="images/stacked_bar_chart.png" alt="result-profile" height="128" width="128">
+		</label>
+	</div>
 </div>
 <div class="clearfix">
 	<button id="add-result-to-editor" class="button">Add Chart</button>
