@@ -1,22 +1,40 @@
-<div>
+<div class="ui-tabs-panel-content-wrapper">
     <h2>{{t "Limit entries"}}</h2>
-
-    <div>
-        <label for="kwps_logged_in_user_limit">{{t "Logged in user"}}</label>
-        <select id="kwps_logged_in_user_limit" name="_kwps_logged_in_user_limit" class="update-main">
-            {{#each kwpsUniquenessTypes.logged_in}}
-            <option value="{{function}}"
-            {{selected this.function ../this.collection._kwps_logged_in_user_limit}} >{{t label}}</option>
-            {{/each}}
-        </select>
-    </div>
-    <div>
-        <label for="kwps_logged_out_user_limit">{{t "Logged out user"}}</label>
-        <select id="kwps_logged_out_user_limit" name="_kwps_logged_out_user_limit" class="update-main">
-            {{#each kwpsUniquenessTypes.logged_out}}
-            <option value="{{function}}"
-            {{selected this.function ../this.collection._kwps_logged_out_user_limit}} >{{t label}}</option>
-            {{/each}}
-        </select>
-    </div>
+    <p>{{t "Here you can set, who can fill in a test."}}</p>
+    <table class="form-table">
+        <tbody>
+            <tr>
+                <th>
+                    <label for="kwps_logged_in_user_limit">
+                        {{t "Logged in user"}}
+                    </label>
+                </th>
+                <td>
+                    <select id="kwps_logged_in_user_limit" name="_kwps_logged_in_user_limit" class="update-main">
+                        {{#each kwpsUniquenessTypes.logged_in}}
+                        <option value="{{function}}"
+                        {{selected this.function ../this.collection._kwps_logged_in_user_limit}} >{{t label}}</option>
+                        {{/each}}
+                    </select>
+                    <p class="description">{{t "How many times can logged in users fill in the test"}}</p>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="kwps_logged_out_user_limit">
+                        {{t "Anonymous user"}}
+                    </label>
+                </th>
+                <td>
+                    <select id="kwps_logged_out_user_limit" name="_kwps_logged_out_user_limit" class="update-main">
+                        {{#each kwpsUniquenessTypes.logged_out}}
+                        <option value="{{function}}"
+                        {{selected this.function ../this.collection._kwps_logged_out_user_limit}} >{{t label}}</option>
+                        {{/each}}
+                    </select>
+                    <p class="description">{{t "How many times can anonymous users fill in the test"}}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
