@@ -1338,7 +1338,7 @@ jQuery(function ($) {
     /* BEGIN RESULT INPUT */
     addResult: function () {
       // $('iframe').contents().find('#tinymce').append('<div class="kwps-chart">Chart will be here</div>');
-      tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show-charts.php?type=image&amp;TB_iframe=true');
+      tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show_charts.php?type=image&amp;TB_iframe=true');
       return false;
     },
     insertChartIntoEditor: function (html) {
