@@ -269,92 +269,12 @@ function enqueue_scripts() {
  * @since    1.0.0
  */
 function enqueue_scripts_admin() {
-    wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( 'js/dist/kwps_admin.js', __FILE__ ), array( 'jquery', 'backbone', 'thickbox', 'media-upload' ));
 
-    $translation_array = array(
-        '_kwps_intro' => __( 'Intro' , 'klasse-wp-poll-survey'),
-        '_kwps_outro' => __( 'Outro' , 'klasse-wp-poll-survey'),
-        '_kwps_question' => __( 'Question' , 'klasse-wp-poll-survey'),
-        'New Test' => __( 'New Test', 'klasse-wp-poll-survey'),
-	    'Builder' => __('Builder', 'klasse-wp-poll-survey'),
-	    'Settings' => __('Settings', 'klasse-wp-poll-survey'),
-	    'Control panel' => __('Control panel', 'klasse-wp-poll-survey'),
-	    'Name' => __('Name', 'klasse-wp-poll-survey'),
-	    'Create' => __('Create', 'klasse-wp-poll-survey', 'klasse-wp-poll-survey'),
-	    'Edit' => __('Edit', 'klasse-wp-poll-survey'),
-	    'Shortcode' => __('Shortcode', 'klasse-wp-poll-survey'),
-	    'View entries' => __('View entries', 'klasse-wp-poll-survey'),
-	    'Results' => __('Results', 'klasse-wp-poll-survey'),
-	    'View count' => __('View count', 'klasse-wp-poll-survey'),
-	    'Conversion Rate' => __('Conversion Rate', 'klasse-wp-poll-survey'),
-	    'Total Participants' => __('Total Participants', 'klasse-wp-poll-survey'),
-	    'Make live' => __('Make live', 'klasse-wp-poll-survey'),
-	    'Add Intro' => __('Add Intro', 'klasse-wp-poll-survey'),
-	    'Intro Result' => __('Intro Result', 'klasse-wp-poll-survey'),
-	    'Add Intro Result' => __('Add Intro Result', 'klasse-wp-poll-survey'),
-	    'Question pages' => __('Question pages', 'klasse-wp-poll-survey'),
-	    'Add question page' => __('Add question page', 'klasse-wp-poll-survey'),
-	    'Questions' => __('Questions', 'klasse-wp-poll-survey'),
-	    'Add question' => __( 'Add question', 'klasse-wp-poll-survey'),
-	    'Answers' => __('Answers', 'klasse-wp-poll-survey'),
-        'Add answer' => __( 'Add answer', 'klasse-wp-poll-survey'),
-	    'Add outro' => __('Add outro', 'klasse-wp-poll-survey'),
-	    'Update' => __('Update', 'klasse-wp-poll-survey'),
-	    'Add results' => __('Add results', 'klasse-wp-poll-survey'),
-	    'Add media' => __('Add media', 'klasse-wp-poll-survey'),
-	    'Value' => __('Value', 'klasse-wp-poll-survey'),
-	    'Title' => __('Title', 'klasse-wp-poll-survey'),
-	    'Value is required' => __('Value is required', 'klasse-wp-poll-survey'),
-	    'Min value' => __('Min value', 'klasse-wp-poll-survey'),
-	    'Max value' => __('Max value', 'klasse-wp-poll-survey'),
-	    'Min value is required' => __('Min value is required', 'klasse-wp-poll-survey'),
-	    'Max value is required' => __('Max value is required', 'klasse-wp-poll-survey'),
-	    'Title is required' => __('Title is required', 'klasse-wp-poll-survey'),
-	    'Name is required' => __('Name is required', 'klasse-wp-poll-survey'),
-	    'Type is required' => __('Type is required', 'klasse-wp-poll-survey'),
-	    'Clear entries' => __('Clear entries', 'klasse-wp-poll-survey'),
-	    'This will delete all entries. Are you sure?' => __('This will delete all entries. Are you sure?', 'klasse-wp-poll-survey'),
-	    'Version' => __('Version', 'klasse-wp-poll-survey'),
-	    'Intro' => __('Intro', 'klasse-wp-poll-survey'),
-	    'Outro' => __('Outro', 'klasse-wp-poll-survey'),
-	    'Intro result' => __('Intro result', 'klasse-wp-poll-survey'),
-	    'Question Group' => __('Question Group', 'klasse-wp-poll-survey'),
-	    'Result Profile' => __('Result Profile', 'klasse-wp-poll-survey'),
-	    'Result Profiles' => __('Result Profiles', 'klasse-wp-poll-survey'),
-	    'Question' => __('Question', 'klasse-wp-poll-survey'),
-	    'Answer Option' => __('Answer Option', 'klasse-wp-poll-survey'),
-	    'Personality test' => __('Personality test', 'klasse-wp-poll-survey'),
-	    'Poll' => __('Poll', 'klasse-wp-poll-survey'),
-	    'Next' => __('Next', 'klasse-wp-poll-survey'),
-	    'Logged in user' => __('Logged in user', 'klasse-wp-poll-survey'),
-	    'Logged out user' => __('Logged out user', 'klasse-wp-poll-survey'),
-	    'Free' => __('Free', 'klasse-wp-poll-survey'),
-	    'Once, based on cookie' => __('Once, based on cookie', 'klasse-wp-poll-survey'),
-	    'Once, based on IP' => __('Once, based on IP', 'klasse-wp-poll-survey'),
-	    'Once, based login' => __('Once, based login', 'klasse-wp-poll-survey'),
-	    'Limit entries' => __('Limit entries', 'klasse-wp-poll-survey'),
-	    'Add result profile' => __('Add result profile', 'klasse-wp-poll-survey'),
-	    'Create new test' => __('Create new test', 'klasse-wp-poll-survey'),
-	    'Test Title' => __('Test Title', 'klasse-wp-poll-survey'),
-	    'This will be the title of your test.' => __('This will be the title of your test.', 'klasse-wp-poll-survey'),
-	    'Test modus' => __('Test modus', 'klasse-wp-poll-survey'),
-	    'Test modi' => __('Test modi', 'klasse-wp-poll-survey'),
-	    'Select the type of test you want to create.' => __('Select the type of test you want to create.', 'klasse-wp-poll-survey')
-	);
-    wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
-
-    wp_enqueue_script( 'jquery' );
-    wp_enqueue_script( 'jquery-ui-core' );
-    wp_enqueue_script( 'jquery-ui-tabs' );
-    wp_enqueue_script( 'klasse-wp-poll-survey-admin');
 }
 
+
+
 function enqueue_styles_admin() {
-    wp_enqueue_style('thickbox');
-    wp_enqueue_style('editor');
-    wp_enqueue_style( 'klasse-wp-poll-survey-plugin-jquery-ui-core', plugins_url( 'css/jquery-ui/jquery.ui.core.min.css', __FILE__ ));
-    wp_enqueue_style( 'klasse-wp-poll-survey-plugin-jquery-ui-tabs', plugins_url( 'css/jquery-ui/jquery.ui.tabs.min.css', __FILE__ ));
-    wp_enqueue_style( 'klasse-wp-poll-survey-plugin-admin-styles', plugins_url( 'css/admin.css', __FILE__ ));
 }
 
 
@@ -367,7 +287,7 @@ function add_plugin_admin_menu() {
 
     add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array('\includes\admin_section', 'display_tests'));
 //    add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array($this, 'display_tests'));
-    add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Add new test', 'klasse-wp-poll-survey' ), __( 'Add new', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_addnew', array('\includes\admin_section', 'display_form'));
+	$kwps_page_addnew = add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Add new test', 'klasse-wp-poll-survey' ), __( 'Add new', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_addnew', array('\includes\admin_section', 'display_form'));
     add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Manage entries', 'klasse-wp-poll-survey' ), __( 'Entries', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_manage_entries', array('\includes\admin_section', 'manage_entries'));
 }
 
