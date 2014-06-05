@@ -69,7 +69,7 @@ class Bar_Chart {
     public static function get_chart($question, $answer_options, $percentages){
         return array(
             'chart' => array( 'type' => 'bar' ),
-            'title' => array( 'text' => $question ),
+            'title' => array( 'text' => $question['post_content'] ),
             'xAxis' => array(
                                 'categories' => $answer_options,
                                 'title' => array( 'text' => null ),
