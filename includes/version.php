@@ -66,10 +66,10 @@ class Version extends Kwps_Post_Type{
     public static function shortcode($atts){
         extract( shortcode_atts( array(
             'id' => 0,
-            'version' => 'all',
+            'url' => '',
         ), $atts ) );
 
-        return static::get_html($id);
+        return static::get_html($id, $url);
     }
 
     public static function save_post($post_data){
@@ -91,44 +91,55 @@ class Version extends Kwps_Post_Type{
         return static::get_as_array($post_id);
     }
 
-    public static function get_html($id){
-	    $version = Version::get_as_array($id);
-        $view_count = (int) $version['_kwps_view_count'];
-        $view_count++;
-	    $version['_kwps_view_count'] = $view_count;
+    public static function get_html($id, $url){
+        if( strlen( $url ) == 0 ) {
+            $version = Version::get_as_array($id);
+            $view_count = (int) $version['_kwps_view_count'];
+            $view_count++;
+            $version['_kwps_view_count'] = $view_count;
 
-        static::save_post($version);
-	    $limitations = Test_Collection::get_meta_data($version['post_parent']);
+            static::save_post($version);
+            $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
-	    if( is_user_logged_in() ){
-		    $limit_to_apply = $limitations['_kwps_logged_in_user_limit'];
-	    } else {
-		    $limit_to_apply = $limitations['_kwps_logged_out_user_limit'];
-	    }
+            if( is_user_logged_in() ){
+                $limit_to_apply = $limitations['_kwps_logged_in_user_limit'];
+            } else {
+                $limit_to_apply = $limitations['_kwps_logged_out_user_limit'];
+            }
 
 
-	    $data = array(
-		    'settings' => array(
-			    'first_question_id_allowed' => -1
-		    )
-	    );
-	    $data['intro'] = Intro::get_one_by_post_parent($id);
-	    $data['outro'] = Outro::get_one_by_post_parent($id);
-	    $data['intro_result'] = Intro_Result::get_one_by_post_parent($id);
-	    $data['question_groups'] = Question_Group::get_all_by_post_parent($id);
+            $data = array(
+                'settings' => array(
+                    'first_question_id_allowed' => -1
+                )
+            );
+            $data['intro'] = Intro::get_one_by_post_parent($id);
+            $data['outro'] = Outro::get_one_by_post_parent($id);
+            $data['intro_result'] = Intro_Result::get_one_by_post_parent($id);
+            $data['question_groups'] = Question_Group::get_all_by_post_parent($id);
 
-        $allowed_to_fill_out_test = false;
-        foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
-		    $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
+            $allowed_to_fill_out_test = false;
+            foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
+                $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
 
-		    foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
-			    if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
-				    $data['settings']['first_question_id_allowed'] = $question['ID'];
-				    $allowed_to_fill_out_test = true;
-			    }
-			    $data['question_groups'][$questionGroupKey]['questions'][$questionKey]['answer_options'] = Answer_Option::get_all_by_post_parent($question['ID']);
-		    }
-	    }
+                foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
+                    if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
+                        $data['settings']['first_question_id_allowed'] = $question['ID'];
+                        $allowed_to_fill_out_test = true;
+                    }
+                    $data['question_groups'][$questionGroupKey]['questions'][$questionKey]['answer_options'] = Answer_Option::get_all_by_post_parent($question['ID']);
+                }
+            }
+        } else {
+            $remote_data = wp_remote_get($url);
+            // TODO add update of remote viewcount
+
+            $version = $remote_data['version'];
+            $data = $remote_data['data'];
+            $allowed_to_fill_out_test = true;
+
+        }
+
 
 	    ob_start();
 
@@ -216,5 +227,47 @@ class Version extends Kwps_Post_Type{
 <?php
         }
 		return ob_get_clean();
+    }
+
+    public static function get_json_for_remote($version_id){
+        $version = Version::get_as_array($version_id);
+        $view_count = (int) $version['_kwps_view_count'];
+        $view_count++;
+        $version['_kwps_view_count'] = $view_count;
+
+        static::save_post($version);
+        $limitations = Test_Collection::get_meta_data($version['post_parent']);
+
+        if( is_user_logged_in() ){
+            $limit_to_apply = $limitations['_kwps_logged_in_user_limit'];
+        } else {
+            $limit_to_apply = $limitations['_kwps_logged_out_user_limit'];
+        }
+
+
+        $data = array(
+            'settings' => array(
+                'first_question_id_allowed' => -1
+            )
+        );
+        $data['intro'] = Intro::get_one_by_post_parent($version_id);
+        $data['outro'] = Outro::get_one_by_post_parent($version_id);
+        $data['intro_result'] = Intro_Result::get_one_by_post_parent($version_id);
+        $data['question_groups'] = Question_Group::get_all_by_post_parent($version_id);
+
+        $allowed_to_fill_out_test = false;
+        foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
+            $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
+
+            foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
+                if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
+                    $data['settings']['first_question_id_allowed'] = $question['ID'];
+                    $allowed_to_fill_out_test = true;
+                }
+                $data['question_groups'][$questionGroupKey]['questions'][$questionKey]['answer_options'] = Answer_Option::get_all_by_post_parent($question['ID']);
+            }
+        }
+
+        return array('version' => $version, 'data' => $data);
     }
 }

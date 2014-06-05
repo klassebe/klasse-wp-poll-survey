@@ -227,12 +227,15 @@ function kwps_add_api_rewrite_rules(){
 add_filter('template_include', 'kwps_template_include', 99);
 
 function kwps_template_include($template){
-//    global $post;
-//
-//    if('kwps_version' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
-//        \includes\version::display_version_as_json();
+    global $post;
+
+    if('kwps_version' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
+        wp_send_json( \includes\Version::get_json_for_remote( $post->ID) ); die;
+//        $version = $remote_data['version'];
+//        $allowed_to_fill_out_test
+//            $data
 //        exit;
-//    }
+    }
 
     return $template;
 }
