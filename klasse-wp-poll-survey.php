@@ -1,6 +1,6 @@
 <?php
 /**
- * Klasse Poll & Survey.
+ * Klasse WordPress Poll & Survey.
  *
  * Embed polls & surveys on your website
  *
@@ -14,14 +14,15 @@
  * Plugin Name:       Klasse WordPress Poll & Survey
  * Plugin URI:        @TODO
  * Description:       Embed polls & surveys on your website
- * Version:           1.0.0
+ * Version:           0.9.0
  * Author:            Toon - Klasse
  * Author URI:        http://klasse.be
- * Text Domain:       @TODO
+ * Text Domain:       klasse-wp-poll-survey
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
  * GitHub Plugin URI: https://github.com/klassebe/klasse-wp-poll-survey
+ * GitHub Branch:     master
  */
 
 // If this file is called directly, abort.
