@@ -173,6 +173,7 @@ function kwps_activate(){
 function create_default_test_modi(){
     $kwps_poll = array(
         'post_title' => 'Poll',
+	    'post_content' => 'Description for Poll',
         'post_name' => 'kwps-poll',
         'post_status' => 'publish',
         'post_type' => 'kwps_test_modus',
@@ -186,6 +187,7 @@ function create_default_test_modi(){
 
     $kwps_personality_test = array(
         'post_title' => 'Personality test',
+        'post_content' => 'Description for Personality test',
         'post_name' => 'kwps-personality-test',
         'post_status' => 'publish',
         'post_type' => 'kwps_test_modus',
@@ -276,7 +278,7 @@ function enqueue_scripts_admin() {
         'New Test' => __( 'New Test', 'klasse-wp-poll-survey'),
 	    'Builder' => __('Builder', 'klasse-wp-poll-survey'),
 	    'Settings' => __('Settings', 'klasse-wp-poll-survey'),
-	    'Poll & Survey Control panel' => __('Poll & Survey Control panel', 'klasse-wp-poll-survey'),
+	    'Control panel' => __('Control panel', 'klasse-wp-poll-survey'),
 	    'Name' => __('Name', 'klasse-wp-poll-survey'),
 	    'Create' => __('Create', 'klasse-wp-poll-survey', 'klasse-wp-poll-survey'),
 	    'Edit' => __('Edit', 'klasse-wp-poll-survey'),
@@ -321,7 +323,7 @@ function enqueue_scripts_admin() {
 	    'Result Profiles' => __('Result Profiles', 'klasse-wp-poll-survey'),
 	    'Question' => __('Question', 'klasse-wp-poll-survey'),
 	    'Answer Option' => __('Answer Option', 'klasse-wp-poll-survey'),
-	    'Personality Test' => __('Personality Test', 'klasse-wp-poll-survey'),
+	    'Personality test' => __('Personality test', 'klasse-wp-poll-survey'),
 	    'Poll' => __('Poll', 'klasse-wp-poll-survey'),
 	    'Next' => __('Next', 'klasse-wp-poll-survey'),
 	    'Logged in user' => __('Logged in user', 'klasse-wp-poll-survey'),
@@ -331,7 +333,13 @@ function enqueue_scripts_admin() {
 	    'Once, based on IP' => __('Once, based on IP', 'klasse-wp-poll-survey'),
 	    'Once, based login' => __('Once, based login', 'klasse-wp-poll-survey'),
 	    'Limit entries' => __('Limit entries', 'klasse-wp-poll-survey'),
-	    'Add result profile' => __('Add result profile', 'klasse-wp-poll-survey')
+	    'Add result profile' => __('Add result profile', 'klasse-wp-poll-survey'),
+	    'Create new test' => __('Create new test', 'klasse-wp-poll-survey'),
+	    'Test Title' => __('Test Title', 'klasse-wp-poll-survey'),
+	    'This will be the title of your test.' => __('This will be the title of your test.', 'klasse-wp-poll-survey'),
+	    'Test modus' => __('Test modus', 'klasse-wp-poll-survey'),
+	    'Test modi' => __('Test modi', 'klasse-wp-poll-survey'),
+	    'Select the type of test you want to create.' => __('Select the type of test you want to create.', 'klasse-wp-poll-survey')
 	);
     wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
