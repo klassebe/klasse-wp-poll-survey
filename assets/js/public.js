@@ -92,17 +92,26 @@ jQuery(function($) {
 				if (selected) {
 					elem.find('.kwps-page').hide;
 
-			    var urlSaveEntry = $('.admin-url').val() + "admin-ajax.php?action=kwps_save_entry";
-			    var urlGetVersionResult = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_of_version";
-			    var urlGetProfileResult = $('.admin-url').val() + "admin-ajax.php?action=kwps_get_result_profile";
+					/* GENERAL AJAX ADMIN URL WITH ACTION KEYWORD INCLUDED */
+					var urlAjaxToAdmin = $('.admin-url').val() + "admin-ajax.php?action=";
+
+					/* AVAILABLE SERVER ACTIONS */
+			    var actionSaveEntry = "kwps_save_entry";
+			    var actionGetVersionResult = "kwps_get_result_of_version";
+			    var actionGetBarChartResult = "kwps_get_bar_chart_per_question";
+			    var actionGetStackedBarChartResult = "kwps_get_stacked_bar_chart_per_question_group";
+			    var actionGetProfileResult = "kwps_get_result_profile";
+
+			    /* OBJECT THAT WILL BE PASSED THROUGHOUT THE ACTION CALLS */
 				  var entryData = {
 				  		ID : '',
 				  		output_type : ''
 				  };
 
+				  /* FIRST AJAX CALL TO SAVE ENTRY */
 			  	$.ajax({
 					    type: "POST",
-					    url: urlSaveEntry,
+					    url: urlAjaxToAdmin + actionSaveEntry,
 					    data: JSON.stringify(entries),
 					    contentType: "application/json; charset=utf-8",
 					    dataType: "json",
@@ -114,10 +123,10 @@ jQuery(function($) {
 					        alert(errMsg);
 					    }
 					});
+
 					// Check if there still is a view open that needs to be sent to the DB,
 					// If so, then add the variables to an array and then after all is done,
 					// get the results from the DB and show outro
-
 					var getResults = function (entryData) {
 
 						var questGroupItems = elem.find('.kwps-question-group');
@@ -133,44 +142,67 @@ jQuery(function($) {
 									// Start doing the requests per div class and set it as output type
 									$.each(elem.find('.kwps-result'), function (key, value) {
 										entryData.output_type = value.classList[1];
-										if (entryData.output_type.match('/chart/')) {
+										if (entryData.output_type.match('chart')) {
 											getChart(entryData);
 										} else {
 											getRawData(entryData);
 										}
-										
 									});
 									elem.find('.kwps-outro').show();
 								}
 							}
-						} 
+						}
 					};
 
 					var getChart = function (entryData) {
+						var urlGetDataForChart;
+						switch (entryData.output_type) {
+							case 'bar-chart-per-question':
+								urlGetDataForChart = urlAjaxToAdmin + actionGetBarChartResult;
+								break;
+							case 'pie-chart-per-question':
+								urlGetDataForChart = urlAjaxToAdmin + actionGetPieChartResult;
+								break;
+							case 'stacked-bar-chart-per-question-group':
+								urlGetDataForChart = urlAjaxToAdmin + actionGetStackedBarChartResult;
+								break;
+							default:
+								alert('No defined chart was found!');
+						}
+
+						if (urlGetDataForChart) {
 							$.ajax({
-					  			type: "POST",
-					  			url: urlGetVersionResult,
-					  			data: JSON.stringify(entryData),
-					  			contentType: "application/json; charset=utf-8",
-					  			dataType: "json",
-					  			success: function (data) {
-					  				// The class is passed through output type
-					  				// so look for that div and append the highchart to it
-                    elem.find('.'+entryData.output_type).highcharts(data);
-							    },
-							    async: false
-					  		});			
+				  			type: "POST",
+				  			url: urlGetDataForChart,
+				  			data: JSON.stringify(entryData),
+				  			contentType: "application/json; charset=utf-8",
+				  			dataType: "json",
+				  			success: function (data) {
+				  				// The class is passed through output type
+				  				// so look for that div and append the highchart to it
+				  				console.log(JSON.stringify(data));
+				  				console.log(data);
+                  elem.find('.'+entryData.output_type).highcharts(data);
+						    },
+						    async: false
+				  		});
+						}
 						elem.find('.kwps-intro').hide();
 					};
 					var getRawData = function (entryData) {
 						$.ajax({
 							type: "POST",
-							url: urlGetProfileResult,
+							url: urlAjaxToAdmin + actionGetProfileResult,
 							data: JSON.stringify(entryData),
 							contentType: "application/json; charset=utf-8",
 							dataType: "json",
 							success: function (data) {
-								elem.find('.'+entryData.output_type).text(data[0].message);
+								if (data[0] && data[0].message) {
+									elem.find('.'+entryData.output_type).text(data[0].message);
+								} else {
+									elem.find('.'+entryData.output_type).text(data['post_content']);
+								}
+								
 							},
 							async: false
 						});
