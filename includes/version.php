@@ -223,6 +223,7 @@ class Version extends Kwps_Post_Type{
                 </div>
             <?php endif; ?>
             <input type="hidden" class="admin-url" value="<?php echo admin_url(); ?>">
+            <input type="hidden" class="remote-url" value="<?php echo $url; ?>">
         </div>
 <?php
         }
