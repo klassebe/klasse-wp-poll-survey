@@ -95,10 +95,9 @@ class Version extends Kwps_Post_Type{
 	    $version = Version::get_as_array($id);
         $view_count = (int) $version['_kwps_view_count'];
         $view_count++;
-        $version['_kwps_view_count'] = $view_count;
+	    $version['_kwps_view_count'] = $view_count;
 
         static::save_post($version);
-
 	    $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
 	    if( is_user_logged_in() ){
@@ -134,7 +133,7 @@ class Version extends Kwps_Post_Type{
 	    ob_start();
 
 
-        if( $version['post_status'] == 'locked' || !$allowed_to_fill_out_test) {
+        if( in_array($version['post_status'], array('locked', 'trash')) || !$allowed_to_fill_out_test) {
             ?>
             <div class="kwps-version">
                 <?php if(!empty($data['intro_result'])): ?>

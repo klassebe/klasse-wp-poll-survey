@@ -1,19 +1,40 @@
+<h2>{{t "Create new test"}}</h2>
 <form id="create-new-test">
-	<label>{{t "Name"}}</label>
-    <div class="form-group">
-	<input name="post_title"><span class="help-block hidden"></span>
-    </div>
-    <div class="form-group">
-	<ul>
-		{{#each kwpsTestModi}}
-
-            <label for="kwpsTestModi_{{ID}}"><input type="radio" value="{{ID}}" name="post_parent" id="kwpsTestModi_{{ID}}"> {{t post_title}}</label>
-		{{/each}}
-
-	</ul>            <span class="help-block hidden"></span>
-
-    </div>
-	<div>
-		<button type="submit">{{t "Create"}}</button>
-	</div>
+<table class="form-table">
+	<tbody>
+		<tr>
+			<th>
+				<label for="post_title">{{t "Test Title"}}</label>
+			</th>
+			<td>
+				<input name="post_title" id="post_title" class="regular-text"><span class="help-block hidden"></span>
+				<p class="description">{{t "This will be the title of you test."}}</p>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				<label for="kwpsTestModi">{{t "Test Title"}}</label>
+			</th>
+			<td>
+				<fieldset>
+					<legend class="screen-reader-text">
+						<span>Test modie</span>
+					</legend>
+					{{#each kwpsTestModi}}
+						<label for="kwpsTestModi_{{ID}}" >
+							<input type="radio" value="{{ID}}" name="post_parent" id="kwpsTestModi_{{ID}}">
+							<span>{{t post_title}}</span>
+							<p>{{t post_content}}</p>
+						</label><br>
+					{{/each}}
+				</fieldset>
+				<span class="help-block hidden"></span>
+				<p class="description">{{t "Select the type of test you want to create."}}</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p class="submit">
+	<button type="submit" class="button button-primary">{{t "Create"}}</button>
+</p>
 </form>
