@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Klasse WordPress Poll & Survey\n"
-"POT-Creation-Date: 2014-06-03 23:23+0100\n"
-"PO-Revision-Date: 2014-06-03 23:24+0100\n"
+"POT-Creation-Date: 2014-06-05 11:05+0100\n"
+"PO-Revision-Date: 2014-06-05 11:05+0100\n"
 "Last-Translator: AppSaloon - koen <koen@appsaloon.be>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -97,43 +97,43 @@ msgid_plural " <span class=\"count\">(%s)</span>"
 msgstr[0] " <span class=\"count\">(%s)</span>"
 msgstr[1] " <span class=\"count\">(%s)</span>"
 
-#: includes/testCollections_list_table.php:114 klasse-wp-poll-survey.php:273
+#: includes/testCollections_list_table.php:115 klasse-wp-poll-survey.php:282
 msgid "Edit"
 msgstr "Wijzig"
 
-#: includes/testCollections_list_table.php:123
-#: includes/testCollections_list_table.php:219
+#: includes/testCollections_list_table.php:124
+#: includes/testCollections_list_table.php:220
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: includes/testCollections_list_table.php:169 klasse-wp-poll-survey.php:295
+#: includes/testCollections_list_table.php:170 klasse-wp-poll-survey.php:304
 msgid "Title"
 msgstr "Titel"
 
-#: includes/testCollections_list_table.php:170
+#: includes/testCollections_list_table.php:171
 msgid "Views"
 msgstr "Aantal keren bekeken"
 
-#: includes/testCollections_list_table.php:172
+#: includes/testCollections_list_table.php:173
 msgid "Date"
 msgstr "Datum"
 
 #: includes/uniqueness.php:42 includes/uniqueness.php:63
-#: includes/uniqueness.php:85 klasse-wp-poll-survey.php:320
+#: includes/uniqueness.php:85 klasse-wp-poll-survey.php:329
 msgid "Free"
 msgstr "Vrij"
 
 #: includes/uniqueness.php:46 includes/uniqueness.php:67
-#: klasse-wp-poll-survey.php:321
+#: klasse-wp-poll-survey.php:330
 msgid "Once, based on cookie"
 msgstr "Eenmalig, gebaseerd op cookie"
 
 #: includes/uniqueness.php:50 includes/uniqueness.php:71
-#: klasse-wp-poll-survey.php:322
+#: klasse-wp-poll-survey.php:331
 msgid "Once, based on IP"
 msgstr "Eenmalig, gebaseerd op IP-adres"
 
-#: includes/uniqueness.php:54 klasse-wp-poll-survey.php:323
+#: includes/uniqueness.php:54 klasse-wp-poll-survey.php:332
 msgid "Once, based login"
 msgstr "Eenmalig, gebaseerd op login"
 
@@ -169,240 +169,264 @@ msgstr "Je moet aangemeld zijn"
 msgid "Only logged in users"
 msgstr "Enkel aangemelde gebruikers"
 
-#: includes/version.php:174 includes/version.php:201
-#: klasse-wp-poll-survey.php:317
+#: includes/version.php:162 includes/version.php:189
+#: klasse-wp-poll-survey.php:326
 msgid "Next"
 msgstr "Volgende"
 
-#: klasse-wp-poll-survey.php:264 klasse-wp-poll-survey.php:307
+#: klasse-wp-poll-survey.php:273 klasse-wp-poll-survey.php:316
 msgid "Intro"
 msgstr "Intro"
 
-#: klasse-wp-poll-survey.php:265 klasse-wp-poll-survey.php:308
+#: klasse-wp-poll-survey.php:274 klasse-wp-poll-survey.php:317
 msgid "Outro"
 msgstr "Outro"
 
-#: klasse-wp-poll-survey.php:266 klasse-wp-poll-survey.php:313
+#: klasse-wp-poll-survey.php:275 klasse-wp-poll-survey.php:322
 msgid "Question"
 msgstr "Vraag"
 
-#: klasse-wp-poll-survey.php:267 views/add.php:10
+#: klasse-wp-poll-survey.php:276 views/add.php:10
 msgid "New Test"
 msgstr "Nieuwe Test"
 
-#: klasse-wp-poll-survey.php:268
+#: klasse-wp-poll-survey.php:277
 msgid "Builder"
 msgstr "Bouwer"
 
-#: klasse-wp-poll-survey.php:269
+#: klasse-wp-poll-survey.php:278
 msgid "Settings"
 msgstr "Instellingen"
 
-#: klasse-wp-poll-survey.php:270
-msgid "Poll & Survey Control panel"
-msgstr "Poll & Survey beheerpaneel"
+#: klasse-wp-poll-survey.php:279
+msgid "Control panel"
+msgstr "Beheerpaneel"
 
-#: klasse-wp-poll-survey.php:271
+#: klasse-wp-poll-survey.php:280
 msgid "Name"
 msgstr "Naam"
 
-#: klasse-wp-poll-survey.php:272
+#: klasse-wp-poll-survey.php:281
 msgid "Create"
 msgstr "Maak"
 
-#: klasse-wp-poll-survey.php:274
+#: klasse-wp-poll-survey.php:283
 msgid "Shortcode"
 msgstr "Shortcode"
 
-#: klasse-wp-poll-survey.php:275
+#: klasse-wp-poll-survey.php:284
 msgid "View entries"
 msgstr "Beheer invoer"
 
-#: klasse-wp-poll-survey.php:276
+#: klasse-wp-poll-survey.php:285
 msgid "Results"
 msgstr "Resultaten"
 
-#: klasse-wp-poll-survey.php:277
+#: klasse-wp-poll-survey.php:286
 msgid "View count"
 msgstr "Aantal keren bekeken\t"
 
-#: klasse-wp-poll-survey.php:278
+#: klasse-wp-poll-survey.php:287
 msgid "Conversion Rate"
 msgstr "Conversie"
 
-#: klasse-wp-poll-survey.php:279
+#: klasse-wp-poll-survey.php:288
 msgid "Total Participants"
 msgstr "Aantal deelnemers"
 
-#: klasse-wp-poll-survey.php:280
+#: klasse-wp-poll-survey.php:289
 msgid "Make live"
 msgstr "Maak live"
 
-#: klasse-wp-poll-survey.php:281
+#: klasse-wp-poll-survey.php:290
 msgid "Add Intro"
 msgstr "Voeg intro toe"
 
-#: klasse-wp-poll-survey.php:282
+#: klasse-wp-poll-survey.php:291
 msgid "Intro Result"
 msgstr "Pagina na invullen"
 
-#: klasse-wp-poll-survey.php:283
+#: klasse-wp-poll-survey.php:292
 msgid "Add Intro Result"
 msgstr "Voeg tekst na invullen toe"
 
-#: klasse-wp-poll-survey.php:284
+#: klasse-wp-poll-survey.php:293
 msgid "Question pages"
 msgstr "Pagina's"
 
-#: klasse-wp-poll-survey.php:285
+#: klasse-wp-poll-survey.php:294
 msgid "Add question page"
 msgstr "Voeg pagina toe"
 
-#: klasse-wp-poll-survey.php:286
+#: klasse-wp-poll-survey.php:295
 msgid "Questions"
 msgstr "Vragen"
 
-#: klasse-wp-poll-survey.php:287
+#: klasse-wp-poll-survey.php:296
 msgid "Add question"
 msgstr "Vraag toevoegen"
 
-#: klasse-wp-poll-survey.php:288
+#: klasse-wp-poll-survey.php:297
 msgid "Answers"
 msgstr "Antwoorden"
 
-#: klasse-wp-poll-survey.php:289
+#: klasse-wp-poll-survey.php:298
 msgid "Add answer"
 msgstr "Antwoord toevoegen"
 
-#: klasse-wp-poll-survey.php:290
+#: klasse-wp-poll-survey.php:299
 msgid "Add outro"
 msgstr "Outro toevoegen"
 
-#: klasse-wp-poll-survey.php:291
+#: klasse-wp-poll-survey.php:300
 msgid "Update"
 msgstr "Aanpassen"
 
-#: klasse-wp-poll-survey.php:292
+#: klasse-wp-poll-survey.php:301
 msgid "Add results"
 msgstr "Voeg resultaten toe"
 
-#: klasse-wp-poll-survey.php:293
+#: klasse-wp-poll-survey.php:302
 msgid "Add media"
 msgstr "Voeg media toe"
 
-#: klasse-wp-poll-survey.php:294
+#: klasse-wp-poll-survey.php:303
 msgid "Value"
 msgstr "Waarde"
 
-#: klasse-wp-poll-survey.php:296
+#: klasse-wp-poll-survey.php:305
 msgid "Value is required"
 msgstr "Waarde is verplicht"
 
-#: klasse-wp-poll-survey.php:297
+#: klasse-wp-poll-survey.php:306
 msgid "Min value"
 msgstr "Min waarde"
 
-#: klasse-wp-poll-survey.php:298
+#: klasse-wp-poll-survey.php:307
 msgid "Max value"
 msgstr "Max waarde"
 
-#: klasse-wp-poll-survey.php:299
+#: klasse-wp-poll-survey.php:308
 msgid "Min value is required"
 msgstr "Min waarde is verplicht"
 
-#: klasse-wp-poll-survey.php:300
+#: klasse-wp-poll-survey.php:309
 msgid "Max value is required"
 msgstr "Max waarde is verplicht"
 
-#: klasse-wp-poll-survey.php:301
+#: klasse-wp-poll-survey.php:310
 msgid "Title is required"
 msgstr "Titel is verplicht"
 
-#: klasse-wp-poll-survey.php:302
+#: klasse-wp-poll-survey.php:311
 msgid "Name is required"
 msgstr "Naam is verplicht"
 
-#: klasse-wp-poll-survey.php:303
+#: klasse-wp-poll-survey.php:312
 msgid "Type is required"
 msgstr "Type is verplicht"
 
-#: klasse-wp-poll-survey.php:304
+#: klasse-wp-poll-survey.php:313
 msgid "Clear entries"
 msgstr "Verwijder invoer"
 
-#: klasse-wp-poll-survey.php:305
+#: klasse-wp-poll-survey.php:314
 msgid "This will delete all entries. Are you sure?"
 msgstr "Alle invoer zal verwijderd worden. Ben je zeker?"
 
-#: klasse-wp-poll-survey.php:306
+#: klasse-wp-poll-survey.php:315
 msgid "Version"
 msgstr "Versie"
 
-#: klasse-wp-poll-survey.php:309
+#: klasse-wp-poll-survey.php:318
 msgid "Intro result"
 msgstr "Pagina na invullen"
 
-#: klasse-wp-poll-survey.php:310
+#: klasse-wp-poll-survey.php:319
 msgid "Question Group"
 msgstr "Vragengroep"
 
-#: klasse-wp-poll-survey.php:311
+#: klasse-wp-poll-survey.php:320
 msgid "Result Profile"
 msgstr "Profiel"
 
-#: klasse-wp-poll-survey.php:312
+#: klasse-wp-poll-survey.php:321
 msgid "Result Profiles"
 msgstr "Profielen"
 
-#: klasse-wp-poll-survey.php:314
+#: klasse-wp-poll-survey.php:323
 msgid "Answer Option"
 msgstr "Antwoordoptie"
 
-#: klasse-wp-poll-survey.php:315
-msgid "Personality Test"
+#: klasse-wp-poll-survey.php:324
+msgid "Personality test"
 msgstr "Persoonlijkheidstest"
 
-#: klasse-wp-poll-survey.php:316
+#: klasse-wp-poll-survey.php:325
 msgid "Poll"
 msgstr "Poll"
 
-#: klasse-wp-poll-survey.php:318
+#: klasse-wp-poll-survey.php:327
 msgid "Logged in user"
 msgstr "Aangemelde gebruikers"
 
-#: klasse-wp-poll-survey.php:319
+#: klasse-wp-poll-survey.php:328
 msgid "Logged out user"
 msgstr "Niet-aangemelde gebruikers"
 
-#: klasse-wp-poll-survey.php:324
+#: klasse-wp-poll-survey.php:333
 msgid "Limit entries"
 msgstr "Beperk invoer"
 
-#: klasse-wp-poll-survey.php:325
+#: klasse-wp-poll-survey.php:334
 msgid "Add result profile"
 msgstr "Voeg profiel toe"
 
-#: klasse-wp-poll-survey.php:351
+#: klasse-wp-poll-survey.php:335
+msgid "Create new test"
+msgstr "Voeg nieuwe test toe"
+
+#: klasse-wp-poll-survey.php:336
+msgid "Test Title"
+msgstr "Titel van de test"
+
+#: klasse-wp-poll-survey.php:337
+msgid "This will be the title of your test."
+msgstr "Dit wordt de titel van uw test."
+
+#: klasse-wp-poll-survey.php:338
+msgid "Test modus"
+msgstr "Testmodus"
+
+#: klasse-wp-poll-survey.php:339
+msgid "Test modi"
+msgstr "Testmodi"
+
+#: klasse-wp-poll-survey.php:340
+msgid "Select the type of test you want to create."
+msgstr "Kies het type van de test die je wilt maken."
+
+#: klasse-wp-poll-survey.php:366
 msgid "Tests"
 msgstr "Tests"
 
-#: klasse-wp-poll-survey.php:351
+#: klasse-wp-poll-survey.php:366
 msgid "Poll & Survey"
 msgstr "Poll & Survey"
 
-#: klasse-wp-poll-survey.php:353
+#: klasse-wp-poll-survey.php:368
 msgid "Add new test"
 msgstr "Voeg nieuwe test toe"
 
-#: klasse-wp-poll-survey.php:353
+#: klasse-wp-poll-survey.php:368
 msgid "Add new"
 msgstr "Voeg toe"
 
-#: klasse-wp-poll-survey.php:354 views/add.php:17
+#: klasse-wp-poll-survey.php:369 views/add.php:17
 msgid "Manage entries"
 msgstr "Beheer invoer"
 
-#: klasse-wp-poll-survey.php:354
+#: klasse-wp-poll-survey.php:369
 msgid "Entries"
 msgstr "Invoer"
 
