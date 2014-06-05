@@ -46,7 +46,7 @@ require_once __DIR__ . '/includes/locked.php';
 require_once __DIR__ . '/includes/uniqueness.php';
 require_once __DIR__ . '/includes/result.php';
 require_once __DIR__ . '/includes/result_profile.php';
-require_once __DIR__ . '/includes/bar_chart.php';
+require_once __DIR__ . '/includes/bar-chart.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
