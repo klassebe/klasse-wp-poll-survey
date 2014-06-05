@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klasse WordPress Poll & Survey\n"
 "POT-Creation-Date: 2014-06-05 11:05+0100\n"
-"PO-Revision-Date: 2014-06-05 11:05+0100\n"
+"PO-Revision-Date: 2014-06-05 11:19+0100\n"
 "Last-Translator: AppSaloon - koen <koen@appsaloon.be>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -364,7 +364,7 @@ msgstr "Persoonlijkheidstest"
 
 #: klasse-wp-poll-survey.php:325
 msgid "Poll"
-msgstr "Poll"
+msgstr "Opiniepeiling"
 
 #: klasse-wp-poll-survey.php:327
 msgid "Logged in user"
