@@ -59,14 +59,18 @@ class Bar_Chart {
             }
 
             $version = Entry::get_version($request_data['ID']);
-            $bar_chart = static::get_chart($question, $answer_option_contents, $percentages);
+            $data = array( $question, $answer_option_contents, $percentages );
+            $bar_chart = static::get_chart($data);
             wp_send_json( $bar_chart );
         }
 
         die();
     }
 
-    public static function get_chart($question, $answer_options, $percentages){
+    public static function get_chart($data){
+        $question = $data[0];
+        $answer_options = $data[1];
+        $percentages = $data[2];
         return array(
             'chart' => array( 'type' => 'bar' ),
             'title' => array( 'text' => $question['post_content'] ),
