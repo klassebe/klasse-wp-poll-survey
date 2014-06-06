@@ -24,17 +24,17 @@ class Pie_Chart extends Bar_Chart
 
             foreach($answer_options as $answer_option){
                 $entries = Entry::get_all_by_post_parent($answer_option['ID']);
-                $entry_totals_per_answer_option[$answer_option['ID']] = sizeof($entries);
+                $entry_totals_per_answer_option[] =
+                    array( $answer_option['post_content'] ,sizeof($entries) );
                 $answer_option_contents[] = $answer_option['post_content'];
                 $total_entries += sizeof($entries);
             }
 
-            $combined_data = array();
+            $pie_data = array();
 
-            foreach($entry_totals_per_answer_option as $id => $count){
-                $combined_data[] = array(  );
-                $percentages[] = $count/$total_entries*100;
-
+            foreach($entry_totals_per_answer_option as $answer_option_info){
+                $percentage = $answer_option_info[1]/$total_entries*100;
+                $pie_data[] = array( $answer_option_info[0] , $percentage );
             }
             // samenvoegen van answer option met percentage, array per regel
             // [['answer option', 'percentage'], ['answer option', 'percentage'], ...]
@@ -42,14 +42,18 @@ class Pie_Chart extends Bar_Chart
 
             // waar gaat version naartoe?
             $version = Entry::get_version($request_data['ID']);
-            $pie_chart = static::get_chart($question, $pie_data);
+//            $pie_chart = static::get_chart($question, $pie_data);
+            $data = array( $question, $pie_data );
+            $pie_chart = static::get_chart($data);
             wp_send_json( $pie_chart );
         }
 
         die();
     }
 
-    public static function get_chart($question, $pie_data) {
+    public static function get_chart($data) {
+        $question = $data[0];
+        $pie_data = $data[1];
         return array(
             'chart' => array( 'plotBackgroundColor' => null, 'plotBorderWidth' => null, 'plotShadow' => false ),
             'title' => array( 'text' => $question['post_content'] ),

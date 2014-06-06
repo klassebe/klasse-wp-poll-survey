@@ -99,6 +99,7 @@ jQuery(function($) {
 			    var actionSaveEntry = "kwps_save_entry";
 			    var actionGetVersionResult = "kwps_get_result_of_version";
 			    var actionGetBarChartResult = "kwps_get_bar_chart_per_question";
+			    var actionGetPieChartResult = "kwps_get_pie_chart_per_question";
 			    var actionGetStackedBarChartResult = "kwps_get_stacked_bar_chart_per_question_group";
 			    var actionGetProfileResult = "kwps_get_result_profile";
 
