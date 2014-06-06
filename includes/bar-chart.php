@@ -85,7 +85,7 @@ class Bar_Chart {
             'exporting' => array( 'enabled' => false ),
             'legend' => array( 'enabled' => false ),
             'credits' => array( 'enabled' => false ),
-            'series' => array( 'name' => 'Votes', 'data' => $percentages),
+            'series' => array(array( 'name' => 'Votes', 'data' => $percentages)),
         );
     }
 } 

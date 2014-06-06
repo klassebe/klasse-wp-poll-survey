@@ -3,21 +3,21 @@
     {{#each versions}}
         <th style="border-top: 1px solid #D6D6D6;" class="column-title bottom" data-post-id="{{ID}}">
             <div class="column-tab">
-                {{t "Shortcode"}}: [kwps_version id={{ID}}]
-            </div>
+                {{t "Shortcode"}}: <code>[kwps_version id={{ID}}]</code>
 
-            {{#if isLive}}
-                <div>
-                    <h3>{{t "Results"}}: </h3>
-                    <ul>
-                        <li>{{t "View count"}}: {{_kwps_view_count}}</li>
-                        <li>{{t "Conversion Rate"}}: {{conversion_rate_percentage}}%</li>
-                        <li>{{t "Total Participants"}}: {{total_participants}}</li>
-                    </ul>
-                </div>
-            {{else}}
-                <span><a href="#" class="clear-entries">{{t "Clear entries"}}</a></span>
-            {{/if}}
+                {{#if isLive}}
+                    <div>
+                        <h3>{{t "Results"}}: </h3>
+                        <ul>
+                            <li>{{t "View count"}}: {{_kwps_view_count}}</li>
+                            <li>{{t "Conversion Rate"}}: {{conversion_rate_percentage}}%</li>
+                            <li>{{t "Total Participants"}}: {{total_participants}}</li>
+                        </ul>
+                    </div>
+                {{else}}
+                    <span><a href="#" class="clear-entries">{{t "Clear entries"}}</a></span>
+                {{/if}}
+            </div>
         </th>
     {{/each}}
     <td style="border-top: 1px solid #D6D6D6;">&nbsp;</td>

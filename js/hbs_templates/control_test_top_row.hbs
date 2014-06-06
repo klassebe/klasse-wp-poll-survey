@@ -1,10 +1,10 @@
 <tr data-post-type="kwps_version">
     <th class="no-delete column-action">&nbsp;</th>
     {{#each versions}}
-        <th class=" column-title" data-version-id="{{ID}}">
+        <th class=" column-title top" data-version-id="{{ID}}">
             <div class="column-tab">
                 {{#if editable}}
-                <input class="update-version-post-title" name="post_title" value="{{post_title}}">
+                <input type="text" class="update-version-post-title" name="post_title" value="{{post_title}}">
 
                 {{#if deleteVersion}}
                     <span class="del" data-version-id="{{ID}}">
@@ -15,17 +15,18 @@
                 {{post_title}}
                 {{/if}}
                 {{#if isLive}}
-                    {{t "Live!"}}
+                    <span class="label label-warning">{{t "Live!"}}</span>
+                    <button class="make make-locked button button-primary"> <span class="dashicons dashicons-lock"></span> {{t "Lock"}}</button>
                 {{else}}
-                    <button class="make-live button">{{t "Make live"}}</button>
+                    <button class="make make-live button button-primary">{{t "Make live"}}</button>
                 {{/if}}
             </div>
         </th>
     {{/each}}
-    <td class="column-title" style="width:85px;">
+    <td class="column-title" style="width:105px;">
         <div class="column-tab">
             <button class="add button" data-post-type="kwps_version">
-                <span data-code="f132" class="dashicons dashicons-plus"></span>
+                <span data-code="f132" class="dashicons dashicons-plus"></span> Version
             </button>
         </div>
     </td>
