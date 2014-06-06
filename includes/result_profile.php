@@ -105,7 +105,9 @@ class Result_Profile extends Kwps_Post_Type {
         $result_profiles = Result_Profile::get_all_by_post_parent( $version['ID'] );
 
         $current_user_entries =
-            Entry::get_all_by_user_hash_and_version( $_COOKIE['klasse_wp_poll_survey'], $version['ID'] );
+            Entry::get_all_by_session_hash_and_version( $version['ID'] );
+
+        Session::unset_version_info( $version['ID'] );
 
         $sum_of_values = 0;
         foreach($current_user_entries as $entry){

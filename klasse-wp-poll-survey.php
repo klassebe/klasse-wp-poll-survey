@@ -47,6 +47,7 @@ require_once __DIR__ . '/includes/uniqueness.php';
 require_once __DIR__ . '/includes/result.php';
 require_once __DIR__ . '/includes/result_profile.php';
 require_once __DIR__ . '/includes/bar-chart.php';
+require_once __DIR__ . '/includes/session.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -88,6 +89,11 @@ add_action( 'init', array('\includes\duplicate','register_post_status' ));
 add_action( 'init', array('\includes\locked','register_post_status' ));
 
 add_action( 'init', array('\includes\uniqueness','set_cookie' ));
+
+add_action('init', array( '\includes\session', 'myStartSession' ), 1  );
+add_action('wp_logout', array( '\includes\session', 'myEndSession' ) );
+add_action('wp_login', array( '\includes\session', 'myEndSession' ) );
+
 
 add_filter( 'display_post_states', array('\includes\duplicate','display_post_status'), 10,2);
 
