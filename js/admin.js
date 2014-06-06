@@ -28,6 +28,7 @@ jQuery(function ($) {
     return obj;
   };
 
+
   _.extend(Backbone.Validation.callbacks, {
     valid: function (view, attr, selector) {
       var $el = view.$('[name=' + attr + ']'),
@@ -1329,6 +1330,7 @@ jQuery(function ($) {
       tinymce.init({
         menubar: false,
         visual: true,
+        statusbar: false,
         selector: "textarea",
         plugins: "code link hr paste lists table textcolor wordcount charmap",
         toolbar: ["bold italic strikethrough bullist numlist blockquote hr alignleft aligncenter alignright link unlink", 
