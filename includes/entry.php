@@ -22,7 +22,8 @@ class Entry extends Kwps_Post_Type{
         '_kwps_sort_order',
         '_kwps_cookie_value',
         '_kwps_ip_address',
-	    '_kwps_hash'
+	    '_kwps_hash',
+        '_kwps_session',
     );
 
     public static $rewrite = array(
@@ -86,6 +87,10 @@ class Entry extends Kwps_Post_Type{
             $request_data[$key]['_kwps_cookie_value'] = $_COOKIE['klasse_wp_poll_survey'];
             $request_data[$key]['_kwps_ip_address'] = Uniqueness::get_ip_of_user();
             $request_data[$key]['post_author'] = get_current_user_id();
+
+            $version = Answer_Option::get_version( $request_data[$key]['post_parent'] );
+            $version_id = $version['ID'];
+            $request_data[$key]['_kwps_session'] = Session::get_version_info($version_id);
         }
 
         $errors = static::validate_for__bulk_insert($request_data);
@@ -196,6 +201,37 @@ class Entry extends Kwps_Post_Type{
                 array(
                     'key' => '_kwps_cookie_value',
                     'value' => $user_hash,
+                ),
+            ),
+            'post_status' => array( 'draft', 'publish'),
+        );
+        $entries_by_user_hash = get_posts( $args );
+        $entries_by_user_hash_with_meta = array();
+
+        foreach($entries_by_user_hash as $entry_by_user_hash){
+            array_push( $entries_by_user_hash_with_meta, static::get_as_array( $entry_by_user_hash->ID ) );
+        }
+
+
+        $entries = array();
+
+        foreach($entries_by_user_hash_with_meta as $entry){
+            $version = static::get_version( $entry['ID'] );
+            if( $version['ID'] == $version_id ) {
+                array_push($entries, $entry);
+            }
+        }
+
+        return $entries;
+    }
+
+    static function get_all_by_session_hash_and_version($version_id){
+        $args = array(
+            'post_type' => static::$post_type,
+            'meta_query' => array(
+                array(
+                    'key' => '_kwps_session',
+                    'value' => Session::get_version_info($version_id),
                 ),
             ),
             'post_status' => array( 'draft', 'publish'),

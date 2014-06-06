@@ -130,7 +130,9 @@ class Version extends Kwps_Post_Type{
 		    }
 	    }
 
-	    ob_start();
+        Session::set_version_info($id);
+
+        ob_start();
 
 
         if( in_array($version['post_status'], array('locked', 'trash')) || !$allowed_to_fill_out_test) {
