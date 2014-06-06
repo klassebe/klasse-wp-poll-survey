@@ -54,7 +54,7 @@ class Pie_Chart extends Bar_Chart
             'chart' => array( 'plotBackgroundColor' => null, 'plotBorderWidth' => null, 'plotShadow' => false ),
             'title' => array( 'text' => $question['post_content'] ),
             'tooltip' => array( 'pointFormat' => '{series.name}: <b>{point.percentage:.1f}%</b>'),
-            'plotOptions' => array( 'pie' => array( 'allowPointSelect' => true, 'cursor' => 'pointer', 'dataLabels' => array( 'enabled' => true, 'format' => '<b>{point.name}</b>: {point.percentage:.1f} %', 'style' => array( 'color' => "(Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'") ) ) ),
+            'plotOptions' => array( 'pie' => array( 'allowPointSelect' => true, 'cursor' => 'pointer', 'dataLabels' => array( 'enabled' => true, 'format' => '<b>{point.name}</b>: {point.percentage:.1f} %', 'style' => array( 'color' => (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') ) ) ),
             
             'exporting' => array( 'enabled' => false ),
             'legend' => array( 'enabled' => false ),
