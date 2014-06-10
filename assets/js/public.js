@@ -19,18 +19,23 @@ jQuery(function($) {
 	$.fn.pollPlugin = function ( options ) {
 		return this.each( function ( ) {
 			var elem = $( this );
-			if (elem.find('.kwps-intro-result').length === 0) {
-				if (elem.find('.kwps-intro').length == 0) {
-					if (elem.find('.kwps-question-group').length == 0) {
-						elem.find('.kwps-outro').show();
+			// console.log(elem[0].children.length);
+			if (elem[0].children.length === 0) {
+				elem.html('FOUTE ID!');
+			} else {
+				if (elem.find('.kwps-intro-result').length === 0) {
+					if (elem.find('.kwps-intro').length == 0) {
+						if (elem.find('.kwps-question-group').length == 0) {
+							elem.find('.kwps-outro').show();
+						} else {
+							elem.find('.kwps-question-group').show();
+						}
 					} else {
-						elem.find('.kwps-question-group').show();
+						elem.find('.kwps-intro').show();
 					}
 				} else {
-					elem.find('.kwps-intro').show();
+					elem.find('.kwps-intro-result').show();
 				}
-			} else {
-				elem.find('.kwps-intro-result').show();
 			}
 
 			elem.find('.kwps-next').on('click', function () {
