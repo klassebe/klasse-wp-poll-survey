@@ -199,9 +199,9 @@ jQuery(function($) {
 							dataType: "json",
 							success: function (data) {
 								if (data[0] && data[0].message) {
-									elem.find('.'+entryData.output_type).text(data[0].message);
+									elem.find('.'+entryData.output_type).html(data[0].message);
 								} else {
-									elem.find('.'+entryData.output_type).text(data['post_content']);
+									elem.find('.'+entryData.output_type).html(data['post_content']);
 								}
 								
 							},
