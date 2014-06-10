@@ -1328,11 +1328,13 @@ jQuery(function ($) {
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({
+
         menubar: false,
         visual: true,
         statusbar: false,
+        relative_urls: false,
         selector: "textarea",
-        plugins: "code link hr paste lists table textcolor wordcount charmap",
+        plugins: "code link hr paste lists table textcolor wordcount charmap image code",
         toolbar: ["bold italic strikethrough bullist numlist blockquote hr alignleft aligncenter alignright link unlink", 
                   "formatselect underline alignjustify forecolor backcolor paste removeformat charmap outdent indent undo redo | code"]
       });
