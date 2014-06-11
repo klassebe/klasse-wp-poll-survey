@@ -684,7 +684,8 @@ jQuery(function ($) {
                     sortOrder : sortOrderA,
                     number: parseInt(sortOrderA) +1,
                     versions : sortedAns[sortOrderA],
-                    postType: 'kwps_answer_option'
+                    postType: 'kwps_answer_option',
+                    value: 5
                   });
                 }
               }
@@ -714,6 +715,8 @@ jQuery(function ($) {
 
       if ( _.size(sortedAllResultProfiles) > 0 && app.openRow.main_kwps_result_profile) {
         for (var sortOrderRP in sortedResultProfiles) {
+          console.log(_.min(sortedResultProfiles[sortOrderRP], function (v) {
+            return v._kwps_min_value})._kwps_max_value);
 
           _.each(sortedResultProfiles[sortOrderRP], function (resultProfile) {
             var parentVersion = this.collection.findWhere({ID: resultProfile.post_parent});
@@ -730,10 +733,11 @@ jQuery(function ($) {
             hasMore: false,
             hasAmount: false,
             hasOpened: (app.openRow.kwps_result_profile === sortOrderRP),
+            min: String(_.min(sortedResultProfiles[sortOrderRP], function (v) {return v._kwps_min_value})._kwps_min_value),
+            max: String(_.max(sortedResultProfiles[sortOrderRP], function (v) {return v._kwps_max_value})._kwps_max_value),
             versions: sortedResultProfiles[sortOrderRP],
             mainRow: true,
-            sortOrder: sortOrderRP,
-            number: parseInt(sortOrderRP) +1
+            sortOrder: sortOrderRP
             //amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent: qGroups[0][sortOrderQG].ID}).length
           });
         }
