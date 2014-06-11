@@ -160,6 +160,16 @@
 #kwps_test tr.title .row-title .button{
     margin: -5px 5px -5px 0;
 }
+#kwps_test tr.title .row-title .row-title-description{
+    font-weight: 100;
+    font-style: italic;
+    color: #999;
+    font-size: 0.9em;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #EBEBEB;
+}
+
 #kwps_test .button .dashicons{
     vertical-align: middle;
 }
