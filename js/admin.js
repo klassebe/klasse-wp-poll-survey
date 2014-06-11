@@ -542,7 +542,7 @@ jQuery(function ($) {
         data.table.push({
           sorterArrows : false,
           postType: 'kwps_intro_result',
-          deletable : !_.some(versions, function(version) {return version.isLive;}),
+          deletable : false,
           hasMore: false,
           hasAmount: false,
           editable: !_.some(versions, function(version) {return version.isLive;}),
@@ -706,7 +706,7 @@ jQuery(function ($) {
             last: (sortOrderRP === allResultProfiles.length/ versions.length-1),
             sorterArrows : (allResultProfiles.length/ versions.length > 1),
             postType: "kwps_result_profile",
-            deletable: !_.some(versions, function(version) {return version.isLive;}),
+            deletable: (_.some(versions, function(version) {return version.isLive;}) || _.size(sortedResultProfiles)<3)? false:true, 
             hasMore: false,
             hasAmount: false,
             hasOpened: (app.openRow.kwps_result_profile === sortOrderRP),
