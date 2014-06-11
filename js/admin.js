@@ -460,8 +460,6 @@ jQuery(function ($) {
 
       var sortedQu = _.groupBy(_.flatten(qu,true),"_kwps_sort_order");
 
-      console.log(testmodus);
-
       //Get Result Profiles
       var resultProfiles = [];
       if(_.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile')) {
@@ -521,7 +519,8 @@ jQuery(function ($) {
         addText: 'Add Intro',
         opened: app.openRow.main_kwps_intro,
         amount: intros.length/ versions.length,
-        maxAmount: 1
+        maxAmount: 1,
+        description: "This is where the test starts."
       });
 
       // INTRO
@@ -690,8 +689,6 @@ jQuery(function ($) {
         }
       }
 
-      console.log(testmodus);
-
       // TITLE RESULT PROFILE
       if(_.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile')) {
         data.table.push({
@@ -724,7 +721,7 @@ jQuery(function ($) {
             last: (sortOrderRP === allResultProfiles.length/ versions.length-1),
             sorterArrows : (allResultProfiles.length/ versions.length > 1),
             postType: "kwps_result_profile",
-            deletable: (_.some(versions, function(version) {return version.isLive;}) || _.size(sortedResultProfiles)<3)? false:true, 
+            deletable: (_.some(versions, function(version) {return version.isLive;}) || _.size(sortedResultProfiles)<2)? false:true, 
             hasMore: false,
             hasAmount: false,
             hasOpened: (app.openRow.kwps_result_profile === sortOrderRP),
@@ -812,7 +809,6 @@ jQuery(function ($) {
         postToMove.save();
         that.render();
       });
-
     },
     deletePostType: function(e) {
       e.preventDefault();
@@ -1222,7 +1218,6 @@ jQuery(function ($) {
       version.save();
 
       this.render();
-
     },
     clearEntries: function(event) {
       event.preventDefault();
