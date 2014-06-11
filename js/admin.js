@@ -252,9 +252,24 @@ jQuery(function ($) {
         success: function (model) {
           app.kwpsPollsCollection.add(model);
           for (i = 0; i < 1; i++) {
+            that.createIntroResult(model.get('ID'), i);
             that.createQuestionGroup(model.get('ID'), i);
             that.createOutro(model.get('ID'), i);
           }
+        }
+      });
+    },
+    createIntroResult: function (post_parent, index) {
+      app.kwpsPollsCollection.create({
+        post_type: "kwps_intro_result",
+        post_status: "draft",
+        post_content : kwps_translations['Intro result'],
+        post_parent : post_parent,
+        _kwps_sort_order : "0"
+      }, {
+        wait: true,
+        success: function (model, response, options) {
+          app.kwpsPollsCollection.add(model);
         }
       });
     },
