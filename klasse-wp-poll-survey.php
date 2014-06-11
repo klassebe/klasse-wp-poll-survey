@@ -192,8 +192,7 @@ function create_default_test_modi(){
         '_kwps_max_questions_per_question_group' => 1,
         '_kwps_max_answer_options_per_question' => -1,
         '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
-        '_kwps_allowed_output_types' => array(
-            array('type' => 'bar-chart-per-question') ),
+        '_kwps_allowed_output_types' => array( 'bar-chart-per-question' ),
         '_kwps_answer_options_require_value' => 0,
     );
 
@@ -207,12 +206,9 @@ function create_default_test_modi(){
         '_kwps_max_questions_per_question_group' => -1,
         '_kwps_max_answer_options_per_question' => -1,
         '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
-        '_kwps_allowed_output_types' => array(
-            array('type' =>'result-profile',
-                'min' => 2,
-                'max' => -1,
-            ),
-        ),
+        '_kwps_allowed_output_types' => array( 'result-profile'),
+        '_kwps_min_result_profiles' => 2,
+        '_kwps_max_result_profiles' => -1,
         '_kwps_answer_options_require_value' => 1,
     );
 
