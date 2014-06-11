@@ -4,8 +4,6 @@
         <th style="border-top: 1px solid #D6D6D6;" class="column-title bottom" data-post-id="{{ID}}">
             <div class="column-tab">
                 {{t "Shortcode"}}: <code>[kwps_version id={{ID}}]</code>
-
-                {{#if isLive}}
                     <div>
                         <h3>{{t "Results"}}: </h3>
                         <ul>
@@ -14,9 +12,9 @@
                             <li>{{t "Total Participants"}}: {{total_participants}}</li>
                         </ul>
                     </div>
-                {{else}}
+                {{#unless isLive}}
                     <span><a href="#" class="clear-entries">{{t "Clear entries"}}</a></span>
-                {{/if}}
+                {{/unless}}
             </div>
         </th>
     {{/each}}
