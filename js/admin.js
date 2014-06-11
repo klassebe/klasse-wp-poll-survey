@@ -445,6 +445,7 @@ jQuery(function ($) {
 
       var sortedQu = _.groupBy(_.flatten(qu,true),"_kwps_sort_order");
 
+      console.log(testmodus);
 
       //Get Result Profiles
       var resultProfiles = [];
@@ -673,6 +674,8 @@ jQuery(function ($) {
           }
         }
       }
+
+      console.log(testmodus);
 
       // TITLE RESULT PROFILE
       if(_.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile')) {
