@@ -91,6 +91,90 @@ class Version extends Kwps_Post_Type{
         return static::get_as_array($post_id);
     }
 
+    public static function validate_for_publish($version){
+        /*
+         * 1) intro result required, only one allowed
+         * 2) outro required -> requires shortcode in content, only one allowed
+         * 3) at least 1 question group required
+         * 4) at least 1 question for each question group required
+         * 5) at least 2 answer options for each question required
+         * 6) check if allowed output types have limitations (min & max), if so, make sure number of outputs are correct
+         */
+
+        $errors = array();
+
+        if( !isset( $version['ID'] ) ) {
+            return array(
+                'allow_publish' => false,
+                'errors' => array(
+                    array(
+                        'field' => 'All',
+                        'message' => 'Cannot publish when not saved as draft first',
+                    )
+                ),
+            );
+        } else {
+            $version_id = $version['ID'];
+
+            $intro_results = Intro_Result::get_all_by_post_parent( $version_id );
+
+            $errors = array_merge($errors, static::check_array_to_hold_single_value( $intro_results, 'Intro result' ) );
+
+            $intros = Intro::get_all_by_post_parent( $version_id );
+            $errors = array_merge($errors, static::check_array_to_hold_single_value( $intros, 'Intro' ) );
+
+            $outros = Outro::get_all_by_post_parent( $version_id );
+            $errors = array_merge($errors, static::check_array_to_hold_single_value( $outros, 'Outro' ) );
+
+            foreach($outros as $outro){
+                $replacement_arr = [];
+                $pattern_arr = [];
+                $pattern = '/\[kwps_result.*\]/';
+                $subject = $outro['post_content'];
+                $shortcode_count = preg_match_all($pattern, $subject, $kwps_result_matches);
+                if( $shortcode_count <= 0 ){
+                    $errors[] = array('field' => 'Outro', 'message' => 'No result shortcodes used!!');
+                }
+            }
+
+
+            $question_groups = Question_Group::get_all_by_post_parent( $version_id );
+
+            foreach($question_groups as $question_group) {
+                $questions = Question::get_all_by_post_parent( $question_group['ID'] );
+
+                foreach($questions as $question){
+                    $answer_options = Answer_Option::get_all_by_post_parent( $question['ID'] );
+
+                }
+            }
+
+            $test_modus = static::get_test_modus( $version_id );
+            if( isset( $test_modus['_kwps_allowed_output_types'] ) ) {
+                if( in_array( 'result-profile', $test_modus['_kwps_allowed_output_types'] ) ) {
+                    $result_profiles = Result_Profile::get_all_by_post_parent( $version_id );
+                    if( count( $result_profiles ) < 2 ) {
+                        $errors[] = array('field' => 'Result profile', 'message' => 'Minimum 2 result profiles needed' );
+                    }
+                }
+            }
+
+            return $errors;
+        }
+
+    }
+
+    public static function check_array_to_hold_single_value($data, $field) {
+        $errors = array();
+        if( count( $data ) == 0 ) {
+            $errors[] = array('field' => $field, 'message' => 'Required');
+        } elseif( count( $data ) > 1 ) {
+            $errors[] = array('field' => $field, 'message' => 'Only 1 allowed');
+        }
+
+        return $errors;
+    }
+
     public static function get_html($id){
 	    $version = Version::get_as_array($id);
         $view_count = (int) $version['_kwps_view_count'];
