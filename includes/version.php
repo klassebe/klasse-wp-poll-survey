@@ -155,6 +155,26 @@ class Version extends Kwps_Post_Type{
                     $result_profiles = Result_Profile::get_all_by_post_parent( $version_id );
                     if( count( $result_profiles ) < 2 ) {
                         $errors[] = array('field' => 'Result profile', 'message' => 'Minimum 2 result profiles needed' );
+                    } else {
+                        foreach($result_profiles as $result_profile_outer_loop){
+                            foreach($result_profiles as $result_profile_inner_loop){
+                                if( $result_profile_outer_loop['ID'] != $result_profile_inner_loop['ID']) {
+                                    if(
+                                        ( $result_profile_outer_loop['_kwps_min_value'] >= $result_profile_inner_loop['_kwps_min_value']
+                                        && $result_profile_outer_loop['_kwps_min_value'] <= $result_profile_inner_loop['_kwps_max_value'] )
+                                        ||
+                                        ( $result_profile_outer_loop['_kwps_max_value'] >= $result_profile_inner_loop['_kwps_min_value']
+                                            && $result_profile_outer_loop['_kwps_max_value'] <= $result_profile_inner_loop['_kwps_max_value'] )
+                                    ) {
+                                        $errors[] = array(
+                                            'field' => 'Result profile',
+                                            'message'=> 'Overlap between ' . $result_profile_inner_loop['post_title'] .
+                                                ' and ' . $result_profile_outer_loop['post_title'],
+                                        );
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
