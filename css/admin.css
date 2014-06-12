@@ -46,7 +46,6 @@
     display: block;
 }
 #kwps_test .move .down{
-  
 }
 #kwps_test .move .down:after {
     content: '\f140';
