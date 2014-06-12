@@ -22,6 +22,9 @@
             {{/if}}
             {{number}}
         </div>
+        {{#if value}}
+            <div class="label label-info">Value: {{value}}</div>
+        {{/if}}
     </td>
     {{#each versions}}
     <td id="_kwps_answer_option_{{ID}}" class="post-title page-title column-title">

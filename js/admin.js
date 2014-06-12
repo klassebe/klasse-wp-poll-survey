@@ -252,9 +252,24 @@ jQuery(function ($) {
         success: function (model) {
           app.kwpsPollsCollection.add(model);
           for (i = 0; i < 1; i++) {
+            that.createIntroResult(model.get('ID'), i);
             that.createQuestionGroup(model.get('ID'), i);
             that.createOutro(model.get('ID'), i);
           }
+        }
+      });
+    },
+    createIntroResult: function (post_parent, index) {
+      app.kwpsPollsCollection.create({
+        post_type: "kwps_intro_result",
+        post_status: "draft",
+        post_content : kwps_translations['Intro result'],
+        post_parent : post_parent,
+        _kwps_sort_order : "0"
+      }, {
+        wait: true,
+        success: function (model, response, options) {
+          app.kwpsPollsCollection.add(model);
         }
       });
     },
@@ -445,7 +460,6 @@ jQuery(function ($) {
 
       var sortedQu = _.groupBy(_.flatten(qu,true),"_kwps_sort_order");
 
-
       //Get Result Profiles
       var resultProfiles = [];
       if(_.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile')) {
@@ -505,7 +519,8 @@ jQuery(function ($) {
         addText: 'Add Intro',
         opened: app.openRow.main_kwps_intro,
         amount: intros.length/ versions.length,
-        maxAmount: 1
+        maxAmount: 1,
+        description: "This is where the test starts."
       });
 
       // INTRO
@@ -534,7 +549,8 @@ jQuery(function ($) {
         addText: 'Add Intro Result',
         opened: app.openRow.main_kwps_intro_result,
         amount: introResults.length/ versions.length,
-        maxAmount: 1
+        maxAmount: 1,
+        description: "You see this, when you are not allowed to fill in the test."
       });
 
       // INTRO RESULT
@@ -563,7 +579,8 @@ jQuery(function ($) {
         addText: 'Add question page',
         opened: app.openRow.main_kwps_question_group,
         amount: _.size(sortedAllQGroups),
-        maxAmount: (testmodus.get('_kwps_max_question_groups') > 0)? testmodus.get('_kwps_max_question_groups') : "&infin;"
+        maxAmount: (testmodus.get('_kwps_max_question_groups') > 0)? testmodus.get('_kwps_max_question_groups') : "&infin;",
+        description: "Here you can combine questions into a page."
       });
 
       if ( _.size(sortedAllQGroups) > 0 && app.openRow.main_kwps_question_group) {
@@ -604,7 +621,8 @@ jQuery(function ($) {
               colSpan : versions.length +1,
               add: (testmodus.get('_kwps_max_questions_per_question_group') < 0 || testmodus.get('_kwps_max_questions_per_question_group') > _.size(sortedQu).toString() && !_.some(versions, function(version) {return version.isLive;})),
               amount: _.size(sortedQu),
-              maxAmount: (testmodus.get('_kwps_max_questions_per_question_group') > 0)? testmodus.get('_kwps_max_questions_per_question_group') : "&infin;"
+              maxAmount: (testmodus.get('_kwps_max_questions_per_question_group') > 0)? testmodus.get('_kwps_max_questions_per_question_group') : "&infin;",
+              description: "This is a question."
             });
             
             for (var sortOrderQ in sortedQu) {
@@ -642,7 +660,8 @@ jQuery(function ($) {
                   colSpan : versions.length +1,
                   add: ((testmodus.get('_kwps_max_answer_options_per_question') < 0 || testmodus.get('_kwps_max_answer_options_per_question') > _.size(sortedAns).toString()) && !_.some(versions, function(version) {return version.isLive;})),
                   amount: _.size(sortedAns),
-                  maxAmount: (testmodus.get('_kwps_max_answer_options_per_question') > 0)? testmodus.get('_kwps_max_answer_options_per_question') : "&infin;"
+                  maxAmount: (testmodus.get('_kwps_max_answer_options_per_question') > 0)? testmodus.get('_kwps_max_answer_options_per_question') : "&infin;",
+                  description: "This is an answer."
                 });
 
                 for (var sortOrderA in sortedAns) {
@@ -665,7 +684,8 @@ jQuery(function ($) {
                     sortOrder : sortOrderA,
                     number: parseInt(sortOrderA) +1,
                     versions : sortedAns[sortOrderA],
-                    postType: 'kwps_answer_option'
+                    postType: 'kwps_answer_option',
+                    value: 5
                   });
                 }
               }
@@ -688,7 +708,8 @@ jQuery(function ($) {
           addText: 'Add result profile',
           opened: app.openRow.main_kwps_result_profile,
           amount: _.size(sortedAllResultProfiles),
-          maxAmount: "&infin;"
+          maxAmount: "&infin;",
+          description: "This is one of the results a participant get when he finishes the test."
         });
       }
 
@@ -699,21 +720,22 @@ jQuery(function ($) {
             var parentVersion = this.collection.findWhere({ID: resultProfile.post_parent});
             resultProfile.editable = (parentVersion.get('post_status') !== 'publish');
           }, this);
-
+          
           // RESULT PROFILE
           data.table.push({
-            first: (sortOrderRP === '0'),
-            last: (sortOrderRP === allResultProfiles.length/ versions.length-1),
+            first: (parseInt(sortOrderRP) === 0),
+            last: (parseInt(sortOrderRP) === allResultProfiles.length/ versions.length-1),
             sorterArrows : (allResultProfiles.length/ versions.length > 1),
             postType: "kwps_result_profile",
-            deletable: (_.some(versions, function(version) {return version.isLive;}) || _.size(sortedResultProfiles)<3)? false:true, 
+            deletable: (_.some(versions, function(version) {return version.isLive;}) || _.size(sortedResultProfiles)<2)? false:true, 
             hasMore: false,
             hasAmount: false,
             hasOpened: (app.openRow.kwps_result_profile === sortOrderRP),
+            min: String(_.min(sortedResultProfiles[sortOrderRP], function (v) {return v._kwps_min_value})._kwps_min_value),
+            max: String(_.max(sortedResultProfiles[sortOrderRP], function (v) {return v._kwps_max_value})._kwps_max_value),
             versions: sortedResultProfiles[sortOrderRP],
             mainRow: true,
-            sortOrder: sortOrderRP,
-            number: parseInt(sortOrderRP) +1
+            sortOrder: sortOrderRP
             //amountOfSiblings : this.collection.where({post_type: "kwps_question", post_parent: qGroups[0][sortOrderQG].ID}).length
           });
         }
@@ -730,7 +752,8 @@ jQuery(function ($) {
         addText: 'Add outro',
         opened: app.openRow.main_kwps_outro,
         amount: outros.length/ versions.length,
-        maxAmount: 1
+        maxAmount: 1,
+        description: "You see this page at the end of the test, it contains the participants result."
       });
 
       //OUTRO
@@ -794,7 +817,6 @@ jQuery(function ($) {
         postToMove.save();
         that.render();
       });
-
     },
     deletePostType: function(e) {
       e.preventDefault();
@@ -1204,7 +1226,6 @@ jQuery(function ($) {
       version.save();
 
       this.render();
-
     },
     clearEntries: function(event) {
       event.preventDefault();
