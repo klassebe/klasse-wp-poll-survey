@@ -30,11 +30,23 @@
 #kwps_test .move .disabled {
     color: #D6D6D6;
 }
+#kwps_test .move .move-action{
+  cursor: pointer;
+  display: block;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+#kwps_test .move .up{
+
+}
 #kwps_test .move .up:after {
     content: '\f142';
     font-family: dashicons;
     font-size: 16px;
     display: block;
+}
+#kwps_test .move .down{
+  
 }
 #kwps_test .move .down:after {
     content: '\f140';
@@ -182,8 +194,14 @@
     width: 15%;
     border-left: 1px solid #f9f9f9;
 }
+#kwps_test .fixed .column-action .action{
+  margin-top: 10px;
+}
 #kwps_test .fixed .column-action .dashicons{
     vertical-align: middle;
+}
+#kwps_test .fixed .column-action .label{
+  margin-top: 22px;
 }
 #kwps_test .fixed .column-answer{
     width: 15%;

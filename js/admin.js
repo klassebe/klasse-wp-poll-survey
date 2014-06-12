@@ -715,18 +715,16 @@ jQuery(function ($) {
 
       if ( _.size(sortedAllResultProfiles) > 0 && app.openRow.main_kwps_result_profile) {
         for (var sortOrderRP in sortedResultProfiles) {
-          console.log(_.min(sortedResultProfiles[sortOrderRP], function (v) {
-            return v._kwps_min_value})._kwps_max_value);
 
           _.each(sortedResultProfiles[sortOrderRP], function (resultProfile) {
             var parentVersion = this.collection.findWhere({ID: resultProfile.post_parent});
             resultProfile.editable = (parentVersion.get('post_status') !== 'publish');
           }, this);
-
+          
           // RESULT PROFILE
           data.table.push({
-            first: (sortOrderRP === '0'),
-            last: (sortOrderRP === allResultProfiles.length/ versions.length-1),
+            first: (parseInt(sortOrderRP) === 0),
+            last: (parseInt(sortOrderRP) === allResultProfiles.length/ versions.length-1),
             sorterArrows : (allResultProfiles.length/ versions.length > 1),
             postType: "kwps_result_profile",
             deletable: (_.some(versions, function(version) {return version.isLive;}) || _.size(sortedResultProfiles)<2)? false:true, 
