@@ -140,11 +140,22 @@ class Version extends Kwps_Post_Type{
 
             $question_groups = Question_Group::get_all_by_post_parent( $version_id );
 
+            if( count( $question_groups ) < 1 ){
+                $errors[] = array( 'field' => 'Question group', 'message' => 'Minimum 1 question page required' );
+            }
+
             foreach($question_groups as $question_group) {
                 $questions = Question::get_all_by_post_parent( $question_group['ID'] );
 
+                if( count( $questions ) < 1 ){
+                    $errors[] = array( 'field' => 'Questions', 'message' => 'Minimum 1 question per question page required' );
+                }
+
                 foreach($questions as $question){
                     $answer_options = Answer_Option::get_all_by_post_parent( $question['ID'] );
+                    if( count( $answer_options ) < 2 ){
+                        $errors[] = array( 'field' => 'Question group', 'message' => 'Minimum 2 answer options per question required' );
+                    }
 
                 }
             }
