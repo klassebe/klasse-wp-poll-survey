@@ -1380,7 +1380,7 @@ jQuery(function ($) {
       tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show_charts.php?type=image&amp;TB_iframe=true');
 
       $.each(allowedTypes, function (key, value) {
-        output +=   '<div id="' + value + '" class="media-item left"><label><h4>' + value.charAt(0).toUpperCase() + value.slice(1).replace('-', ' ') + '</h4><input type="radio" name="results" value="' + value + '"><img class="thumbnail" src="images/' + value + '.png" alt="' + value + '" height="128" width="128"></label></div>';
+        output +=   '<div id="' + value + '" class="media-item left"><label><h4>' + value.charAt(0).toUpperCase() + value.slice(1).split('-').join(' ') + '</h4><input type="radio" name="results" value="' + value + '"><img class="thumbnail" src="images/' + value + '.png" alt="' + value + '" height="128" width="128"></label></div>';
       });
 
       var selectedResult;
