@@ -117,7 +117,7 @@ class Result_Profile extends Kwps_Post_Type {
 
         foreach($result_profiles as $result_profile){
             if ($sum_of_values >= $result_profile['_kwps_min_value']
-                && $sum_of_values < $result_profile['_kwps_max_value'] ){
+                && $sum_of_values <= $result_profile['_kwps_max_value'] ){
                     return $result_profile;
             }
         }

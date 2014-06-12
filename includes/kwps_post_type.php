@@ -106,6 +106,10 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
             $errors = array_merge( $errors, static::$validation_method( $post_as_array ) );
         }
 
+        if( isset( $post_as_array['post_status'] ) && 'publish' == $post_as_array['post_status']  ){
+            $errors = array_merge( $errors, static::validate_for_publish( $post_as_array ) );
+        }
+
         return $errors;
     }
 
@@ -186,6 +190,10 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
             $errors[] = array( 'field' => 'ID', 'Message' => 'Required');
         }
         return $errors;
+    }
+
+    public static function validate_for_publish($post){
+        return array( 'allow_publish' => true, 'errors' => array() );
     }
 
     public final static function delete_from_request(){

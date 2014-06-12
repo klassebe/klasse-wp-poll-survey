@@ -86,6 +86,11 @@ class Test_Collections_List_Table extends Base_List_Table {
         }
     }
 
+    function column_test_modus($item){
+        $test_modus = Test_Collection::get_test_modus($item['ID']);
+        return $test_modus['post_title'];
+    }
+
 
     /** ************************************************************************
      * Recommended. This is a custom column method and is responsible for what
@@ -168,6 +173,7 @@ class Test_Collections_List_Table extends Base_List_Table {
         $columns = array(
             'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
             'post_title'     => __('Title', 'klasse-wp-poll-survey'),
+            'test_modus'     => __('Testmodus', 'klasse-wp-poll-survey'),
             'view_count'    => __('Views', 'klasse-wp-poll-survey'),
 //            'user_id'  => 'Author',
             'post_modified'    => __('Date', 'klasse-wp-poll-survey'),
