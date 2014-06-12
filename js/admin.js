@@ -1107,6 +1107,7 @@ jQuery(function ($) {
     },
     toggleDetails: function(event) {
       var postType = $(event.currentTarget).closest('tr').data('post-type');
+      var sortOrder = $(event.currentTarget).closest('tr').data('sort-order');
       switch (postType) {
         case "main_kwps_intro" :
         case "main_kwps_intro_result" :
@@ -1115,10 +1116,16 @@ jQuery(function ($) {
           app.openRow[postType] = !app.openRow[postType];
           break;
         case "kwps_question" :
-        case "kwps_question_group" :
-          var sortOrder = $(event.currentTarget).closest('tr').data('sort-order');
           app.openRow[postType] = (app.openRow[postType] === sortOrder)? -1 : sortOrder;
-        break;
+          break;
+        case "kwps_question_group" :
+          if (app.openRow.kwps_question_group === sortOrder) {
+            app.openRow.kwps_question = -1;
+            app.openRow.kwps_question_group = -1;
+          } else {
+            app.openRow.kwps_question_group = sortOrder;
+          }
+          break;
         default:
           console.log('no post type was given', postType);
       }

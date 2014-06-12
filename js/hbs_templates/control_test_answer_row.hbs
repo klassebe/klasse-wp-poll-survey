@@ -20,10 +20,10 @@
                 </span>
             </a>
             {{/if}}
-            {{number}}
         </div>
+        <div class="label">{{number}}</div>
         {{#if value}}
-            <div class="label label-info">Value: {{value}}</div>
+            <div class="label label-info">{{t "Value"}}: {{value}}</div>
         {{/if}}
     </td>
     {{#each versions}}

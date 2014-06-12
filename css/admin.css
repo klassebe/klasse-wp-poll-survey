@@ -19,7 +19,7 @@
     cursor: pointer;
 }
 #kwps_test .delete {
-    width: 80px;
+    width: 90px;
 }
 #kwps_test .delete .del {
     line-height: 40px;
@@ -238,7 +238,7 @@
 .dashicons-trash:before {
     content: "\f182";
 }
-.del {
+#kwps_test .action span.dashicons {
     cursor: pointer;
 }
 
