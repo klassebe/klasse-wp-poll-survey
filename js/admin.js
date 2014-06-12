@@ -68,7 +68,8 @@ jQuery(function ($) {
     edit: kwps_admin_templates.edit,
     result: kwps_admin_templates.control_panel,
     question: kwps_admin_templates.table,
-    newKwpsTest: kwps_admin_templates.choose_testmodus
+    newKwpsTest: kwps_admin_templates.choose_testmodus,
+    resultPage: kwps_admin_templates.add_result
   };
   
   // Routing
@@ -1250,9 +1251,18 @@ jQuery(function ($) {
       this.render();
     },
     render: function() {
-      console.log(this.model);
-      console.log(app.templates.result(this.model));
       $(this.el).html(app.templates.result(this.model));
+    }
+  });
+  app.KwpsViewAddResult = Backbone.View.extend({
+    el: '#extra-test',
+    initialize: function() {
+      this.render();
+    },
+    render: function() {
+      // console.log(this.model);
+      // console.log(app.templates.add_result(this.model));
+      $(this.el).html(app.templates.add_result(this.model));
     }
   });
 
@@ -1349,7 +1359,6 @@ jQuery(function ($) {
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
       tinymce.init({
-
         menubar: false,
         visual: true,
         statusbar: false,
@@ -1362,12 +1371,44 @@ jQuery(function ($) {
     },
     /* BEGIN RESULT INPUT */
     addResult: function () {
-      // $('iframe').contents().find('#tinymce').append('<div class="kwps-chart">Chart will be here</div>');
+      var testCollection = app.kwpsPollsCollection.findWhere({post_type: "kwps_test_collection"});
+      var testmodus = app.kwpsPollsCollection.findWhere({ID: testCollection.get('post_parent')});
+      var data = this.model.toJSON();
+      var output ='';
+      var allowedTypes = testmodus.attributes._kwps_allowed_output_types;
+
       tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show_charts.php?type=image&amp;TB_iframe=true');
+
+      $.each(allowedTypes, function (key, value) {
+        output +=   '<div id="' + value + '" class="media-item left"><label><h4>' + value.charAt(0).toUpperCase() + value.slice(1).replace('-', ' ') + '</h4><input type="radio" name="results" value="' + value + '"><img class="thumbnail" src="images/' + value + '.png" alt="' + value + '" height="128" width="128"></label></div>';
+      });
+
+      var selectedResult;
+      var timer = setInterval( function () {
+
+        $('iframe').contents().find('#charts').append(output);
+
+        $('iframe').contents().find('input:radio').on('click', function () {
+            selectedResult = $(this).next().attr('alt');
+        });
+        $('iframe').contents().find('#add-result-to-editor').on('click', function () {
+          if (selectedResult) {
+            $('iframe').contents().find('#tinymce').append('[kwps_result result='+ selectedResult + ']');
+            tb_remove();
+          } else {
+            alert('Please select a result view to import');
+          }
+        });
+        if ($('iframe').contents().find('#charts').length > 0) {
+          clearInterval(timer);
+        }
+      }, 100);
+      
+
+      
       return false;
     },
     insertChartIntoEditor: function (html) {
-      console.log('you clicked to add result to editor');
       $('iframe', window.parent.document).contents().find('#tinymce').append('<div class="kwps-chart">Hello</div>');
       self.parent.tb_remove();
     },
@@ -1388,7 +1429,6 @@ jQuery(function ($) {
     updateData: function(event) {
       event.preventDefault();
       tinymce.triggerSave();
-      
 
       var data = $('#update-model').serializeObject();
 
