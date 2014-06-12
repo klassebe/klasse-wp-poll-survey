@@ -126,14 +126,26 @@ class Version extends Kwps_Post_Type{
             $outros = Outro::get_all_by_post_parent( $version_id );
             $errors = array_merge($errors, static::check_array_to_hold_single_value( $outros, 'Outro' ) );
 
+            $test_modus = static::get_test_modus( $version_id );
+
             foreach($outros as $outro){
-                $replacement_arr = [];
-                $pattern_arr = [];
                 $pattern = '/\[kwps_result.*\]/';
                 $subject = $outro['post_content'];
                 $shortcode_count = preg_match_all($pattern, $subject, $kwps_result_matches);
                 if( $shortcode_count <= 0 ){
                     $errors[] = array('field' => 'Outro', 'message' => 'No result shortcodes used!!');
+                } else {
+                    foreach($kwps_result_matches as $shortcode){
+                        $output_start_pos = strpos($shortcode[0], '=');
+
+                        $output_type_temp = substr($shortcode[0], $output_start_pos + 1);
+                        $output_type = trim($output_type_temp, ']');
+
+                        if( !in_array( $output_type, $test_modus['_kwps_allowed_output_types'] ) ) {
+                            $errors[] = array( 'field' => 'Outro', 'message' => 'Invalid value ' . $output_type .
+                            ' in shortcode');
+                        }
+                    }
                 }
             }
 
@@ -160,7 +172,7 @@ class Version extends Kwps_Post_Type{
                 }
             }
 
-            $test_modus = static::get_test_modus( $version_id );
+
             if( isset( $test_modus['_kwps_allowed_output_types'] ) ) {
                 if( in_array( 'result-profile', $test_modus['_kwps_allowed_output_types'] ) ) {
                     $result_profiles = Result_Profile::get_all_by_post_parent( $version_id );
