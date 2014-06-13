@@ -78,7 +78,7 @@ jQuery(function($) {
 					if (oneSelectCheck) {
             var data = {
               "post_parent": oneSelectCheck,
-              "post_status": "publish",
+              "post_status": "draft",
               "_kwps_sort_order": 0
             };
 

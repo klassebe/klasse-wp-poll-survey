@@ -51,7 +51,7 @@ class admin_section {
 			'Conversion Rate' => __('Conversion Rate', 'klasse-wp-poll-survey'),
 			'Total Participants' => __('Total Participants', 'klasse-wp-poll-survey'),
 			'Make live' => __('Make live', 'klasse-wp-poll-survey'),
-			'Add Intro' => __('Add Intro', 'klasse-wp-poll-survey'),
+			'Display Intro' => __('Display Intro', 'klasse-wp-poll-survey'),
 			'Intro Result' => __('Intro Result', 'klasse-wp-poll-survey'),
 			'Add Intro Result' => __('Add Intro Result', 'klasse-wp-poll-survey'),
 			'Question pages' => __('Question pages', 'klasse-wp-poll-survey'),
@@ -101,7 +101,12 @@ class admin_section {
 			'This will be the title of your test.' => __('This will be the title of your test.', 'klasse-wp-poll-survey'),
 			'Test modus' => __('Test modus', 'klasse-wp-poll-survey'),
 			'Test modi' => __('Test modi', 'klasse-wp-poll-survey'),
-			'Select the type of test you want to create.' => __('Select the type of test you want to create.', 'klasse-wp-poll-survey')
+			'Select the type of test you want to create.' => __('Select the type of test you want to create.', 'klasse-wp-poll-survey'),
+			'Copy of' => __('Copy of', 'klasse-wp-poll-survey'),
+			'Result profile' => __('Result profile', 'klasse-wp-poll-survey'),
+			'You must add a result to the text' => __('You must add a result to the text', 'klasse-wp-poll-survey'),
+			'This introduction is shown when someone fills out the test for the first time.' => __('This introduction is shown when someone fills out the test for the first time.', 'klasse-wp-poll-survey'),
+			'For people who have already completed the test.' => __('For people who have already completed the test.', 'klasse-wp-poll-survey')
 		);
 		wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
