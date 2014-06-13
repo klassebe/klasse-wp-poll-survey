@@ -87,7 +87,9 @@ class admin_section {
 			'This will be the title of your test.' => __('This will be the title of your test.', 'klasse-wp-poll-survey'),
 			'Test modus' => __('Test modus', 'klasse-wp-poll-survey'),
 			'Test modi' => __('Test modi', 'klasse-wp-poll-survey'),
-			'Select the type of test you want to create.' => __('Select the type of test you want to create.', 'klasse-wp-poll-survey')
+			'Select the type of test you want to create.' => __('Select the type of test you want to create.', 'klasse-wp-poll-survey'),
+			'Copy of' => __('Copy of', 'klasse-wp-poll-survey'),
+			'Result profile' => __('Result profile', 'klasse-wp-poll-survey')
 		);
 		wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
