@@ -970,54 +970,6 @@ jQuery(function ($) {
           }
         }
       );
-
-      /*
-      var that = this;
-      app.kwpsPollsCollection.create({
-        post_type: "kwps_version",
-        post_status: "draft",
-        post_title : kwps_translations.Version + " " + (index+1),
-        post_content : kwps_translations.Version + " " + (index+1),
-        post_parent : previousVersion.get('post_parent'),
-        _kwps_sort_order : index.toString()
-      },
-        {
-          success: function (newVersion, response, options) {
-            that.createIntro(newVersion.get('ID'), false);
-            that.createOutro(newVersion.get('ID'), false);
-            that.createIntroResult(newVersion.get('ID'));
-
-            var resultProfiles = that.collection.where({post_type: 'kwps_result_profile', post_parent: previousVersion.get('ID')});
-            for (i = 0; i < resultProfiles.length; i++) {
-              var resultProfilesOriginal = resultProfiles[i];
-              that.createResultProfile(newVersion.get('ID'),i, resultProfilesOriginal.get('_kwps_sort_order'));
-            }
-
-            var questionGroups = that.collection.where({post_type: 'kwps_question_group', post_parent: previousVersion.get('ID')});  
-            for (i = 0; i < questionGroups.length; i++) {
-              var questionGroupOriginal = questionGroups[i];
-              that.createQuestionGroup(newVersion.get('ID'),i, questionGroupOriginal.get('_kwps_sort_order'), function(newQuestionGroup) {
-                var questionsInGroup = that.collection.where({post_type: 'kwps_question', post_parent: questionGroupOriginal.id});  
-
-                for (i = 0; i < questionsInGroup.length; i++) {
-                  var questionOriginal = questionsInGroup[i];
-
-                  that.createQuestion(newQuestionGroup.get('ID'), questionGroupOriginal.get('_kwps_sort_order'), function(newQuestion) {
-                    var answersInQuestion = that.collection.where({post_type: 'kwps_answer_option', post_parent: questionOriginal.id});  
-
-                    for (i = 0; i < answersInQuestion.length; i++) {
-                      var answersInQuestionOriginal = answersInQuestion[i];
-                      that.createAnswer(newQuestion.get('ID'), answersInQuestionOriginal.get('_kwps_sort_order'), function(newAnswer) {
-                        console.log('answer created: ' + newAnswer.id);
-                      });
-                    }
-                  });
-                }
-              });
-            }
-          }
-        });
-        */
     },
     createIntro: function (post_parent, data) {
       if(typeof data === 'boolean') {
@@ -1040,10 +992,7 @@ jQuery(function ($) {
       this.collection.create(
         introData,
         {
-          wait: true,
-          success: function(newIntro, response, options) {
-            console.log(newIntro);
-          }
+          wait: true
         }
       );
     },
@@ -1068,10 +1017,7 @@ jQuery(function ($) {
       this.collection.create(
         introResultData,
         {
-          wait: true,
-          success: function(newIntroResult, response, options) {
-            console.log(newIntroResult);
-          }
+          wait: true
         }
       );
     },
@@ -1096,10 +1042,7 @@ jQuery(function ($) {
       this.collection.create(
         outroData,
         {
-          wait: true,
-          success: function(newOutro, response, options) {
-            console.log(newOutro);
-          }
+          wait: true
         }
       );
     },
