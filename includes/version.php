@@ -91,6 +91,20 @@ class Version extends Kwps_Post_Type{
         return static::get_as_array($post_id);
     }
 
+    public static function ajax_validate_for_publish(){
+        $version = static::get_post_data_from_request();
+        $response = static::validate_for_publish($version);
+
+        if( sizeof( $response ) > 0 ) {
+            header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
+            wp_send_json_error($response);
+        } else {
+            wp_send_json_success();
+        }
+
+        die();
+    }
+
     public static function validate_for_publish($version){
         /*
          * 1) intro result required, only one allowed
@@ -105,8 +119,7 @@ class Version extends Kwps_Post_Type{
 
         if( !isset( $version['ID'] ) ) {
             return array(
-                'allow_publish' => false,
-                'errors' => array(
+                array(
                     array(
                         'field' => 'All',
                         'message' => 'Cannot publish when not saved as draft first',

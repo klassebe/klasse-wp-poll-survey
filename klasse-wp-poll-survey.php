@@ -118,7 +118,7 @@ add_action( 'wp_ajax_kwps_update_version', array('\includes\version','update_fro
 add_action( 'wp_ajax_kwps_delete_version', array('\includes\version','delete_from_request'));
 
 
-add_action( 'wp_ajax_kwps_validate_version', array('\includes\version','validate_for_publish'));
+add_action( 'wp_ajax_kwps_validate_version', array('\includes\version','ajax_validate_for_publish'));
 
 add_action( 'wp_ajax_kwps_save_question_group', array('\includes\question_group','save_from_request'));
 add_action( 'wp_ajax_kwps_update_question_group', array('\includes\question_group','update_from_request'));
