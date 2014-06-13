@@ -6,9 +6,19 @@ require_once __DIR__ . '/entries_list_table.php';
 require_once __DIR__ . '/uniqueness.php';
 
 
+/**
+ * Class admin_section
+ *
+ * This class contains all functions used to display and load data for the admin part of the plugin
+ *
+ * @package includes
+ */
 class admin_section {
 
-	static function enqueue_styles_admin_addnew() {
+    /**
+     * Enqueues all styles for the admin part
+     */
+    static function enqueue_styles_admin_addnew() {
 
 		wp_enqueue_style('thickbox');
 		wp_enqueue_style('editor');
@@ -16,7 +26,11 @@ class admin_section {
 		wp_enqueue_style( 'klasse-wp-poll-survey-plugin-jquery-ui-tabs', plugins_url( '../css/jquery-ui/jquery.ui.tabs.min.css', __FILE__ ));
 		wp_enqueue_style( 'klasse-wp-poll-survey-plugin-admin-styles', plugins_url( '../css/admin.css', __FILE__ ));
 	}
-	static function enqueue_scripts_admin_addnew() {
+
+    /**
+     * Enqueues all scripts for the admin part, including the localization of the script
+     */
+    static function enqueue_scripts_admin_addnew() {
 		wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( '../js/dist/kwps_admin.js', __FILE__ ), array( 'jquery', 'backbone', 'thickbox', 'media-upload' ));
 
 		$translation_array = array(
@@ -98,6 +112,10 @@ class admin_section {
 
 	}
 
+    /**
+     * Collects all data and adds it via javascript variables wrapped in <script> tags to the view to add/edit tests
+     *
+     */
     public static function display_form()
     {
 		self::enqueue_styles_admin_addnew();
@@ -187,6 +205,9 @@ class admin_section {
 
     }
 
+    /**
+     * Displays a list of all tests
+     */
     public static function display_tests() {
         $poll_list = new Test_Collections_List_Table();
         $poll_list->prepare_items();
@@ -194,6 +215,9 @@ class admin_section {
         include_once __DIR__ . '/../views/poll_list.php';
     }
 
+    /**
+     * Displays a list of all entries
+     */
     public static function manage_entries() {
         $entry_list = new Entries_List_Table();
         $entry_list->prepare_items();
