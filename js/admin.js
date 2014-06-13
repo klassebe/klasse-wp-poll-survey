@@ -12,7 +12,13 @@ jQuery(function ($) {
       }
     }
   }
-
+  function stringToBoolean(string){
+    switch(string.toLowerCase()){
+      case "true": case "yes": case "1": return true;
+      case "false": case "no": case "0": case null: return false;
+      default: return Boolean(string);
+    }
+  }
   $.fn.serializeObject = function(){
     var obj = {};
 
@@ -667,12 +673,18 @@ jQuery(function ($) {
 
                 for (var sortOrderA in sortedAns) {
                   sortOrderA = parseInt(sortOrderA);
+                  var value;
 
                   _.each(sortedAns[sortOrderA], function(answer) {
                     var parentQuestion = this.collection.findWhere({ID: answer.post_parent});
                     var parentQuestionGroup = this.collection.findWhere({ID: parentQuestion.get("post_parent")});
                     var parentVersion = this.collection.findWhere({ID: parentQuestionGroup.get("post_parent")});
                     answer.editable = (parentVersion.get('post_status') !== 'publish');
+
+                    if(typeof value === 'undefined') {
+                      value = answer._kwps_answer_option_value;
+                    }
+
                   }, this);
 
                   // ANSWER
@@ -686,7 +698,8 @@ jQuery(function ($) {
                     number: parseInt(sortOrderA) +1,
                     versions : sortedAns[sortOrderA],
                     postType: 'kwps_answer_option',
-                    value: 5
+                    showValue: (stringToBoolean(testmodus.get('_kwps_answer_options_require_value'))),
+                    value: value
                   });
                 }
               }
