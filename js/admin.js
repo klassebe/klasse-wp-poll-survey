@@ -922,6 +922,57 @@ jQuery(function ($) {
     },
     createVersion: function (previousVersion, index) {
       var that = this;
+      var versionData = {
+        post_type: "kwps_version",
+        post_status: "draft",
+        post_title : kwps_translations['Copy of'] + " " + previousVersion.get('post_title'),
+        post_parent : previousVersion.get('post_parent'),
+        _kwps_sort_order : index
+      };
+
+      app.kwpsPollsCollection.create(
+        versionData,
+        {
+          success: function(newVersion, response, options) {
+            that.createIntro(newVersion.get('ID'), that.getExistingObject(previousVersion.get('ID'), 'kwps_intro', true));
+            that.createIntroResult(newVersion.get('ID'), that.getExistingObject(previousVersion.get('ID'), 'kwps_intro_result', true));
+            that.createOutro(newVersion.get('ID'), that.getExistingObject(previousVersion.get('ID'), 'kwps_outro', true));
+
+            var resultProfiles = that.getExistingObject(previousVersion.get('ID'), 'kwps_result_profile', false);
+            for (i = 0; i < resultProfiles.length; i++) {
+              var resultProfilesOriginal = resultProfiles[i];
+              that.createResultProfile(newVersion.get('ID'), resultProfilesOriginal);
+            }
+
+            var questionGroups = that.getExistingObject(previousVersion.get('ID'), 'kwps_question_group', false);
+            for (i = 0; i < questionGroups.length; i++) {
+              var questionGroupOriginal = questionGroups[i];
+              that.createQuestionGroup(newVersion.get('ID'), questionGroupOriginal, function(newQuestionGroup) {
+                var questionsInGroup = that.getExistingObject(questionGroupOriginal.get('ID'), 'kwps_question', false);
+
+                for (i = 0; i < questionsInGroup.length; i++) {
+                  var questionOriginal = questionsInGroup[i];
+
+                  that.createQuestion(newQuestionGroup.get('ID'), questionGroupOriginal, function(newQuestion) {
+                    var answersInQuestion = that.getExistingObject(questionOriginal.get('ID'), 'kwps_answer_option', false);
+
+                    for (i = 0; i < answersInQuestion.length; i++) {
+                      var answersInQuestionOriginal = answersInQuestion[i];
+                      that.createAnswer(newQuestion.get('ID'), answersInQuestionOriginal, function(newAnswer) {
+                        console.log('answer created: ' + newAnswer.id);
+                      });
+                    }
+                  });
+                }
+              });
+            }
+
+          }
+        }
+      );
+
+      /*
+      var that = this;
       app.kwpsPollsCollection.create({
         post_type: "kwps_version",
         post_status: "draft",
@@ -966,137 +1017,215 @@ jQuery(function ($) {
             }
           }
         });
+        */
     },
-    createIntro: function (post_parent, edit) {
-      var that = this;
-      var model = new KwpsModel({
-        post_type: "kwps_intro",
-        post_status: "draft",
-        post_content : kwps_translations.Intro,
-        post_parent : post_parent,
-        _kwps_sort_order : "0"
-      });
-      model.save({},{
-        success: function (model, response, options) {
-          app.kwpsPollsCollection.add(model);
-          if (edit) {
-            app.router.navigate('edit/'+ model.id, {trigger: true});
+    createIntro: function (post_parent, data) {
+      if(typeof data === 'boolean') {
+        return;
+      }
 
-          }
-        }
-      });
-    },
-    createIntroResult: function (post_parent, edit) {
-      app.kwpsPollsCollection.create({
-        post_type: "kwps_intro_result",
-        post_status: "draft",
-        post_content : kwps_translations['Intro result'],
-        post_parent : post_parent,
-        _kwps_sort_order : "0"
-      }, {
-        wait: true,
-        success: function (model, response, options) {
-          app.kwpsPollsCollection.add(model);
-          if (edit) {
-            app.router.navigate('edit/'+ model.id, {trigger: true});
+      var that = this,
+        introData = {
+          post_type: "kwps_intro",
+          post_status: "draft",
+          post_content : kwps_translations.Intro,
+          post_parent : post_parent,
+          _kwps_sort_order : 0
+        };
 
-          }
-        }
-      });
-    },
-    createOutro: function (post_parent, edit) {
-      var that = this;
-      var model = new KwpsModel({
-        post_type: "kwps_outro",
-        post_status: "draft",
-        post_content : kwps_translations.Outro,
-        post_parent : post_parent,
-        _kwps_sort_order : "0"
-      });
-      model.save({},{
-        success: function (model, response, options) {
-          app.kwpsPollsCollection.add(model);
-          if (edit) {
-            app.router.navigate('edit/'+ model.id, {trigger: true});
+      if(data) {
+        introData.post_content = data.get('post_content');
+      }
 
-          }
-        }
-      });
-    },
-    createQuestionGroup: function (post_parent, index, sortOrder, cb) {
-      this.collection.create({
-        post_type: "kwps_question_group",
-        post_status: "draft",
-        post_title : kwps_translations["Question Group"] + " " + (parseInt(sortOrder) + 1),
-        post_content : kwps_translations["Question Group"] + " " + (parseInt(sortOrder) + 1),
-        post_parent : post_parent,
-        _kwps_sort_order : sortOrder
-      }, {
-        wait: true,
-        success: function(model, response, options) {
-          if(cb) {
-            cb(model);
-          }
-        }
-      });
-    },
-    createResultProfile: function (post_parent, index, sortOrder, cb) {
-      this.collection.create({
-        post_type: "kwps_result_profile",
-        post_status: "draft",
-        post_title : kwps_translations["Result Profile"] + " " + (parseInt(sortOrder) + 1),
-        post_content : kwps_translations["Result Profile"] + " " + (parseInt(sortOrder) + 1),
-        post_parent : post_parent,
-        _kwps_sort_order : sortOrder,
-        _kwps_min_value: 0,
-        _kwps_max_value: 0
-      }, {
-        wait: true,
-        success: function(model, response, options) {
-          if(cb) {
-            cb(model);
-          }
-        }
-      });
-    },
-    createQuestion: function (post_parent, index, cb) {
-      app.kwpsPollsCollection.create({
-        post_type: "kwps_question",
-        post_status: "draft",
-        post_content : kwps_translations.Question + " " + (index + 1),
-        post_parent : post_parent,
-        _kwps_sort_order : index
-      }, {
-        wait: true,
-        success: function (model, response, options) {
-          if(cb) {
-            cb(model);
-          }        
-        },
-        error: function() {
-          console.log('error in de vraag');
-        }
-      });
-    },
-    createAnswer: function (post_parent, index, cb) {
-      app.kwpsPollsCollection.create({
-        post_type: "kwps_answer_option",
-        post_status: "draft",
-        post_content : kwps_translations["Answer Option"] + " " + (index + 1),
-        post_parent : post_parent,
-        _kwps_sort_order : index,
-        _kwps_answer_option_value : 0
-      },
+      this.collection.create(
+        introData,
         {
           wait: true,
-          success: function (model, response, options) {
-            if(cb) {
-              cb(model);
-            }
-          },
-          error: function() {
-            alert('ERROR');
+          success: function(newIntro, response, options) {
+            console.log(newIntro);
           }
+        }
+      );
+    },
+    createIntroResult: function (post_parent, data) {
+      if(typeof data === 'boolean') {
+        return;
+      }
+
+      var that = this,
+        introResultData = {
+          post_type: "kwps_intro_result",
+          post_status: "draft",
+          post_content : kwps_translations['Intro result'],
+          post_parent : post_parent,
+          _kwps_sort_order : 0
+        };
+
+      if(data) {
+        introResultData.post_content = data.get('post_content');
+      }
+
+      this.collection.create(
+        introResultData,
+        {
+          wait: true,
+          success: function(newIntroResult, response, options) {
+            console.log(newIntroResult);
+          }
+        }
+      );
+    },
+    createOutro: function (post_parent, data) {
+      if(typeof data === 'boolean') {
+        return;
+      }
+
+      var that = this,
+        outroData = {
+          post_type: "kwps_outro",
+          post_status: "draft",
+          post_content : kwps_translations.Outro,
+          post_parent : post_parent,
+          _kwps_sort_order : 0
+        };
+
+      if(data) {
+        outroData.post_content = data.get('post_content');
+      }
+
+      this.collection.create(
+        outroData,
+        {
+          wait: true,
+          success: function(newOutro, response, options) {
+            console.log(newOutro);
+          }
+        }
+      );
+    },
+    createResultProfile: function (post_parent, data, cb) {
+      var resultProfileData = {
+        post_type: "kwps_result_profile",
+        post_status: "draft",
+        post_title : "",
+        post_content : "",
+        post_parent : post_parent,
+        _kwps_sort_order : 0,
+        _kwps_min_value: 0,
+        _kwps_max_value: 0
+      };
+
+      if(typeof data === 'object') {
+        resultProfileData.post_title = data.get('post_title');
+        resultProfileData.post_content = data.get('post_content');
+        resultProfileData._kwps_sort_order = data.get('_kwps_sort_order');
+      } else {
+        resultProfileData._kwps_sort_order = data;
+        resultProfileData.post_title = kwps_translations["Result profile"] + " " + (data + 1);
+        resultProfileData.post_content = kwps_translations["Result profile"] + " " + (data + 1);
+      }
+
+      this.collection.create(resultProfileData, {
+        wait: true,
+        success: function(model, response, options) {
+          if(cb) {
+            cb(model);
+          }
+        }
+      });
+    },
+    createQuestionGroup: function (post_parent, data, cb) {
+      var questionGroupData = {
+        post_type: "kwps_question_group",
+        post_status: "draft",
+        post_title : "",
+        post_content : "",
+        post_parent : post_parent,
+        _kwps_sort_order : 0,
+        _kwps_min_value: 0,
+        _kwps_max_value: 0
+      };
+
+      if(typeof data === 'object') {
+        questionGroupData.post_title = data.get('post_title');
+        questionGroupData.post_content = data.get('post_content');
+        questionGroupData._kwps_sort_order = data.get('_kwps_sort_order');
+      } else {
+        questionGroupData._kwps_sort_order = data;
+        questionGroupData.post_title = kwps_translations["Question Group"] + " " + (data + 1);
+        questionGroupData.post_content = kwps_translations["Question Group"] + " " + (data + 1);
+      }
+
+      this.collection.create(questionGroupData, {
+        wait: true,
+        success: function(model, response, options) {
+          if(cb) {
+            cb(model);
+          }
+        }
+      });
+    },
+    createQuestion: function (post_parent, data, cb) {
+      var questionData = {
+        post_type: "kwps_question",
+        post_status: "draft",
+        post_title : "",
+        post_content : "",
+        post_parent : post_parent,
+        _kwps_sort_order : 0,
+        _kwps_min_value: 0,
+        _kwps_max_value: 0
+      };
+
+      if(typeof data === 'object') {
+        questionData.post_title = data.get('post_title');
+        questionData.post_content = data.get('post_content');
+        questionData._kwps_sort_order = data.get('_kwps_sort_order');
+      } else {
+        questionData._kwps_sort_order = data;
+        questionData.post_title = kwps_translations.Question + " " + (data + 1);
+        questionData.post_content = kwps_translations.Question + " " + (data + 1);
+      }
+
+      this.collection.create(questionData, {
+        wait: true,
+        success: function(model, response, options) {
+          if(cb) {
+            cb(model);
+          }
+        }
+      });
+    },
+    createAnswer: function (post_parent, data, cb) {
+      var answerData = {
+        post_type: "kwps_answer_option",
+        post_status: "draft",
+        post_title : "",
+        post_content : "",
+        post_parent : post_parent,
+        _kwps_sort_order : 0,
+        _kwps_min_value: 0,
+        _kwps_max_value: 0,
+        _kwps_answer_option_value: 0
+      };
+
+      if(typeof data === 'object') {
+        answerData.post_title = data.get('post_title');
+        answerData.post_content = data.get('post_content');
+        answerData._kwps_sort_order = data.get('_kwps_sort_order');
+      } else {
+        answerData._kwps_sort_order = data;
+        answerData.post_title = kwps_translations["Answer Option"] + " " + (data + 1);
+        answerData.post_content = kwps_translations["Answer Option"] + " " + (data + 1);
+      }
+
+      this.collection.create(answerData, {
+        wait: true,
+        success: function(model, response, options) {
+          if(cb) {
+            cb(model);
+          }
+        }
       });
     },
     showActions: function(event) {
@@ -1249,6 +1378,21 @@ jQuery(function ($) {
           }
         );
       }
+    },
+    getExistingObject: function(post_parent, post_type, single) {
+      if(typeof single === 'undefined') {
+        single = true;
+      }
+      var query = {post_type: post_type, post_parent: post_parent},
+        result;
+
+      if(single) {
+        result = this.collection.findWhere(query);
+      } else {
+        result = this.collection.where(query);
+      }
+
+      return (typeof result === 'undefined')? false : result;
     }
   });
 
