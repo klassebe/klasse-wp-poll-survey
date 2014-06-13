@@ -90,7 +90,9 @@ class admin_section {
 			'Select the type of test you want to create.' => __('Select the type of test you want to create.', 'klasse-wp-poll-survey'),
 			'Copy of' => __('Copy of', 'klasse-wp-poll-survey'),
 			'Result profile' => __('Result profile', 'klasse-wp-poll-survey'),
-			'You must add a result to the text' => __('You must add a result to the text', 'klasse-wp-poll-survey')
+			'You must add a result to the text' => __('You must add a result to the text', 'klasse-wp-poll-survey'),
+			'This introduction is shown when someone fills out the test for the first time.' => __('This introduction is shown when someone fills out the test for the first time.', 'klasse-wp-poll-survey'),
+			'For people who have already completed the test.' => __('For people who have already completed the test.', 'klasse-wp-poll-survey')
 		);
 		wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 

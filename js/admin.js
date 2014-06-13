@@ -527,7 +527,7 @@ jQuery(function ($) {
         opened: app.openRow.main_kwps_intro,
         amount: intros.length/ versions.length,
         maxAmount: 1,
-        description: "This is where the test starts."
+        description: 'This introduction is shown when someone fills out the test for the first time.'
       });
 
       // INTRO
@@ -557,7 +557,7 @@ jQuery(function ($) {
         opened: app.openRow.main_kwps_intro_result,
         amount: introResults.length/ versions.length,
         maxAmount: 1,
-        description: "You see this, when you are not allowed to fill in the test."
+        description: 'For people who have already completed the test.'
       });
 
       // INTRO RESULT
@@ -893,7 +893,7 @@ jQuery(function ($) {
           sortOrder = _.max(_.invoke(this.collection.where({post_type: 'kwps_result_profile'}),"toJSON"), function (a) {return a._kwps_sort_order;});
           sortOrder = (sortOrder === -Infinity || sortOrder === Infinity)? 0: parseInt(sortOrder._kwps_sort_order)+1;
           for(i = 0; i < kwpsPollLen; i++) {
-            this.createResultProfile(kwpsPolls[i].id, i, sortOrder);
+            this.createResultProfile(kwpsPolls[i].id, sortOrder);
           }
           break;
         case 'kwps_question':
@@ -1316,7 +1316,12 @@ jQuery(function ($) {
       var versionId = $(event.currentTarget).closest('th').data('version-id');
       var version = this.collection.findWhere({ID: versionId});
       version.set('post_status', 'publish');
-      version.save();
+      version.save({
+        wait: true,
+        error: function(version, resp, options)  {
+          console.log(resp);
+        }
+      });
 
       this.render();
     },
@@ -1361,6 +1366,7 @@ jQuery(function ($) {
       $(this.el).html(app.templates.result(this.model));
     }
   });
+
   app.KwpsViewAddResult = Backbone.View.extend({
     el: '#extra-test',
     initialize: function() {
