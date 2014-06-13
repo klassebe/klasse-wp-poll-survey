@@ -523,7 +523,7 @@ jQuery(function ($) {
         mainTitle: true,
         add: (intros.length <= 0 && !_.some(versions, function(version) {return version.isLive;})),
         hasMore: (intros.length > 0),
-        addText: 'Add Intro',
+        addText: 'Display Intro',
         opened: app.openRow.main_kwps_intro,
         amount: intros.length/ versions.length,
         maxAmount: 1,

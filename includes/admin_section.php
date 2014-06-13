@@ -37,7 +37,7 @@ class admin_section {
 			'Conversion Rate' => __('Conversion Rate', 'klasse-wp-poll-survey'),
 			'Total Participants' => __('Total Participants', 'klasse-wp-poll-survey'),
 			'Make live' => __('Make live', 'klasse-wp-poll-survey'),
-			'Add Intro' => __('Add Intro', 'klasse-wp-poll-survey'),
+			'Display Intro' => __('Display Intro', 'klasse-wp-poll-survey'),
 			'Intro Result' => __('Intro Result', 'klasse-wp-poll-survey'),
 			'Add Intro Result' => __('Add Intro Result', 'klasse-wp-poll-survey'),
 			'Question pages' => __('Question pages', 'klasse-wp-poll-survey'),
