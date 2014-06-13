@@ -306,7 +306,7 @@ jQuery(function ($) {
       var model = new KwpsModel({
         post_type: "kwps_question",
         post_status: "draft",
-        post_content : kwps_translations.Question + " " + (index),
+        post_content : kwps_translations.Question + " " + (index + 1),
         post_parent : post_parent,
         _kwps_sort_order : index
       });
