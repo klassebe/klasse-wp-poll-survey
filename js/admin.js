@@ -1623,8 +1623,16 @@ jQuery(function ($) {
       if(this.model.isValid(true)) {
         var that = this;
         this.model.save(data, {
-          success: function() {
+          success: function(md) {
             that.cleanup();
+            var post_type = md.get('post_type');
+            if (post_type === 'kwps_question_group') {
+              app.openRow[post_type]= md.get('_kwps_sort_order');
+            }
+            if (post_type === 'kwps_question') {
+              app.openRow[post_type]= md.get('_kwps_sort_order');
+              app.openRow.kwps_question_group = app.kwpsCollection.get(md.get('post_parent')).get('_kwps_sort_order');
+            }
             window.location = '#';
           }
         });
