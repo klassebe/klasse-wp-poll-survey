@@ -103,14 +103,6 @@
     width: 100%;
     border: 0;
 }
-/*
-#kwps_test table {
-    border-collapse: collapse;
-}
-#kwps_test tr {
-    border-top: 1px solid #dedede;
-}
-*/
 
 #kwps_test .column-title .column-tab{
     margin: 5px 0 0 0;
@@ -379,5 +371,4 @@ pre {
      -moz-border-radius: 4px;
           border-radius: 4px;
 }
-
 

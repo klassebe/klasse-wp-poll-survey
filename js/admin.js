@@ -337,6 +337,16 @@ jQuery(function ($) {
       this.render();
       this.listenTo(this.collection, 'add remove', this.render);
       this.listenTo(this.collection, 'sync', this.validateVersion);
+      $(this.el).ajaxStart( function () {
+        $(this.el).find('.spinner').show();
+        console.log($(this.el).find('.spinner'));
+        console.log(' removed');
+
+      });
+      $(this.el).ajaxStop( function () {
+        $(this.el).find('.spinner').hide();
+        console.log(' removed');
+      });
     },
     events: {
       'click .delete-version': 'deleteVersion',
@@ -1406,6 +1416,7 @@ jQuery(function ($) {
       this.options = options || {};
       _.bindAll(this, 'cleanup');
       this.render();
+
     },
     cleanup: function() {
       this.undelegateEvents();
