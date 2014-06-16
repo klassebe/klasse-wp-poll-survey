@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['**/*.hbs','./js/*.js'],
-        tasks: ['dev'],
+        tasks: ['jshint', 'handlebars','clean:assets','concat:admin','clean:temp', 'concat:public', 'copy:tinymce'],
         options: {
           spawn: false,
           livereload: true
