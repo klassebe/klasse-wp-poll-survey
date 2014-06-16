@@ -195,7 +195,7 @@
 #kwps_test .button .dashicons{
     vertical-align: middle;
 }
-#kwps_test td, #kwps_test th {
+#kwps_test #matrix td, #kwps_test #matrix th {
     padding: 10px;
     height: 40px;
     border: 0;
@@ -236,6 +236,17 @@
     font-weight: normal;
     margin: 0 0 0 10px;
 }
+#titlediv #kwps-question-group-title {
+padding: 3px 8px;
+font-size: 1.7em;
+line-height: 100%;
+height: 1.7em;
+width: 100%;
+outline: 0;
+margin: 0;
+background-color: #FFF;
+}
+
 #editor-tiny {
     border: 1px solid lightgray;
 }

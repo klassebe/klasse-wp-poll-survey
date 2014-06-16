@@ -2128,82 +2128,82 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1, helper, options;
-  buffer += "\n            <div class=\"form-group\">"
-    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Title", options) : helperMissing.call(depth0, "t", "Title", options)))
-    + ": <input type=\"text\" name=\"post_title\" id=\"kwps-question-group-title\" value=\"";
+  buffer += "\n        <div id=\"titlediv\">\n            <div id=\"titlewrap\">\n                <label class=\"screen-reader-text\" id=\"title-prompt-text\" for=\"title\">"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Enter title here", options) : helperMissing.call(depth0, "t", "Enter title here", options)))
+    + "</label>\n                <input type=\"text\" name=\"post_title\" size=\"30\" value=\"";
   if (helper = helpers.post_title) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.post_title); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\"><span class=\"help-block hidden\"></span></div>\n        ";
+    + "\" id=\"title\" autocomplete=\"off\">\n            </div>\n        </div>\n        ";
   return buffer;
   }
 
 function program3(depth0,data) {
   
-  var buffer = "", stack1, helper, options;
-  buffer += "\n            <div class=\"form-group\">"
-    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Value", options) : helperMissing.call(depth0, "t", "Value", options)))
-    + ": <input type=\"text\" name=\"_kwps_answer_option_value\" id=\"kwps-answer-option-value\" value=\"";
-  if (helper = helpers._kwps_answer_option_value) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0._kwps_answer_option_value); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "\"><span class=\"help-block hidden\"></span></div>\n        ";
+  var buffer = "", helper, options;
+  buffer += "\n                    <a href=\"#\" id=\"add-result-button\" class=\"button insert-media add_media\" data-editor=\"content\" title=\"Add results\">\n                    <span class=\"dashicons dashicons-visibility\"></span> "
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Add results", options) : helperMissing.call(depth0, "t", "Add results", options)))
+    + "</a>\n                ";
   return buffer;
   }
 
 function program5(depth0,data) {
   
   var buffer = "", stack1, helper, options;
-  buffer += "\n            <div class=\"form-group\">"
-    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Min value", options) : helperMissing.call(depth0, "t", "Min value", options)))
-    + ": <input type=\"text\" name=\"_kwps_min_value\" id=\"kwps-answer-option-value\" value=\"";
-  if (helper = helpers._kwps_min_value) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0._kwps_min_value); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += "\n                        <tr>\n                            <th>\n                                <label for=\"_kwps_answer_option_value\">"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Value", options) : helperMissing.call(depth0, "t", "Value", options)))
+    + "</label>\n                            </th>\n                            <td>\n                                <input type=\"number\" name=\"_kwps_answer_option_value\" id=\"kwps-answer-option-value\" value=\"";
+  if (helper = helpers._kwps_answer_option_value) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0._kwps_answer_option_value); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\"><span class=\"help-block hidden\"></span></div>\n            <div class=\"form-group\">"
-    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Max value", options) : helperMissing.call(depth0, "t", "Max value", options)))
-    + ": <input type=\"text\" name=\"_kwps_max_value\" id=\"kwps-answer-option-value\" value=\"";
-  if (helper = helpers._kwps_max_value) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0._kwps_max_value); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "\"><span class=\"help-block hidden\"></span></div>\n        ";
+    + "\" class=\"regular-text\"><span class=\"help-block hidden\">sdfqsdf</span>\n                            </td>\n                        </tr>\n                        ";
   return buffer;
   }
 
 function program7(depth0,data) {
   
-  var buffer = "", helper, options;
-  buffer += "\n        <button id=\"add-result-button\">"
-    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Add results", options) : helperMissing.call(depth0, "t", "Add results", options)))
-    + "</button>\n        ";
+  var buffer = "", stack1, helper, options;
+  buffer += "\n                        <tr>\n                            <th>\n                                <label for=\"_kwps_min_value\">"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Min value", options) : helperMissing.call(depth0, "t", "Min value", options)))
+    + "</label>\n                            </th>\n                            <td>\n                                <input type=\"number\" name=\"_kwps_min_value\" id=\"kwps-answer-option-value\" value=\"";
+  if (helper = helpers._kwps_min_value) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0._kwps_min_value); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\"><span class=\"help-block hidden\"></span>\n                            </td>\n                        </tr>\n                        <tr>\n                            <th>\n                                <label for=\"_kwps_max_value\">"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Max value", options) : helperMissing.call(depth0, "t", "Max value", options)))
+    + "</label>\n                            </th>\n                            <td>\n                                <input type=\"number\" name=\"_kwps_max_value\" id=\"kwps-answer-option-value\" value=\"";
+  if (helper = helpers._kwps_max_value) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0._kwps_max_value); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\"><span class=\"help-block hidden\"></span>\n                            </td>\n                        </tr>\n                        ";
   return buffer;
   }
 
-  buffer += "<h2>";
-  if (helper = helpers.label) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.label); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "</h2>\n<div>\n    <ul id=\"errors\">\n\n    </ul>\n</div>\n<div>  \n	<form id=\"update-model\">\n        ";
+  buffer += "<h2>"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.label), options) : helperMissing.call(depth0, "t", (depth0 && depth0.label), options)))
+    + "</h2>\n<div id=\"poststuff\"> \n	<form id=\"update-model\">\n        ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.post_title), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n        ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.showValue), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n        ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.min_max), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n        <br>\n        <button id=\"add-media-button\"><span class=\"add-media-icon\"></span>"
+  buffer += "\n        <div id=\"wp-content-editor-tools\" class=\"wp-editor-tools hide-if-no-js\">\n            <div id=\"wp-content-media-buttons\" class=\"wp-media-buttons\">\n                <a href=\"#\" id=\"add-media-button\" class=\"button insert-media add_media\" data-editor=\"content\" title=\"Add Media\">\n                <span class=\"wp-media-buttons-icon\"></span> "
     + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Add media", options) : helperMissing.call(depth0, "t", "Add media", options)))
-    + "</button>\n        ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.addResults), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+    + "</a>\n                ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.addResults), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        <div class=\"form-group\">\n            <div id=\"editor-tiny\">\n                <textarea name='post_content' rows=\"20\">";
+  buffer += "\n            </div>\n        </div>\n        <br><br>\n        \n        <div class=\"form-group\">\n            <div id=\"editor-tiny\">\n                <textarea name='post_content' rows=\"20\">";
   if (helper = helpers.post_content) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.post_content); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "</textarea>\n            </div>\n            <span class=\"help-block hidden\"></span>\n        </div>\n		<button id=\"update\">"
+    + "</textarea>\n            </div>\n        </div>\n        <br>\n        <div id=\"extraSettings\" class=\"postbox  hide-if-js\" style=\"display: block;\">\n            <h3>"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Extra settings", options) : helperMissing.call(depth0, "t", "Extra settings", options)))
+    + "</h3>\n            <div class=\"inside\">\n                <table class=\"form-table\">\n                    <tbody>\n                        ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.showValue), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                        ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.min_max), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                    </tbody>\n                </table>\n            </div>\n        </div>\n        <p class=\"submit\">\n            <button type=\"submit\" class=\"button button-primary\" id=\"update\">"
     + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Update", options) : helperMissing.call(depth0, "t", "Update", options)))
-    + "</button>\n	</form>\n</div>\n";
+    + "</button>\n        </p>	\n    </form>\n</div>\n";
   return buffer;
   });
 
@@ -3769,8 +3769,8 @@ jQuery(function ($) {
     },
     events: {
       'click button#update': 'updateData',
-      'click button#add-media-button': 'addMedia',
-      'click button#add-result-button': 'addResult',
+      'click a#add-media-button': 'addMedia',
+      'click a#add-result-button': 'addResult',
       'click td.savesend input.button': 'insertIntoEditor',
       'click button#add-result-to-editor': 'insertChartIntoEditor'
     },
@@ -3797,7 +3797,7 @@ jQuery(function ($) {
 
       var data =  this.model.toJSON();
       data.attribute = this.options.attribute;
-      data.label = kwps_translations[this.options.attribute];
+      data.label = this.options.model.get('post_type');
       data.addResults = (this.model.get('post_type') === "kwps_outro" || this.model.get('post_type') === "kwps_intro_result");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
       data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
