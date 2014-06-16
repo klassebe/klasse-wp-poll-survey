@@ -199,7 +199,7 @@ class Test_Collections_List_Table extends Base_List_Table {
     function get_sortable_columns() {
         $sortable_columns = array(
             'post_title'     => array('post_title',false),     //true means it's already sorted
-            'post_modified'    => array('post_modified',false),
+            'post_modified'    => array('post_modified',true),
             'view_count'    => array('view_count',false),
 //            'user_id'  => array('user_id',false)
         );
@@ -341,6 +341,7 @@ class Test_Collections_List_Table extends Base_List_Table {
 //            'post_parent' => 0,
             'post_status' => array('draft', 'publish'),
         );
+
 //        $data = get_posts($arguments);
         $post_data = get_posts($arguments);
         $data = array();
@@ -356,7 +357,6 @@ class Test_Collections_List_Table extends Base_List_Table {
         }
 
         usort($data, 'self::usort_reorder');
-
 
         /**
          * REQUIRED for pagination. Let's figure out what page the user is currently
@@ -410,7 +410,7 @@ class Test_Collections_List_Table extends Base_List_Table {
      */
     static function usort_reorder($a,$b){
         $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'post_modified'; //If no sort, default to post_modified
-        $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
+        $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'desc'; //If no order, default to asc
         $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
         return ($order==='asc') ? $result : -$result; //Send final sort direction to usort
     }
