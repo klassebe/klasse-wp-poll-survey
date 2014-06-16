@@ -352,8 +352,10 @@ jQuery(function ($) {
     el: '#kwps_test',
     initialize: function () {
       //_.bindAll(this, 'cleanup');
+      this.validateVersion();
       this.render();
       this.listenTo(this.collection, 'add remove', this.render);
+      this.listenTo(this.collection, 'sync', this.validateVersion);
     },
     events: {
       'click .delete-version': 'deleteVersion',
@@ -966,7 +968,7 @@ jQuery(function ($) {
                 for (i = 0; i < questionsInGroup.length; i++) {
                   var questionOriginal = questionsInGroup[i];
 
-                  that.createQuestion(newQuestionGroup.get('ID'), questionGroupOriginal, function(newQuestion) {
+                  that.createQuestion(newQuestionGroup.get('ID'), questionOriginal, function(newQuestion) {
                     var answersInQuestion = that.getExistingObject(questionOriginal.get('ID'), 'kwps_answer_option', false);
 
                     for (i = 0; i < answersInQuestion.length; i++) {
@@ -1315,15 +1317,31 @@ jQuery(function ($) {
       event.preventDefault();
       var versionId = $(event.currentTarget).closest('th').data('version-id');
       var version = this.collection.findWhere({ID: versionId});
-      version.set('post_status', 'publish');
-      version.save({
-        wait: true,
-        error: function(version, resp, options)  {
-          console.log(resp);
-        }
-      });
+      var that = this;
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(version.toJSON()),
+        url: app.url + 'kwps_validate_version',
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json'
+      })
+        .done(function(request, status, error) {
+          version.set('post_status', 'publish');
+          version.save({
+            wait: true,
+            error: function(version, resp, options)  {
+              console.log(resp);
+            },
+            success: function() {
+              that.render();
+            }
+          });
+        })
+        .fail(function() {
+          alert(kwps_translations['Errors occurred. Please check below for more information.']);
+        });
 
-      this.render();
+
     },
     clearEntries: function(event) {
       event.preventDefault();
@@ -1354,6 +1372,27 @@ jQuery(function ($) {
       }
 
       return (typeof result === 'undefined')? false : result;
+    },
+    validateVersion: function(event) {
+      var versions = this.collection.where({post_type: 'kwps_version'}),
+        that = this;
+      _.each(versions, function(version) {
+        $.ajax({
+          type: 'POST',
+          data: JSON.stringify(version.toJSON()),
+          url: app.url + 'kwps_validate_version',
+          contentType: "application/json; charset=utf-8",
+          dataType: 'json'
+        })
+          .fail(function(request, status, error) {
+            version.set('validation', request.responseJSON);
+            that.render();
+          })
+          .done(function(request, status, error) {
+            version.set('validation', request.responseJSON);
+            that.render();
+          });
+      }, this);
     }
   });
 

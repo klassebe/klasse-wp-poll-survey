@@ -1,0 +1,8 @@
+.kwps-intro,
+.kwps-outro,
+.kwps-content {
+	background: grey;
+}
+.dashicons-trash:before {
+	content: "\f182";
+}
