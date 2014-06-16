@@ -260,7 +260,12 @@ class Entry extends Kwps_Post_Type{
 
 		if(!current_user_can('edit_posts')) {
 			header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden', true, 403);
-			wp_send_json_error(array('success' => false, 'error' => 'You have no permissions'));
+			wp_send_json_error(
+                array(
+                    'field' => 'All',
+                    'error' => __( 'You have no permissions', 'klasse-wp-poll-survey' ) ,
+                )
+            );
 		}
 
 		$request_data = static::get_post_data_from_request();

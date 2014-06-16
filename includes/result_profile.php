@@ -77,11 +77,16 @@ class Result_Profile extends Kwps_Post_Type {
         $errors = array();
 
         if( ! isset($request_data['ID']) ) {
-            $errors[] = array( 'field' => 'ID', 'message' => 'Required' );
+            $errors[] = array(
+                'field' => 'ID',
+                'message' => __( 'Required', 'klasse-wp-poll-survey' ),
+            );
         } else {
             $entry = Entry::get_as_array( $request_data['ID'] );
             if( Entry::$post_type != $entry['post_type'] ) {
-                $errors[] = array('field' => 'ID', 'message' => 'Not a valid entry ID' );
+                $errors[] = array(
+                    'field' => 'ID',
+                    'message' => __( 'Not a valid entry ID', 'klasse-wp-poll-survey' ) );
             }
         }
 
@@ -122,7 +127,12 @@ class Result_Profile extends Kwps_Post_Type {
             }
         }
 
-        return array( array('field' => 'All', 'message' => 'No valid result profile found') );
+        return array(
+            array(
+                'field' => 'All',
+                'message' => __( 'No valid result profile found', 'klasse-wp-poll-survey' ),
+            ),
+        );
     }
 
 

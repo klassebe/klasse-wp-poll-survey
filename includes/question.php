@@ -110,7 +110,12 @@ class Question extends Kwps_Post_Type{
 
             if( 0 < $max_questions_per_question_group ){
                 if( sizeof($all_questions_of_same_group) >= $test_modus['_kwps_max_questions_per_question_group']){
-                    array_push( $errors, array( 'field' => 'All', 'message' => 'Maximum questions already reached' ) );
+                    array_push( $errors,
+                        array(
+                            'field' => 'All',
+                            'message' => __( 'Maximum questions already reached', 'klasse-wp-poll-survey' ),
+                        )
+                    );
                 }
             }
         }

@@ -111,10 +111,7 @@
     border-top: 1px solid #dedede;
 }
 */
-#kwps_test .column-title{
-    padding-left: 2px;
-    padding-right: 2px; 
-}
+
 #kwps_test .column-title .column-tab{
     margin: 5px 0 0 0;
     border-top: 1px solid #D6D6D6;
@@ -126,7 +123,7 @@
     background-color: #f9f9f9;
     font-weight: 600;
 }
-#kwps_test .column-title.top .column-tab{
+#kwps_test #matrix .column-title.top .column-tab{
     height: 38px;
 }
 #kwps_test .column-title .column-tab input[type=text]{
@@ -137,7 +134,7 @@
     float: right;
     margin-bottom: 0px;
 }
-#kwps_test .column-title.bottom{
+#kwps_test #matrix .column-title.bottom{
     padding-top: 0;
     vertical-align: top;
 }
@@ -156,7 +153,9 @@
     background-color: #f9f9f9;
     font-weight: 600;
 }
-#kwps_test .column-title{
+#kwps_test #matrix .column-title{
+    padding-left: 2px;
+    padding-right: 2px;
     padding-bottom: 0;
 }
 #kwps_test tr.title {

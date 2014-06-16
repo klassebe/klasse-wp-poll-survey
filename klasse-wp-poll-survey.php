@@ -158,7 +158,13 @@ add_action( 'wp_ajax_kwps_get_bar_chart_per_question',
 add_action( 'wp_ajax_kwps_get_pie_chart_per_question',
     array('\includes\pie_chart','ajax_get_chart_per_question_by_entry_id'));
 
+add_action( 'wp_ajax_kwps_get_result_page', 'get_result_page');
 
+function get_result_page(){
+    include __DIR__ . '/views/result-page.php';
+    exit();
+//    echo $page;
+}
 
 add_filter('init', 'kwps_add_api_rewrite_rules');
 
