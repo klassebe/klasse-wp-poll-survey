@@ -352,8 +352,10 @@ jQuery(function ($) {
     el: '#kwps_test',
     initialize: function () {
       //_.bindAll(this, 'cleanup');
+      this.validateVersion();
       this.render();
       this.listenTo(this.collection, 'add remove', this.render);
+      this.listenTo(this.collection, 'sync', this.validateVersion);
     },
     events: {
       'click .delete-version': 'deleteVersion',
@@ -1354,6 +1356,27 @@ jQuery(function ($) {
       }
 
       return (typeof result === 'undefined')? false : result;
+    },
+    validateVersion: function(event) {
+      var versions = this.collection.where({post_type: 'kwps_version'}),
+        that = this;
+      _.each(versions, function(version) {
+        $.ajax({
+          type: 'POST',
+          data: JSON.stringify(version.toJSON()),
+          url: app.url + 'kwps_validate_version',
+          contentType: "application/json; charset=utf-8",
+          dataType: 'json'
+        })
+          .fail(function(request, status, error) {
+            version.set('validation', request.responseJSON);
+            that.render();
+          })
+          .done(function(request, status, error) {
+            version.set('validation', request.responseJSON);
+            that.render();
+          });
+      }, this);
     }
   });
 
