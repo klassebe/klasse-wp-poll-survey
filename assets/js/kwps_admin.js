@@ -1468,7 +1468,7 @@ function program11(depth0,data) {
   else { helper = (depth0 && depth0.number); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
     + "</div>\n        ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.value), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.showValue), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </td>\n    ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.versions), {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
@@ -1566,13 +1566,49 @@ function program1(depth0,data) {
   if (helper = helpers.total_participants) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.total_participants); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "</li>\n                        </ul>\n                    </div>\n                ";
-  stack1 = helpers.unless.call(depth0, (depth0 && depth0.isLive), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+    + "</li>\n                        </ul>\n                    </div>\n                    ";
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.validation)),stack1 == null || stack1 === false ? stack1 : stack1.success), {hash:{},inverse:self.program(4, program4, data),fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                ";
+  stack1 = helpers.unless.call(depth0, (depth0 && depth0.isLive), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n            </div>\n        </th>\n    ";
   return buffer;
   }
 function program2(depth0,data) {
+  
+  var buffer = "", helper, options;
+  buffer += "\n                    <div>\n                        "
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Ready to Publish!", options) : helperMissing.call(depth0, "t", "Ready to Publish!", options)))
+    + "\n                    </div>\n                    ";
+  return buffer;
+  }
+
+function program4(depth0,data) {
+  
+  var buffer = "", stack1, helper, options;
+  buffer += "\n                    <div>\n                        <h3>"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, "Errors", options) : helperMissing.call(depth0, "t", "Errors", options)))
+    + ": </h3>\n                        <ul>\n                            ";
+  stack1 = helpers.each.call(depth0, ((stack1 = (depth0 && depth0.validation)),stack1 == null || stack1 === false ? stack1 : stack1.data), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                        </ul>\n                    </div>\n                    ";
+  return buffer;
+  }
+function program5(depth0,data) {
+  
+  var buffer = "", stack1, helper, options;
+  buffer += "\n                                <li>"
+    + escapeExpression((helper = helpers.t || (depth0 && depth0.t),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.field), options) : helperMissing.call(depth0, "t", (depth0 && depth0.field), options)))
+    + ": ";
+  if (helper = helpers.message) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.message); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "</li>\n                            ";
+  return buffer;
+  }
+
+function program7(depth0,data) {
   
   var buffer = "", helper, options;
   buffer += "\n                    <span><a href=\"#\" class=\"clear-entries\">"
@@ -2313,7 +2349,13 @@ jQuery(function ($) {
       }
     }
   }
-
+  function stringToBoolean(string){
+    switch(string.toLowerCase()){
+      case "true": case "yes": case "1": return true;
+      case "false": case "no": case "0": case null: return false;
+      default: return Boolean(string);
+    }
+  }
   $.fn.serializeObject = function(){
     var obj = {};
 
@@ -2601,7 +2643,7 @@ jQuery(function ($) {
       var model = new KwpsModel({
         post_type: "kwps_question",
         post_status: "draft",
-        post_content : kwps_translations.Question + " " + (index),
+        post_content : kwps_translations.Question + " " + (index + 1),
         post_parent : post_parent,
         _kwps_sort_order : index
       });
@@ -2647,8 +2689,10 @@ jQuery(function ($) {
     el: '#kwps_test',
     initialize: function () {
       //_.bindAll(this, 'cleanup');
+      this.validateVersion();
       this.render();
       this.listenTo(this.collection, 'add remove', this.render);
+      this.listenTo(this.collection, 'sync', this.validateVersion);
     },
     events: {
       'click .delete-version': 'deleteVersion',
@@ -2818,11 +2862,11 @@ jQuery(function ($) {
         mainTitle: true,
         add: (intros.length <= 0 && !_.some(versions, function(version) {return version.isLive;})),
         hasMore: (intros.length > 0),
-        addText: 'Add Intro',
+        addText: 'Display Intro',
         opened: app.openRow.main_kwps_intro,
         amount: intros.length/ versions.length,
         maxAmount: 1,
-        description: "This is where the test starts."
+        description: 'This introduction is shown when someone fills out the test for the first time.'
       });
 
       // INTRO
@@ -2852,7 +2896,7 @@ jQuery(function ($) {
         opened: app.openRow.main_kwps_intro_result,
         amount: introResults.length/ versions.length,
         maxAmount: 1,
-        description: "You see this, when you are not allowed to fill in the test."
+        description: 'For people who have already completed the test.'
       });
 
       // INTRO RESULT
@@ -2968,12 +3012,18 @@ jQuery(function ($) {
 
                 for (var sortOrderA in sortedAns) {
                   sortOrderA = parseInt(sortOrderA);
+                  var value;
 
                   _.each(sortedAns[sortOrderA], function(answer) {
                     var parentQuestion = this.collection.findWhere({ID: answer.post_parent});
                     var parentQuestionGroup = this.collection.findWhere({ID: parentQuestion.get("post_parent")});
                     var parentVersion = this.collection.findWhere({ID: parentQuestionGroup.get("post_parent")});
                     answer.editable = (parentVersion.get('post_status') !== 'publish');
+
+                    if(typeof value === 'undefined') {
+                      value = answer._kwps_answer_option_value;
+                    }
+
                   }, this);
 
                   // ANSWER
@@ -2987,7 +3037,8 @@ jQuery(function ($) {
                     number: parseInt(sortOrderA) +1,
                     versions : sortedAns[sortOrderA],
                     postType: 'kwps_answer_option',
-                    value: 5
+                    showValue: (stringToBoolean(testmodus.get('_kwps_answer_options_require_value'))),
+                    value: value
                   });
                 }
               }
@@ -3181,7 +3232,7 @@ jQuery(function ($) {
           sortOrder = _.max(_.invoke(this.collection.where({post_type: 'kwps_result_profile'}),"toJSON"), function (a) {return a._kwps_sort_order;});
           sortOrder = (sortOrder === -Infinity || sortOrder === Infinity)? 0: parseInt(sortOrder._kwps_sort_order)+1;
           for(i = 0; i < kwpsPollLen; i++) {
-            this.createResultProfile(kwpsPolls[i].id, i, sortOrder);
+            this.createResultProfile(kwpsPolls[i].id, sortOrder);
           }
           break;
         case 'kwps_question':
@@ -3223,41 +3274,43 @@ jQuery(function ($) {
     },
     createVersion: function (previousVersion, index) {
       var that = this;
-      app.kwpsPollsCollection.create({
+      var versionData = {
         post_type: "kwps_version",
         post_status: "draft",
-        post_title : kwps_translations.Version + " " + (index+1),
-        post_content : kwps_translations.Version + " " + (index+1),
+        post_title : kwps_translations['Copy of'] + " " + previousVersion.get('post_title'),
         post_parent : previousVersion.get('post_parent'),
-        _kwps_sort_order : index.toString()
-      },
-        {
-          success: function (newVersion, response, options) {
-            that.createIntro(newVersion.get('ID'), false);
-            that.createOutro(newVersion.get('ID'), false);
-            that.createIntroResult(newVersion.get('ID'));
+        _kwps_sort_order : index
+      };
 
-            var resultProfiles = that.collection.where({post_type: 'kwps_result_profile', post_parent: previousVersion.get('ID')});
+      app.kwpsPollsCollection.create(
+        versionData,
+        {
+          success: function(newVersion, response, options) {
+            that.createIntro(newVersion.get('ID'), that.getExistingObject(previousVersion.get('ID'), 'kwps_intro', true));
+            that.createIntroResult(newVersion.get('ID'), that.getExistingObject(previousVersion.get('ID'), 'kwps_intro_result', true));
+            that.createOutro(newVersion.get('ID'), that.getExistingObject(previousVersion.get('ID'), 'kwps_outro', true));
+
+            var resultProfiles = that.getExistingObject(previousVersion.get('ID'), 'kwps_result_profile', false);
             for (i = 0; i < resultProfiles.length; i++) {
               var resultProfilesOriginal = resultProfiles[i];
-              that.createResultProfile(newVersion.get('ID'),i, resultProfilesOriginal.get('_kwps_sort_order'));
+              that.createResultProfile(newVersion.get('ID'), resultProfilesOriginal);
             }
 
-            var questionGroups = that.collection.where({post_type: 'kwps_question_group', post_parent: previousVersion.get('ID')});  
+            var questionGroups = that.getExistingObject(previousVersion.get('ID'), 'kwps_question_group', false);
             for (i = 0; i < questionGroups.length; i++) {
               var questionGroupOriginal = questionGroups[i];
-              that.createQuestionGroup(newVersion.get('ID'),i, questionGroupOriginal.get('_kwps_sort_order'), function(newQuestionGroup) {
-                var questionsInGroup = that.collection.where({post_type: 'kwps_question', post_parent: questionGroupOriginal.id});  
+              that.createQuestionGroup(newVersion.get('ID'), questionGroupOriginal, function(newQuestionGroup) {
+                var questionsInGroup = that.getExistingObject(questionGroupOriginal.get('ID'), 'kwps_question', false);
 
                 for (i = 0; i < questionsInGroup.length; i++) {
                   var questionOriginal = questionsInGroup[i];
 
-                  that.createQuestion(newQuestionGroup.get('ID'), questionGroupOriginal.get('_kwps_sort_order'), function(newQuestion) {
-                    var answersInQuestion = that.collection.where({post_type: 'kwps_answer_option', post_parent: questionOriginal.id});  
+                  that.createQuestion(newQuestionGroup.get('ID'), questionOriginal, function(newQuestion) {
+                    var answersInQuestion = that.getExistingObject(questionOriginal.get('ID'), 'kwps_answer_option', false);
 
                     for (i = 0; i < answersInQuestion.length; i++) {
                       var answersInQuestionOriginal = answersInQuestion[i];
-                      that.createAnswer(newQuestion.get('ID'), answersInQuestionOriginal.get('_kwps_sort_order'), function(newAnswer) {
+                      that.createAnswer(newQuestion.get('ID'), answersInQuestionOriginal, function(newAnswer) {
                         console.log('answer created: ' + newAnswer.id);
                       });
                     }
@@ -3265,93 +3318,109 @@ jQuery(function ($) {
                 }
               });
             }
-          }
-        });
-    },
-    createIntro: function (post_parent, edit) {
-      var that = this;
-      var model = new KwpsModel({
-        post_type: "kwps_intro",
-        post_status: "draft",
-        post_content : kwps_translations.Intro,
-        post_parent : post_parent,
-        _kwps_sort_order : "0"
-      });
-      model.save({},{
-        success: function (model, response, options) {
-          app.kwpsPollsCollection.add(model);
-          if (edit) {
-            app.router.navigate('edit/'+ model.id, {trigger: true});
 
           }
         }
-      });
+      );
     },
-    createIntroResult: function (post_parent, edit) {
-      app.kwpsPollsCollection.create({
-        post_type: "kwps_intro_result",
-        post_status: "draft",
-        post_content : kwps_translations['Intro result'],
-        post_parent : post_parent,
-        _kwps_sort_order : "0"
-      }, {
-        wait: true,
-        success: function (model, response, options) {
-          app.kwpsPollsCollection.add(model);
-          if (edit) {
-            app.router.navigate('edit/'+ model.id, {trigger: true});
+    createIntro: function (post_parent, data) {
+      if(typeof data === 'boolean') {
+        return;
+      }
 
-          }
-        }
-      });
-    },
-    createOutro: function (post_parent, edit) {
-      var that = this;
-      var model = new KwpsModel({
-        post_type: "kwps_outro",
-        post_status: "draft",
-        post_content : kwps_translations.Outro,
-        post_parent : post_parent,
-        _kwps_sort_order : "0"
-      });
-      model.save({},{
-        success: function (model, response, options) {
-          app.kwpsPollsCollection.add(model);
-          if (edit) {
-            app.router.navigate('edit/'+ model.id, {trigger: true});
+      var that = this,
+        introData = {
+          post_type: "kwps_intro",
+          post_status: "draft",
+          post_content : kwps_translations.Intro,
+          post_parent : post_parent,
+          _kwps_sort_order : 0
+        };
 
-          }
+      if(data) {
+        introData.post_content = data.get('post_content');
+      }
+
+      this.collection.create(
+        introData,
+        {
+          wait: true
         }
-      });
+      );
     },
-    createQuestionGroup: function (post_parent, index, sortOrder, cb) {
-      this.collection.create({
-        post_type: "kwps_question_group",
-        post_status: "draft",
-        post_title : kwps_translations["Question Group"] + " " + (parseInt(sortOrder) + 1),
-        post_content : kwps_translations["Question Group"] + " " + (parseInt(sortOrder) + 1),
-        post_parent : post_parent,
-        _kwps_sort_order : sortOrder
-      }, {
-        wait: true,
-        success: function(model, response, options) {
-          if(cb) {
-            cb(model);
-          }
+    createIntroResult: function (post_parent, data) {
+      if(typeof data === 'boolean') {
+        return;
+      }
+
+      var that = this,
+        introResultData = {
+          post_type: "kwps_intro_result",
+          post_status: "draft",
+          post_content : kwps_translations['Intro result'],
+          post_parent : post_parent,
+          _kwps_sort_order : 0
+        };
+
+      if(data) {
+        introResultData.post_content = data.get('post_content');
+      }
+
+      this.collection.create(
+        introResultData,
+        {
+          wait: true
         }
-      });
+      );
     },
-    createResultProfile: function (post_parent, index, sortOrder, cb) {
-      this.collection.create({
+    createOutro: function (post_parent, data) {
+      if(typeof data === 'boolean') {
+        return;
+      }
+
+      var that = this,
+        outroData = {
+          post_type: "kwps_outro",
+          post_status: "draft",
+          post_content : kwps_translations.Outro,
+          post_parent : post_parent,
+          _kwps_sort_order : 0
+        };
+
+      if(data) {
+        outroData.post_content = data.get('post_content');
+      }
+
+      this.collection.create(
+        outroData,
+        {
+          wait: true
+        }
+      );
+    },
+    createResultProfile: function (post_parent, data, cb) {
+      var resultProfileData = {
         post_type: "kwps_result_profile",
         post_status: "draft",
-        post_title : kwps_translations["Result Profile"] + " " + (parseInt(sortOrder) + 1),
-        post_content : kwps_translations["Result Profile"] + " " + (parseInt(sortOrder) + 1),
+        post_title : "",
+        post_content : "",
         post_parent : post_parent,
-        _kwps_sort_order : sortOrder,
+        _kwps_sort_order : 0,
         _kwps_min_value: 0,
         _kwps_max_value: 0
-      }, {
+      };
+
+      if(typeof data === 'object') {
+        resultProfileData.post_title = data.get('post_title');
+        resultProfileData.post_content = data.get('post_content');
+        resultProfileData._kwps_sort_order = data.get('_kwps_sort_order');
+      } else {
+        resultProfileData._kwps_sort_order = data;
+        resultProfileData.post_title = kwps_translations["Result profile"] + " " + (data + 1);
+        resultProfileData.post_content = kwps_translations["Result profile"] + " " + (data + 1);
+      }
+
+      this.collection.create(resultProfileData, {
         wait: true,
         success: function(model, response, options) {
           if(cb) {
@@ -3360,44 +3429,98 @@ jQuery(function ($) {
         }
       });
     },
-    createQuestion: function (post_parent, index, cb) {
-      app.kwpsPollsCollection.create({
-        post_type: "kwps_question",
+    createQuestionGroup: function (post_parent, data, cb) {
+      var questionGroupData = {
+        post_type: "kwps_question_group",
         post_status: "draft",
-        post_content : kwps_translations.Question + " " + (index + 1),
+        post_title : "",
+        post_content : "",
         post_parent : post_parent,
-        _kwps_sort_order : index
-      }, {
+        _kwps_sort_order : 0,
+        _kwps_min_value: 0,
+        _kwps_max_value: 0
+      };
+
+      if(typeof data === 'object') {
+        questionGroupData.post_title = data.get('post_title');
+        questionGroupData.post_content = data.get('post_content');
+        questionGroupData._kwps_sort_order = data.get('_kwps_sort_order');
+      } else {
+        questionGroupData._kwps_sort_order = data;
+        questionGroupData.post_title = kwps_translations["Question Group"] + " " + (data + 1);
+        questionGroupData.post_content = kwps_translations["Question Group"] + " " + (data + 1);
+      }
+
+      this.collection.create(questionGroupData, {
         wait: true,
-        success: function (model, response, options) {
+        success: function(model, response, options) {
           if(cb) {
             cb(model);
-          }        
-        },
-        error: function() {
-          console.log('error in de vraag');
+          }
         }
       });
     },
-    createAnswer: function (post_parent, index, cb) {
-      app.kwpsPollsCollection.create({
+    createQuestion: function (post_parent, data, cb) {
+      var questionData = {
+        post_type: "kwps_question",
+        post_status: "draft",
+        post_title : "",
+        post_content : "",
+        post_parent : post_parent,
+        _kwps_sort_order : 0,
+        _kwps_min_value: 0,
+        _kwps_max_value: 0
+      };
+
+      if(typeof data === 'object') {
+        questionData.post_title = data.get('post_title');
+        questionData.post_content = data.get('post_content');
+        questionData._kwps_sort_order = data.get('_kwps_sort_order');
+      } else {
+        questionData._kwps_sort_order = data;
+        questionData.post_title = kwps_translations.Question + " " + (data + 1);
+        questionData.post_content = kwps_translations.Question + " " + (data + 1);
+      }
+
+      this.collection.create(questionData, {
+        wait: true,
+        success: function(model, response, options) {
+          if(cb) {
+            cb(model);
+          }
+        }
+      });
+    },
+    createAnswer: function (post_parent, data, cb) {
+      var answerData = {
         post_type: "kwps_answer_option",
         post_status: "draft",
-        post_content : kwps_translations["Answer Option"] + " " + (index + 1),
+        post_title : "",
+        post_content : "",
         post_parent : post_parent,
-        _kwps_sort_order : index,
-        _kwps_answer_option_value : 0
-      },
-        {
-          wait: true,
-          success: function (model, response, options) {
-            if(cb) {
-              cb(model);
-            }
-          },
-          error: function() {
-            alert('ERROR');
+        _kwps_sort_order : 0,
+        _kwps_min_value: 0,
+        _kwps_max_value: 0,
+        _kwps_answer_option_value: 0
+      };
+
+      if(typeof data === 'object') {
+        answerData.post_title = data.get('post_title');
+        answerData.post_content = data.get('post_content');
+        answerData._kwps_sort_order = data.get('_kwps_sort_order');
+      } else {
+        answerData._kwps_sort_order = data;
+        answerData.post_title = kwps_translations["Answer Option"] + " " + (data + 1);
+        answerData.post_content = kwps_translations["Answer Option"] + " " + (data + 1);
+      }
+
+      this.collection.create(answerData, {
+        wait: true,
+        success: function(model, response, options) {
+          if(cb) {
+            cb(model);
           }
+        }
       });
     },
     showActions: function(event) {
@@ -3531,10 +3654,31 @@ jQuery(function ($) {
       event.preventDefault();
       var versionId = $(event.currentTarget).closest('th').data('version-id');
       var version = this.collection.findWhere({ID: versionId});
-      version.set('post_status', 'publish');
-      version.save();
+      var that = this;
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(version.toJSON()),
+        url: app.url + 'kwps_validate_version',
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json'
+      })
+        .done(function(request, status, error) {
+          version.set('post_status', 'publish');
+          version.save({
+            wait: true,
+            error: function(version, resp, options)  {
+              console.log(resp);
+            },
+            success: function() {
+              that.render();
+            }
+          });
+        })
+        .fail(function() {
+          alert(kwps_translations['Errors occurred. Please check below for more information.']);
+        });
 
-      this.render();
+
     },
     clearEntries: function(event) {
       event.preventDefault();
@@ -3550,6 +3694,42 @@ jQuery(function ($) {
           }
         );
       }
+    },
+    getExistingObject: function(post_parent, post_type, single) {
+      if(typeof single === 'undefined') {
+        single = true;
+      }
+      var query = {post_type: post_type, post_parent: post_parent},
+        result;
+
+      if(single) {
+        result = this.collection.findWhere(query);
+      } else {
+        result = this.collection.where(query);
+      }
+
+      return (typeof result === 'undefined')? false : result;
+    },
+    validateVersion: function(event) {
+      var versions = this.collection.where({post_type: 'kwps_version'}),
+        that = this;
+      _.each(versions, function(version) {
+        $.ajax({
+          type: 'POST',
+          data: JSON.stringify(version.toJSON()),
+          url: app.url + 'kwps_validate_version',
+          contentType: "application/json; charset=utf-8",
+          dataType: 'json'
+        })
+          .fail(function(request, status, error) {
+            version.set('validation', request.responseJSON);
+            that.render();
+          })
+          .done(function(request, status, error) {
+            version.set('validation', request.responseJSON);
+            that.render();
+          });
+      }, this);
     }
   });
 
@@ -3562,6 +3742,7 @@ jQuery(function ($) {
       $(this.el).html(app.templates.result(this.model));
     }
   });
+
   app.KwpsViewAddResult = Backbone.View.extend({
     el: '#extra-test',
     initialize: function() {
@@ -3617,7 +3798,7 @@ jQuery(function ($) {
       var data =  this.model.toJSON();
       data.attribute = this.options.attribute;
       data.label = kwps_translations[this.options.attribute];
-      data.addResults = (this.model.get('post_type') === "kwps_outro");
+      data.addResults = (this.model.get('post_type') === "kwps_outro" || this.model.get('post_type') === "kwps_intro_result");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
       data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
       data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
@@ -3641,6 +3822,20 @@ jQuery(function ($) {
           msg: kwps_translations['Title is required']
         };
       }
+
+      /* jshint ignore:start */
+      if(this.model.get('post_type') === 'kwps_outro' || this.model.get('post_type') === 'kwps_intro_result') {
+        validation.post_content = [
+          {
+            required: true
+          },
+          {
+            pattern: '\\[kwps_result\\ .*\\]',
+            msg: kwps_translations['You must add a result to the text']
+          }
+        ];
+      }
+      /* jshint ignore:end */
 
       if(data.min_max) {
         validation._kwps_min_value = {
