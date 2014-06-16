@@ -102,7 +102,12 @@ class Test_Collection extends Kwps_Post_Type{
         foreach( static::$allowed_dropdown_values as $field => $allowed_values ){
             if( isset( $post[$field] ) ) {
                 if( !in_array( $post[$field], $allowed_values) ) {
-                    array_push( $errors , array( 'field' => $field, 'message' => 'Value is not allowed') );
+                    array_push( $errors ,
+                        array(
+                            'field' => $field,
+                            'message' => __( 'Value is not allowed', 'klasse-wp-poll-survey' ),
+                        )
+                    );
                 }
             }
         }

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Klasse WordPress Poll & Survey\n"
-"POT-Creation-Date: 2014-06-05 11:19+0100\n"
-"PO-Revision-Date: 2014-06-05 19:36+0100\n"
+"POT-Creation-Date: 2014-06-16 16:47+0100\n"
+"PO-Revision-Date: 2014-06-16 16:58+0100\n"
 "Last-Translator: AppSaloon - koen <koen@appsaloon.be>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -17,6 +17,334 @@ msgstr ""
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: includes/admin_section.php:35 includes/admin_section.php:81
+msgid "Intro"
+msgstr "Intro"
+
+#: includes/admin_section.php:36 includes/admin_section.php:82
+msgid "Outro"
+msgstr "Outro"
+
+#: includes/admin_section.php:37 includes/admin_section.php:87
+msgid "Question"
+msgstr "Vraag"
+
+#: includes/admin_section.php:38
+msgid "New Test"
+msgstr "Nieuwe Test"
+
+#: includes/admin_section.php:39
+msgid "Builder"
+msgstr "Bouwer"
+
+#: includes/admin_section.php:40
+msgid "Settings"
+msgstr "Instellingen"
+
+#: includes/admin_section.php:41
+msgid "Control panel"
+msgstr "Beheerpaneel"
+
+#: includes/admin_section.php:42
+msgid "Name"
+msgstr "Naam"
+
+#: includes/admin_section.php:43
+msgid "Create"
+msgstr "Maak"
+
+#: includes/admin_section.php:44 includes/testCollections_list_table.php:120
+msgid "Edit"
+msgstr "Wijzig"
+
+#: includes/admin_section.php:45
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: includes/admin_section.php:46
+msgid "View entries"
+msgstr "Beheer invoer"
+
+#: includes/admin_section.php:47
+msgid "Results"
+msgstr "Resultaten"
+
+#: includes/admin_section.php:48
+msgid "View count"
+msgstr "Aantal keren bekeken\t"
+
+#: includes/admin_section.php:49
+msgid "Conversion Rate"
+msgstr "Conversie"
+
+#: includes/admin_section.php:50
+msgid "Total Participants"
+msgstr "Aantal deelnemers"
+
+#: includes/admin_section.php:51
+msgid "Make live"
+msgstr "Maak live"
+
+#: includes/admin_section.php:52
+msgid "Display Intro"
+msgstr ""
+
+#: includes/admin_section.php:53
+msgid "Intro Result"
+msgstr "Pagina na invullen"
+
+#: includes/admin_section.php:54
+msgid "Add Intro Result"
+msgstr "Voeg tekst na invullen toe"
+
+#: includes/admin_section.php:55
+msgid "Question pages"
+msgstr "Pagina's"
+
+#: includes/admin_section.php:56
+#, fuzzy
+msgid "question page"
+msgstr "Pagina's"
+
+#: includes/admin_section.php:57
+msgid "Add question page"
+msgstr "Voeg pagina toe"
+
+#: includes/admin_section.php:58
+msgid "Questions"
+msgstr "Vragen"
+
+#: includes/admin_section.php:59
+#, fuzzy
+msgid "question"
+msgstr "Vraag"
+
+#: includes/admin_section.php:60
+msgid "Add question"
+msgstr "Vraag toevoegen"
+
+#: includes/admin_section.php:61
+msgid "Answers"
+msgstr "Antwoorden"
+
+#: includes/admin_section.php:62
+msgid "Add answer"
+msgstr "Antwoord toevoegen"
+
+#: includes/admin_section.php:63
+msgid "Add outro"
+msgstr "Outro toevoegen"
+
+#: includes/admin_section.php:64
+msgid "Update"
+msgstr "Aanpassen"
+
+#: includes/admin_section.php:65
+msgid "Add results"
+msgstr "Voeg resultaten toe"
+
+#: includes/admin_section.php:66
+msgid "Add media"
+msgstr "Voeg media toe"
+
+#: includes/admin_section.php:67
+msgid "Value"
+msgstr "Waarde"
+
+#: includes/admin_section.php:68 includes/testCollections_list_table.php:175
+msgid "Title"
+msgstr "Titel"
+
+#: includes/admin_section.php:69
+msgid "Value is required"
+msgstr "Waarde is verplicht"
+
+#: includes/admin_section.php:70
+msgid "Min value"
+msgstr "Min waarde"
+
+#: includes/admin_section.php:71
+msgid "Max value"
+msgstr "Max waarde"
+
+#: includes/admin_section.php:72
+msgid "Min value is required"
+msgstr "Min waarde is verplicht"
+
+#: includes/admin_section.php:73
+msgid "Max value is required"
+msgstr "Max waarde is verplicht"
+
+#: includes/admin_section.php:74
+msgid "Title is required"
+msgstr "Titel is verplicht"
+
+#: includes/admin_section.php:75
+msgid "Name is required"
+msgstr "Naam is verplicht"
+
+#: includes/admin_section.php:76
+msgid "Type is required"
+msgstr "Type is verplicht"
+
+#: includes/admin_section.php:77
+msgid "Clear entries"
+msgstr "Verwijder invoer"
+
+#: includes/admin_section.php:78
+msgid "This will delete all entries. Are you sure?"
+msgstr "Alle invoer zal verwijderd worden. Ben je zeker?"
+
+#: includes/admin_section.php:79
+msgid "Version"
+msgstr "Versie"
+
+#: includes/admin_section.php:80
+#, fuzzy
+msgid "version"
+msgstr "Versie"
+
+#: includes/admin_section.php:83
+msgid "Intro result"
+msgstr "Pagina na invullen"
+
+#: includes/admin_section.php:84
+msgid "Question Group"
+msgstr "Vragengroep"
+
+#: includes/admin_section.php:85
+msgid "Result Profile"
+msgstr "Profiel"
+
+#: includes/admin_section.php:86
+msgid "Result Profiles"
+msgstr "Profielen"
+
+#: includes/admin_section.php:88
+msgid "Answer Option"
+msgstr "Antwoordoptie"
+
+#: includes/admin_section.php:89
+msgid "Personality test"
+msgstr "Persoonlijkheidstest"
+
+#: includes/admin_section.php:90
+msgid "Poll"
+msgstr "Opiniepeiling"
+
+#: includes/admin_section.php:91 includes/version.php:324
+#: includes/version.php:351
+msgid "Next"
+msgstr "Volgende"
+
+#: includes/admin_section.php:92
+msgid "Logged in user"
+msgstr "Aangemelde gebruikers"
+
+#: includes/admin_section.php:93
+msgid "Logged out user"
+msgstr "Niet-aangemelde gebruikers"
+
+#: includes/admin_section.php:94 includes/uniqueness.php:42
+#: includes/uniqueness.php:63 includes/uniqueness.php:85
+msgid "Free"
+msgstr "Vrij"
+
+#: includes/admin_section.php:95 includes/uniqueness.php:46
+#: includes/uniqueness.php:67
+msgid "Once, based on cookie"
+msgstr "Eenmalig, gebaseerd op cookie"
+
+#: includes/admin_section.php:96 includes/uniqueness.php:50
+#: includes/uniqueness.php:71
+msgid "Once, based on IP"
+msgstr "Eenmalig, gebaseerd op IP-adres"
+
+#: includes/admin_section.php:97 includes/uniqueness.php:54
+msgid "Once, based login"
+msgstr "Eenmalig, gebaseerd op login"
+
+#: includes/admin_section.php:98
+msgid "Limit entries"
+msgstr "Beperk invoer"
+
+#: includes/admin_section.php:99
+msgid "Add result profile"
+msgstr "Voeg profiel toe"
+
+#: includes/admin_section.php:100
+msgid "Create new test"
+msgstr "Voeg nieuwe test toe"
+
+#: includes/admin_section.php:101
+msgid "Test Title"
+msgstr "Titel van de test"
+
+#: includes/admin_section.php:102
+msgid "This will be the title of your test."
+msgstr "Dit wordt de titel van uw test."
+
+#: includes/admin_section.php:103
+msgid "Test modus"
+msgstr "Testmodus"
+
+#: includes/admin_section.php:104
+msgid "Test modi"
+msgstr "Testmodi"
+
+#: includes/admin_section.php:105
+msgid "Select the type of test you want to create."
+msgstr "Kies het type van de test die je wilt maken."
+
+#: includes/admin_section.php:106
+msgid "Copy of"
+msgstr ""
+
+#: includes/admin_section.php:107
+#, fuzzy
+msgid "Result profile"
+msgstr "Profiel"
+
+#: includes/admin_section.php:108
+msgid "You must add a result to the text"
+msgstr "U moet een resultaat toevoegen aan de tekst"
+
+#: includes/admin_section.php:109
+msgid ""
+"This introduction is shown when someone fills out the test for the first "
+"time."
+msgstr ""
+"Deze introductie wordt getoond wanneer iemand de test voor de eerste keer "
+"invult."
+
+#: includes/admin_section.php:110
+msgid "For people who have already completed the test."
+msgstr "Voor personen die de test reeds volledig ingevuld hebben."
+
+#: includes/admin_section.php:111
+msgid "Ready to Publish!"
+msgstr "Klaar voor publicatie!"
+
+#: includes/admin_section.php:112
+msgid "Errors"
+msgstr "Fouten"
+
+#: includes/admin_section.php:113
+msgid "Errors occurred. Please check below for more information."
+msgstr ""
+"Er hebben zich fouten voorgedaan. U vindt meer info onderaan deze pagina."
+
+#: includes/answer_option.php:185
+msgid "Maximum answer options already reached"
+msgstr "Maximum aantal antwoordopties reeds bereikt"
+
+#: includes/answer_option.php:211 includes/answer_option.php:220
+#: includes/kwps_post_type.php:200 includes/kwps_post_type.php:209
+#: includes/kwps_post_type.php:318 includes/result_profile.php:82
+#: includes/version.php:244
+msgid "Required"
+msgstr "Vereist"
 
 #: includes/base-list-table.php:193
 msgid "No items found."
@@ -90,6 +418,10 @@ msgstr "Ga naar laatste pagina"
 msgid "Select All"
 msgstr "Alles selecteren"
 
+#: includes/entry.php:266
+msgid "You have no permissions"
+msgstr "U heeft geen rechten"
+
 #: includes/kwps_post_status.php:22
 #, php-format
 msgid " <span class=\"count\">(%s)</span>"
@@ -97,45 +429,67 @@ msgid_plural " <span class=\"count\">(%s)</span>"
 msgstr[0] " <span class=\"count\">(%s)</span>"
 msgstr[1] " <span class=\"count\">(%s)</span>"
 
-#: includes/testCollections_list_table.php:115 klasse-wp-poll-survey.php:283
-msgid "Edit"
-msgstr "Wijzig"
+#: includes/kwps_post_type.php:234
+msgid "Needs to be a number"
+msgstr "Moet een nummer zijn"
 
-#: includes/testCollections_list_table.php:124
-#: includes/testCollections_list_table.php:220
+#: includes/kwps_post_type.php:311
+msgid "You cannot update once published"
+msgstr "U kan niet updaten na publicatie"
+
+#: includes/question.php:116
+msgid "Maximum questions already reached"
+msgstr "Maximum aantal vragen reeds bereikt"
+
+#: includes/question_group.php:91
+msgid "Maximum question groups already reached"
+msgstr "Maximum aantal vraag groepen reeds bereikt"
+
+#: includes/result_profile.php:89
+msgid "Not a valid entry ID"
+msgstr "Ongeldig ID"
+
+#: includes/result_profile.php:133
+#, fuzzy
+msgid "No valid result profile found"
+msgstr "Voeg profiel toe"
+
+#: includes/testCollections_list_table.php:129
+#: includes/testCollections_list_table.php:226
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: includes/testCollections_list_table.php:170 klasse-wp-poll-survey.php:305
-msgid "Title"
-msgstr "Titel"
+#: includes/testCollections_list_table.php:176
+#, fuzzy
+msgid "Testmodus"
+msgstr "Testmodus"
 
-#: includes/testCollections_list_table.php:171
+#: includes/testCollections_list_table.php:177
 msgid "Views"
 msgstr "Aantal keren bekeken"
 
-#: includes/testCollections_list_table.php:173
+#: includes/testCollections_list_table.php:179
 msgid "Date"
 msgstr "Datum"
 
-#: includes/uniqueness.php:42 includes/uniqueness.php:63
-#: includes/uniqueness.php:85 klasse-wp-poll-survey.php:330
-msgid "Free"
-msgstr "Vrij"
+#: includes/test_collection.php:108
+msgid "Value is not allowed"
+msgstr "Waarde is niet toegestaan"
 
-#: includes/uniqueness.php:46 includes/uniqueness.php:67
-#: klasse-wp-poll-survey.php:331
-msgid "Once, based on cookie"
-msgstr "Eenmalig, gebaseerd op cookie"
+#: includes/test_modus.php:156
+msgid "Post saved as draft - Title is empty"
+msgstr "Post opgeslagen als klad - Titel is leeg"
 
-#: includes/uniqueness.php:50 includes/uniqueness.php:71
-#: klasse-wp-poll-survey.php:332
-msgid "Once, based on IP"
-msgstr "Eenmalig, gebaseerd op IP-adres"
+#: includes/test_modus.php:161
+msgid "Test Modus was saved as duplicate - new settings will not be used"
+msgstr ""
+"Test Modus opgeslagen als duplicate - nieuwe instellingen zullen niet "
+"gebruikt worden"
 
-#: includes/uniqueness.php:54 klasse-wp-poll-survey.php:333
-msgid "Once, based login"
-msgstr "Eenmalig, gebaseerd op login"
+#: includes/test_modus.php:162
+msgid "Either rename this Test Modus or remove the Test Modus already in use"
+msgstr ""
+"Hernoem deze Test Modus of verwijder de Test Modus die reeds in gebruik is"
 
 #: includes/uniqueness.php:75
 msgid "Only logged in users allowed"
@@ -169,279 +523,112 @@ msgstr "Je moet aangemeld zijn"
 msgid "Only logged in users"
 msgstr "Enkel aangemelde gebruikers"
 
-#: includes/version.php:162 includes/version.php:189
-#: klasse-wp-poll-survey.php:327
-msgid "Next"
-msgstr "Volgende"
+#: includes/version.php:125
+msgid "Cannot publish when not saved as draft first"
+msgstr "U kan niet publiceren vooraleer op te slaan als klad"
 
-#: klasse-wp-poll-survey.php:274 klasse-wp-poll-survey.php:317
-msgid "Intro"
-msgstr "Intro"
+#: includes/version.php:151
+msgid "No result shortcodes used!!"
+msgstr "Geen resultaat shortcodes gebruikt!!"
 
-#: klasse-wp-poll-survey.php:275 klasse-wp-poll-survey.php:318
-msgid "Outro"
-msgstr "Outro"
-
-#: klasse-wp-poll-survey.php:276 klasse-wp-poll-survey.php:323
-msgid "Question"
-msgstr "Vraag"
-
-#: klasse-wp-poll-survey.php:277 views/add.php:10
-msgid "New Test"
-msgstr "Nieuwe Test"
-
-#: klasse-wp-poll-survey.php:278
-msgid "Builder"
-msgstr "Bouwer"
-
-#: klasse-wp-poll-survey.php:279
-msgid "Settings"
-msgstr "Instellingen"
-
-#: klasse-wp-poll-survey.php:280
-msgid "Control panel"
-msgstr "Beheerpaneel"
-
-#: klasse-wp-poll-survey.php:281
-msgid "Name"
-msgstr "Naam"
-
-#: klasse-wp-poll-survey.php:282
-msgid "Create"
-msgstr "Maak"
-
-#: klasse-wp-poll-survey.php:284
-msgid "Shortcode"
-msgstr "Shortcode"
-
-#: klasse-wp-poll-survey.php:285
-msgid "View entries"
-msgstr "Beheer invoer"
-
-#: klasse-wp-poll-survey.php:286
-msgid "Results"
-msgstr "Resultaten"
-
-#: klasse-wp-poll-survey.php:287
-msgid "View count"
-msgstr "Aantal keren bekeken\t"
-
-#: klasse-wp-poll-survey.php:288
-msgid "Conversion Rate"
-msgstr "Conversie"
-
-#: klasse-wp-poll-survey.php:289
-msgid "Total Participants"
-msgstr "Aantal deelnemers"
-
-#: klasse-wp-poll-survey.php:290
-msgid "Make live"
-msgstr "Maak live"
-
-#: klasse-wp-poll-survey.php:291
-msgid "Add Intro"
-msgstr "Voeg intro toe"
-
-#: klasse-wp-poll-survey.php:292
-msgid "Intro Result"
-msgstr "Pagina na invullen"
-
-#: klasse-wp-poll-survey.php:293
-msgid "Add Intro Result"
-msgstr "Voeg tekst na invullen toe"
-
-#: klasse-wp-poll-survey.php:294
-msgid "Question pages"
-msgstr "Pagina's"
-
-#: klasse-wp-poll-survey.php:295
-msgid "Add question page"
-msgstr "Voeg pagina toe"
-
-#: klasse-wp-poll-survey.php:296
-msgid "Questions"
-msgstr "Vragen"
-
-#: klasse-wp-poll-survey.php:297
-msgid "Add question"
-msgstr "Vraag toevoegen"
-
-#: klasse-wp-poll-survey.php:298
-msgid "Answers"
-msgstr "Antwoorden"
-
-#: klasse-wp-poll-survey.php:299
-msgid "Add answer"
-msgstr "Antwoord toevoegen"
-
-#: klasse-wp-poll-survey.php:300
-msgid "Add outro"
-msgstr "Outro toevoegen"
-
-#: klasse-wp-poll-survey.php:301
-msgid "Update"
-msgstr "Aanpassen"
-
-#: klasse-wp-poll-survey.php:302
-msgid "Add results"
-msgstr "Voeg resultaten toe"
-
-#: klasse-wp-poll-survey.php:303
-msgid "Add media"
-msgstr "Voeg media toe"
-
-#: klasse-wp-poll-survey.php:304
-msgid "Value"
-msgstr "Waarde"
-
-#: klasse-wp-poll-survey.php:306
-msgid "Value is required"
-msgstr "Waarde is verplicht"
-
-#: klasse-wp-poll-survey.php:307
-msgid "Min value"
+#: includes/version.php:163
+#, fuzzy
+msgid "Invalid value "
 msgstr "Min waarde"
 
-#: klasse-wp-poll-survey.php:308
-msgid "Max value"
-msgstr "Max waarde"
+#: includes/version.php:164
+#, fuzzy
+msgid " in shortcode"
+msgstr "Shortcode"
 
-#: klasse-wp-poll-survey.php:309
-msgid "Min value is required"
+#: includes/version.php:176
+#, fuzzy
+msgid "Minimum 1 question page required"
 msgstr "Min waarde is verplicht"
 
-#: klasse-wp-poll-survey.php:310
-msgid "Max value is required"
-msgstr "Max waarde is verplicht"
+#: includes/version.php:186
+msgid "Minimum 1 question per question page required"
+msgstr "Minimum 1 vraag per pagina vereist"
 
-#: klasse-wp-poll-survey.php:311
-msgid "Title is required"
-msgstr "Titel is verplicht"
+#: includes/version.php:195
+msgid "Minimum 2 answer options per question required"
+msgstr "Minimum 2 antwoordopties per vraag vereist"
 
-#: klasse-wp-poll-survey.php:312
-msgid "Name is required"
-msgstr "Naam is verplicht"
-
-#: klasse-wp-poll-survey.php:313
-msgid "Type is required"
-msgstr "Type is verplicht"
-
-#: klasse-wp-poll-survey.php:314
-msgid "Clear entries"
-msgstr "Verwijder invoer"
-
-#: klasse-wp-poll-survey.php:315
-msgid "This will delete all entries. Are you sure?"
-msgstr "Alle invoer zal verwijderd worden. Ben je zeker?"
-
-#: klasse-wp-poll-survey.php:316
-msgid "Version"
-msgstr "Versie"
-
-#: klasse-wp-poll-survey.php:319
-msgid "Intro result"
-msgstr "Pagina na invullen"
-
-#: klasse-wp-poll-survey.php:320
-msgid "Question Group"
-msgstr "Vragengroep"
-
-#: klasse-wp-poll-survey.php:321
-msgid "Result Profile"
-msgstr "Profiel"
-
-#: klasse-wp-poll-survey.php:322
-msgid "Result Profiles"
-msgstr "Profielen"
-
-#: klasse-wp-poll-survey.php:324
-msgid "Answer Option"
-msgstr "Antwoordoptie"
-
-#: klasse-wp-poll-survey.php:325
-msgid "Personality test"
-msgstr "Persoonlijkheidstest"
-
-#: klasse-wp-poll-survey.php:326
-msgid "Poll"
-msgstr "Opiniepeiling"
-
-#: klasse-wp-poll-survey.php:328
-msgid "Logged in user"
-msgstr "Aangemelde gebruikers"
-
-#: klasse-wp-poll-survey.php:329
-msgid "Logged out user"
-msgstr "Niet-aangemelde gebruikers"
-
-#: klasse-wp-poll-survey.php:334
-msgid "Limit entries"
-msgstr "Beperk invoer"
-
-#: klasse-wp-poll-survey.php:335
-msgid "Add result profile"
+#: includes/version.php:208
+#, fuzzy
+msgid "Minimum 2 result profiles needed"
 msgstr "Voeg profiel toe"
 
-#: klasse-wp-poll-survey.php:336
-msgid "Create new test"
-msgstr "Voeg nieuwe test toe"
+#: includes/version.php:223
+msgid "Overlap between "
+msgstr ""
 
-#: klasse-wp-poll-survey.php:337
-msgid "Test Title"
-msgstr "Titel van de test"
+#: includes/version.php:224
+msgid " and "
+msgstr ""
 
-#: klasse-wp-poll-survey.php:338
-msgid "This will be the title of your test."
-msgstr "Dit wordt de titel van uw test."
+#: includes/version.php:248
+#, fuzzy
+msgid "Only 1 allowed"
+msgstr "Enkel aangemelde gebruikers zijn toegelaten"
 
-#: klasse-wp-poll-survey.php:339
-msgid "Test modus"
-msgstr "Testmodus"
+#: includes/version.php:313
+msgid "You need to be logged in to view this version"
+msgstr "U moet aangemeld zijn om deze versie te zien"
 
-#: klasse-wp-poll-survey.php:340
-msgid "Test modi"
-msgstr "Testmodi"
-
-#: klasse-wp-poll-survey.php:341
-msgid "Select the type of test you want to create."
-msgstr "Kies het type van de test die je wilt maken."
-
-#: klasse-wp-poll-survey.php:367
+#: klasse-wp-poll-survey.php:298
 msgid "Tests"
 msgstr "Tests"
 
-#: klasse-wp-poll-survey.php:367
+#: klasse-wp-poll-survey.php:298
 msgid "Poll & Survey"
 msgstr "Poll & Survey"
 
-#: klasse-wp-poll-survey.php:369
+#: klasse-wp-poll-survey.php:300
 msgid "Add new test"
 msgstr "Voeg nieuwe test toe"
 
-#: klasse-wp-poll-survey.php:369
+#: klasse-wp-poll-survey.php:300
 msgid "Add new"
 msgstr "Voeg toe"
 
-#: klasse-wp-poll-survey.php:370 views/add.php:17
+#: klasse-wp-poll-survey.php:301
 msgid "Manage entries"
 msgstr "Beheer invoer"
 
-#: klasse-wp-poll-survey.php:370
+#: klasse-wp-poll-survey.php:301
 msgid "Entries"
 msgstr "Invoer"
-
-#: views/add.php:15
-msgid "Edit content"
-msgstr "Wijzing inhoud"
-
-#: views/add.php:16
-msgid "Manage results"
-msgstr "Beheer resultaten"
-
-#: views/add.php:18
-msgid "Manage settings"
-msgstr "Beheer instellingen"
 
 #: views/poll_list.php:4
 msgid "New test"
 msgstr "Nieuwe Test"
+
+#: views/result-page.php:1
+#, fuzzy
+msgid "Result options"
+msgstr "Profielen"
+
+#: views/result-page.php:3
+msgid ""
+"Select a result by clicking and press the 'Insert into Post' button to add "
+"this to the editor"
+msgstr ""
+"Selecteer een resultaat door te klikken en klik dan op de 'Voeg toe aan "
+"post' knop om het resultaat aan de tekst toe te voegen"
+
+#: views/result-page.php:8
+msgid "Insert into Post"
+msgstr "Voeg toe aan post"
+
+#~ msgid "Add Intro"
+#~ msgstr "Voeg intro toe"
+
+#~ msgid "Edit content"
+#~ msgstr "Wijzing inhoud"
+
+#~ msgid "Manage results"
+#~ msgstr "Beheer resultaten"
+
+#~ msgid "Manage settings"
+#~ msgstr "Beheer instellingen"

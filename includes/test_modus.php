@@ -153,13 +153,13 @@
             if( isset($post) ){
                 if ( $current_screen->parent_base == 'edit' && $post->post_type == 'kwps_test_modus'){
                     if(strlen($post->post_title) == 0){
-                        echo '<div class="error"><p>Post saved as draft - Title is empty</p></div>';
+                        echo '<div class="error"><p>' . __('Post saved as draft - Title is empty', 'klasse-wp-poll-survey') . '</p></div>';
                     }
 
                     if( \includes\Test_Modus::has_duplicate($post->ID, $post->post_name)){
                         echo '<div class="error">';
-                        echo '<p>Test Modus was saved as duplicate - new settings will not be used</p>';
-                        echo '<p>Either rename this Test Modus or remove the Test Modus already in use</p>';
+                        echo '<p>' . __('Test Modus was saved as duplicate - new settings will not be used', 'klasse-wp-poll-survey') . '</p>';
+                        echo '<p>' . __('Either rename this Test Modus or remove the Test Modus already in use', 'klasse-wp-poll-survey') . '</p>';
                         echo '</div>';
                     }
                 }

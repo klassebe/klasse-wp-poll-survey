@@ -1,14 +1,14 @@
 <h2>{{t label}}</h2>
 <p class="description">
     {{#if parentStack.kwps_version}}
-        <b>{{t "version"}} :</b> <i>{{parentStack.kwps_version.post_title}}</i>
+        <b>{{t "version"}} :</b> <i>{{parentStack.kwps_version.post_title}}</i> >
     {{/if}}
     {{#if parentStack.kwps_question_group}}
-        <b>> {{t "question page"}} :</b> <i>{{parentStack.kwps_question_group.post_title}}</i>
+        <b>{{t "question page"}} :</b> <i>{{parentStack.kwps_question_group.post_title}}</i> >
     {{/if}}
     {{#if parentStack.kwps_question}}
-        <b>> {{t "question"}} :</b> <i>{{subStringStripper parentStack.kwps_question.post_content 20}}</i>
-    {{/if}}
+        <b>{{t "question"}} :</b> <i>{{subStringStripper parentStack.kwps_question.post_content 20}}</i> >
+    {{/if}} 
 </p>
 <div id="poststuff"> 
 	<form id="update-model">
