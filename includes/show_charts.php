@@ -24,9 +24,6 @@
 		border: 5px solid lightgrey;
 	}
 </style>
-<h2>Result options</h2>
-<p>Select a result by clicking and press the 'Insert into Post' button to add this to the editor</p>
-<div id="charts"></div>
-<div class="clearfix">
-	<button id="add-result-to-editor" class="button">Insert into Post</button>
+<div id="kwps-result-page">
+
 </div>
