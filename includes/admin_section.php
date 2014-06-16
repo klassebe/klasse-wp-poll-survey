@@ -108,7 +108,8 @@ class admin_section {
 			'This introduction is shown when someone fills out the test for the first time.' => __('This introduction is shown when someone fills out the test for the first time.', 'klasse-wp-poll-survey'),
 			'For people who have already completed the test.' => __('For people who have already completed the test.', 'klasse-wp-poll-survey'),
 			'Ready to Publish!' => __('Ready to Publish!'),
-			'Errors' => __('Errors')
+			'Errors' => __('Errors'),
+			'Errors occurred. Please check below for more information.' => __('Errors occurred. Please check below for more information.')
 		);
 		wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 

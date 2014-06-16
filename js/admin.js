@@ -1317,15 +1317,31 @@ jQuery(function ($) {
       event.preventDefault();
       var versionId = $(event.currentTarget).closest('th').data('version-id');
       var version = this.collection.findWhere({ID: versionId});
-      version.set('post_status', 'publish');
-      version.save({
-        wait: true,
-        error: function(version, resp, options)  {
-          console.log(resp);
-        }
-      });
+      var that = this;
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(version.toJSON()),
+        url: app.url + 'kwps_validate_version',
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json'
+      })
+        .done(function(request, status, error) {
+          version.set('post_status', 'publish');
+          version.save({
+            wait: true,
+            error: function(version, resp, options)  {
+              console.log(resp);
+            },
+            success: function() {
+              that.render();
+            }
+          });
+        })
+        .fail(function() {
+          alert(kwps_translations['Errors occurred. Please check below for more information.']);
+        });
 
-      this.render();
+
     },
     clearEntries: function(event) {
       event.preventDefault();
