@@ -968,7 +968,7 @@ jQuery(function ($) {
                 for (i = 0; i < questionsInGroup.length; i++) {
                   var questionOriginal = questionsInGroup[i];
 
-                  that.createQuestion(newQuestionGroup.get('ID'), questionGroupOriginal, function(newQuestion) {
+                  that.createQuestion(newQuestionGroup.get('ID'), questionOriginal, function(newQuestion) {
                     var answersInQuestion = that.getExistingObject(questionOriginal.get('ID'), 'kwps_answer_option', false);
 
                     for (i = 0; i < answersInQuestion.length; i++) {
