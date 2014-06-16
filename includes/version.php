@@ -122,7 +122,7 @@ class Version extends Kwps_Post_Type{
                 array(
                     array(
                         'field' => 'All',
-                        'message' => 'Cannot publish when not saved as draft first',
+                        'message' => __( 'Cannot publish when not saved as draft first', 'klasse-wp-poll-survey' ),
                     )
                 ),
             );
@@ -146,7 +146,10 @@ class Version extends Kwps_Post_Type{
                 $subject = $outro['post_content'];
                 $shortcode_count = preg_match_all($pattern, $subject, $kwps_result_matches);
                 if( $shortcode_count <= 0 ){
-                    $errors[] = array('field' => 'Outro', 'message' => 'No result shortcodes used!!');
+                    $errors[] = array(
+                        'field' => 'Outro',
+                        'message' => __( 'No result shortcodes used!!', 'klasse-wp-poll-survey' ),
+                    );
                 } else {
                     foreach($kwps_result_matches as $shortcode){
                         $output_start_pos = strpos($shortcode[0], '=');
@@ -155,8 +158,10 @@ class Version extends Kwps_Post_Type{
                         $output_type = trim($output_type_temp, ']');
 
                         if( !in_array( $output_type, $test_modus['_kwps_allowed_output_types'] ) ) {
-                            $errors[] = array( 'field' => 'Outro', 'message' => 'Invalid value ' . $output_type .
-                            ' in shortcode');
+                            $errors[] = array(
+                                'field' => 'Outro',
+                                'message' => __( 'Invalid value ', 'klasse-wp-poll-survey') . $output_type .
+                                    __(' in shortcode', 'klasse-wp-poll-survey' ) );
                         }
                     }
                 }
@@ -166,20 +171,28 @@ class Version extends Kwps_Post_Type{
             $question_groups = Question_Group::get_all_by_post_parent( $version_id );
 
             if( count( $question_groups ) < 1 ){
-                $errors[] = array( 'field' => 'Question group', 'message' => 'Minimum 1 question page required' );
+                $errors[] = array(
+                    'field' => 'Question group',
+                    'message' => __( 'Minimum 1 question page required', 'klasse-wp-poll-survey' )
+                );
             }
 
             foreach($question_groups as $question_group) {
                 $questions = Question::get_all_by_post_parent( $question_group['ID'] );
 
                 if( count( $questions ) < 1 ){
-                    $errors[] = array( 'field' => 'Questions', 'message' => 'Minimum 1 question per question page required' );
+                    $errors[] = array(
+                        'field' => 'Questions',
+                        'message' => __( 'Minimum 1 question per question page required', 'klasse-wp-poll-survey' ),
+                    );
                 }
 
                 foreach($questions as $question){
                     $answer_options = Answer_Option::get_all_by_post_parent( $question['ID'] );
                     if( count( $answer_options ) < 2 ){
-                        $errors[] = array( 'field' => 'Question group', 'message' => 'Minimum 2 answer options per question required' );
+                        $errors[] = array(
+                            'field' => 'Question group',
+                            'message' => __( 'Minimum 2 answer options per question required', 'klasse-wp-poll-survey' ) );
                     }
 
                 }
@@ -190,7 +203,10 @@ class Version extends Kwps_Post_Type{
                 if( in_array( 'result-profile', $test_modus['_kwps_allowed_output_types'] ) ) {
                     $result_profiles = Result_Profile::get_all_by_post_parent( $version_id );
                     if( count( $result_profiles ) < 2 ) {
-                        $errors[] = array('field' => 'Result profile', 'message' => 'Minimum 2 result profiles needed' );
+                        $errors[] = array(
+                            'field' => 'Result profile',
+                            'message' => __( 'Minimum 2 result profiles needed', 'klasse-wp-poll-survey' ),
+                        );
                     } else {
                         foreach($result_profiles as $result_profile_outer_loop){
                             foreach($result_profiles as $result_profile_inner_loop){
@@ -204,8 +220,8 @@ class Version extends Kwps_Post_Type{
                                     ) {
                                         $errors[] = array(
                                             'field' => 'Result profile',
-                                            'message'=> 'Overlap between ' . $result_profile_inner_loop['post_title'] .
-                                                ' and ' . $result_profile_outer_loop['post_title'],
+                                            'message'=> __( 'Overlap between ', 'klasse-wp-poll-survey' ) . $result_profile_inner_loop['post_title'] .
+                                                __( ' and ', 'klasse-wp-poll-survey') . $result_profile_outer_loop['post_title'],
                                         );
                                     }
                                 }
@@ -223,9 +239,13 @@ class Version extends Kwps_Post_Type{
     public static function check_array_to_hold_single_value($data, $field) {
         $errors = array();
         if( count( $data ) == 0 ) {
-            $errors[] = array('field' => $field, 'message' => 'Required');
+            $errors[] = array(
+                'field' => $field,
+                'message' => __( 'Required', 'klasse-wp-poll-survey' ) );
         } elseif( count( $data ) > 1 ) {
-            $errors[] = array('field' => $field, 'message' => 'Only 1 allowed');
+            $errors[] = array(
+                'field' => $field,
+                'message' => __( 'Only 1 allowed', 'klasse-wp-poll-survey' ));
         }
 
         return $errors;
@@ -290,7 +310,7 @@ class Version extends Kwps_Post_Type{
         }
         elseif( $version['post_status'] == 'draft' && !current_user_can('edit_posts') ) {
             ?>
-            <div class="kwps-version">You need to be logged in to view this version</div>
+            <div class="kwps-version"><?php echo __( 'You need to be logged in to view this version', 'klasse-wp-poll-survey' ); ?></div>
         <?php
         } else {
 ?>
