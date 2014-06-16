@@ -1460,7 +1460,7 @@ jQuery(function ($) {
 
       var data =  this.model.toJSON();
       data.attribute = this.options.attribute;
-      data.label = this.options.model.get('post_type');
+      data.label = this.model.get('post_type');
       data.addResults = (this.model.get('post_type') === "kwps_outro" || this.model.get('post_type') === "kwps_intro_result");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
       data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
