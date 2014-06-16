@@ -30,7 +30,6 @@ class admin_section {
     static function enqueue_scripts_admin_addnew() {
 		wp_register_script( 'tinymce', plugins_url( '../assets/lib/tinymce/tinymce.min.js', __FILE__ ), array( 'jquery'));
 		wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( '../assets/js/kwps_admin.js', __FILE__ ), array( 'backbone', 'thickbox', 'media-upload', 'tinymce' ));
-	}
 
 		$translation_array = array(
 			'_kwps_intro' => __( 'Intro' , 'klasse-wp-poll-survey'),
