@@ -1632,8 +1632,7 @@ jQuery(function ($) {
       };
       var parentId = this.model.get('post_parent');
       getParent(parentId);
-      
-      console.log(parentStack);
+
       return parentStack;
     }
   });
