@@ -71,7 +71,6 @@ jQuery(function ($) {
       'delete/:id': 'deletePostType'
     },
     home : function () {
-      // console.log("ROUTING TO: home")
       if(!GetURLParameter('id')) {
         window.location = '#new';
         return;
@@ -83,15 +82,12 @@ jQuery(function ($) {
             collection: app.kwpsCollection
           });
           app.views.index.initialize();
-          //app.views.result = new app.KwpsViewResult({model: {data: 'een beetje data'}});
         }
       } else {
         app.views.index.render();
       }
     },
     edit :  function (id) {
-      // console.log("ROUTING TO: edit");
-      // controleren of er nog een edit view in steekt en alle events unbinden
       if (app.kwpsCollection !== undefined) {
         app.views.edit = new app.KwpsViewEdit({
           model : app.kwpsCollection.get(id)
@@ -99,7 +95,6 @@ jQuery(function ($) {
       }
     },
     editQuestion : function (id) {
-      // console.log("ROUTING TO: editQuestion");
       if (app.kwpsCollection !== undefined) {
         app.views.edit = new app.KwpsViewQuestion({
           model : app.kwpsCollection.get(id)
@@ -107,11 +102,6 @@ jQuery(function ($) {
       }
     },
     newKwpsTest : function () {
-      // toon keuze options tussen verschillende testmodi
-      // Nu vooral één knop met de keuze poll en invulveld
-      // indien opties worden de opties getoond en kan men test aanmaken
-      //console.log("ROUTING TO: newKwpsTest");
-
       app.kwpsCollection = new Backbone.Collection(kwpsTests,{
         model: KwpsModel
       });
@@ -178,36 +168,6 @@ jQuery(function ($) {
       postData.post_status = "draft";
       postData._kwps_logged_in_user_limit = 'free';
       postData._kwps_logged_out_user_limit = 'free';
-
-      Backbone.Validation.bind(this, {
-        valid: function (view, attr, selector) {
-          var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-
-          $group.removeClass('has-error');
-          $group.find('.help-block').html('').addClass('hidden');
-        },
-        invalid: function (view, attr, error, selector) {
-          var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-          $group.addClass('has-error');
-          $group.find('.help-block').html(error).removeClass('hidden');
-        }
-      });
-
-
-      this.model.validation = {
-        post_title: {
-          required: true,
-          msg: kwps_translations['Name is required']
-        },
-        post_parent: {
-          required: true,
-          min: 1,
-          msg: kwps_translations['Type is required']
-        }
-      };
-
 
       var that = this;
       this.model.set(postData);
@@ -1403,8 +1363,6 @@ jQuery(function ($) {
       this.render();
     },
     render: function() {
-      // console.log(this.model);
-      // console.log(app.templates.add_result(this.model));
       $(this.el).html(app.templates.add_result(this.model));
     }
   });
@@ -1433,87 +1391,15 @@ jQuery(function ($) {
       var testCollection = app.kwpsCollection.findWhere({post_type: "kwps_test_collection"});
       var testmodus = app.kwpsCollection.findWhere({ID: testCollection.get('post_parent')});
 
-
-      Backbone.Validation.bind(this, {
-        valid: function (view, attr, selector) {
-          var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-
-          $group.removeClass('has-error');
-          $group.find('.help-block').html('').addClass('hidden');
-        },
-        invalid: function (view, attr, error, selector) {
-          var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-          $group.addClass('has-error');
-          $group.find('.help-block').html(error).removeClass('hidden');
-        }
-      });
-
       var data =  this.model.toJSON();
       data.attribute = this.options.attribute;
       data.label = this.model.get('post_type');
       data.addResults = (this.model.get('post_type') === "kwps_outro" || this.model.get('post_type') === "kwps_intro_result");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
+      data.title = (this.model.get('post_type') === 'kwps_result_profile');
       data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
       data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
       data.parentStack = this.getParentStack();
-
-      var validation = {
-        post_content: {
-          required: true
-        },
-        post_parent: {
-          required: true
-        },
-        _kwps_sort_order: {
-          required: true,
-            min: 0
-        }
-      };
-
-      if(data.post_title) {
-        validation.post_title = {
-          required: true,
-          msg: kwps_translations['Title is required']
-        };
-      }
-
-      /* jshint ignore:start */
-      if(this.model.get('post_type') === 'kwps_outro' || this.model.get('post_type') === 'kwps_intro_result') {
-        validation.post_content = [
-          {
-            required: true
-          },
-          {
-            pattern: '\\[kwps_result\\ .*\\]',
-            msg: kwps_translations['You must add a result to the text']
-          }
-        ];
-      }
-      /* jshint ignore:end */
-
-      if(data.min_max) {
-        validation._kwps_min_value = {
-          required: true,
-          min: 0,
-          msg: kwps_translations['Min value is required']
-        };
-        validation._kwps_max_value = {
-          required: true,
-          min: 0,
-          msg: kwps_translations['Max value is required']
-        };
-      }
-
-      if(data._kwps_answer_option_value) {
-        validation._kwps_answer_option_value = {
-          required: true,
-          msg: kwps_translations['Value is required']
-        };
-      }
-
-      this.model.validation = validation;
 
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
@@ -1553,7 +1439,6 @@ jQuery(function ($) {
         output +=   '<div id="' + value + '" class="media-item left"><label><h4>' + value.charAt(0).toUpperCase() + value.slice(1).split('-').join(' ') + '</h4><input type="radio" name="results" value="' + value + '"><img class="thumbnail" src="images/' + value + '.png" alt="' + value + '" height="128" width="128"></label></div>';
       });
 
-
       var selectedResult;
       var timer = setInterval( function () {
 
@@ -1574,9 +1459,7 @@ jQuery(function ($) {
           clearInterval(timer);
         }
       }, 100);
-      
 
-      
       return false;
     },
     insertChartIntoEditor: function (html) {
@@ -1623,7 +1506,6 @@ jQuery(function ($) {
 
           model.set('success', errors.success);
           _.each(errors.data, function(error) {
-            console.log(error);
             model.set('error_' + error.field, error.message);
           });
           that.render();
