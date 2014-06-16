@@ -12,6 +12,20 @@
                             <li>{{t "Total Participants"}}: {{total_participants}}</li>
                         </ul>
                     </div>
+                    {{#if validation.success}}
+                    <div>
+                        {{t "Ready to Publish!"}}
+                    </div>
+                    {{else}}
+                    <div>
+                        <h3>{{t "Errors"}}: </h3>
+                        <ul>
+                            {{#each validation.data}}
+                                <li>{{t field}}: {{message}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                    {{/if}}
                 {{#unless isLive}}
                     <span><a href="#" class="clear-entries">{{t "Clear entries"}}</a></span>
                 {{/unless}}

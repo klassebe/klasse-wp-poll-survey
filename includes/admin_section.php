@@ -6,15 +6,31 @@ require_once __DIR__ . '/entries_list_table.php';
 require_once __DIR__ . '/uniqueness.php';
 
 
+/**
+ * Class admin_section
+ *
+ * This class contains all functions used to display and load data for the admin part of the plugin
+ *
+ * @package includes
+ */
 class admin_section {
 
-	static function enqueue_styles_admin_addnew() {
+
+    /**
+     * Enqueues all styles for the admin part
+     */
+    static function enqueue_styles_admin_addnew() {
 		wp_enqueue_style('thickbox');
 		wp_enqueue_style( 'klasse-wp-poll-survey-plugin-admin-styles', plugins_url( '../assets/css/kwps_admin.css', __FILE__ ));
 	}
-	static function enqueue_scripts_admin_addnew() {
+
+    /**
+     * Enqueues all scripts for the admin part, including the localization of the script
+     */
+    static function enqueue_scripts_admin_addnew() {
 		wp_register_script( 'tinymce', plugins_url( '../assets/lib/tinymce/tinymce.min.js', __FILE__ ), array( 'jquery'));
 		wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( '../assets/js/kwps_admin.js', __FILE__ ), array( 'backbone', 'thickbox', 'media-upload', 'tinymce' ));
+	}
 
 		$translation_array = array(
 			'_kwps_intro' => __( 'Intro' , 'klasse-wp-poll-survey'),
@@ -34,7 +50,7 @@ class admin_section {
 			'Conversion Rate' => __('Conversion Rate', 'klasse-wp-poll-survey'),
 			'Total Participants' => __('Total Participants', 'klasse-wp-poll-survey'),
 			'Make live' => __('Make live', 'klasse-wp-poll-survey'),
-			'Add Intro' => __('Add Intro', 'klasse-wp-poll-survey'),
+			'Display Intro' => __('Display Intro', 'klasse-wp-poll-survey'),
 			'Intro Result' => __('Intro Result', 'klasse-wp-poll-survey'),
 			'Add Intro Result' => __('Add Intro Result', 'klasse-wp-poll-survey'),
 			'Question pages' => __('Question pages', 'klasse-wp-poll-survey'),
@@ -84,7 +100,15 @@ class admin_section {
 			'This will be the title of your test.' => __('This will be the title of your test.', 'klasse-wp-poll-survey'),
 			'Test modus' => __('Test modus', 'klasse-wp-poll-survey'),
 			'Test modi' => __('Test modi', 'klasse-wp-poll-survey'),
-			'Select the type of test you want to create.' => __('Select the type of test you want to create.', 'klasse-wp-poll-survey')
+			'Select the type of test you want to create.' => __('Select the type of test you want to create.', 'klasse-wp-poll-survey'),
+			'Copy of' => __('Copy of', 'klasse-wp-poll-survey'),
+			'Result profile' => __('Result profile', 'klasse-wp-poll-survey'),
+			'You must add a result to the text' => __('You must add a result to the text', 'klasse-wp-poll-survey'),
+			'This introduction is shown when someone fills out the test for the first time.' => __('This introduction is shown when someone fills out the test for the first time.', 'klasse-wp-poll-survey'),
+			'For people who have already completed the test.' => __('For people who have already completed the test.', 'klasse-wp-poll-survey'),
+			'Ready to Publish!' => __('Ready to Publish!'),
+			'Errors' => __('Errors'),
+			'Errors occurred. Please check below for more information.' => __('Errors occurred. Please check below for more information.')
 		);
 		wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
@@ -95,6 +119,10 @@ class admin_section {
 
 	}
 
+    /**
+     * Collects all data and adds it via javascript variables wrapped in <script> tags to the view to add/edit tests
+     *
+     */
     public static function display_form()
     {
 		self::enqueue_styles_admin_addnew();
@@ -184,6 +212,9 @@ class admin_section {
 
     }
 
+    /**
+     * Displays a list of all tests
+     */
     public static function display_tests() {
         $poll_list = new Test_Collections_List_Table();
         $poll_list->prepare_items();
@@ -191,6 +222,9 @@ class admin_section {
         include_once __DIR__ . '/../views/poll_list.php';
     }
 
+    /**
+     * Displays a list of all entries
+     */
     public static function manage_entries() {
         $entry_list = new Entries_List_Table();
         $entry_list->prepare_items();

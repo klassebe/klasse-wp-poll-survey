@@ -1,6 +1,7 @@
 (function () {
 "use strict";
 
+
 function GetURLParameter(sParam) {
   var sPageURL = window.location.search.substring(1);
   var sURLVariables = sPageURL.split('&');
@@ -239,4 +240,7 @@ jQuery(function($) {
 
 	$('.kwps-version').pollPlugin();
 });
+<<<<<<< HEAD:js/public.js
 }());
+=======
+>>>>>>> FETCH_HEAD:assets/js/public.js
