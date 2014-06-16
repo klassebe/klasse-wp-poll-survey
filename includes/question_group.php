@@ -85,7 +85,12 @@ class Question_Group extends Kwps_Post_Type {
                 $all_question_groups_of_version = Question_Group::get_all_by_post_parent($version['ID']);
 
                 if( sizeof($all_question_groups_of_version) >= $kwps_max_question_groups){
-                    array_push( $errors, array( 'field' => 'All', 'message' =>'Maximum question groups already reached' ) );
+                    array_push( $errors,
+                        array(
+                            'field' => 'All',
+                            'message' => __( 'Maximum question groups already reached', 'klasse-wp-poll-survey' ),
+                        )
+                    );
                 }
             }
         }
