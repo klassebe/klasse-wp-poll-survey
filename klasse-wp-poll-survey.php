@@ -58,14 +58,6 @@ require_once(ABSPATH . 'wp-admin/includes/screen.php');
  *----------------------------------------------------------------------------*/
 
 /*
- * @TODO:
- *
- * - replace `class-plugin-name.php` with the name of the plugin's class file
- *
- */
-require 'vendor/autoload.php';
-
-/*
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
