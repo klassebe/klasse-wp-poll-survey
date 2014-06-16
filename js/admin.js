@@ -34,25 +34,6 @@ jQuery(function ($) {
     return obj;
   };
 
-
-  _.extend(Backbone.Validation.callbacks, {
-    valid: function (view, attr, selector) {
-      var $el = view.$('[name=' + attr + ']'),
-        $group = $el.closest('.form-group');
-
-      $group.removeClass('has-error');
-      $group.find('.help-block').html('').addClass('hidden');
-    },
-    invalid: function (view, attr, error, selector) {
-      console.log('hierin');
-      var $el = view.$('[name=' + attr + ']'),
-        $group = $el.closest('.form-group');
-
-      $group.addClass('has-error');
-      $group.find('.help-block').html(error).removeClass('hidden');
-    }
-  });
-
   /* BACKBONE STUFF */
   var app = {};
   app.translations = kwps_translations;
@@ -198,36 +179,6 @@ jQuery(function ($) {
       postData._kwps_logged_in_user_limit = 'free';
       postData._kwps_logged_out_user_limit = 'free';
 
-      Backbone.Validation.bind(this, {
-        valid: function (view, attr, selector) {
-          var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-
-          $group.removeClass('has-error');
-          $group.find('.help-block').html('').addClass('hidden');
-        },
-        invalid: function (view, attr, error, selector) {
-          var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-          $group.addClass('has-error');
-          $group.find('.help-block').html(error).removeClass('hidden');
-        }
-      });
-
-
-      this.model.validation = {
-        post_title: {
-          required: true,
-          msg: kwps_translations['Name is required']
-        },
-        post_parent: {
-          required: true,
-          min: 1,
-          msg: kwps_translations['Type is required']
-        }
-      };
-
-
       var that = this;
       this.model.set(postData);
       if(this.model.isValid(true)) {
@@ -352,10 +303,8 @@ jQuery(function ($) {
     el: '#kwps_test',
     initialize: function () {
       //_.bindAll(this, 'cleanup');
-      this.validateVersion();
       this.render();
       this.listenTo(this.collection, 'add remove', this.render);
-      this.listenTo(this.collection, 'sync', this.validateVersion);
     },
     events: {
       'click .delete-version': 'deleteVersion',
@@ -1340,8 +1289,6 @@ jQuery(function ($) {
         .fail(function() {
           alert(kwps_translations['Errors occurred. Please check below for more information.']);
         });
-
-
     },
     clearEntries: function(event) {
       event.preventDefault();
@@ -1442,86 +1389,15 @@ jQuery(function ($) {
       var testmodus = app.kwpsCollection.findWhere({ID: testCollection.get('post_parent')});
 
 
-      Backbone.Validation.bind(this, {
-        valid: function (view, attr, selector) {
-          var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-
-          $group.removeClass('has-error');
-          $group.find('.help-block').html('').addClass('hidden');
-        },
-        invalid: function (view, attr, error, selector) {
-          var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-          $group.addClass('has-error');
-          $group.find('.help-block').html(error).removeClass('hidden');
-        }
-      });
-
       var data =  this.model.toJSON();
       data.attribute = this.options.attribute;
       data.label = this.model.get('post_type');
       data.addResults = (this.model.get('post_type') === "kwps_outro" || this.model.get('post_type') === "kwps_intro_result");
+      data.title = (this.model.get('post_type') === 'kwps_question_group' || this.model.get('post_type') === 'kwps_result_profile');
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
       data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
       data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
       data.parentStack = this.getParentStack();
-
-      var validation = {
-        post_content: {
-          required: true
-        },
-        post_parent: {
-          required: true
-        },
-        _kwps_sort_order: {
-          required: true,
-            min: 0
-        }
-      };
-
-      if(data.post_title) {
-        validation.post_title = {
-          required: true,
-          msg: kwps_translations['Title is required']
-        };
-      }
-
-      /* jshint ignore:start */
-      if(this.model.get('post_type') === 'kwps_outro' || this.model.get('post_type') === 'kwps_intro_result') {
-        validation.post_content = [
-          {
-            required: true
-          },
-          {
-            pattern: '\\[kwps_result\\ .*\\]',
-            msg: kwps_translations['You must add a result to the text']
-          }
-        ];
-      }
-      /* jshint ignore:end */
-
-      if(data.min_max) {
-        validation._kwps_min_value = {
-          required: true,
-          min: 0,
-          msg: kwps_translations['Min value is required']
-        };
-        validation._kwps_max_value = {
-          required: true,
-          min: 0,
-          msg: kwps_translations['Max value is required']
-        };
-      }
-
-      if(data._kwps_answer_option_value) {
-        validation._kwps_answer_option_value = {
-          required: true,
-          msg: kwps_translations['Value is required']
-        };
-      }
-
-      this.model.validation = validation;
 
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
@@ -1620,15 +1496,23 @@ jQuery(function ($) {
 
       this.model.set(data);
 
-      if(this.model.isValid(true)) {
-        var that = this;
-        this.model.save(data, {
-          success: function() {
-            that.cleanup();
-            window.location = '#';
-          }
-        });
-      }
+      var that = this;
+      this.model.save(data, {
+        success: function() {
+          that.cleanup();
+          window.location = '#';
+        },
+        error: function(model, response) {
+          var errors = response.responseJSON;
+
+          model.set('success', errors.success);
+          _.each(errors.data, function(error) {
+            console.log(error);
+            model.set('error_' + error.field, error.message);
+          });
+          that.render();
+        }
+      });
     },
     getParentStack: function(){
       var parentStack= {};

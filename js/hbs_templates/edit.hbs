@@ -12,11 +12,14 @@
 </p>
 <div id="poststuff"> 
 	<form id="update-model">
-        {{#if post_title}}
+        {{#if title}}
         <div id="titlediv">
             <div id="titlewrap">
                 <label class="screen-reader-text" id="title-prompt-text" for="title">{{t "Enter title here"}}</label>
                 <input type="text" name="post_title" size="30" value="{{post_title}}" id="title" autocomplete="off">
+                {{#if error_post_title}}
+                <span class="help-block">{{error_post_title}}</span>
+                {{/if}}
             </div>
         </div>
         {{/if}}
@@ -35,6 +38,9 @@
         <div class="form-group">
             <div id="editor-tiny">
                 <textarea name='post_content' rows="20">{{post_content}}</textarea>
+                {{#if error_post_content}}
+                    <span class="help-block">{{error_post_content}}</span>
+                {{/if}}
             </div>
         </div>
         <br>
@@ -49,7 +55,10 @@
                                 <label for="_kwps_answer_option_value">{{t "Value"}}</label>
                             </th>
                             <td>
-                                <input type="number" name="_kwps_answer_option_value" id="kwps-answer-option-value" value="{{_kwps_answer_option_value}}" class="regular-text"><span class="help-block hidden">sdfqsdf</span>
+                                <input type="number" name="_kwps_answer_option_value" id="kwps-answer-option-value" value="{{_kwps_answer_option_value}}" class="regular-text">
+                                {{#if error__kwps_answer_option_value}}
+                                    <span class="help-block">{{error__kwps_answer_option_value}}</span>
+                                {{/if}}
                             </td>
                         </tr>
                         {{/if}}
@@ -59,7 +68,10 @@
                                 <label for="_kwps_min_value">{{t "Min value"}}</label>
                             </th>
                             <td>
-                                <input type="number" name="_kwps_min_value" id="kwps-answer-option-value" value="{{_kwps_min_value}}"><span class="help-block hidden"></span>
+                                <input type="number" name="_kwps_min_value" id="kwps-answer-option-value" value="{{_kwps_min_value}}">
+                                {{#if error__kwps_min_value}}
+                                    <span class="help-block">{{error__kwps_min_value}}</span>
+                                {{/if}}
                             </td>
                         </tr>
                         <tr>
@@ -67,7 +79,10 @@
                                 <label for="_kwps_max_value">{{t "Max value"}}</label>
                             </th>
                             <td>
-                                <input type="number" name="_kwps_max_value" id="kwps-answer-option-value" value="{{_kwps_max_value}}"><span class="help-block hidden"></span>
+                                <input type="number" name="_kwps_max_value" id="kwps-answer-option-value" value="{{_kwps_max_value}}">
+                                {{#if error__kwps_min_value}}
+                                    <span class="help-block">{{error__kwps_min_value}}</span>
+                                {{/if}}
                             </td>
                         </tr>
                         {{/if}}
