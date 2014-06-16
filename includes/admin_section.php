@@ -9,15 +9,12 @@ require_once __DIR__ . '/uniqueness.php';
 class admin_section {
 
 	static function enqueue_styles_admin_addnew() {
-
 		wp_enqueue_style('thickbox');
-		wp_enqueue_style('editor');
-		wp_enqueue_style( 'klasse-wp-poll-survey-plugin-jquery-ui-core', plugins_url( '../css/jquery-ui/jquery.ui.core.min.css', __FILE__ ));
-		wp_enqueue_style( 'klasse-wp-poll-survey-plugin-jquery-ui-tabs', plugins_url( '../css/jquery-ui/jquery.ui.tabs.min.css', __FILE__ ));
-		wp_enqueue_style( 'klasse-wp-poll-survey-plugin-admin-styles', plugins_url( '../css/admin.css', __FILE__ ));
+		wp_enqueue_style( 'klasse-wp-poll-survey-plugin-admin-styles', plugins_url( '../assets/css/kwps_admin.css', __FILE__ ));
 	}
 	static function enqueue_scripts_admin_addnew() {
-		wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( '../js/dist/kwps_admin.js', __FILE__ ), array( 'jquery', 'backbone', 'thickbox', 'media-upload' ));
+		wp_register_script( 'tinymce', plugins_url( '../assets/lib/tinymce/tinymce.min.js', __FILE__ ), array( 'jquery'));
+		wp_register_script( 'klasse-wp-poll-survey-admin', plugins_url( '../assets/js/kwps_admin.js', __FILE__ ), array( 'backbone', 'thickbox', 'media-upload', 'tinymce' ));
 
 		$translation_array = array(
 			'_kwps_intro' => __( 'Intro' , 'klasse-wp-poll-survey'),
