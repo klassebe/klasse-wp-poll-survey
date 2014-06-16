@@ -1550,12 +1550,12 @@ jQuery(function ($) {
             url: app.url + 'kwps_get_result_page',
             context: document.body
         })
-            .done(function(request, status, error) {
-                $('iframe').contents().find('#kwps-result-page').append(request);
-            })
-            .fail(function() {
-                alert(kwps_translations['Errors occurred. Please check below for more information.']);
-            });
+          .done(function(request, status, error) {
+              $('iframe').contents().find('#kwps-result-page').append(request);
+          })
+          .fail(function() {
+              alert(kwps_translations['Errors occurred. Please check below for more information.']);
+          });
 
       $.each(allowedTypes, function (key, value) {
         output +=   '<div id="' + value + '" class="media-item left"><label><h4>' + value.charAt(0).toUpperCase() + value.slice(1).split('-').join(' ') + '</h4><input type="radio" name="results" value="' + value + '"><img class="thumbnail" src="images/' + value + '.png" alt="' + value + '" height="128" width="128"></label></div>';
