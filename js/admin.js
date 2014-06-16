@@ -1465,6 +1465,7 @@ jQuery(function ($) {
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
       data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
       data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
+      data.parentStack = this.getParentStack();
 
       var validation = {
         post_content: {
@@ -1618,9 +1619,22 @@ jQuery(function ($) {
       }
     },
     getParentStack: function(){
-      var parentStack = [];
+      var parentStack= {};
+      var getParent = function (id) {
+        var parent = app.kwpsCollection.get(id);
+        if (parent !== undefined) {
+          parent = parent.toJSON();
+          parentStack[parent.post_type] = parent;
+          if (parent.post_type !== 'kwps_version') {
+            getParent(parent.post_parent);
+          } 
+        }
+      };
       var parentId = this.model.get('post_parent');
-      parentStack.push(app.k);
+      getParent(parentId);
+      
+      console.log(parentStack);
+      return parentStack;
     }
   });
 
