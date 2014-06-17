@@ -3392,6 +3392,8 @@ jQuery(function ($) {
       );
     },
     createResultProfile: function (post_parent, data, cb) {
+      console.log(data);
+      /* Check which data you are getting and link with the correct menu order so there is no overlapping */
       var resultProfileData = {
         post_type: "kwps_result_profile",
         post_status: "draft",
@@ -3399,8 +3401,8 @@ jQuery(function ($) {
         post_content : "",
         post_parent : post_parent,
         _kwps_sort_order : 0,
-        _kwps_min_value: 0,
-        _kwps_max_value: 0
+        _kwps_min_value: data.attributes._kwps_min_value || 0,
+        _kwps_max_value: data.attributes._kwps_max_value || 0
       };
 
       if(typeof data === 'object') {
