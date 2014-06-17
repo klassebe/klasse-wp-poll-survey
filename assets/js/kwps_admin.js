@@ -1132,59 +1132,6 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
 
 this["kwps_admin_templates"] = this["kwps_admin_templates"] || {};
 
-this["kwps_admin_templates"]["add_result"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, self=this;
-
-function program1(depth0,data) {
-  
-  
-  return "\n	<div id=\"bar-chart\" class=\"media-item left\">\n		<label>\n			<h4>Bar Chart</h4>\n			<input type=\"radio\" name=\"results\" value=\"bar_chart\">\n			<img class=\"thumbnail\" src=\"images/bar_chart.png\" alt=\"bar-chart-per-question\" height=\"128\" width=\"128\">\n		</label>\n	</div>\n";
-  }
-
-function program3(depth0,data) {
-  
-  
-  return "\n	<div id=\"pie-chart\" class=\"media-item left\">\n		<label>\n			<h4>Pie Chart</h4>\n			<input type=\"radio\" name=\"results\" value=\"pie_chart\">\n			<img class=\"thumbnail\" src=\"images/pie_chart.png\" alt=\"pie-chart-per-question\" height=\"128\" width=\"160\">\n		</label>\n	</div>\n";
-  }
-
-function program5(depth0,data) {
-  
-  
-  return "\n	<div id=\"stacked-bar-chart\" class=\"media-item left\">\n		<label>\n			<h4>Stacked Bar Chart</h4>\n			<input type=\"radio\" name=\"results\" value=\"stacked_bar_chart\">\n			<img class=\"thumbnail\" src=\"images/stacked_bar_chart.png\" alt=\"stacked-bar-chart-per-question\" height=\"128\" width=\"128\">\n		</label>\n	</div>\n";
-  }
-
-function program7(depth0,data) {
-  
-  
-  return "\n	<div id=\"quiz-respons\" class=\"media-item left\">\n		<label>\n			<h4>Quiz Respons</h4>\n			<input type=\"radio\" name=\"results\" value=\"quiz_respons\">\n			<img class=\"thumbnail\" src=\"images/stacked_bar_chart.png\" alt=\"quiz-respons\" height=\"128\" width=\"128\">\n		</label>\n	</div>\n";
-  }
-
-function program9(depth0,data) {
-  
-  
-  return "\n	<div id=\"result-profile\" class=\"media-item left\">\n		<label>\n			<h4>Result Profile</h4>\n			<input type=\"radio\" name=\"results\" value=\"result_profile\">\n			<img class=\"thumbnail\" src=\"images/stacked_bar_chart.png\" alt=\"result-profile\" height=\"128\" width=\"128\">\n		</label>\n	</div>\n";
-  }
-
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.allowedBar), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.allowedPie), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.allowedStackedBar), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.allowedQuizRespons), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.typePersTest), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  return buffer;
-  });
-
 this["kwps_admin_templates"]["choose_testmodus"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -2491,7 +2438,6 @@ jQuery(function ($) {
     result: kwps_admin_templates.control_panel,
     question: kwps_admin_templates.table,
     newKwpsTest: kwps_admin_templates.choose_testmodus,
-    resultPage: kwps_admin_templates.add_result
   };
   
   // Routing
@@ -2735,12 +2681,12 @@ jQuery(function ($) {
       $(this.el).ajaxStart( function () {
         $(this.el).find('.spinner').show();
         console.log($(this.el).find('.spinner'));
-        console.log(' removed');
+        console.log('started');
 
       });
       $(this.el).ajaxStop( function () {
         $(this.el).find('.spinner').hide();
-        console.log(' removed');
+        console.log('stopped');
       });
     },
     events: {
@@ -3789,16 +3735,6 @@ jQuery(function ($) {
     },
     render: function() {
       $(this.el).html(app.templates.result(this.model));
-    }
-  });
-
-  app.KwpsViewAddResult = Backbone.View.extend({
-    el: '#extra-test',
-    initialize: function() {
-      this.render();
-    },
-    render: function() {
-      $(this.el).html(app.templates.add_result(this.model));
     }
   });
 
