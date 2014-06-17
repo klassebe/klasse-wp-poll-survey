@@ -2679,14 +2679,12 @@ jQuery(function ($) {
       this.listenTo(this.collection, 'add remove', this.render);
       this.listenTo(this.collection, 'sync', this.validateVersion);
       $(this.el).ajaxStart( function () {
-        $(this.el).find('.spinner').show();
-        console.log($(this.el).find('.spinner'));
-        console.log('started');
-
+        $('.spinner').show();
+        console.log('start ajax');
       });
       $(this.el).ajaxStop( function () {
-        $(this.el).find('.spinner').hide();
-        console.log('stopped');
+        $('.spinner').hide();
+        console.log('all ajax stopped');
       });
     },
     events: {
