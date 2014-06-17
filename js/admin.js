@@ -1019,8 +1019,10 @@ jQuery(function ($) {
         post_content : "",
         post_parent : post_parent,
         _kwps_sort_order : 0,
-        _kwps_min_value: data.attributes._kwps_min_value || 0,
-        _kwps_max_value: data.attributes._kwps_max_value || 0
+        _kwps_min_value: 0,
+        _kwps_max_value: 0
+        // _kwps_min_value: data.attributes._kwps_min_value || 0,
+        // _kwps_max_value: data.attributes._kwps_max_value || 0
       };
 
       if(typeof data === 'object') {
