@@ -372,3 +372,6 @@ pre {
           border-radius: 4px;
 }
 
+.spinner {
+  display: block;
+}
