@@ -3217,7 +3217,7 @@ jQuery(function ($) {
           sortOrder = _.max(_.invoke(this.collection.where({post_type: 'kwps_question_group'}),"toJSON"), function (a) {return a._kwps_sort_order;});
           sortOrder = (sortOrder === -Infinity || sortOrder === Infinity)? 0: parseInt(sortOrder._kwps_sort_order)+1;
           for(i = 0; i < kwpsPollLen; i++) {
-            this.createQuestionGroup(kwpsPolls[i].id, i, sortOrder);
+            this.createQuestionGroup(kwpsPolls[i].id, sortOrder);
           }
           break;
         case 'main_kwps_result_profile':
