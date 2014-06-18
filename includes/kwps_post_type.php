@@ -306,10 +306,14 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         $errors = array();
         if( isset( $request_data['ID'] ) ) {
             $orig_post = static::get_as_array($request_data['ID']);
-            if( $orig_post['post_status'] == 'publish' ) {
+            if( $orig_post['post_status'] == 'publish' && $request_data['post_status'] != 'locked' ) {
                 $errors[] = array(
                     'field' => 'All',
                     'Message' => __( 'You cannot update once published', 'klasse-wp-poll-survey' ) );
+            } elseif( $orig_post['post_status'] == 'locked' && $request_data['post_status'] == 'publish'){
+                $errors[] = array(
+                    'field' => 'All',
+                    'Message' => __( 'You cannot update once locked', 'klasse-wp-poll-survey' ) );
             } else {
                 $errors = static::validate_for_insert($request_data);
             }
@@ -330,7 +334,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
      * @return array
      */
     public static function validate_for_publish($post){
-        return array( 'allow_publish' => true, 'errors' => array() );
+        return array();
     }
 
     /**
