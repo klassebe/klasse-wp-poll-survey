@@ -311,7 +311,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
                 $errors[] = array(
                     'field' => 'All',
                     'Message' => __( 'You cannot update once published', 'klasse-wp-poll-survey' ) );
-            } elseif( $orig_post['post_status'] == 'locked' && $request_data['post_status'] == 'publish'){
+            } elseif( $orig_post['post_status'] == 'locked' && $request_data['post_status'] != 'publish'){
                 $errors[] = array(
                     'field' => 'All',
                     'Message' => __( 'You cannot update once locked', 'klasse-wp-poll-survey' ) );
