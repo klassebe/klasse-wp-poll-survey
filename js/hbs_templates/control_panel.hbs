@@ -4,17 +4,20 @@
         <span class="label label-warning">{{t "Live!"}}</span>
         <button class="setStatus button button-primary" data-status="locked"> 
             <span class="dashicons dashicons-lock"></span>
-             {{t "Lock"}}
-        </button> 
-        <a href="#" class="setStatus" data-status="draft">unlive</a>
+             {{t "Lock"}}!
+        </button>
     {{/if}}
     {{#if isDraft}}
-        <button class="setStatus button button-primary" data-status="publish">{{t "Make live"}}</button>
+        <span class="label label-warning">{{t "Draft!"}}</span>
+        <button class="setStatus button button-primary" data-status="publish">
+            <span class="dashicons dashicons-cloud"></span>
+            {{t "Make live"}}!
+        </button>
     {{/if}}
     {{#if isLocked}}
         <span class="label label-danger">{{t "Locked!"}}</span>
         <button class="setStatus button" data-status="publish">
-            unlock
+            {{t "Unlock"}}
         </button>
     {{/if}}
 
