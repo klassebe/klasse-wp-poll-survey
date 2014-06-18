@@ -1010,9 +1010,13 @@ jQuery(function ($) {
       );
     },
     createResultProfile: function (post_parent, data, cb) {
+      var resultProfileData = {};
       console.log(data);
       /* Check which data you are getting and link with the correct menu order so there is no overlapping */
-      var resultProfileData = {
+      resultProfileData._kwps_min_value = (data.attributes._kwps_min_value)? data.attributes._kwps_min_value : 0;
+      resultProfileData._kwps_max_value = (data.attributes._kwps_max_value)? data.attributes._kwps_max_value : 0;
+      
+      resultProfileData = {
         post_type: "kwps_result_profile",
         post_status: "draft",
         post_title : "",

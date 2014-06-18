@@ -14,4 +14,4 @@ js/dist/kwps_admin.js
 js/temp/
 deploy/
 
-assets/
+assets/*
