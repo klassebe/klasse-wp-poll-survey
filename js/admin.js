@@ -1371,12 +1371,8 @@ jQuery(function ($) {
           contentType: "application/json; charset=utf-8",
           dataType: 'json'
         })
-          .fail(function(request, status, error) {
-            version.set('validation', request.responseJSON);
-            that.render();
-          })
-          .done(function(request, status, error) {
-            version.set('validation', request.responseJSON);
+          .done(function(response, status, xhr) {
+            version.set('validation', response);
             that.render();
           });
       }, this);
