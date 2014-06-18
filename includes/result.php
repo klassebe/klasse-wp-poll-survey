@@ -191,6 +191,7 @@ class Result {
         return $conversion_rate;
     }
     public static function shortcode( $atts ) {
+        
         extract( shortcode_atts( array(
             'result' => 0,
         ), $atts ) );

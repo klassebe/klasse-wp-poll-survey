@@ -300,7 +300,20 @@ class Version extends Kwps_Post_Type{
                 <?php if(!empty($data['intro_result'])): ?>
                     <div class="kwps-page kwps-intro-result">
                         <div class="kwps-content">
-                            <?php echo $data['intro_result']['post_content']; ?>
+                            <?php
+                            /* SEARCH THE SHORTCODE AND REPLACE IT */
+                            $replacement_arr = [];
+                            $pattern_arr = [];
+                            $pattern = '/\[kwps_result.*\]/';
+                            $subject = $data['intro_result']['post_content'];
+                            preg_match_all($pattern, $subject, $kwps_result_matches);
+                            foreach ($kwps_result_matches[0] as $kwps_result_match) {
+                                $replacement_arr[] = do_shortcode($kwps_result_match);
+                                $pattern_arr[] = '/\\' . substr($kwps_result_match,0,-1) . '\]/';
+                            }
+                            $output = preg_replace($pattern_arr, $replacement_arr, $subject);
+                            echo $output;
+                        ?>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -355,11 +368,11 @@ class Version extends Kwps_Post_Type{
             <?php if(!empty($data['outro'])): ?>
                 <div class="kwps-page kwps-outro">
                     <div class="kwps-content">
-                        <?php 
+                        <?php
                             /* SEARCH THE SHORTCODE AND REPLACE IT */
                             $replacement_arr = [];
                             $pattern_arr = [];
-                            $pattern = '/\[.*\]/';
+                            $pattern = '/\[kwps_result.*\]/';
                             $subject = $data['outro']['post_content'];
                             preg_match_all($pattern, $subject, $kwps_result_matches);
                             foreach ($kwps_result_matches[0] as $kwps_result_match) {
