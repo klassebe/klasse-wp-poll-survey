@@ -108,7 +108,8 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
             'orderby' => 'meta_value_num',
             'order' => 'ASC',
             'meta_key' => '_kwps_sort_order',
-            'post_status'	=> array('draft', 'publish')
+            'post_status'	=> array('draft', 'publish'),
+            'nopaging' => true,
         ) );
 
         $children = array();
