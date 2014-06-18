@@ -14,12 +14,6 @@
                 {{else}}
                 {{post_title}}
                 {{/if}}
-                {{#if isLive}}
-                    <span class="label label-warning">{{t "Live!"}}</span>
-                    <button class="make make-locked button button-primary"> <span class="dashicons dashicons-lock"></span> {{t "Lock"}}</button>
-                {{else}}
-                    <button class="make make-live button button-primary">{{t "Make live"}}</button>
-                {{/if}}
             </div>
         </th>
     {{/each}}
