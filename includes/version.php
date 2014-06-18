@@ -297,6 +297,7 @@ class Version extends Kwps_Post_Type{
         if( in_array($version['post_status'], array('locked', 'trash')) || !$allowed_to_fill_out_test) {
             ?>
             <div class="kwps-version">
+                <input type="hidden" id="kwps-version-id" value="<?php echo $version['ID']?>">
                 <?php if(!empty($data['intro_result'])): ?>
                     <div class="kwps-page kwps-intro-result">
                         <div class="kwps-content">
