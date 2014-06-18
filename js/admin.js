@@ -1188,6 +1188,7 @@ jQuery(function ($) {
         case "main_kwps_intro_result" :
         case "main_kwps_outro" :
         case "main_kwps_question_group" :
+        case "main_kwps_result_profile" :
           app.openRow[postType] = !app.openRow[postType];
           break;
         case "kwps_question" :
