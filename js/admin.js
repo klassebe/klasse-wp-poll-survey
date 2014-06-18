@@ -350,6 +350,7 @@ jQuery(function ($) {
       'change .update-version-post-title': 'updateVersionPostTitle',
       'click .move-action:not(.disabled)': 'moveItem',
       'click .make-live': 'makeLive',
+      'click .make-draft': 'makeDraft',
       'click .clear-entries': 'clearEntries'
     },
     cleanup: function() {
@@ -367,7 +368,7 @@ jQuery(function ($) {
       var y;
       var data = {};
 
-      data.isLive = (testCollection.post_status !== "draft");
+      data.isLive = (testCollection.post_status === "publish");
 
       //Get versions
       var versions = _.sortBy(_.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON'),'_kwps_sort_order');
@@ -1309,6 +1310,21 @@ jQuery(function ($) {
       var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
       event.preventDefault();
       testCollection.set('post_status', 'publish');
+      testCollection.save({
+        wait: true,
+        error: function(testCollection, resp, options)  {
+          console.log(resp);
+        },
+        success: function() {
+          this.render();
+        }.bind(this)
+      });
+    },
+    makeDraft: function (e) {
+      console.log(event);
+      var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
+      event.preventDefault();
+      testCollection.set('post_status', 'draft');
       testCollection.save({
         wait: true,
         error: function(testCollection, resp, options)  {
