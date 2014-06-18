@@ -665,9 +665,7 @@ jQuery(function ($) {
                     var parentVersion = this.collection.findWhere({ID: parentQuestionGroup.get("post_parent")});
                     answer.editable = (parentVersion.get('post_status') !== 'publish');
 
-                    if(typeof value === 'undefined') {
-                      value = answer._kwps_answer_option_value;
-                    }
+                    value = answer._kwps_answer_option_value;
 
                   }, this);
 
