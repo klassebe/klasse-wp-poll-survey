@@ -106,6 +106,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
         $child_objects = get_posts( array('post_type' => static::$post_type,
             'post_parent' => $post_parent_id,
             'orderby' => 'meta_value_num',
+            'order' => 'ASC',
             'meta_key' => '_kwps_sort_order',
             'post_status'	=> array('draft', 'publish')
         ) );

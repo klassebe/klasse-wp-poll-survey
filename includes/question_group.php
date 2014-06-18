@@ -81,7 +81,7 @@ class Question_Group extends Kwps_Post_Type {
 
             $kwps_max_question_groups = $test_modus['_kwps_max_question_groups'];
 
-            if( 0 < $kwps_max_question_groups ){
+            if( ( !isset( $post['ID'] ) ) && 0 < $kwps_max_question_groups ){
                 $all_question_groups_of_version = Question_Group::get_all_by_post_parent($version['ID']);
 
                 if( sizeof($all_question_groups_of_version) >= $kwps_max_question_groups){

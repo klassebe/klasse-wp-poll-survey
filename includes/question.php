@@ -108,7 +108,7 @@ class Question extends Kwps_Post_Type{
 
             $max_questions_per_question_group = (int) $test_modus['_kwps_max_questions_per_question_group'];
 
-            if( 0 < $max_questions_per_question_group ){
+            if( ( !isset( $post['ID'] ) ) && 0 < $max_questions_per_question_group ){
                 if( sizeof($all_questions_of_same_group) >= $test_modus['_kwps_max_questions_per_question_group']){
                     array_push( $errors,
                         array(

@@ -25,7 +25,7 @@ class Intro_Result extends Intro{
             'new_item' => 'New Intro Result',
             'view_item' => 'View Intro Result',
             'search_items' => 'Search Intros Result',
-            'not_found' => 'No Intros Found',
+            'not_found' => 'No Intro Results Found',
             'not_found_in_trash' => 'No Intros Result Found In Trash',
         ),
         'show_in_menu' => false,
