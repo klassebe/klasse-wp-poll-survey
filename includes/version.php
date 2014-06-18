@@ -132,8 +132,9 @@ class Version extends Kwps_Post_Type{
 
             $errors = array_merge($errors, static::check_array_to_hold_single_value( $intro_results, 'Intro result' ) );
 
-            $intros = Intro::get_all_by_post_parent( $version_id );
-            $errors = array_merge($errors, static::check_array_to_hold_single_value( $intros, 'Intro' ) );
+//      Removed as per https://github.com/klassebe/klasse-wp-poll-survey/issues/46
+//            $intros = Intro::get_all_by_post_parent( $version_id );
+//            $errors = array_merge($errors, static::check_array_to_hold_single_value( $intros, 'Intro' ) );
 
             $outros = Outro::get_all_by_post_parent( $version_id );
             $errors = array_merge($errors, static::check_array_to_hold_single_value( $outros, 'Outro' ) );
@@ -208,6 +209,12 @@ class Version extends Kwps_Post_Type{
                         );
                     } else {
                         foreach($result_profiles as $result_profile_outer_loop){
+                            if( $result_profile_outer_loop['_kwps_min_value'] >= $result_profile_outer_loop['_kwps_max_value'] ){
+                                $errors[] = array(
+                                    'field' => 'Result profile',
+                                    'message' => __( 'Min. value should be smaller than Max. value' ),
+                                );
+                            }
                             foreach($result_profiles as $result_profile_inner_loop){
                                 if( $result_profile_outer_loop['ID'] != $result_profile_inner_loop['ID']) {
                                     if(
