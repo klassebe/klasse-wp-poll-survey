@@ -349,8 +349,7 @@ jQuery(function ($) {
       'change .update-main': 'updateTestCollection',
       'change .update-version-post-title': 'updateVersionPostTitle',
       'click .move-action:not(.disabled)': 'moveItem',
-      'click .make-live': 'makeLive',
-      'click .make-draft': 'makeDraft',
+      'click .setStatus': 'setStatus',
       'click .clear-entries': 'clearEntries'
     },
     cleanup: function() {
@@ -370,6 +369,7 @@ jQuery(function ($) {
 
       data.isLive = (testCollection.get('post_status') === "publish");
       data.isDraft = (testCollection.get('post_status') === "draft");
+      data.isLocked = (testCollection.get('post_status') === "locked");
 
       //Get versions
       var versions = _.sortBy(_.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON'),'_kwps_sort_order');
@@ -1304,34 +1304,21 @@ jQuery(function ($) {
 
       return parentPostType;
     },
-    makeLive: function(event) {
+    setStatus: function(event) {
+      var that = this;
       var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
       console.log(testCollection);
       event.preventDefault();
-      testCollection.set('post_status', 'publish');
+      var status = $(event.currentTarget).data('status');
+      testCollection.set('post_status', status);
       testCollection.save({
         wait: true,
         error: function(testCollection, resp, options)  {
           console.log(resp);
         },
         success: function() {
-          this.render();
-        }.bind(this)
-      });
-    },
-    makeDraft: function (e) {
-      var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
-      console.log(testCollection);
-      event.preventDefault();
-      testCollection.set('post_status', 'draft');
-      testCollection.save({
-        wait: true,
-        error: function(testCollection, resp, options)  {
-          console.log(resp);
-        },
-        success: function() {
-          this.render();
-        }.bind(this)
+          that.render();
+        }
       });
     },
     clearEntries: function(event) {

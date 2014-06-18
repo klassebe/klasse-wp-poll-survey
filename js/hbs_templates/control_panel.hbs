@@ -2,13 +2,22 @@
     {{t "Control panel"}}: {{t testmodus.post_title}}
     {{#if isLive}}
         <span class="label label-warning">{{t "Live!"}}</span>
-        <button class="make make-locked button button-primary"> 
-        <span class="dashicons dashicons-lock"></span> 
-        {{t "Lock"}}</button> <a href="#" class="make-draft">unlive</a>
+        <button class="setStatus button button-primary" data-status="locked"> 
+            <span class="dashicons dashicons-lock"></span>
+             {{t "Lock"}}
+        </button> 
+        <a href="#" class="setStatus" data-status="draft">unlive</a>
     {{/if}}
     {{#if isDraft}}
-        <button class="make make-live button button-primary">{{t "Make live"}}</button>
+        <button class="setStatus button button-primary" data-status="publish">{{t "Make live"}}</button>
     {{/if}}
+    {{#if isLocked}}
+        <span class="label label-danger">{{t "Locked!"}}</span>
+        <button class="setStatus button" data-status="publish">
+            unlock
+        </button>
+    {{/if}}
+
     <span class="spinner"></span>
 </h2>
 <div class="test-input">
