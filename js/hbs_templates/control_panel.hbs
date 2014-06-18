@@ -5,7 +5,8 @@
         <button class="make make-locked button button-primary"> 
         <span class="dashicons dashicons-lock"></span> 
         {{t "Lock"}}</button> <a href="#" class="make-draft">unlive</a>
-    {{else}}
+    {{/if}}
+    {{#if isDraft}}
         <button class="make make-live button button-primary">{{t "Make live"}}</button>
     {{/if}}
     <span class="spinner"></span>
