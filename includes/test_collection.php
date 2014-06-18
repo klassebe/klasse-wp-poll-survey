@@ -135,7 +135,7 @@ class Test_Collection extends Kwps_Post_Type{
         foreach($versions as $version){
             $version_errors = Version::validate_for_publish($version);
             if( sizeof( $version_errors) > 0) {
-                $errors[ $version[ 'ID' ] ] = $version_errors;
+                $errors[] = $version_errors;
             }
         }
 

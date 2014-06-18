@@ -120,6 +120,7 @@ class Version extends Kwps_Post_Type{
             return array(
                 array(
                     array(
+                        'ID' => null,
                         'field' => 'All',
                         'message' => __( 'Cannot publish when not saved as draft first', 'klasse-wp-poll-survey' ),
                     )
@@ -147,6 +148,7 @@ class Version extends Kwps_Post_Type{
                 $shortcode_count = preg_match_all($pattern, $subject, $kwps_result_matches);
                 if( $shortcode_count <= 0 ){
                     $errors[] = array(
+                        'ID' => $version_id,
                         'field' => 'Outro',
                         'message' => __( 'No result shortcodes used!!', 'klasse-wp-poll-survey' ),
                     );
@@ -159,6 +161,7 @@ class Version extends Kwps_Post_Type{
 
                         if( !in_array( $output_type, $test_modus['_kwps_allowed_output_types'] ) ) {
                             $errors[] = array(
+                                'ID' => $version_id,
                                 'field' => 'Outro',
                                 'message' => __( 'Invalid value ', 'klasse-wp-poll-survey') . $output_type .
                                     __(' in shortcode', 'klasse-wp-poll-survey' ) );
@@ -172,6 +175,7 @@ class Version extends Kwps_Post_Type{
 
             if( count( $question_groups ) < 1 ){
                 $errors[] = array(
+                    'ID' => $version_id,
                     'field' => 'Question group',
                     'message' => __( 'Minimum 1 question page required', 'klasse-wp-poll-survey' )
                 );
@@ -182,6 +186,7 @@ class Version extends Kwps_Post_Type{
 
                 if( count( $questions ) < 1 ){
                     $errors[] = array(
+                        'ID' => $version_id,
                         'field' => 'Questions',
                         'message' => __( 'Minimum 1 question per question page required', 'klasse-wp-poll-survey' ),
                     );
@@ -191,6 +196,7 @@ class Version extends Kwps_Post_Type{
                     $answer_options = Answer_Option::get_all_by_post_parent( $question['ID'] );
                     if( count( $answer_options ) < 2 ){
                         $errors[] = array(
+                            'ID' => $version_id,
                             'field' => 'Question group',
                             'message' => __( 'Minimum 2 answer options per question required', 'klasse-wp-poll-survey' ) );
                     }
@@ -204,6 +210,7 @@ class Version extends Kwps_Post_Type{
                     $result_profiles = Result_Profile::get_all_by_post_parent( $version_id );
                     if( count( $result_profiles ) < 2 ) {
                         $errors[] = array(
+                            'ID' => $version_id,
                             'field' => 'Result profile',
                             'message' => __( 'Minimum 2 result profiles needed', 'klasse-wp-poll-survey' ),
                         );
@@ -211,6 +218,7 @@ class Version extends Kwps_Post_Type{
                         foreach($result_profiles as $result_profile_outer_loop){
                             if( $result_profile_outer_loop['_kwps_min_value'] >= $result_profile_outer_loop['_kwps_max_value'] ){
                                 $errors[] = array(
+                                    'ID' => $version_id,
                                     'field' => 'Result profile',
                                     'message' => __( 'Min. value should be smaller than Max. value' ),
                                 );
@@ -225,6 +233,7 @@ class Version extends Kwps_Post_Type{
                                             && $result_profile_outer_loop['_kwps_max_value'] <= $result_profile_inner_loop['_kwps_max_value'] )
                                     ) {
                                         $errors[] = array(
+                                            'ID' => $version_id,
                                             'field' => 'Result profile',
                                             'message'=> __( 'Overlap between ', 'klasse-wp-poll-survey' ) . $result_profile_inner_loop['post_title'] .
                                                 __( ' and ', 'klasse-wp-poll-survey') . $result_profile_outer_loop['post_title'],
@@ -246,10 +255,12 @@ class Version extends Kwps_Post_Type{
         $errors = array();
         if( count( $data ) == 0 ) {
             $errors[] = array(
+                'ID' => $version_id,
                 'field' => $field,
                 'message' => __( 'Required', 'klasse-wp-poll-survey' ) );
         } elseif( count( $data ) > 1 ) {
             $errors[] = array(
+                'ID' => $version_id,
                 'field' => $field,
                 'message' => __( 'Only 1 allowed', 'klasse-wp-poll-survey' ));
         }
