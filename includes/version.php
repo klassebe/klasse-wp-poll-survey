@@ -209,6 +209,12 @@ class Version extends Kwps_Post_Type{
                         );
                     } else {
                         foreach($result_profiles as $result_profile_outer_loop){
+                            if( $result_profile_outer_loop['_kwps_min_value'] >= $result_profile_outer_loop['_kwps_max_value'] ){
+                                $errors[] = array(
+                                    'field' => 'Result profile',
+                                    'message' => __( 'Min. value should be smaller than Max. value' ),
+                                );
+                            }
                             foreach($result_profiles as $result_profile_inner_loop){
                                 if( $result_profile_outer_loop['ID'] != $result_profile_inner_loop['ID']) {
                                     if(
