@@ -55,7 +55,7 @@
                                 <label for="_kwps_answer_option_value">{{t "Value"}}</label>
                             </th>
                             <td>
-                                <input type="number" name="_kwps_answer_option_value" id="kwps-answer-option-value" value="{{_kwps_answer_option_value}}" class="regular-text">
+                                <input type="number" name="_kwps_answer_option_value" id="kwps-answer-option-value" value="{{_kwps_answer_option_value}}" class="regular-text"{{#if disableValue}} disabled="disabled"{{/if}}>
                                 {{#if error__kwps_answer_option_value}}
                                     <span class="help-block">{{error__kwps_answer_option_value}}</span>
                                 {{/if}}

@@ -1160,6 +1160,7 @@ jQuery(function ($) {
         answerData.post_title = data.get('post_title');
         answerData.post_content = data.get('post_content');
         answerData._kwps_sort_order = data.get('_kwps_sort_order');
+        answerData._kwps_answer_option_value = data.get('_kwps_answer_option_value');
       } else {
         answerData._kwps_sort_order = data;
         answerData.post_title = kwps_translations["Answer Option"] + " " + (data + 1);
@@ -1417,14 +1418,15 @@ jQuery(function ($) {
       var testmodus = app.kwpsCollection.findWhere({ID: testCollection.get('post_parent')});
 
       var data =  this.model.toJSON();
+      data.parentStack = this.getParentStack();
       data.attribute = this.options.attribute;
       data.label = this.model.get('post_type');
       data.addResults = (this.model.get('post_type') === "kwps_outro" || this.model.get('post_type') === "kwps_intro_result");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
       data.title = (this.model.get('post_type') === 'kwps_result_profile' || this.model.get('post_type') === 'kwps_question_group');
       data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
+      data.disableValue = (data.parentStack.kwps_version._kwps_sort_order > 0);
       data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
-      data.parentStack = this.getParentStack();
 
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
