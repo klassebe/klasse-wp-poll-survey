@@ -365,6 +365,10 @@ jQuery(function ($) {
       var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
       var testmodus = this.collection.findWhere({ID: testCollection.get('post_parent')});
       var y;
+      var data = {};
+
+      data.isLive = (testCollection.post_status !== "draft");
+
       //Get versions
       var versions = _.sortBy(_.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON'),'_kwps_sort_order');
 
@@ -478,9 +482,7 @@ jQuery(function ($) {
 
       var sortedAns = _.groupBy(_.flatten(ans,true),"_kwps_sort_order");
 
-      var data = {
-        kwpsUniquenessTypes: kwpsUniquenessTypes
-      };
+      data.kwpsUniquenessTypes= kwpsUniquenessTypes;
 
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');      
@@ -1303,34 +1305,19 @@ jQuery(function ($) {
       return parentPostType;
     },
     makeLive: function(event) {
+      console.log(event);
+      var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
       event.preventDefault();
-      var versionId = $(event.currentTarget).closest('th').data('version-id');
-      var version = this.collection.findWhere({ID: versionId});
-      var that = this;
-      $.ajax({
-        type: 'POST',
-        data: JSON.stringify(version.toJSON()),
-        url: app.url + 'kwps_validate_version',
-        contentType: "application/json; charset=utf-8",
-        dataType: 'json'
-      })
-        .done(function(request, status, error) {
-          version.set('post_status', 'publish');
-          version.save({
-            wait: true,
-            error: function(version, resp, options)  {
-              console.log(resp);
-            },
-            success: function() {
-              that.render();
-            }
-          });
-        })
-        .fail(function() {
-          alert(kwps_translations['Errors occurred. Please check below for more information.']);
-        });
-
-
+      testCollection.set('post_status', 'publish');
+      testCollection.save({
+        wait: true,
+        error: function(testCollection, resp, options)  {
+          console.log(resp);
+        },
+        success: function() {
+          this.render();
+        }.bind(this)
+      });
     },
     clearEntries: function(event) {
       event.preventDefault();
