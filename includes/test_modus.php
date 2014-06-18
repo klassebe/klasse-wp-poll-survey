@@ -61,8 +61,8 @@
                 'not_found' => 'No Test Modi Found',
                 'not_found_in_trash' => 'No Test Modi Found In Trash',
             ),
-            'show_in_menu' => true,
-            'show_ui' => true,
+            'show_in_menu' => false,
+            'show_ui' => false,
             'hierarchical' => false,
             'publicly_queryable' => false,
         );
