@@ -132,8 +132,9 @@ class Version extends Kwps_Post_Type{
 
             $errors = array_merge($errors, static::check_array_to_hold_single_value( $intro_results, 'Intro result' ) );
 
-            $intros = Intro::get_all_by_post_parent( $version_id );
-            $errors = array_merge($errors, static::check_array_to_hold_single_value( $intros, 'Intro' ) );
+//      Removed as per https://github.com/klassebe/klasse-wp-poll-survey/issues/46
+//            $intros = Intro::get_all_by_post_parent( $version_id );
+//            $errors = array_merge($errors, static::check_array_to_hold_single_value( $intros, 'Intro' ) );
 
             $outros = Outro::get_all_by_post_parent( $version_id );
             $errors = array_merge($errors, static::check_array_to_hold_single_value( $outros, 'Outro' ) );
