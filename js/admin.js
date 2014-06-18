@@ -1426,7 +1426,7 @@ jQuery(function ($) {
       data.label = this.model.get('post_type');
       data.addResults = (this.model.get('post_type') === "kwps_outro" || this.model.get('post_type') === "kwps_intro_result");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
-      data.title = (this.model.get('post_type') === 'kwps_result_profile');
+      data.title = (this.model.get('post_type') === 'kwps_result_profile' || this.model.get('post_type') === 'kwps_question_group');
       data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
       data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
       data.parentStack = this.getParentStack();
