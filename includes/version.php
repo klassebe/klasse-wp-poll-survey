@@ -96,10 +96,9 @@ class Version extends Kwps_Post_Type{
         $response = static::validate_for_publish($version);
 
         if( sizeof( $response ) > 0 ) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
             wp_send_json_error($response);
         } else {
-            wp_send_json_success();
+            wp_send_json_success($response);
         }
 
         die();
