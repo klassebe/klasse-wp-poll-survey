@@ -330,7 +330,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
      * @return array
      */
     public static function validate_for_publish($post){
-        return array( 'allow_publish' => true, 'errors' => array() );
+        return array();
     }
 
     /**
