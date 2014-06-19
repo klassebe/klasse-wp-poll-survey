@@ -34,6 +34,23 @@ jQuery(function ($) {
     return obj;
   };
 
+  function difference(template, override) {
+    var ret = {};
+    for (var name in template) {
+        if (name in override) {
+            if (_.isObject(override[name]) && !_.isArray(override[name])) {
+                var diff = difference(template[name], override[name]);
+                if (!_.isEmpty(diff)) {
+                    ret[name] = diff;
+                }
+            } else if (!_.isEqual(template[name], override[name])) {
+                ret[name] = override[name];
+            }
+        }
+    }
+    return ret;
+}
+
   /* BACKBONE STUFF */
   var app = {};
   app.translations = kwps_translations;
@@ -1445,7 +1462,6 @@ jQuery(function ($) {
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
       data.title = (this.model.get('post_type') === 'kwps_result_profile' || this.model.get('post_type') === 'kwps_question_group');
       data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
-      console.log(data.parentStack.kwps_version._kwps_sort_order);
       data.disableValue = (data.parentStack.kwps_version._kwps_sort_order > 0);
       data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
 
@@ -1544,20 +1560,36 @@ jQuery(function ($) {
       this.model.set(data);
       var previous = this.model.previousAttributes();
 
+      // if min max or value is changed assume it is version0 and get other versions
+      var diff = difference(previous,this.model.toJSON());
+      console.log(diff);
+      if (diff._kwps_max_value || diff._kwps_min_value || diff._kwps_answer_option_value) {
+        // now we get the list of all the other versions
+        var otherVersions = this.getOtherVersions();
+      }
+      
+
       var that = this;
       this.model.save(data, {
         success: function() {
+          if (otherVersions) {
+            _.each(otherVersions, function (vId, i, list) {
+              var vModel = app.kwpsCollection.get(vId);
+              vModel.save(diff);
+            })
+          }
           that.cleanup();
           window.location = '#';
         },
         error: function(model, response) {
           var errors = response.responseJSON;
-          console.log(previous);
           model.set('success', errors.success);
           _.each(errors.data, function(error) {
             model.set('error_' + error.field, error.message);
           });
+          // render with error messages
           that.render();
+          // reset model
           that.model.set(previous);
           that.model.unset('success');
           _.each(errors.data, function(error) {
@@ -1565,6 +1597,12 @@ jQuery(function ($) {
           });
         }
       });
+    },
+    getOtherVersions: function (){
+      var versions =app.kwpsCollection.where({post_type: this.model.get('post_type'), _kwps_sort_order: this.model.get('_kwps_sort_order')});
+      versions = _.map(versions, function (m) {return m.id});
+      versions = _.difference(versions, this.model.id);
+      return versions;
     },
     getParentStack: function(){
       var parentStack= {};
