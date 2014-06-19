@@ -88,6 +88,9 @@ jQuery(function ($) {
     },
     edit :  function (id) {
       if (app.kwpsCollection !== undefined) {
+        if (app.views.edit !== undefined) {
+          app.views.edit.cleanup();
+        }
         app.views.edit = new app.KwpsViewEdit({
           model : app.kwpsCollection.get(id)
         });
@@ -95,6 +98,9 @@ jQuery(function ($) {
     },
     editQuestion : function (id) {
       if (app.kwpsCollection !== undefined) {
+        if (app.views.edit !== undefined) {
+          app.views.edit.cleanup();
+        }
         app.views.edit = new app.KwpsViewQuestion({
           model : app.kwpsCollection.get(id)
         });
