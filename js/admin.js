@@ -1414,7 +1414,6 @@ jQuery(function ($) {
 
   app.KwpsViewEdit = Backbone.View.extend({
     el: '#kwps_test',
-
     initialize: function (options) {
       this.options = options || {};
       _.bindAll(this, 'cleanup');
@@ -1540,6 +1539,7 @@ jQuery(function ($) {
       }
 
       this.model.set(data);
+      var previous = this.model.previousAttributes();
 
       var that = this;
       this.model.save(data, {
@@ -1549,12 +1549,17 @@ jQuery(function ($) {
         },
         error: function(model, response) {
           var errors = response.responseJSON;
-
+          console.log(previous);
           model.set('success', errors.success);
           _.each(errors.data, function(error) {
             model.set('error_' + error.field, error.message);
           });
           that.render();
+          that.model.set(previous);
+          that.model.unset('success');
+          _.each(errors.data, function(error) {
+            model.unset('error_' + error.field, error.message);
+          });
         }
       });
     },
