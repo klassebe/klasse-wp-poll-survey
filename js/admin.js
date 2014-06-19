@@ -49,6 +49,7 @@ jQuery(function ($) {
     kwps_result_profile: -1
   };
   app.virtualAnchor = -1;
+  app.ajaxRunning = false;
   app.views = {};
 
   app.templates = {
@@ -334,13 +335,13 @@ jQuery(function ($) {
       this.render();
       this.listenTo(this.collection, 'add remove', this.render);
       this.listenTo(this.collection, 'sync', this.validateVersion);
-      $(this.el).ajaxStart( function () {
+      this.$el.ajaxStart( function () {
         $('.spinner').show();
-        console.log('start ajax');
+        app.ajaxRunning = true;
       });
-      $(this.el).ajaxStop( function () {
+      this.$el.ajaxStop( function () {
         $('.spinner').hide();
-        console.log('all ajax stopped');
+        app.ajaxRunning = false;
       });
     },
     events: {
@@ -378,6 +379,7 @@ jQuery(function ($) {
       data.isLive = (testCollection.get('post_status') === "publish");
       data.isDraft = (testCollection.get('post_status') === "draft");
       data.isLocked = (testCollection.get('post_status') === "locked");
+      data.ajaxRunning = app.ajaxRunning;
 
       //Get versions
       var versions = _.sortBy(_.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON'),'_kwps_sort_order');
