@@ -11,6 +11,13 @@
     font-size: 20px;
     line-height: 26px;
 }
+#kwps_test .help-block{
+  font-style: italic;
+  color: #FF1F00;
+}
+#kwps_test .error-highlight{
+  box-shadow: 0 0 5px #FF1F00;
+}
 #kwps_test #buttons {
     margin: 25px 25px 5px;
 }

@@ -357,8 +357,7 @@ jQuery(function ($) {
       'change .update-version-post-title': 'updateVersionPostTitle',
       'click .move-action:not(.disabled)': 'moveItem',
       'click .setStatus': 'setStatus',
-      'click .clear-entries': 'clearEntries',
-      'scroll' : 'setScrollHeight'
+      'click .clear-entries': 'clearEntries'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -1400,9 +1399,6 @@ jQuery(function ($) {
       } else if (app.virtualAnchor !== -1 && typeof app.virtualAnchor === Number) {
         window.scrollTo(0,app.virtualAnchor);
       }
-    },
-    setScrollHeight : function(){
-
     }
   });
 
