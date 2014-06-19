@@ -48,6 +48,7 @@ jQuery(function ($) {
     kwps_question: -1,
     kwps_result_profile: -1
   };
+  app.virtualAnchor = -1;
   app.views = {};
 
   app.templates = {
@@ -356,7 +357,8 @@ jQuery(function ($) {
       'change .update-version-post-title': 'updateVersionPostTitle',
       'click .move-action:not(.disabled)': 'moveItem',
       'click .setStatus': 'setStatus',
-      'click .clear-entries': 'clearEntries'
+      'click .clear-entries': 'clearEntries',
+      'scroll' : 'setScrollHeight'
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -366,6 +368,7 @@ jQuery(function ($) {
       var data = this.prepareData();
       $(this.el).html(app.templates.controlPanel(data));
       $('#tabs').tabs();
+      this.scrollToVirtualAnchor();
     },
     prepareData: function() {
       var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
@@ -1192,6 +1195,7 @@ jQuery(function ($) {
     toggleDetails: function(event) {
       var postType = $(event.currentTarget).closest('tr').data('post-type');
       var sortOrder = $(event.currentTarget).closest('tr').data('sort-order');
+
       switch (postType) {
         case "main_kwps_intro" :
         case "main_kwps_intro_result" :
@@ -1199,9 +1203,14 @@ jQuery(function ($) {
         case "main_kwps_question_group" :
         case "main_kwps_result_profile" :
           app.openRow[postType] = !app.openRow[postType];
+          app.virtualAnchor = $(window).scrollTop;
           break;
         case "kwps_question" :
           app.openRow[postType] = (app.openRow[postType] === sortOrder)? -1 : sortOrder;
+          app.virtualAnchor = {
+            post_type : postType,
+            _kwps_sort_order : sortOrder
+          }
           break;
         case "kwps_question_group" :
           if (app.openRow.kwps_question_group === sortOrder) {
@@ -1209,6 +1218,10 @@ jQuery(function ($) {
             app.openRow.kwps_question_group = -1;
           } else {
             app.openRow.kwps_question_group = sortOrder;
+          }
+          app.virtualAnchor = {
+            post_type : postType,
+            _kwps_sort_order : sortOrder
           }
           break;
         default:
@@ -1374,6 +1387,21 @@ jQuery(function ($) {
             that.render();
           });
       }, this);
+    },
+    scrollToVirtualAnchor: function() {
+      console.log(app.virtualAnchor);
+      if(app.virtualAnchor !== -1 && typeof app.virtualAnchor !== Number) {
+        var top = $("[data-post-type='"+app.virtualAnchor.post_type+"'][data-sort-order='" + app.virtualAnchor._kwps_sort_order+ "']").offset().top;
+        console.log(top);
+        //get height from the top of tr with data sort-order en type.
+        window.scrollTo(0,top-50);
+        //app.virtualAnchor = -1;
+      } else if (app.virtualAnchor !== -1 && typeof app.virtualAnchor === Number) {
+        window.scrollTo(0,app.virtualAnchor);
+      }
+    },
+    setScrollHeight : function(){
+
     }
   });
 
@@ -1394,7 +1422,7 @@ jQuery(function ($) {
       this.options = options || {};
       _.bindAll(this, 'cleanup');
       this.render();
-
+      window.scrollTo(0,0);
     },
     cleanup: function() {
       this.undelegateEvents();
