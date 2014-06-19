@@ -55,7 +55,7 @@
                                 <label for="_kwps_answer_option_value">{{t "Value"}}</label>
                             </th>
                             <td>
-                                <input type="number" name="_kwps_answer_option_value" id="kwps-answer-option-value" value="{{_kwps_answer_option_value}}" class="regular-text"{{#if disableValue}} disabled="disabled"{{/if}}>
+                                <input type="number" name="_kwps_answer_option_value" id="kwps-answer-option-value" value="{{_kwps_answer_option_value}}" class="regular-text {{#if error__kwps_answer_option_value}}error-highlight{{/if}} {{#if disableValue}}disabled{{/if}}"{{#if disableValue}} disabled="disabled"{{/if}}>
                                 {{#if error__kwps_answer_option_value}}
                                     <span class="help-block">{{error__kwps_answer_option_value}}</span>
                                 {{/if}}
@@ -68,7 +68,7 @@
                                 <label for="_kwps_min_value">{{t "Min value"}}</label>
                             </th>
                             <td>
-                                <input type="number" name="_kwps_min_value" id="kwps-answer-option-value" value="{{_kwps_min_value}}" class="{{#if error__kwps_min_value}}error-highlight{{/if}}">
+                                <input type="number" name="_kwps_min_value" id="kwps-answer-option-value" value="{{_kwps_min_value}}" class="{{#if error__kwps_min_value}}error-highlight{{/if}} {{#if disableValue}}disabled{{/if}}" {{#if disableValue}} disabled="disabled"{{/if}}>
                                 {{#if error__kwps_min_value}}
                                     <span class="help-block">{{error__kwps_min_value}}</span>
                                 {{/if}}
@@ -79,7 +79,7 @@
                                 <label for="_kwps_max_value">{{t "Max value"}}</label>
                             </th>
                             <td>
-                                <input type="number" name="_kwps_max_value" id="kwps-answer-option-value" value="{{_kwps_max_value}}" class="{{#if error__kwps_max_value}}error-highlight{{/if}}">
+                                <input type="number" name="_kwps_max_value" id="kwps-answer-option-value" value="{{_kwps_max_value}}" class="{{#if error__kwps_max_value}}error-highlight{{/if}} {{#if disableValue}}disabled{{/if}}" {{#if disableValue}} disabled="disabled"{{/if}}>
                                 {{#if error__kwps_min_value}}
                                     <span class="help-block">{{error__kwps_min_value}}</span>
                                 {{/if}}
