@@ -1389,13 +1389,14 @@ jQuery(function ($) {
       }, this);
     },
     scrollToVirtualAnchor: function() {
-      console.log(app.virtualAnchor);
       if(app.virtualAnchor !== -1 && typeof app.virtualAnchor !== Number) {
-        var top = $("[data-post-type='"+app.virtualAnchor.post_type+"'][data-sort-order='" + app.virtualAnchor._kwps_sort_order+ "']").offset().top;
-        console.log(top);
-        //get height from the top of tr with data sort-order en type.
-        window.scrollTo(0,top-50);
-        //app.virtualAnchor = -1;
+        var row = $("[data-post-type='"+app.virtualAnchor.post_type+"'][data-sort-order='" + app.virtualAnchor._kwps_sort_order+ "']");
+        if (row.length !== 0) {
+          var top = row.offset().top;
+          window.scrollTo(0,top-50);
+        } else {
+          app.virtualAnchor = $(window).scrollTop;
+        }        
       } else if (app.virtualAnchor !== -1 && typeof app.virtualAnchor === Number) {
         window.scrollTo(0,app.virtualAnchor);
       }
