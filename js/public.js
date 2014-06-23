@@ -23,10 +23,7 @@
     var elem = $( this );
 
     /* GENERAL AJAX ADMIN URL WITH ACTION KEYWORD INCLUDED */
-    // get admin url and strip 'undefined' if it holds it
-
-    var urlAjaxToAdmin = String($('.admin-url').val()).replace('undefined', '') + "admin-ajax.php?action=";
-    console.log($('.admin-url').val());
+    var urlAjaxToAdmin = $('.admin-url').val() + "admin-ajax.php?action=";
 
     /* AVAILABLE SERVER ACTIONS */
     var actionSaveEntry = "kwps_save_entry";
@@ -68,12 +65,6 @@
             alert(errMsg);
           }
         });
-
-        // Check if there still is a view open that needs to be sent to the DB,
-        // If so, then add the variables to an array and then after all is done,
-        // get the results from the DB and show outro
-        // Here come all the functions
-
       } else {
         elem.find('.kwps-page').hide();
         $(this).closest('.kwps-question-group').show();
@@ -173,77 +164,39 @@
       if (elem.find('.kwps-intro-result').length !== 0) {
         getResultsByVersionId(versionId);
       }
-      //   if (elem.find('.kwps-intro').length === 0) {
-      //     if (elem.find('.kwps-question-group').length === 0) {
-      //       elem.find('.kwps-outro').show();
-      //     } else {
-      //       elem.find('.kwps-page').first().show();
-      //     }
-      //   } else {
-      //     elem.find('.kwps-intro').show();
-      //   }
     } else {
       elem.html('<div class="id-not-found">ID NOT FOUND!</div>');
     }
 
     /* CLICK EVENTS */
-    //  Search for the class with the ID in it
-    elem.find('.kwps-question-group').on('click', '.kwps-next', function () {
-      /* GET NUMBER OF KWPS ANSWER OPTION DIVs WITHIN THIS KWPS QUESTION GROUP PAGE */
+    elem.find('.kwps-page').on('click', '.kwps-next' , function () {
       var that = $(this);
-      var questionGroup = that.closest('.kwps-question-group');
-      var questionsLen = questionGroup.find('.kwps-question').length;
-      // var questionsLen = questionGroup[0].children[1].children.length;
-      // Get all questions from question group
-      console.log(questionGroup);
-      console.log('++++++++++++++++++++++');
-      var questions = questionGroup.find('.kwps-question');
-      var questionsSib = questions.siblings();
-      // var questions = questionGroup[0].children[1].children;
-      var answerVal = [];
-      console.log(questionsSib);
-      console.log('----------------');
+      var getQuestionName = that.closest('.kwps-page').find('input[type="radio"]').attr('name');
+      var oneSelectCheck = elem.find('input[type="radio"][name=' + getQuestionName + ']:checked').val();
+      // Check if there are other input type radio buttons within the same version and check if they are filled in as well
 
-      var answerOptions = questions.find('.kwps-answer-option');
-      var answerOptionsSib = answerOptions.siblings();
-      console.log(answerOptions);
-      console.log('*********************');
-
-      var getQuestionName, oneSelectCheck;
       var _kwps_hash = GetURLParameter('kwps_hash');
+      if (oneSelectCheck) {
+        var data = {
+           "post_parent": oneSelectCheck,
+           "post_status": "draft",
+           "_kwps_sort_order": 0
+        };
 
-      //  ONLY CHECK CURRENT VISIBLE PAGE
-        /* CHECK FIELD ATTR AND IF ONE OF THEM WAS CHECKED */
-        //  Gets the question name per answer option to later check if it has a checked value per name
-
-        getQuestionName = answerOptions.find('input[type="radio"]').attr('name');
-
-        oneSelectCheck = elem.find('input[type="radio"][name=' + getQuestionName + ']:checked').val();
-        if (oneSelectCheck) {
-          var data = {
-            "post_parent": oneSelectCheck,
-            "post_status": "draft",
-            "_kwps_sort_order": 0
-          };
-
-          if(_kwps_hash) {
-            data._kwps_hash = _kwps_hash;
-          }
-
-          entries.push(data);
-          selected = true;
-          saveEntry(entries);
-        } else {
-          selected = false;
-          alert('Please select a value per question.');
+        if(_kwps_hash) {
+          data._kwps_hash = _kwps_hash;
         }
 
+        entries.push(data);
+        selected = true;
+        saveEntry(entries);
+        that.closest('.kwps-page').hide();
+        that.closest('.kwps-page').next().show();
+      } else {
+        selected = false;
+        alert('Please select a value per question.');
+      }
     });
-
-  elem.find('.kwps-page').on('click', '.kwps-next' , function () {
-    $(this).closest('.kwps-page').hide();
-    $(this).closest('.kwps-page').next().show();
-  });
 
 });
 
