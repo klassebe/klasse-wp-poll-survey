@@ -284,10 +284,12 @@ class Version extends Kwps_Post_Type{
 	    $data['question_groups'] = Question_Group::get_all_by_post_parent($id);
 
         $allowed_to_fill_out_test = false;
+
         foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
 		    $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
 
 		    foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
+                // var_dump(Uniqueness::is_allowed($question['ID'], $limit_to_apply));
 			    if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
 				    $data['settings']['first_question_id_allowed'] = $question['ID'];
 				    $allowed_to_fill_out_test = true;
@@ -297,14 +299,15 @@ class Version extends Kwps_Post_Type{
 	    }
 
         Session::set_version_info($id);
-
         ob_start();
-
-
+?>
+            <div class="kwps-version">
+                <input type="hidden" class="kwps-version-id" value="<?php echo $version['ID']?>">
+                <input type="hidden" class="admin-url" value="<?php echo admin_url(); ?>">
+<?php
         if( in_array($version['post_status'], array('locked', 'trash')) || !$allowed_to_fill_out_test) {
             ?>
-            <div class="kwps-version">
-                <input type="hidden" id="kwps-version-id" value="<?php echo $version['ID']?>">
+
                 <?php if(!empty($data['intro_result'])): ?>
                     <div class="kwps-page kwps-intro-result">
                         <div class="kwps-content">
@@ -325,7 +328,7 @@ class Version extends Kwps_Post_Type{
                         </div>
                     </div>
                 <?php endif; ?>
-            </div>
+
         <?php
         }
         elseif( $version['post_status'] == 'draft' && !current_user_can('edit_posts') ) {
@@ -334,7 +337,7 @@ class Version extends Kwps_Post_Type{
         <?php
         } else {
 ?>
-        <div class="kwps-version">
+
             <?php if(!empty($data['intro'])): ?>
                 <div class="kwps-page kwps-intro">
                     <div class="kwps-content">
@@ -393,10 +396,12 @@ class Version extends Kwps_Post_Type{
                     </div>
                 </div>
             <?php endif; ?>
-            <input type="hidden" class="admin-url" value="<?php echo admin_url(); ?>">
-        </div>
+        
 <?php
         }
-		return ob_get_clean();
+        ?>
+        </div> <!-- END KWPS VERSION DIV -->
+<?php
+        return ob_get_clean();
     }
 }

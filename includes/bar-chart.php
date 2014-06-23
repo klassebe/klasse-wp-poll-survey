@@ -9,9 +9,10 @@
 namespace includes;
 
 
-class Bar_Chart {
+class Bar_Chart 
+{
 
-    public static function ajax_get_chart_per_question_by_entry_id(){
+    public static function ajax_get_chart_per_question(){
         $request_data = static::get_post_data_from_request();
 
         $errors = array();
@@ -29,23 +30,28 @@ class Bar_Chart {
         return $request_data;
     }
 
-    public static function process_get_request($request_data, $errors){
-        if( sizeof( $errors ) > 0 ) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
-            wp_send_json_error($errors);
+    public static function process_get_request($request_data, $errors) {
+        if ( sizeof ( $errors ) > 0 ) {
+            header( $SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
+            wp_send_json_error( $errors );
         } else {
-            $entry = Entry::get_as_array($request_data['ID']);
-            $answer_option = Answer_Option::get_as_array( $entry['post_parent'] );
+            $version = Version::get_as_array($request_data['ID']);
 
-            $question = Question::get_as_array( $answer_option['post_parent'] );
+            /* QUESTION GROUP DATA */
+            $question_group = Question_Group::get_one_by_post_parent($version['ID']);
+
+            /* QUESTION DATA */
+            $question = Question::get_one_by_post_parent($question_group['ID']);
+
+            /* ANSWER OPTIONS DATA */
             $answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
 
+            /* ENTRY DATA */
             $total_entries = 0;
-
             $entry_totals_per_answer_option = array();
             $answer_option_contents = array();
 
-            foreach($answer_options as $answer_option){
+            foreach ($answer_options as $answer_option) {
                 $entries = Entry::get_all_by_post_parent($answer_option['ID']);
                 $entry_totals_per_answer_option[$answer_option['ID']] = sizeof($entries);
                 $answer_option_contents[] = $answer_option['post_content'];
@@ -54,16 +60,19 @@ class Bar_Chart {
 
             $percentages = array();
 
-            foreach($entry_totals_per_answer_option as $id => $count){
-                $percentages[] = $count/$total_entries*100;
+            foreach ($entry_totals_per_answer_option as $id => $count) {
+                // check if total_entries is not 0!
+                if ($total_entries !== 0) {
+                    $percentages[] = $count/$total_entries*100;
+                } else {
+                    $percentages[] = 0;
+                }
             }
 
-            $version = Entry::get_version($request_data['ID']);
             $data = array( $question, $answer_option_contents, $percentages );
             $bar_chart = static::get_chart($data);
             wp_send_json( $bar_chart );
         }
-
         die();
     }
 

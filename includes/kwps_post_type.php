@@ -104,6 +104,7 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
      */
     public static function get_all_by_post_parent($post_parent_id){
         $child_objects = get_posts( array('post_type' => static::$post_type,
+            'posts_per_page' => -1,
             'post_parent' => $post_parent_id,
             'orderby' => 'meta_value_num',
             'order' => 'ASC',

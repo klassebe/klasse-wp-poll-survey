@@ -7,7 +7,10 @@
  */
 
 namespace includes;
-
+require_once 'bar-chart.php';
+require_once 'pie_chart.php';
+// require_once 'stacked_bar_chart.php';
+require_once 'result_profile.php';
 
 class Result {
 
@@ -22,14 +25,17 @@ class Result {
     public static function send_result_of_version($version_id, $output_type){
         switch($output_type){
             case 'bar-chart-per-question' :
-                $results = static::bar_chart_per_question($version_id);
+                $results = Bar_Chart::ajax_get_chart_per_question($version_id);
                 break;
             case 'pie-chart-per-question' :
-                $results = static::pie_chart_per_question($version_id);
+                $results = Pie_Chart::ajax_get_chart_per_question($version_id);
                 break;
-            case 'stacked-bar-per-question' :
-                $results = static::bar_chart_per_question($version_id);
-                break;
+            // case 'stacked-bar-per-question' :
+            //     $results = Stacked_Bar_Chart::ajax_get_chart();
+            //     break;
+            // case 'result-profile' :
+            //     $results = Result_Profile::ajax_get_by_entry_id();
+            //     break;
         }
         wp_send_json( $results );
         die;
@@ -51,34 +57,6 @@ class Result {
         $request_data = json_decode($json, true);
 
         return $request_data;
-    }
-
-    public static function bar_chart_per_question($version_id) {
-        $question_groups = Question_Group::get_all_by_post_parent($version_id);
-        $results = array();
-
-        foreach($question_groups as $question_group){
-            $questions = Question::get_all_by_post_parent( $question_group['ID'] );
-
-            foreach($questions as $question){
-                array_push($results, static::get_results_by_question( $question['ID'] ) );
-            }
-        }
-        return $results;
-    }
-
-    public static function pie_chart_per_question($version_id) {
-        $question_groups = Question_Group::get_all_by_post_parent($version_id);
-        $results = array();
-
-        foreach($question_groups as $question_group){
-            $questions = Question::get_all_by_post_parent( $question_group['ID'] );
-            foreach($questions as $question){
-                array_push($results, static::get_results_by_question( $question['ID'] ) );
-            }
-            array_push($results, array( 'question_group' => $question_group['post_content']));
-        }
-        return $results;
     }
 
     public static function get_results_by_question($question_id){

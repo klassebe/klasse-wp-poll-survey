@@ -155,11 +155,6 @@ add_action( 'wp_ajax_kwps_get_result_of_test_collection',
     array('\includes\result','ajax_get_result_data_of_test_collection'));
 
 add_action( 'wp_ajax_kwps_get_result_profile', array('\includes\result_profile','ajax_get_by_entry_id'));
-add_action( 'wp_ajax_kwps_get_bar_chart_per_question',
-    array('\includes\bar_chart','ajax_get_chart_per_question_by_entry_id'));
-
-add_action( 'wp_ajax_kwps_get_pie_chart_per_question',
-    array('\includes\pie_chart','ajax_get_chart_per_question_by_entry_id'));
 
 add_action( 'wp_ajax_kwps_get_result_page', 'get_result_page');
 
