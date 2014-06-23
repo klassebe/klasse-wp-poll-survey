@@ -114,6 +114,41 @@ class Test_Collection extends Kwps_Post_Type{
         return $errors;
     }
 
+    public static function ajax_validate_for_publish(){
+        $test_collection = static::get_post_data_from_request();
+        $response = static::validate_for_publish($test_collection);
+
+        if( sizeof( $response ) > 0 ) {
+            wp_send_json_error($response);
+        } else {
+            wp_send_json_success($response);
+        }
+
+        die();
+    }
+
+    public static function validate_for_publish($test_collection){
+        $versions = Version::get_all_by_post_parent($test_collection['ID']);
+
+        $errors = array();
+
+        foreach($versions as $version){
+            $version_errors = Version::validate_for_publish($version);
+            if( sizeof( $version_errors) > 0) {
+                $errors[] = $version_errors;
+            }
+        }
+
+        if( sizeof( $errors ) != 0 ) {
+            foreach($versions as $version){
+                $version['post_status'] = 'publish';
+                Version::save_post($version);
+            }
+        }
+
+        return $errors;
+    }
+
     public static function validate_for_delete($post_id = 0)
     {
         // TODO: Implement validate_for_delete() method.

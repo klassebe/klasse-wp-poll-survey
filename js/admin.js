@@ -34,6 +34,23 @@ jQuery(function ($) {
     return obj;
   };
 
+  function difference(template, override) {
+    var ret = {};
+    for (var name in template) {
+        if (name in override) {
+            if (_.isObject(override[name]) && !_.isArray(override[name])) {
+                var diff = difference(template[name], override[name]);
+                if (!_.isEmpty(diff)) {
+                    ret[name] = diff;
+                }
+            } else if (!_.isEqual(template[name], override[name])) {
+                ret[name] = override[name];
+            }
+        }
+    }
+    return ret;
+}
+
   /* BACKBONE STUFF */
   var app = {};
   app.translations = kwps_translations;
@@ -48,6 +65,8 @@ jQuery(function ($) {
     kwps_question: -1,
     kwps_result_profile: -1
   };
+  app.virtualAnchor = -1;
+  app.ajaxRunning = false;
   app.views = {};
 
   app.templates = {
@@ -88,6 +107,9 @@ jQuery(function ($) {
     },
     edit :  function (id) {
       if (app.kwpsCollection !== undefined) {
+        if (app.views.edit !== undefined) {
+          app.views.edit.cleanup();
+        }
         app.views.edit = new app.KwpsViewEdit({
           model : app.kwpsCollection.get(id)
         });
@@ -95,6 +117,9 @@ jQuery(function ($) {
     },
     editQuestion : function (id) {
       if (app.kwpsCollection !== undefined) {
+        if (app.views.edit !== undefined) {
+          app.views.edit.cleanup();
+        }
         app.views.edit = new app.KwpsViewQuestion({
           model : app.kwpsCollection.get(id)
         });
@@ -327,13 +352,13 @@ jQuery(function ($) {
       this.render();
       this.listenTo(this.collection, 'add remove', this.render);
       this.listenTo(this.collection, 'sync', this.validateVersion);
-      $(this.el).ajaxStart( function () {
+      this.$el.ajaxStart( function () {
         $('.spinner').show();
-        console.log('start ajax');
+        app.ajaxRunning = true;
       });
-      $(this.el).ajaxStop( function () {
+      this.$el.ajaxStop( function () {
         $('.spinner').hide();
-        console.log('all ajax stopped');
+        app.ajaxRunning = false;
       });
     },
     events: {
@@ -349,7 +374,7 @@ jQuery(function ($) {
       'change .update-main': 'updateTestCollection',
       'change .update-version-post-title': 'updateVersionPostTitle',
       'click .move-action:not(.disabled)': 'moveItem',
-      'click .make-live': 'makeLive',
+      'click .setStatus': 'setStatus',
       'click .clear-entries': 'clearEntries'
     },
     cleanup: function() {
@@ -360,11 +385,19 @@ jQuery(function ($) {
       var data = this.prepareData();
       $(this.el).html(app.templates.controlPanel(data));
       $('#tabs').tabs();
+      this.scrollToVirtualAnchor();
     },
     prepareData: function() {
       var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
       var testmodus = this.collection.findWhere({ID: testCollection.get('post_parent')});
       var y;
+      var data = {};
+
+      data.isLive = (testCollection.get('post_status') === "publish");
+      data.isDraft = (testCollection.get('post_status') === "draft");
+      data.isLocked = (testCollection.get('post_status') === "locked");
+      data.ajaxRunning = app.ajaxRunning;
+
       //Get versions
       var versions = _.sortBy(_.invoke(this.collection.where({post_type: "kwps_version"}), 'toJSON'),'_kwps_sort_order');
 
@@ -478,9 +511,7 @@ jQuery(function ($) {
 
       var sortedAns = _.groupBy(_.flatten(ans,true),"_kwps_sort_order");
 
-      var data = {
-        kwpsUniquenessTypes: kwpsUniquenessTypes
-      };
+      data.kwpsUniquenessTypes= kwpsUniquenessTypes;
 
       var mainPost = this.collection.get(GetURLParameter('id'));
       data.title = mainPost.get('post_title');      
@@ -662,9 +693,7 @@ jQuery(function ($) {
                     var parentVersion = this.collection.findWhere({ID: parentQuestionGroup.get("post_parent")});
                     answer.editable = (parentVersion.get('post_status') !== 'publish');
 
-                    if(typeof value === 'undefined') {
-                      value = answer._kwps_answer_option_value;
-                    }
+                    value = answer._kwps_answer_option_value;
 
                   }, this);
 
@@ -1159,6 +1188,7 @@ jQuery(function ($) {
         answerData.post_title = data.get('post_title');
         answerData.post_content = data.get('post_content');
         answerData._kwps_sort_order = data.get('_kwps_sort_order');
+        answerData._kwps_answer_option_value = data.get('_kwps_answer_option_value');
       } else {
         answerData._kwps_sort_order = data;
         answerData.post_title = kwps_translations["Answer Option"] + " " + (data + 1);
@@ -1183,15 +1213,22 @@ jQuery(function ($) {
     toggleDetails: function(event) {
       var postType = $(event.currentTarget).closest('tr').data('post-type');
       var sortOrder = $(event.currentTarget).closest('tr').data('sort-order');
+
       switch (postType) {
         case "main_kwps_intro" :
         case "main_kwps_intro_result" :
         case "main_kwps_outro" :
         case "main_kwps_question_group" :
+        case "main_kwps_result_profile" :
           app.openRow[postType] = !app.openRow[postType];
+          app.virtualAnchor = $(window).scrollTop;
           break;
         case "kwps_question" :
           app.openRow[postType] = (app.openRow[postType] === sortOrder)? -1 : sortOrder;
+          app.virtualAnchor = {
+            post_type : postType,
+            _kwps_sort_order : sortOrder
+          }
           break;
         case "kwps_question_group" :
           if (app.openRow.kwps_question_group === sortOrder) {
@@ -1199,6 +1236,10 @@ jQuery(function ($) {
             app.openRow.kwps_question_group = -1;
           } else {
             app.openRow.kwps_question_group = sortOrder;
+          }
+          app.virtualAnchor = {
+            post_type : postType,
+            _kwps_sort_order : sortOrder
           }
           break;
         default:
@@ -1301,35 +1342,22 @@ jQuery(function ($) {
 
       return parentPostType;
     },
-    makeLive: function(event) {
-      event.preventDefault();
-      var versionId = $(event.currentTarget).closest('th').data('version-id');
-      var version = this.collection.findWhere({ID: versionId});
+    setStatus: function(event) {
       var that = this;
-      $.ajax({
-        type: 'POST',
-        data: JSON.stringify(version.toJSON()),
-        url: app.url + 'kwps_validate_version',
-        contentType: "application/json; charset=utf-8",
-        dataType: 'json'
-      })
-        .done(function(request, status, error) {
-          version.set('post_status', 'publish');
-          version.save({
-            wait: true,
-            error: function(version, resp, options)  {
-              console.log(resp);
-            },
-            success: function() {
-              that.render();
-            }
-          });
-        })
-        .fail(function() {
-          alert(kwps_translations['Errors occurred. Please check below for more information.']);
-        });
-
-
+      var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
+      console.log(testCollection);
+      event.preventDefault();
+      var status = $(event.currentTarget).data('status');
+      testCollection.set('post_status', status);
+      testCollection.save({
+        wait: true,
+        error: function(testCollection, resp, options)  {
+          console.log(resp);
+        },
+        success: function() {
+          that.render();
+        }
+      });
     },
     clearEntries: function(event) {
       event.preventDefault();
@@ -1377,6 +1405,19 @@ jQuery(function ($) {
             that.render();
           });
       }, this);
+    },
+    scrollToVirtualAnchor: function() {
+      if(app.virtualAnchor !== -1 && typeof app.virtualAnchor !== Number) {
+        var row = $("[data-post-type='"+app.virtualAnchor.post_type+"'][data-sort-order='" + app.virtualAnchor._kwps_sort_order+ "']");
+        if (row.length !== 0) {
+          var top = row.offset().top;
+          window.scrollTo(0,top-50);
+        } else {
+          app.virtualAnchor = $(window).scrollTop;
+        }        
+      } else if (app.virtualAnchor !== -1 && typeof app.virtualAnchor === Number) {
+        window.scrollTo(0,app.virtualAnchor);
+      }
     }
   });
 
@@ -1392,12 +1433,11 @@ jQuery(function ($) {
 
   app.KwpsViewEdit = Backbone.View.extend({
     el: '#kwps_test',
-
     initialize: function (options) {
       this.options = options || {};
       _.bindAll(this, 'cleanup');
       this.render();
-
+      window.scrollTo(0,0);
     },
     cleanup: function() {
       this.undelegateEvents();
@@ -1415,14 +1455,15 @@ jQuery(function ($) {
       var testmodus = app.kwpsCollection.findWhere({ID: testCollection.get('post_parent')});
 
       var data =  this.model.toJSON();
+      data.parentStack = this.getParentStack();
       data.attribute = this.options.attribute;
       data.label = this.model.get('post_type');
       data.addResults = (this.model.get('post_type') === "kwps_outro" || this.model.get('post_type') === "kwps_intro_result");
       data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
       data.title = (this.model.get('post_type') === 'kwps_result_profile' || this.model.get('post_type') === 'kwps_question_group');
       data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
+      data.disableValue = (data.parentStack.kwps_version._kwps_sort_order > 0);
       data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
-      data.parentStack = this.getParentStack();
 
       $(this.el).html(app.templates.edit(data));
       tinymce.remove();
@@ -1517,23 +1558,51 @@ jQuery(function ($) {
       }
 
       this.model.set(data);
+      var previous = this.model.previousAttributes();
+
+      // if min max or value is changed assume it is version0 and get other versions
+      var diff = difference(previous,this.model.toJSON());
+      console.log(diff);
+      if (diff._kwps_max_value || diff._kwps_min_value || diff._kwps_answer_option_value) {
+        // now we get the list of all the other versions
+        var otherVersions = this.getOtherVersions();
+      }
+      
 
       var that = this;
       this.model.save(data, {
         success: function() {
+          if (otherVersions) {
+            _.each(otherVersions, function (vId, i, list) {
+              var vModel = app.kwpsCollection.get(vId);
+              vModel.save(diff);
+            })
+          }
           that.cleanup();
           window.location = '#';
         },
         error: function(model, response) {
           var errors = response.responseJSON;
-
           model.set('success', errors.success);
           _.each(errors.data, function(error) {
             model.set('error_' + error.field, error.message);
           });
+          // render with error messages
           that.render();
+          // reset model
+          that.model.set(previous);
+          that.model.unset('success');
+          _.each(errors.data, function(error) {
+            model.unset('error_' + error.field, error.message);
+          });
         }
       });
+    },
+    getOtherVersions: function (){
+      var versions =app.kwpsCollection.where({post_type: this.model.get('post_type'), _kwps_sort_order: this.model.get('_kwps_sort_order')});
+      versions = _.map(versions, function (m) {return m.id});
+      versions = _.difference(versions, this.model.id);
+      return versions;
     },
     getParentStack: function(){
       var parentStack= {};
