@@ -156,9 +156,7 @@
       // elem.find('.kwps-result');
     };
 
-    /* CHECK WHICH PAGE NEEDS TO BE DISPLAYED */
-      // Hidden input field with version id value is 1
-      console.log(elem.find('.kwps-page'));
+    /* DISPLAY THE FIRST PAGE AND IF NECESSARY PERFORM RESULT CALL */
     if (elem.find('.kwps-page').length !== 0) {
       elem.find('.kwps-page').first().show();
       if (elem.find('.kwps-intro-result').length !== 0) {
@@ -171,11 +169,12 @@
     /* CLICK EVENTS */
     elem.find('.kwps-page').on('click', '.kwps-next' , function () {
       var that = $(this);
+      // Get the name of the radio buttons that are being displayed now
       var getQuestionName = that.closest('.kwps-page').find('input[type="radio"]').attr('name');
       var oneSelectCheck = elem.find('input[type="radio"][name=' + getQuestionName + ']:checked').val();
-      // Check if there are other input type radio buttons within the same version and check if they are filled in as well
-
       var _kwps_hash = GetURLParameter('kwps_hash');
+      var hasNoRadioButtons = that.closest('.kwps-page').find('input[type="radio"]').length === 0;
+
       if (oneSelectCheck) {
         var data = {
            "post_parent": oneSelectCheck,
@@ -190,6 +189,11 @@
         entries.push(data);
         selected = true;
         saveEntry(entries);
+
+        that.closest('.kwps-page').hide();
+        that.closest('.kwps-page').next().show();
+      } else if (hasNoRadioButtons) {
+        selected = false;
         that.closest('.kwps-page').hide();
         that.closest('.kwps-page').next().show();
       } else {
