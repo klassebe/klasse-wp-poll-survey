@@ -289,7 +289,6 @@ class Version extends Kwps_Post_Type{
 		    $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
 
 		    foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
-                // var_dump(Uniqueness::is_allowed($question['ID'], $limit_to_apply));
 			    if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
 				    $data['settings']['first_question_id_allowed'] = $question['ID'];
 				    $allowed_to_fill_out_test = true;
