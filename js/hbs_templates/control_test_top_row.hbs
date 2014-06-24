@@ -19,9 +19,11 @@
     {{/each}}
     <td class="column-title" style="width:105px;">
         <div class="column-tab">
+            {{#if version.editable}}
             <button class="add button" data-post-type="kwps_version">
                 <span data-code="f132" class="dashicons dashicons-plus"></span> Version
             </button>
+            {{/if}}
         </div>
     </td>
 </tr>
