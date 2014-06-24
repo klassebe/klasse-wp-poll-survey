@@ -43,11 +43,11 @@
       output_type : ''
     };
     /* OTHER SCOPE VARS */
-    var selected = false;
+    var selectChecked;
     var entries = [];
 
     var saveEntry = function (entry) {
-      if (selected) {
+      if (selectChecked) {
         elem.find('.kwps-page').hide();
 
         /* FIRST AJAX CALL TO SAVE ENTRY */
@@ -180,10 +180,8 @@
       var _kwps_hash = GetURLParameter('kwps_hash');
       var noRadioButtonsOnPage = that.closest('.kwps-page').find('input[type="radio"]').length === 0;
       var validatedRadioBtns = false;
-      var selectChecked;
 
       if (noRadioButtonsOnPage) {
-        selected = false;
         that.closest('.kwps-page').hide();
         that.closest('.kwps-page').next().show();
       } else {
@@ -200,7 +198,6 @@
         // Check if there are unselected values and compare with array
         $.each(answerNames, function (key, value) {
           selectChecked = elem.find('input[type="radio"][name=' + value + ']:checked').val();
-          console.log(selectChecked);
           if (!selectChecked) {
             return false;
           }
@@ -218,13 +215,11 @@
           }
 
           entries.push(data);
-          selected = true;
           saveEntry(entries);
 
           that.closest('.kwps-page').hide();
           that.closest('.kwps-page').next().show();
         } else {
-          selected = false;
           alert('Please select an answer per question.');
         }
       }
