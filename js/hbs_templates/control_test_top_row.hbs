@@ -17,6 +17,7 @@
             </div>
         </th>
     {{/each}}
+    {{#if isDraft}}
     <td class="column-title" style="width:105px;">
         <div class="column-tab">
             <button class="add button" data-post-type="kwps_version">
@@ -24,4 +25,5 @@
             </button>
         </div>
     </td>
+    {{/if}}
 </tr>
