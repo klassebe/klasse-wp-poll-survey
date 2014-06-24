@@ -59,6 +59,7 @@
           dataType: "json",
           success: function(data) {
             entryData.ID = data[0].ID;
+            // After entry is saved get results from DB
             getResults(entryData);
           },
           failure: function (errMsg) {
@@ -72,32 +73,39 @@
       }
     };
 
+    // Used when new data was entered
     var getResults = function (entryData) {
-      var questGroupItems = elem.find('.kwps-question-group');
-      var questGroupLen = elem.find('.kwps-question-group').length;
+      var questionGroupItems = elem.find('.kwps-question-group');
+      var questionGroupLen = elem.find('.kwps-question-group').length;
+      var allQuestionGroupsAreHidden = false;
 
-      //  Check if all kwps question group divs are hidden
-      if (questGroupItems) {
-        for (var i = 0; i < questGroupLen; i++) {
-          if (questGroupItems[i].style.cssText === 'display: block;') {
+      //  Only get all data when end of page is shown (outro or intro result)
+      if (questionGroupItems) {
+        for (var i = 0; i < questionGroupLen; i++) {
+          if (questionGroupItems[i].style.cssText === 'display: block;') {
             elem.find('.kwps-outro').hide();
+            allQuestionGroupsAreHidden = false;
             break;
           } else {
-            // Start doing the requests per div class and set it as output type
-            $.each(elem.find('.kwps-result'), function (key, value) {
-              entryData.output_type = value.classList[1];
-              if (entryData.output_type.match('chart')) {
-                getData(entryData, urlGetDataForChartByEntryId);
-              } else {
-                getRawData(entryData);
-              }
-            });
-            elem.find('.kwps-outro').show();
+            allQuestionGroupsAreHidden = true;
           }
+        }
+        if (allQuestionGroupsAreHidden) {
+          // Start doing the requests per div class and set it as output type
+          $.each(elem.find('.kwps-result'), function (key, value) {
+            entryData.output_type = value.classList[1];
+            if (entryData.output_type.match('chart')) {
+              getData(entryData, urlGetDataForChartByEntryId);
+            } else {
+              getRawData(entryData);
+            }
+          });
+          elem.find('.kwps-outro').show();
         }
       }
     };
 
+    // Used for intro result
     var getResultsByVersionId = function (versionId) {
       entryData.ID = versionId;
       // Start doing the requests per div class and set it as output type
@@ -169,36 +177,56 @@
     /* CLICK EVENTS */
     elem.find('.kwps-page').on('click', '.kwps-next' , function () {
       var that = $(this);
-      // Get the name of the radio buttons that are being displayed now
-      var getQuestionName = that.closest('.kwps-page').find('input[type="radio"]').attr('name');
-      var oneSelectCheck = elem.find('input[type="radio"][name=' + getQuestionName + ']:checked').val();
       var _kwps_hash = GetURLParameter('kwps_hash');
-      var hasNoRadioButtons = that.closest('.kwps-page').find('input[type="radio"]').length === 0;
+      var noRadioButtonsOnPage = that.closest('.kwps-page').find('input[type="radio"]').length === 0;
+      var validatedRadioBtns = false;
+      var selectChecked;
 
-      if (oneSelectCheck) {
-        var data = {
-           "post_parent": oneSelectCheck,
-           "post_status": "draft",
-           "_kwps_sort_order": 0
-        };
-
-        if(_kwps_hash) {
-          data._kwps_hash = _kwps_hash;
-        }
-
-        entries.push(data);
-        selected = true;
-        saveEntry(entries);
-
-        that.closest('.kwps-page').hide();
-        that.closest('.kwps-page').next().show();
-      } else if (hasNoRadioButtons) {
+      if (noRadioButtonsOnPage) {
         selected = false;
         that.closest('.kwps-page').hide();
         that.closest('.kwps-page').next().show();
       } else {
-        selected = false;
-        alert('Please select a value per question.');
+        // Get the name of the radio buttons that are being displayed now
+        var answers = that.closest('.kwps-page').find('input[type="radio"]');
+        // Look if the page has more different input radio buttons within current group
+        // Put all possible answer name values in an array
+        var answerNames = [];
+        $.each(answers, function (key, value) {
+          if (answerNames.indexOf(value.name) === -1) {
+            answerNames.push(value.name);
+          }
+        });
+        // Check if there are unselected values and compare with array
+        $.each(answerNames, function (key, value) {
+          selectChecked = elem.find('input[type="radio"][name=' + value + ']:checked').val();
+          console.log(selectChecked);
+          if (!selectChecked) {
+            return false;
+          }
+        });
+
+        if (selectChecked) {
+          var data = {
+             "post_parent": selectChecked,
+             "post_status": "draft",
+             "_kwps_sort_order": 0
+          };
+
+          if(_kwps_hash) {
+            data._kwps_hash = _kwps_hash;
+          }
+
+          entries.push(data);
+          selected = true;
+          saveEntry(entries);
+
+          that.closest('.kwps-page').hide();
+          that.closest('.kwps-page').next().show();
+        } else {
+          selected = false;
+          alert('Please select an answer per question.');
+        }
       }
     });
 
