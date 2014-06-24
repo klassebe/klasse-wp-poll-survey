@@ -171,7 +171,7 @@
         getResultsByVersionId(versionId);
       }
     } else {
-      elem.html('<div class="id-not-found">ID NOT FOUND!</div>');
+      elem.html('<hr><div class="id-not-found">UNABLE TO DISPLAY TEST!<br><small>Possible causes: The test is not Live yet or an error with the ID value.</small></div>');
     }
 
     /* CLICK EVENTS */
@@ -199,7 +199,7 @@
         $.each(answerNames, function (key, value) {
           selectChecked = elem.find('input[type="radio"][name=' + value + ']:checked').val();
           if (!selectChecked) {
-            return false;
+            return !1;
           }
         });
 

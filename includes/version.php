@@ -273,6 +273,7 @@ class Version extends Kwps_Post_Type{
         $view_count = (int) $version['_kwps_view_count'];
         $view_count++;
 	    $version['_kwps_view_count'] = $view_count;
+        $test_collection = Test_Collection::get_as_array($version['post_parent']);
 
         static::save_post($version);
 	    $limitations = Test_Collection::get_meta_data($version['post_parent']);
@@ -315,7 +316,7 @@ class Version extends Kwps_Post_Type{
                 <input type="hidden" class="kwps-version-id" value="<?php echo $version['ID']?>">
                 <input type="hidden" class="admin-url" value="<?php echo admin_url(); ?>">
 <?php
-        if( in_array($version['post_status'], array('locked', 'trash')) || !$allowed_to_fill_out_test) {
+        if( in_array($test_collection['post_status'], array('locked', 'trash')) || !$allowed_to_fill_out_test) {
             ?>
 
                 <?php if(!empty($data['intro_result'])): ?>
@@ -341,7 +342,7 @@ class Version extends Kwps_Post_Type{
 
         <?php
         }
-        elseif( $version['post_status'] == 'draft' && !current_user_can('edit_posts') ) {
+        elseif( $test_collection['post_status'] === 'draft' && !current_user_can('edit_posts') ) {
             ?>
             <div class="kwps-version"><?php echo __( 'You need to be logged in to view this version', 'klasse-wp-poll-survey' ); ?></div>
         <?php
