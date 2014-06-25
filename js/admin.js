@@ -1456,10 +1456,11 @@ jQuery(function ($) {
       data.parentStack = this.getParentStack();
       data.attribute = this.options.attribute;
       data.label = this.model.get('post_type');
-      data.addResults = (this.model.get('post_type') === "kwps_outro" || this.model.get('post_type') === "kwps_intro_result");
-      data.min_max = (this.model.get('post_type') === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
-      data.title = (this.model.get('post_type') === 'kwps_result_profile' || this.model.get('post_type') === 'kwps_question_group');
-      data.showValue = (testmodus.get('_kwps_answer_options_require_value') && this.model.get('post_type') === 'kwps_answer_option');
+      // Only show results button when type outro or intro result except intro result when it's a personality test
+      data.addResults = (data.label === "kwps_outro" || (data.label === "kwps_intro_result" && testmodus.attributes.post_name !== 'kwps-personality-test'));
+      data.min_max = (data.label === 'kwps_result_profile' && _.contains(testmodus.get('_kwps_allowed_output_types'), 'result-profile'));
+      data.title = (data.label === 'kwps_result_profile' || data.label === 'kwps_question_group');
+      data.showValue = (testmodus.get('_kwps_answer_options_require_value') && data.label === 'kwps_answer_option');
       data.disableValue = (data.parentStack.kwps_version._kwps_sort_order > 0);
       data._kwps_answer_option_value = this.model.get("_kwps_answer_option_value");
 
