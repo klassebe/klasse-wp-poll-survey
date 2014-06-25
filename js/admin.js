@@ -1076,6 +1076,9 @@ jQuery(function ($) {
       );
     },
     createResultProfile: function (post_parent, data, cb) {
+
+      var min_val = (data.get('_kwps_min_value'))? data.get('_kwps_min_value'):0;
+      var max_val = (data.get('_kwps_max_value'))? data.get('_kwps_max_value'):0;
       
       var resultProfileData = {
         post_type: "kwps_result_profile",
@@ -1084,8 +1087,8 @@ jQuery(function ($) {
         post_content : "",
         post_parent : post_parent,
         _kwps_sort_order : 0,
-        _kwps_min_value: 0,
-        _kwps_max_value: 0
+        _kwps_min_value: min_val,
+        _kwps_max_value: max_val
       };
 
       if(typeof data === 'object') {
