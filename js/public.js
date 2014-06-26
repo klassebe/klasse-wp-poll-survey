@@ -46,6 +46,7 @@
     var selectChecked;
     var entries = [];
 
+    // Save an entry, this works for all entries
     var saveEntry = function (entry) {
       if (selectChecked) {
         elem.find('.kwps-page').hide();
@@ -73,7 +74,7 @@
       }
     };
 
-    // Used when new data was entered
+    // Used when a new entry was entered
     var getResults = function (entryData) {
       var questionGroupItems = elem.find('.kwps-question-group');
       var questionGroupLen = elem.find('.kwps-question-group').length;
@@ -105,7 +106,7 @@
       }
     };
 
-    // Used for intro result
+    // Used for intro result, because there is no entry given
     var getResultsByVersionId = function (versionId) {
       entryData.ID = versionId;
       // Start doing the requests per div class and set it as output type
@@ -178,8 +179,8 @@
     elem.find('.kwps-page').on('click', '.kwps-next' , function () {
       var that = $(this);
       var _kwps_hash = GetURLParameter('kwps_hash');
+      // This is for the intro page, has no radio buttons but needs to go to next page
       var noRadioButtonsOnPage = that.closest('.kwps-page').find('input[type="radio"]').length === 0;
-      var validatedRadioBtns = false;
 
       if (noRadioButtonsOnPage) {
         that.closest('.kwps-page').hide();
