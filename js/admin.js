@@ -1506,6 +1506,7 @@ jQuery(function ($) {
       });
 
       var selectedResult;
+      // Check the iframe if the content is already loaded
       var timer = setInterval( function () {
 
         $('iframe').contents().find('#charts').append(output);
@@ -1548,37 +1549,59 @@ jQuery(function ($) {
     /* END MEDIA UPLOAD */
     /* BEGIN ADD VIDEO URL INPUT */
     addVideo: function () {
-      var videoUrl, videoUrlToEmbedUrl, videoWidth, videoHeight;
-      var iframe = $('iframe').contents();
+      var videoUrl, videoUrlToEmbedUrl, videoUrlCode, outputCode, videoWidth, videoHeight, iframe;
       tb_show('', '../wp-content/plugins/klasse-wp-poll-survey/includes/add_video.php?type=image&amp;TB_iframe=true');
-        var request = $.ajax({
-                          url: app.url + 'kwps_get_video_page',
-                          context: document.body
-                      });
-        request.done(function(request, status, error) {
-            iframe.find('#kwps-add-video-page').append(request);
-        });
-        request.fail(function() {
-            alert(kwps_translations['Errors occurred. Please check below for more information.']);
-        });
-
-
+      
+      var request = $.ajax({
+                        url: app.url + 'kwps_get_video_page',
+                        context: document.body
+                    });
+      
+      request.done(function(request, status, error) {
+          $('iframe').contents().find('#kwps-add-video-page').append(request);
+      });
+      request.fail(function() {
+          alert(kwps_translations['Errors occurred. Please check below for more information.']);
+      });
+      // Check the iframe if the content is already loaded
       var timer = setInterval( function () {
+        iframe = $('iframe').contents();
           iframe.find('#add-video-to-editor').on('click', function () {
-            videoUrl = iframe.find('video-url').val();
-            videoWidth = iframe.find('video-width').val();
-            videoHeight = iframe.find('video-height').val();
-            videoUrlToEmbedUrl = videoUrl.replace('http://youtu.be', '//youtube.com/embed');
-            iframe.find('#tinymce').append('<iframe width="' + videoWidth + '" height="' + videoHeight + '" src="' + videoUrlToEmbedUrl + '" frameborder="0" allowfullscreen></iframe><br>');
-            tb_remove();
-
+            videoUrl = iframe.find('#video-url').val();
+            videoWidth = iframe.find('#video-width').val();
+            videoHeight = iframe.find('#video-height').val();
+            // Strip the code just before last / or replace = with /
+            if (videoUrl.match('watch')) {
+              videoUrlCode = videoUrl.lastIndexOf('=');
+            } else if (videoUrl.match('youtu.be')) {
+              videoUrlCode = videoUrl.lastIndexOf('/');
+            } else if (videoUrl.match('embed')) {
+              videoUrlCode = videoUrl;
+            } else {
+              videoUrl = false;
+            }
+            
+            if (videoUrl) {
+              if (typeof videoUrlCode !== 'string') {
+                videoUrlToEmbedUrl = '//youtube.com/embed/' + videoUrl.slice(++videoUrlCode); // Add 1 pre so the '/' or '=' does not matter
+              } else {
+                videoUrlToEmbedUrl = videoUrlCode;
+              }
+              outputCode = '<div><iframe width="' + videoWidth + '" height="' + videoHeight + '" src="' + videoUrlToEmbedUrl + '" frameborder="0" allowfullscreen></iframe></div><br>';
+              tb_remove();
+            } else {
+              alert('Unknown URL format!');
+            }
+            // outputCode = '<div><iframe width="' + videoWidth + '" height="' + videoHeight + '" src="//youtube.com/embed' + videoUrlToEmbedUrl + '" frameborder="0" allowfullscreen></iframe></div><br>';
+            $('iframe').contents().find('#tinymce').append(outputCode);
           });
-        if (iframe.find('#video').length > 0) {
+        if ($('iframe').contents().find('#video').length > 0) {
           clearInterval(timer);
         }
       }, 100);
       return false;
     },
+    /* END ADD VIDEO URL INPUT */
     updateData: function(event) {
       event.preventDefault();
       tinymce.triggerSave();
