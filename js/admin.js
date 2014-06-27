@@ -1571,22 +1571,41 @@ jQuery(function ($) {
             videoWidth = iframe.find('#video-width').val();
             videoHeight = iframe.find('#video-height').val();
             // Strip the code just before last / or replace = with /
-            if (videoUrl.match('watch')) {
-              videoUrlCode = videoUrl.lastIndexOf('=');
-            } else if (videoUrl.match('youtu.be')) {
-              videoUrlCode = videoUrl.lastIndexOf('/');
-            } else if (videoUrl.match('embed')) {
-              videoUrlCode = videoUrl;
-            } else {
-              videoUrl = false;
-            }
-            
-            if (videoUrl) {
+            // Check if youtube or vimeo and then look for the correct url type to change
+            if (videoUrl.match('youtu')) {
+              if (videoUrl.match('watch')) {
+                videoUrlCode = videoUrl.lastIndexOf('=');
+              } else if (videoUrl.match('youtu.be')) {
+                videoUrlCode = videoUrl.lastIndexOf('/');
+              } else if (videoUrl.match('embed')) {
+                videoUrlCode = videoUrl;
+              } else {
+                videoUrl = false;
+              }
               if (typeof videoUrlCode !== 'string') {
                 videoUrlToEmbedUrl = '//youtube.com/embed/' + videoUrl.slice(++videoUrlCode); // Add 1 pre so the '/' or '=' does not matter
               } else {
                 videoUrlToEmbedUrl = videoUrlCode;
               }
+            } else if (videoUrl.match('vimeo')) {
+              if (videoUrl.match('originals')) {
+                videoUrlCode = videoUrl.lastIndexOf('/');
+              } else if ('video') {
+                videoUrlCode = videoUrl;
+              } else {
+                videoUrl = false;
+              }
+              if (typeof videoUrlCode !== 'string') {
+                videoUrlToEmbedUrl = '//player.vimeo.com/video/' + videoUrl.slice(++videoUrlCode); // Add 1 pre so the '/' or '=' does not matter
+              } else {
+                videoUrlToEmbedUrl = videoUrlCode;
+              }
+            } else {
+              videoUrl = false;
+            }
+            
+            
+            if (videoUrl) {
               outputCode = '<div><iframe width="' + videoWidth + '" height="' + videoHeight + '" src="' + videoUrlToEmbedUrl + '" frameborder="0" allowfullscreen></iframe></div><br>';
               tb_remove();
             } else {
