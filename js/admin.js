@@ -1566,8 +1566,8 @@ jQuery(function ($) {
       var timer = setInterval( function () {
           iframe.find('#add-video-to-editor').on('click', function () {
             videoUrl = iframe.find('video-url').val();
-            videoWidth = iframe.find('video-width').val;
-            videoHeight = iframe.find('video-height').val;
+            videoWidth = iframe.find('video-width').val();
+            videoHeight = iframe.find('video-height').val();
             videoUrlToEmbedUrl = videoUrl.replace('http://youtu.be', '//youtube.com/embed');
             iframe.find('#tinymce').append('<iframe width="' + videoWidth + '" height="' + videoHeight + '" src="' + videoUrlToEmbedUrl + '" frameborder="0" allowfullscreen></iframe><br>');
             tb_remove();
