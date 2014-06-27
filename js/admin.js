@@ -1604,7 +1604,7 @@ jQuery(function ($) {
               videoUrl = false;
             }
             
-            
+            // Check if the videoUrl that was given has a correct value and can be validated
             if (videoUrl) {
               outputCode = '<div><iframe width="' + videoWidth + '" height="' + videoHeight + '" src="' + videoUrlToEmbedUrl + '" frameborder="0" allowfullscreen></iframe></div><br>';
               tb_remove();
