@@ -1448,6 +1448,7 @@ jQuery(function ($) {
       'click button#update': 'updateData',
       'click a#add-media-button': 'addMedia',
       'click a#add-result-button': 'addResult',
+      'click a#add-video-button': 'addVideo',
       'click td.savesend input.button': 'insertIntoEditor',
       'click button#add-result-to-editor': 'insertChartIntoEditor'
     },
@@ -1545,6 +1546,13 @@ jQuery(function ($) {
       tb_remove();
     },
     /* END MEDIA UPLOAD */
+    /* BEGIN ADD VIDEO URL INPUT */
+    addVideo: function () {
+      tb_show('', '../wp-content/plugins/klasse-wp-poll-survey/includes/add_video_url.php?type=image&amp;TB_iframe=true');
+      var output = '';
+      $('iframe').contents().find('#charts').append(output);
+      return false;
+    },
     updateData: function(event) {
       event.preventDefault();
       tinymce.triggerSave();

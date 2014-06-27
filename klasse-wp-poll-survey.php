@@ -158,11 +158,16 @@ add_action( 'wp_ajax_kwps_get_result_profile', array('\includes\result_profile',
 add_action( 'wp_ajax_nopriv_kwps_get_result_profile', array('\includes\result_profile','ajax_get_by_entry_id'));
 
 add_action( 'wp_ajax_kwps_get_result_page', 'get_result_page');
+add_action( 'wp_ajax_kwps_get_video_page', 'get_video_page');
 
 function get_result_page(){
-    include __DIR__ . '/views/result-page.php';
+    include __DIR__ . '/views/result_page.php';
     exit();
 //    echo $page;
+}
+function get_video_page () {
+    include __DIR__ . '/views/video_page.php';
+    exit();
 }
 
 add_filter('init', 'kwps_add_api_rewrite_rules');

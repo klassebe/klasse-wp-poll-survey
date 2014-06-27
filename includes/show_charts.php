@@ -24,6 +24,4 @@
 		border: 5px solid lightgrey;
 	}
 </style>
-<div id="kwps-result-page">
-
-</div>
+<div id="kwps-result-page"></div>
