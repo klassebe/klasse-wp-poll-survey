@@ -1490,16 +1490,16 @@ jQuery(function ($) {
 
       tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show_charts.php?type=image&amp;TB_iframe=true');
 
-        $.ajax({
-            url: app.url + 'kwps_get_result_page',
-            context: document.body
+        var request = $.ajax({
+                        url: app.url + 'kwps_get_result_page',
+                        context: document.body
+                      });
+        request.done(function(request, status, error) {
+            $('iframe').contents().find('#kwps-result-page').append(request);
         })
-            .done(function(request, status, error) {
-                $('iframe').contents().find('#kwps-result-page').append(request);
-            })
-            .fail(function() {
-                alert(kwps_translations['Errors occurred. Please check below for more information.']);
-            });
+        request.fail(function() {
+            alert(kwps_translations['Errors occurred. Please check below for more information.']);
+        });
 
       $.each(allowedTypes, function (key, value) {
         output +=   '<div id="' + value + '" class="media-item left"><label><h4>' + value.charAt(0).toUpperCase() + value.slice(1).split('-').join(' ') + '</h4><input type="radio" name="results" value="' + value + '"><img class="thumbnail" src="images/' + value + '.png" alt="' + value + '" height="128" width="128"></label></div>';
@@ -1548,9 +1548,35 @@ jQuery(function ($) {
     /* END MEDIA UPLOAD */
     /* BEGIN ADD VIDEO URL INPUT */
     addVideo: function () {
-      tb_show('', '../wp-content/plugins/klasse-wp-poll-survey/includes/add_video_url.php?type=image&amp;TB_iframe=true');
-      var output = '';
-      $('iframe').contents().find('#charts').append(output);
+      var videoUrl, videoUrlToEmbedUrl, videoWidth, videoHeight;
+      var iframe = $('iframe').contents();
+      tb_show('', '../wp-content/plugins/klasse-wp-poll-survey/includes/add_video.php?type=image&amp;TB_iframe=true');
+        var request = $.ajax({
+                          url: app.url + 'kwps_get_video_page',
+                          context: document.body
+                      });
+        request.done(function(request, status, error) {
+            iframe.find('#kwps-add-video-page').append(request);
+        });
+        request.fail(function() {
+            alert(kwps_translations['Errors occurred. Please check below for more information.']);
+        });
+
+
+      var timer = setInterval( function () {
+          iframe.find('#add-video-to-editor').on('click', function () {
+            videoUrl = iframe.find('video-url').val();
+            videoWidth = iframe.find('video-width').val;
+            videoHeight = iframe.find('video-height').val;
+            videoUrlToEmbedUrl = videoUrl.replace('http://youtu.be', '//youtube.com/embed');
+            iframe.find('#tinymce').append('<iframe width="' + videoWidth + '" height="' + videoHeight + '" src="' + videoUrlToEmbedUrl + '" frameborder="0" allowfullscreen></iframe><br>');
+            tb_remove();
+
+          });
+        if (iframe.find('#video').length > 0) {
+          clearInterval(timer);
+        }
+      }, 100);
       return false;
     },
     updateData: function(event) {

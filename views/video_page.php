@@ -5,7 +5,15 @@
 </p>
 <div id="video"></div>
 <div class="clearfix">
-		<label for="video-url"></label>
-			<input type="text" id="video-url" placeholder="http://www.youtube.com/...">
+		<label for="video-url"><?php echo __( 'Video url', 'klasse-wp-poll-survey' ); ?>
+			<input type="text" id="video-url" width="150px" placeholder="http://www.youtube.com/...">
+		</label>
+		<label for="video-width"><?php echo __( 'Video width', 'klasse-wp-poll-survey' ); ?>
+			<input type="number" id="video-width" val="560">
+		</label>
+		<label for="video-height"><?php echo __( 'Video height', 'klasse-wp-poll-survey' ); ?>
+			<input type="number" id="video-height" val="315">
+		</label>
+			<br>
     <button id="add-video-to-editor" class="button"><?php echo __( 'Insert into Post' ); ?></button>
 </div>
