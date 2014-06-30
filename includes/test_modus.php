@@ -95,6 +95,77 @@
 
         }
 
+        public static function create_default_test_modi(){
+            $kwps_poll = array(
+                'post_title' => 'Poll',
+                'post_content' => 'Description for Poll',
+                'post_name' => 'kwps-poll',
+                'post_status' => 'publish',
+                'post_type' => 'kwps_test_modus',
+                '_kwps_max_question_groups' => 1,
+                '_kwps_max_questions_per_question_group' => 1,
+                '_kwps_max_answer_options_per_question' => -1,
+                '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
+                '_kwps_allowed_output_types' => array( 'bar-chart-per-question' ),
+                '_kwps_answer_options_require_value' => 0,
+            );
+
+            $kwps_personality_test = array(
+                'post_title' => 'Personality test',
+                'post_content' => 'Description for Personality test',
+                'post_name' => 'kwps-personality-test',
+                'post_status' => 'publish',
+                'post_type' => 'kwps_test_modus',
+                '_kwps_max_question_groups' => -1,
+                '_kwps_max_questions_per_question_group' => -1,
+                '_kwps_max_answer_options_per_question' => -1,
+                '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
+                '_kwps_allowed_output_types' => array( 'result-profile'),
+                '_kwps_answer_options_require_value' => 1,
+            );
+
+            $kwps_survey = array(
+                'post_title' => 'Survey',
+                'post_content' => 'Description for Survey',
+                'post_name' => 'kwps-survey',
+                'post_status' => 'publish',
+                'post_type' => 'kwps_test_modus',
+                '_kwps_max_question_groups' => -1,
+                '_kwps_max_questions_per_question_group' => -1,
+                '_kwps_max_answer_options_per_question' => -1,
+                '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
+                '_kwps_allowed_output_types' => array( 'bar-chart-per-question' ),
+                '_kwps_answer_options_require_value' => -1,
+            );
+
+            if( ! static::default_test_modus_exists($kwps_poll) ){
+                $error = static::save_post($kwps_poll);
+            }
+
+            if( isset($error) && null == $error ){
+                //TODO add html to report error
+                var_dump($error);
+            }
+
+            if( ! static::default_test_modus_exists($kwps_personality_test) ){
+                $error = static::save_post($kwps_personality_test);
+            }
+
+            if( isset($error) && null == $error ){
+                //TODO add html to report error
+                var_dump($error);
+            }
+
+            if( ! static::default_test_modus_exists($kwps_survey) ){
+                $error = static::save_post($kwps_survey);
+            }
+
+            if( isset($error) && null == $error ){
+                //TODO add html to report error
+                var_dump($error);
+            }
+        }
+
         private static function title_length_is_ok(){
             global $post;
 
