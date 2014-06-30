@@ -20,6 +20,9 @@
             {{t "Unlock"}}
         </button>
     {{/if}}
+    {{#unless isVersionShortcodeAllowed}}
+        <code>[kwps_test_collection id={{collection.ID}}]</code>
+    {{/unless}}
 
     <span class="spinner" style="display:{{#if ajaxRunning}}block{{else}}none{{/if}};"></span>
 </h2>

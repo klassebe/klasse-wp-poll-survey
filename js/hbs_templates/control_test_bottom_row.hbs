@@ -3,7 +3,9 @@
     {{#each versions}}
         <th style="border-top: 1px solid #D6D6D6;" class="column-title bottom" data-post-id="{{ID}}">
             <div class="column-tab">
-                {{t "Shortcode"}}: <code>[kwps_version id={{ID}}]</code>
+                {{#if ../isVersionShortcodeAllowed}}
+                    {{t "Shortcode"}}: <code>[kwps_version id={{ID}}]</code>
+                {{/if}}
                     <div>
                         <h3>{{t "Results"}}: </h3>
                         <ul>
