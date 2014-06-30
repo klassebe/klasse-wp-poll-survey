@@ -192,6 +192,7 @@ jQuery(function ($) {
       postData.post_status = "draft";
       postData._kwps_logged_in_user_limit = 'free';
       postData._kwps_logged_out_user_limit = 'free';
+      postData._kwps_show_grouping_form = 0;
 
 
       Backbone.Validation.bind(this, {

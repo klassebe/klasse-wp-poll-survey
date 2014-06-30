@@ -55,6 +55,7 @@ class Test_Collection extends Kwps_Post_Type{
         '_kwps_logged_in_user_limit',
         '_kwps_logged_out_user_limit',
         '_kwps_sort_order',
+        '_kwps_show_grouping_form',
     );
 
     public static $post_type_args = array(
