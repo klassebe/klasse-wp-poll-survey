@@ -107,12 +107,14 @@ class Test_Collection extends Kwps_Post_Type{
 
             $bits = 50;
             $group_hash = bin2hex(openssl_random_pseudo_bytes($bits));
+            $result_hash = bin2hex(openssl_random_pseudo_bytes($bits));
 
-            if( !isset( $url_parameters['version'] ) && !isset( $url_parameters['_kwps_group'] ) ) {
+            if( !isset( $url_parameters['version'] ) && !isset( $url_parameters['_kwps_hash'] ) ) {
                 $output .= '<div class"kwps-test-collection">';
                 $output .= '<div class="kwps-page kwps-grouping-form">';
                 $output .= '<input id="kwps-result-group" type="text" name="post_title"/>';
-                $output .= '<input type="hidden" name="_kwps_group" value="' . $group_hash . '" />';
+                $output .= '<input type="hidden" name="_kwps_hash" value="' . $group_hash . '" />';
+                $output .= '<input type="hidden" name="_kwps_result_hash" value="' . $result_hash . '" />';
                 $output .= '<div class="kwps-button">';
                 $output .= '<button class="kwps-next">';
                 $output .= __('Next', 'klasse-wp-poll-survey');
@@ -124,13 +126,27 @@ class Test_Collection extends Kwps_Post_Type{
                 foreach( $versions as $version ) {
                     $output .= '<a href="' . get_permalink();
                     $output .= '?version=' . $version['ID'];
-                    $output .= '&_kwps_group=' . $group_hash . '">' . $version['post_title'] . '</a>' ;
+                    $output .= '&_kwps_hash=' . $group_hash . '">' . $version['post_title'] . '</a>' ;
                 }
                 $output .= '</div>'; // closes div class kwps-page-grouping-urls
 
+                $output .= '<div class="kwps-page kwps-result-url">';
+                $output .= '<a href="' . get_permalink();
+                $output .= '?test_collection=' . $test_collection['ID'];
+                $output .= '&_kwps_result_hash=' . $result_hash . '">' . $version['post_title'] . '</a>' ;
+                $output .= '</div>'; // closes div class kwps-result-url
+
                 $output .= '</div>'; // closes div class kwps-test-collection
-            } elseif( isset( $url_parameters['version'] ) && isset( $url_parameters['_kwps_group'] ) ) {
-                $output .= Version::get_html($url_parameters['version']);
+            } elseif( isset( $url_parameters['version'] ) && isset( $url_parameters['_kwps_hash'] ) ) {
+                if( Result_Group::is_valid_hash( $test_collection['ID'], $url_parameters['_kwps_hash'] ) ) {
+                    $output .= Version::get_html($url_parameters['version']);
+                } else {
+                    $output .= '<div class="kwps-error">' ;
+                    $output .= __('Shortcode cannot be displayed due to incorrect hash', 'klasse-wp-poll-survey');
+                    $output .= '</div>';
+                }
+            } elseif( isset( $url_parameters['version'] ) && isset( $url_parameters['_kwps_result_hash'] ) ) {
+                $output .= '<div class="kwps-page kwps-group-result" id="kwps-group-result"></div>';
             } else {
                 $output .= '<div class="kwps-error">' ;
                 $output .= __('Shortcode cannot be displayed due to incorrect request', 'klasse-wp-poll-survey');

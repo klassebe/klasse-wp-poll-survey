@@ -15,7 +15,8 @@ class Result_Group extends Kwps_Post_Type{
     );
 
     public static $meta_data_fields = array(
-        '_kwps_group',
+        '_kwps_hash',
+        '_kwps_result_hash',
     );
 
     public static $additional_validation_methods = array();
@@ -54,6 +55,18 @@ class Result_Group extends Kwps_Post_Type{
     {
         $result_group = static::get_as_array($result_group_id);
         return Test_Collection::get_test_modus($result_group['post_parent']);
+    }
+
+    public static function is_valid_hash($test_collection_id, $hash){
+        $result_groups = static::get_all_by_post_parent($test_collection_id);
+
+        foreach( $result_groups as $result_group ) {
+            if( $hash == $result_group['_kwps_hash'] ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static function get_html($intro_id){

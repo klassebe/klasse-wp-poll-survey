@@ -178,7 +178,7 @@
     /* CLICK EVENTS */
     elem.find('.kwps-page').on('click', '.kwps-next' , function () {
       var that = $(this);
-      var _kwps_group = GetURLParameter('kwps_group');
+      var _kwps_hash = GetURLParameter('_kwps_hash');
       // This is for the intro page, has no radio buttons but needs to go to next page
       var noRadioButtonsOnPage = that.closest('.kwps-page').find('input[type="radio"]').length === 0;
 
