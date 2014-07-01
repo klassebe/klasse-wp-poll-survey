@@ -50,6 +50,7 @@ require_once __DIR__ . '/includes/result_profile.php';
 require_once __DIR__ . '/includes/bar-chart.php';
 require_once __DIR__ . '/includes/pie_chart.php';
 require_once __DIR__ . '/includes/session.php';
+require_once __DIR__ . '/includes/result_group.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -78,6 +79,7 @@ add_action('init', array('\includes\outro','register_post_type'));
 add_action('init', array('\includes\test_modus','register_post_type'));
 add_action('init', array('\includes\test_collection','register_post_type'));
 add_action('init', array('\includes\result_profile','register_post_type'));
+add_action('init', array('\includes\result_group','register_post_type'));
 
 add_action( 'init', array('\includes\duplicate','register_post_status' ));
 add_action( 'init', array('\includes\locked','register_post_status' ));
@@ -177,6 +179,7 @@ register_deactivation_hook(__FILE__, 'kwps_deactivate');
 
 // shortcode -> use feip_form_posts template in front end for vote function!
 add_shortcode('kwps_version', array('\includes\version', 'shortcode') );
+add_shortcode('kwps_test_collection', array('\includes\test_collection', 'shortcode') );
 add_shortcode('kwps_result', array('\includes\result', 'shortcode') );
 
 

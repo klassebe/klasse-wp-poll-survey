@@ -80,7 +80,68 @@ class Test_Collection extends Kwps_Post_Type{
         'hierarchical' => true,
     );
 
-    public static function get_test_modus($test_collection_id)
+    public static function shortcode($atts){
+        extract( shortcode_atts( array(
+            'id' => 0,
+            'version' => 'all',
+        ), $atts ) );
+
+        return static::get_html($id);
+    }
+
+    public static function get_html($id)
+    {
+        $output = '';
+
+        $url_parameters = $_GET;
+
+        $test_collection = static::get_as_array($id);
+
+        if( $test_collection['_kwps_show_grouping_form'] == 0 ) {
+            $output .= '<div class="kwps-error">' ;
+            $output .= __('Shortcode cannot be displayed, incorrect settings for Test Collection', 'klasse-wp-poll-survey');
+            $output .= '</div>';
+        } else {
+            $versions = Version::get_all_by_post_parent($id);
+
+            $bits = 50;
+            $group_hash = bin2hex(openssl_random_pseudo_bytes($bits));
+
+            if( sizeof( $url_parameters ) == 0 ) {
+                $output .= '<div class"kwps-test-collection">';
+                $output .= '<div class="kwps-page kwps-grouping-form">';
+                $output .= '<input id="kwps-result-group" type="text" name="post_title"/>';
+                $output .= '<input type="hidden" name="_kwps_group_hash" value="' . $group_hash . '" />';
+                $output .= '<div class="kwps-button">';
+                $output .= '<button class="kwps-next">';
+                $output .= __('Next', 'klasse-wp-poll-survey');
+                $output .= '</button>';
+                $output .= '</div>'; // closes div class kwps-button
+                $output .= '</div>'; // closes div class kwps-page-grouping-form
+
+                $output .= '<div class="kwps-page kwps-grouping-urls">';
+                foreach( $versions as $version ) {
+                    $output .= '<a href="' . get_permalink();
+                    $output .= '?version=' . $version['ID'];
+                    $output .= '&_kwps_group=' . $group_hash . '">' . $version['post_title'] . '</a>' ;
+                }
+                $output .= '</div>'; // closes div class kwps-page-grouping-urls
+
+                $output .= '</div>'; // closes div class kwps-test-collection
+            } elseif( isset( $url_parameters['version'] ) && isset( $url_parameters['_kwps_group'] ) ) {
+                $output .= Version::get_html($url_parameters['version']);
+            } else {
+                $output .= '<div class="kwps-error">' ;
+                $output .= __('Shortcode cannot be displayed due to incorrect request', 'klasse-wp-poll-survey');
+                $output .= '</div>';
+
+            }
+        }
+
+        return $output;
+    }
+
+        public static function get_test_modus($test_collection_id)
     {
         $test_collection = static::get_as_array($test_collection_id);
         return Test_Modus::get_as_array($test_collection['post_parent']);
@@ -153,10 +214,5 @@ class Test_Collection extends Kwps_Post_Type{
     public static function validate_for_delete($post_id = 0)
     {
         // TODO: Implement validate_for_delete() method.
-    }
-
-    public static function get_html($id)
-    {
-        // TODO: Implement get_html() method.
     }
 }
