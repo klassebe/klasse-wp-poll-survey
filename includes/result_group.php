@@ -14,6 +14,10 @@ class Result_Group extends Kwps_Post_Type{
     public static $numeric_fields = array(
     );
 
+    public static $meta_data_fields = array(
+        '_kwps_group',
+    );
+
     public static $additional_validation_methods = array();
 
     public static $label = 'kwps-result-group';

@@ -16,6 +16,7 @@ class Entry extends Kwps_Post_Type{
 
     public static $additional_validation_methods = array(
         'check_is_allowed_by_uniqueness',
+        'check_group_exists'
     );
 
     public static $meta_data_fields = array(
@@ -153,6 +154,31 @@ class Entry extends Kwps_Post_Type{
                 if( ! Uniqueness::is_allowed($question['ID'], $limitations['_kwps_logged_out_user_limit']) ){
                     array_push( $errors, array('field' => 'All', 'message' => 'You have reached the limit to participate') );
                 }
+            }
+        }
+
+        return $errors;
+    }
+
+    public static function check_group_exists($post) {
+        $errors = array();
+
+        if( isset( $post['_kwps_group'] ) && isset( $post['post_parent'] ) ) {
+            $version = static::get_version( $post['ID'] );
+            $test_collection = Test_Collection::get_as_array( $version['post_parent'] );
+            $result_groups = Result_Group::get_all_by_post_parent( $test_collection['ID'] );
+
+            $group_exists = false;
+
+            foreach( $result_groups as $result_group ) {
+                if( $post['_kwps_group'] == $result_group['_kwps_group'] ) {
+                    $group_exists = true;
+                    break;
+                }
+            }
+
+            if( !$group_exists ) {
+                array_push( $errors, array('field' => '_kwps_group', 'message' => 'Not a valid group given') );
             }
         }
 
