@@ -211,8 +211,8 @@
              "_kwps_sort_order": 0
           };
 
-          if(_kwps_group) {
-            data._kwps_group = _kwps_group;
+          if(_kwps_hash) {
+            data._kwps_group = _kwps_hash;
           }
 
           entries.push(data);
