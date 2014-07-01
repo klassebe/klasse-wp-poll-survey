@@ -10,7 +10,7 @@ namespace includes;
 require_once 'bar-chart.php';
 require_once 'pie_chart.php';
 // require_once 'stacked_bar_chart.php';
-require_once 'result_profile.php';
+require_once __DIR__ . '/post_types/result_profile.php';
 
 class Result {
 

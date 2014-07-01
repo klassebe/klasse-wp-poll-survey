@@ -12,7 +12,7 @@ if(!class_exists('Base_List_Table')){
     require_once(__DIR__ . '/../includes/base-list-table.php' );
 }
 
-require_once 'entry.php';
+require_once __DIR__ . '/post_types/entry.php';
 
 
 /************************** CREATE A PACKAGE CLASS *****************************

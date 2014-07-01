@@ -31,26 +31,26 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 require_once __DIR__ . '/includes/admin_section.php';
-require_once __DIR__ . '/includes/test_collection.php';
-require_once __DIR__ . '/includes/version.php';
-require_once __DIR__ . '/includes/question.php';
-require_once __DIR__ . '/includes/question_group.php';
-require_once __DIR__ . '/includes/result_profile.php';
-require_once __DIR__ . '/includes/entry.php';
-require_once __DIR__ . '/includes/intro.php';
-require_once __DIR__ . '/includes/intro_result.php';
-require_once __DIR__ . '/includes/outro.php';
-require_once __DIR__ . '/includes/answer_option.php';
-require_once __DIR__ . '/includes/test_modus.php';
+require_once __DIR__ . '/includes/post_types/test_collection.php';
+require_once __DIR__ . '/includes/post_types/version.php';
+require_once __DIR__ . '/includes/post_types/question.php';
+require_once __DIR__ . '/includes/post_types/question_group.php';
+require_once __DIR__ . '/includes/post_types/result_profile.php';
+require_once __DIR__ . '/includes/post_types/entry.php';
+require_once __DIR__ . '/includes/post_types/intro.php';
+require_once __DIR__ . '/includes/post_types/intro_result.php';
+require_once __DIR__ . '/includes/post_types/outro.php';
+require_once __DIR__ . '/includes/post_types/answer_option.php';
+require_once __DIR__ . '/includes/post_types/test_modus.php';
 require_once __DIR__ . '/includes/duplicate.php';
 require_once __DIR__ . '/includes/locked.php';
 require_once __DIR__ . '/includes/uniqueness.php';
 require_once __DIR__ . '/includes/result.php';
-require_once __DIR__ . '/includes/result_profile.php';
+require_once __DIR__ . '/includes/post_types/result_profile.php';
 require_once __DIR__ . '/includes/bar-chart.php';
 require_once __DIR__ . '/includes/pie_chart.php';
 require_once __DIR__ . '/includes/session.php';
-require_once __DIR__ . '/includes/result_group.php';
+require_once __DIR__ . '/includes/post_types/result_group.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
