@@ -397,8 +397,7 @@ jQuery(function ($) {
       data.isLive = (testCollection.get('post_status') === "publish");
       data.isDraft = (testCollection.get('post_status') === "draft");
       data.isLocked = (testCollection.get('post_status') === "locked");
-      data.isVersionShortcodeAllowed = (testCollection.get('_kwps_show_grouping_form') === "0");
-        console.log(data.isVersionShortcodeAllowed);
+      data.isVersionShortcodeAllowed = (testCollection.get('_kwps_show_grouping_form') === 0);
       data.ajaxRunning = app.ajaxRunning;
 
       //Get versions
@@ -1267,9 +1266,16 @@ jQuery(function ($) {
       var attribute = $(event.target).attr("name");
       var value = $(event.target).val();
 
-      if(value === "on") {
-        value = 1;
+      console.log($(event.target).is(':checked'));
+
+      if($(event.target).attr("type") === "checkbox") {
+        if($(event.target).is(':checked')) {
+          value = 1;
+        } else {
+          value = 0;
+        }
       }
+
       testCollection.set(attribute, value);
       testCollection.save();
     },
