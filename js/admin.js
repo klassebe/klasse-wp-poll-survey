@@ -397,8 +397,7 @@ jQuery(function ($) {
       data.isLive = (testCollection.get('post_status') === "publish");
       data.isDraft = (testCollection.get('post_status') === "draft");
       data.isLocked = (testCollection.get('post_status') === "locked");
-      data.isVersionShortcodeAllowed = (testCollection.get('_kwps_show_grouping_form') === "0");
-        console.log(data.isVersionShortcodeAllowed);
+      data.isVersionShortcodeAllowed = (testCollection.get('_kwps_show_grouping_form') === 0);
       data.ajaxRunning = app.ajaxRunning;
 
       //Get versions
