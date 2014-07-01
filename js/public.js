@@ -178,7 +178,7 @@
     /* CLICK EVENTS */
     elem.find('.kwps-page').on('click', '.kwps-next' , function () {
       var that = $(this);
-      var _kwps_hash = GetURLParameter('kwps_hash');
+      var _kwps_group = GetURLParameter('kwps_group');
       // This is for the intro page, has no radio buttons but needs to go to next page
       var noRadioButtonsOnPage = that.closest('.kwps-page').find('input[type="radio"]').length === 0;
 
@@ -211,8 +211,8 @@
              "_kwps_sort_order": 0
           };
 
-          if(_kwps_hash) {
-            data._kwps_hash = _kwps_hash;
+          if(_kwps_group) {
+            data._kwps_group = _kwps_group;
           }
 
           entries.push(data);

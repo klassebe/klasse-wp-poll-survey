@@ -22,7 +22,7 @@ class Entry extends Kwps_Post_Type{
         '_kwps_sort_order',
         '_kwps_cookie_value',
         '_kwps_ip_address',
-	    '_kwps_hash',
+	    '_kwps_group',
         '_kwps_session',
     );
 
