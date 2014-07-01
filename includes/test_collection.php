@@ -112,7 +112,7 @@ class Test_Collection extends Kwps_Post_Type{
                 $output .= '<div class"kwps-test-collection">';
                 $output .= '<div class="kwps-page kwps-grouping-form">';
                 $output .= '<input id="kwps-result-group" type="text" name="post_title"/>';
-                $output .= '<input type="hidden" name="_kwps_group_hash" value="' . $group_hash . '" />';
+                $output .= '<input type="hidden" name="_kwps_group" value="' . $group_hash . '" />';
                 $output .= '<div class="kwps-button">';
                 $output .= '<button class="kwps-next">';
                 $output .= __('Next', 'klasse-wp-poll-survey');
