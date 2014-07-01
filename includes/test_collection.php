@@ -108,7 +108,7 @@ class Test_Collection extends Kwps_Post_Type{
             $bits = 50;
             $group_hash = bin2hex(openssl_random_pseudo_bytes($bits));
 
-            if( sizeof( $url_parameters ) == 0 ) {
+            if( !isset( $url_parameters['version'] ) && !isset( $url_parameters['_kwps_group'] ) ) {
                 $output .= '<div class"kwps-test-collection">';
                 $output .= '<div class="kwps-page kwps-grouping-form">';
                 $output .= '<input id="kwps-result-group" type="text" name="post_title"/>';
