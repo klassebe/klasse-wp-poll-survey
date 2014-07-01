@@ -1267,9 +1267,16 @@ jQuery(function ($) {
       var attribute = $(event.target).attr("name");
       var value = $(event.target).val();
 
-      if(value === "on") {
-        value = 1;
+      console.log($(event.target).is(':checked'));
+
+      if($(event.target).attr("type") === "checkbox") {
+        if($(event.target).is(':checked')) {
+          value = 1;
+        } else {
+          value = 0;
+        }
       }
+
       testCollection.set(attribute, value);
       testCollection.save();
     },
