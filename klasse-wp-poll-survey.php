@@ -62,7 +62,6 @@ add_action( 'wp_enqueue_styles', 'enqueue_styles' );
 add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 
 include_once 'register-post-types.php';
-
 include_once 'register-post-statuses.php';
 
 add_action( 'init', array('\includes\uniqueness','set_cookie' ));
@@ -88,43 +87,10 @@ include_once 'ajax-calls.php';
 
 add_filter('init', 'kwps_add_api_rewrite_rules');
 
-register_activation_hook(__FILE__, 'kwps_activate');
-register_deactivation_hook(__FILE__, 'kwps_deactivate');
+register_activation_hook(__FILE__, array( '\includes\test_modus' ,'on_activate' ) );
+register_deactivation_hook(__FILE__, array( '\includes\test_modus' ,'on_deactivate' ) );
 
-// shortcode -> use feip_form_posts template in front end for vote function!
-add_shortcode('kwps_version', array('\includes\version', 'shortcode') );
-add_shortcode('kwps_test_collection', array('\includes\test_collection', 'shortcode') );
-add_shortcode('kwps_result', array('\includes\result', 'shortcode') );
-
-
-function kwps_activate(){
-    kwps_add_api_rewrite_rules();
-    flush_rewrite_rules();
-    \includes\Test_Modus::create_default_test_modi();
-}
-
-
-
-function kwps_deactivate(){
-    flush_rewrite_rules();
-}
-
-function kwps_add_api_rewrite_rules(){
-    add_rewrite_endpoint('format', EP_PERMALINK);
-}
-
-add_filter('template_include', 'kwps_template_include', 99);
-
-function kwps_template_include($template){
-//    global $post;
-//
-//    if('kwps_version' === $post->post_type && 'json' === get_query_var('format')  && is_singular()){
-//        \includes\version::display_version_as_json();
-//        exit;
-//    }
-
-    return $template;
-}
+include_once 'add-shortcodes.php';
 
 /**
  * Register and enqueue public-facing style sheet.
