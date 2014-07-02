@@ -25,6 +25,7 @@ class Entry extends Kwps_Post_Type{
         '_kwps_ip_address',
 	    '_kwps_hash',
         '_kwps_session',
+        '_kwps_group',
     );
 
     public static $rewrite = array(
@@ -63,6 +64,20 @@ class Entry extends Kwps_Post_Type{
     public static function get_version($entry_id){
         $entry = static::get_as_array($entry_id);
         return Answer_Option::get_version($entry['post_parent']);
+    }
+
+    public static function get_all_of_result_group($answer_option_id, $hash){
+        $all_entries = static::get_all_by_post_parent($answer_option_id);
+
+        $filtered_entries = array();
+
+        foreach( $all_entries as $entry ) {
+            if( $entry['_kwps_group'] == $hash) {
+                $filtered_entries[] = $entry;
+            }
+        }
+
+        return $filtered_entries;
     }
 
     public static function get_html($entry_id){

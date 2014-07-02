@@ -23,7 +23,7 @@ class Result {
         }
 
         if( ! isset($request_data['output_type']) ) {
-            $errors[] = array('field' => 'ID', 'Required');
+            $errors[] = array('field' => 'output_type', 'Required');
         }
 
         if( sizeof( $errors ) > 0 ) {
