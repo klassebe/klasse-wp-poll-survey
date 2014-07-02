@@ -62,7 +62,6 @@ add_action( 'wp_enqueue_styles', 'enqueue_styles' );
 add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 
 include_once 'register-post-types.php';
-
 include_once 'register-post-statuses.php';
 
 add_action( 'init', array('\includes\uniqueness','set_cookie' ));
@@ -91,11 +90,7 @@ add_filter('init', 'kwps_add_api_rewrite_rules');
 register_activation_hook(__FILE__, array( '\includes\test_modus' ,'on_activate' ) );
 register_deactivation_hook(__FILE__, array( '\includes\test_modus' ,'on_deactivate' ) );
 
-// shortcode -> use feip_form_posts template in front end for vote function!
-add_shortcode('kwps_version', array('\includes\version', 'shortcode') );
-add_shortcode('kwps_test_collection', array('\includes\test_collection', 'shortcode') );
-add_shortcode('kwps_result', array('\includes\result', 'shortcode') );
-
+include_once 'add-shortcodes.php';
 
 /**
  * Register and enqueue public-facing style sheet.
