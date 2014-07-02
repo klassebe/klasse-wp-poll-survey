@@ -2,7 +2,7 @@
 
 namespace includes;
 
-require_once 'kwps_post_status.php';
+require_once 'kwps-post-status.php';
 
     class Duplicate extends Kwps_Post_Status{
         public static $post_status = 'duplicate';

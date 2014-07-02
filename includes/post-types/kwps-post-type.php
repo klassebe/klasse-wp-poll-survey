@@ -2,7 +2,7 @@
 
 namespace includes;
 
-require_once __DIR__ . '/post_type_interface.php';
+require_once __DIR__ . '/post-type-interface.php';
 
 /**
  * Class Kwps_Post_Type

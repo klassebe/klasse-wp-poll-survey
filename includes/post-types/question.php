@@ -1,7 +1,7 @@
 <?php
 namespace includes;
 
-require_once 'kwps_post_type.php';
+require_once 'kwps-post-type.php';
 
 class Question extends Kwps_Post_Type{
 

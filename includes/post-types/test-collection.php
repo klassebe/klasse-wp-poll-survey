@@ -8,7 +8,7 @@
 
 namespace includes;
 
-require_once 'kwps_post_type.php';
+require_once 'kwps-post-type.php';
 
 
 class Test_Collection extends Kwps_Post_Type{

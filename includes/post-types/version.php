@@ -2,9 +2,9 @@
 
 namespace includes;
 
-require_once 'kwps_post_type.php';
+require_once 'kwps-post-type.php';
 require_once 'question.php';
-require_once 'answer_option.php';
+require_once 'answer-option.php';
 
 class Version extends Kwps_Post_Type{
     public static $required_fields = array(

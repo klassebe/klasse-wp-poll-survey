@@ -2,7 +2,7 @@
 
 namespace includes;
 
-require_once 'kwps_post_type.php';
+require_once 'kwps-post-type.php';
 
 /**
  * Class Answer_Option

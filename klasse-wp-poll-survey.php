@@ -31,27 +31,27 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 require_once __DIR__ . '/includes/admin-section.php';
-require_once __DIR__ . '/includes/post-types/test_collection.php';
+require_once __DIR__ . '/includes/post-types/test-collection.php';
 require_once __DIR__ . '/includes/post-types/version.php';
 require_once __DIR__ . '/includes/post-types/question.php';
 require_once __DIR__ . '/includes/post-types/question_group.php';
-require_once __DIR__ . '/includes/post-types/result_profile.php';
+require_once __DIR__ . '/includes/post-types/result-profile.php';
 require_once __DIR__ . '/includes/post-types/entry.php';
 require_once __DIR__ . '/includes/post-types/intro.php';
-require_once __DIR__ . '/includes/post-types/intro_result.php';
+require_once __DIR__ . '/includes/post-types/intro-result.php';
 require_once __DIR__ . '/includes/post-types/outro.php';
-require_once __DIR__ . '/includes/post-types/answer_option.php';
-require_once __DIR__ . '/includes/post-types/test_modus.php';
+require_once __DIR__ . '/includes/post-types/answer-option.php';
+require_once __DIR__ . '/includes/post-types/test-modus.php';
 require_once __DIR__ . '/includes/post-types/coll-outro.php';
 require_once __DIR__ . '/includes/post-statuses/duplicate.php';
 require_once __DIR__ . '/includes/post-statuses/locked.php';
 require_once __DIR__ . '/includes/uniqueness.php';
 require_once __DIR__ . '/includes/result.php';
-require_once __DIR__ . '/includes/post-types/result_profile.php';
+require_once __DIR__ . '/includes/post-types/result-profile.php';
 require_once __DIR__ . '/includes/charts/bar-chart.php';
 require_once __DIR__ . '/includes/charts/pie_chart.php';
 require_once __DIR__ . '/includes/session.php';
-require_once __DIR__ . '/includes/post-types/result_group.php';
+require_once __DIR__ . '/includes/post-types/result-group.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
