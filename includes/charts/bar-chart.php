@@ -12,15 +12,46 @@ namespace includes;
 class Bar_Chart 
 {
 
-    public static function ajax_get_chart_per_question(){
-        $request_data = static::get_post_data_from_request();
+    public static function get_chart_per_question($version_id, $group){
+        $version = Version::get_as_array($version_id);
 
-        $errors = array();
-        if( ! isset($request_data['ID']) ) {
-            $errors[] = array('field' => 'ID', 'Required');
+        /* QUESTION GROUP DATA */
+        $question_group = Question_Group::get_one_by_post_parent($version['ID']);
+
+        /* QUESTION DATA */
+        $question = Question::get_one_by_post_parent($question_group['ID']);
+
+        /* ANSWER OPTIONS DATA */
+        $answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
+
+        /* ENTRY DATA */
+        $total_entries = 0;
+        $entry_totals_per_answer_option = array();
+        $answer_option_contents = array();
+
+        foreach ($answer_options as $answer_option) {
+            $entries = Entry::get_all_by_post_parent($answer_option['ID']);
+
+            $entry_totals_per_answer_option[$answer_option['ID']] = sizeof($entries);
+            $answer_option_contents[] = $answer_option['post_content'];
+            $total_entries += sizeof($entries);
         }
 
-        static::process_get_request($request_data, $errors);
+        $percentages = array();
+
+        foreach ($entry_totals_per_answer_option as $id => $count) {
+            // check if total_entries is not 0!
+            if ($total_entries !== 0) {
+                $percentages[] = $count/$total_entries*100;
+            } else {
+                $percentages[] = 0;
+            }
+        }
+
+        $data = array( $question, $answer_option_contents, $percentages );
+        $bar_chart = static::get_chart($data);
+
+        return $bar_chart;
     }
 
     public static function get_post_data_from_request(){
@@ -28,52 +59,6 @@ class Bar_Chart
         $request_data = json_decode($json, true);
 
         return $request_data;
-    }
-
-    public static function process_get_request($request_data, $errors) {
-        if ( sizeof ( $errors ) > 0 ) {
-            header( $SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
-            wp_send_json_error( $errors );
-        } else {
-            $version = Version::get_as_array($request_data['ID']);
-
-            /* QUESTION GROUP DATA */
-            $question_group = Question_Group::get_one_by_post_parent($version['ID']);
-
-            /* QUESTION DATA */
-            $question = Question::get_one_by_post_parent($question_group['ID']);
-
-            /* ANSWER OPTIONS DATA */
-            $answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
-
-            /* ENTRY DATA */
-            $total_entries = 0;
-            $entry_totals_per_answer_option = array();
-            $answer_option_contents = array();
-
-            foreach ($answer_options as $answer_option) {
-                $entries = Entry::get_all_by_post_parent($answer_option['ID']);
-                $entry_totals_per_answer_option[$answer_option['ID']] = sizeof($entries);
-                $answer_option_contents[] = $answer_option['post_content'];
-                $total_entries += sizeof($entries);
-            }
-
-            $percentages = array();
-
-            foreach ($entry_totals_per_answer_option as $id => $count) {
-                // check if total_entries is not 0!
-                if ($total_entries !== 0) {
-                    $percentages[] = $count/$total_entries*100;
-                } else {
-                    $percentages[] = 0;
-                }
-            }
-
-            $data = array( $question, $answer_option_contents, $percentages );
-            $bar_chart = static::get_chart($data);
-            wp_send_json( $bar_chart );
-        }
-        die();
     }
 
     public static function get_chart($data){

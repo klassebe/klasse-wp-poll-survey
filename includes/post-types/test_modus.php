@@ -106,7 +106,7 @@
                 '_kwps_max_questions_per_question_group' => 1,
                 '_kwps_max_answer_options_per_question' => -1,
                 '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
-                '_kwps_allowed_output_types' => array( 'bar-chart-per-question' ),
+                '_kwps_allowed_output_types' => array( 'bar-chart-per-question', 'pie-chart-per-question' ),
                 '_kwps_answer_options_require_value' => 0,
             );
 

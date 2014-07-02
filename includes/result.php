@@ -16,26 +16,43 @@ class Result {
 
     public static function get_result_of_version_from_request(){
         $request_data = static::get_post_data_from_request();
-        $version_id = $request_data['ID'];
-        $output_type = $request_data['output_type'];
 
-        static::send_result_of_version($version_id, $output_type) ;
+        $errors = array();
+        if( ! isset($request_data['ID']) ) {
+            $errors[] = array('field' => 'ID', 'Required');
+        }
+
+        if( ! isset($request_data['output_type']) ) {
+            $errors[] = array('field' => 'ID', 'Required');
+        }
+
+        if( sizeof( $errors ) > 0 ) {
+            header( $_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
+            wp_send_json_error($errors);
+            die();
+        } else {
+            $version_id = $request_data['ID'];
+            $output_type = $request_data['output_type'];
+
+            if(isset( $request_data['group'] ) ) {
+                $group = $request_data['group'];
+            } else {
+                $group = '';
+            }
+
+            static::send_result_of_version($version_id, $output_type, $group) ;
+        }
+
     }
 
-    public static function send_result_of_version($version_id, $output_type){
+    public static function send_result_of_version($version_id, $output_type, $group){
         switch($output_type){
             case 'bar-chart-per-question' :
-                $results = Bar_Chart::ajax_get_chart_per_question($version_id);
+                $results = Bar_Chart::get_chart_per_question($version_id, $group);
                 break;
             case 'pie-chart-per-question' :
-                $results = Pie_Chart::ajax_get_chart_per_question($version_id);
+                $results = Pie_Chart::get_chart_per_question($version_id, $group);
                 break;
-            // case 'stacked-bar-per-question' :
-            //     $results = Stacked_Bar_Chart::ajax_get_chart();
-            //     break;
-            // case 'result-profile' :
-            //     $results = Result_Profile::ajax_get_by_entry_id();
-            //     break;
         }
         wp_send_json( $results );
         die;
@@ -44,12 +61,32 @@ class Result {
     public static function get_result_of_version_by_entry_id(){
         $request_data = static::get_post_data_from_request();
 
-        $entry_id = $request_data['ID'];
-        $version = Entry::get_version($entry_id);
+        $errors = array();
+        if( ! isset($request_data['ID']) ) {
+            $errors[] = array('field' => 'ID', 'Required');
+        }
 
-        $output_type = $request_data['output_type'];
+        if( ! isset($request_data['output_type']) ) {
+            $errors[] = array('field' => 'ID', 'Required');
+        }
 
-        static::send_result_of_version($version['ID'], $output_type);
+        if( sizeof( $errors ) > 0 ) {
+            header( $_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
+            wp_send_json_error($errors);
+            die();
+        } else {
+            $version = Entry::get_version($request_data['ID']);
+            $version_id = $version['ID'];
+            $output_type = $request_data['output_type'];
+
+            if(isset( $request_data['group'] ) ) {
+                $group = $request_data['group'];
+            } else {
+                $group = '';
+            }
+
+            static::send_result_of_version($version_id, $output_type, $group) ;
+        }
     }
 
     public static function get_post_data_from_request(){
