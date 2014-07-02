@@ -42,6 +42,7 @@ require_once __DIR__ . '/includes/post-types/intro_result.php';
 require_once __DIR__ . '/includes/post-types/outro.php';
 require_once __DIR__ . '/includes/post-types/answer_option.php';
 require_once __DIR__ . '/includes/post-types/test_modus.php';
+require_once __DIR__ . '/includes/post-types/test-collection-outro.php';
 require_once __DIR__ . '/includes/post-statuses/duplicate.php';
 require_once __DIR__ . '/includes/post-statuses/locked.php';
 require_once __DIR__ . '/includes/uniqueness.php';
@@ -80,6 +81,7 @@ add_action('init', array('\includes\test_modus','register_post_type'));
 add_action('init', array('\includes\test_collection','register_post_type'));
 add_action('init', array('\includes\result_profile','register_post_type'));
 add_action('init', array('\includes\result_group','register_post_type'));
+add_action('init', array('\includes\test_collection_outro','register_post_type'));
 
 add_action( 'init', array('\includes\duplicate','register_post_status' ));
 add_action( 'init', array('\includes\locked','register_post_status' ));
