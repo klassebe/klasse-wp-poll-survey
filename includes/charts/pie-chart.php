@@ -6,16 +6,21 @@ namespace includes;
 class Pie_Chart extends Bar_Chart
 {
     public static function get_chart_per_question($version_id, $group) {
-        $entry = Entry::get_as_array($version_id);
-        $answer_option = Answer_Option::get_as_array( $entry['post_parent'] );
+	    $version = Version::get_as_array($version_id);
 
-        $question = Question::get_as_array( $answer_option['post_parent'] );
-        $answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
+	    /* QUESTION GROUP DATA */
+	    $question_group = Question_Group::get_one_by_post_parent($version['ID']);
 
-        $total_entries = 0;
+	    /* QUESTION DATA */
+	    $question = Question::get_one_by_post_parent($question_group['ID']);
 
-        $entry_totals_per_answer_option = array();
-        $answer_option_contents = array();
+	    /* ANSWER OPTIONS DATA */
+	    $answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
+
+	    /* ENTRY DATA */
+	    $total_entries = 0;
+	    $entry_totals_per_answer_option = array();
+	    $answer_option_contents = array();
 
         foreach($answer_options as $answer_option){
             if( sizeof( $group ) > 0 ) {
