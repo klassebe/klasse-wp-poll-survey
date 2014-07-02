@@ -69,11 +69,11 @@ class Result_Group extends Kwps_Post_Type{
         return false;
     }
 
-    public static function get_html($intro_id){
+    public static function get_html($result_group_id){
         return '';
     }
 
-    public static function validate_for_delete($intro_id = 0)
+    public static function validate_for_delete($result_group_id = 0)
     {
         return false;        
     }
