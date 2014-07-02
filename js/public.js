@@ -16,6 +16,20 @@
  }
 
  jQuery(function($) {
+ $.fn.serializeObject = function(){
+   var obj = {};
+
+   $.each( this.serializeArray(), function(i,o){
+     var n = o.name,
+       v = o.value;
+
+     obj[n] = obj[n] === undefined ? v
+       : $.isArray( obj[n] ) ? obj[n].concat( v )
+       : [ obj[n], v ];
+   });
+
+   return obj;
+ };
   $('.kwps-page').hide();
 
   $.fn.pollPlugin = function ( options ) {
@@ -230,7 +244,58 @@
 
 };
 
+
+$.fn.groupingPlugin = function ( options ) {
+  var elem = $( this );
+
+  /* GENERAL AJAX ADMIN URL WITH ACTION KEYWORD INCLUDED */
+  var urlAjaxToAdmin = $('.admin-url').val() + "admin-ajax.php?action=";
+
+  /* AVAILABLE SERVER ACTIONS */
+  var actionSaveEntry = "kwps_save_result_group";
+
+  var saveGroupName = function(data) {
+    console.log(data.serializeObject());
+    $.ajax({
+      type: "POST",
+      url: urlAjaxToAdmin + actionSaveEntry,
+      data: JSON.stringify(data.serializeObject()),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data) {
+        console.log('saved', data);
+      },
+      failure: function (errMsg) {
+        alert(errMsg);
+      }
+    });
+  };
+
+  /* DISPLAY THE FIRST PAGE AND IF NECESSARY PERFORM RESULT CALL */
+  if (elem.find('.kwps-page').length !== 0) {
+    elem.find('.kwps-page').first().show();
+  } else {
+    elem.html('<hr><div class="id-not-found">UNABLE TO DISPLAY TEST!<br><small>Possible causes: The test is not Live yet or an error with the ID value.</small></div>');
+  }
+
+  /* Store name and show next page */
+  elem.find('.kwps-page').on('click', '.kwps-next' , function () {
+    if($('#kwps-result-group').val() !== '') {
+      var data = elem.find("input").not(':input[type=button], :input[type=submit], :input[type=reset]');
+      saveGroupName(data);
+      $(this).closest('.kwps-page').hide();
+      $(this).closest('.kwps-page').next().show();
+    } else {
+      console.log('enter data');
+    }
+  })
+};
+
 $('.kwps-version').pollPlugin();
+$('.kwps-test-collection').groupingPlugin();
+
+
+
 });
 
 }());

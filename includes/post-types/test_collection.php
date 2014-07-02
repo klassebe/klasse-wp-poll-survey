@@ -110,11 +110,13 @@ class Test_Collection extends Kwps_Post_Type{
             $result_hash = bin2hex(openssl_random_pseudo_bytes($bits));
 
             if( !isset( $url_parameters['version'] ) && !isset( $url_parameters['_kwps_hash'] ) ) {
-                $output .= '<div class"kwps-test-collection">';
+                $output .= '<input type="hidden" class="admin-url" value="' .  admin_url() . '">';
+                $output .= '<div class="kwps-test-collection">';
                 $output .= '<div class="kwps-page kwps-grouping-form">';
                 $output .= '<input id="kwps-result-group" type="text" name="post_title"/>';
                 $output .= '<input type="hidden" name="_kwps_hash" value="' . $group_hash . '" />';
                 $output .= '<input type="hidden" name="_kwps_result_hash" value="' . $result_hash . '" />';
+                $output .= '<input type="hidden" name="post_parent" value="' . $id . '" />';
                 $output .= '<div class="kwps-button">';
                 $output .= '<button class="kwps-next">';
                 $output .= __('Next', 'klasse-wp-poll-survey');
@@ -128,13 +130,13 @@ class Test_Collection extends Kwps_Post_Type{
                     $output .= '?version=' . $version['ID'];
                     $output .= '&_kwps_hash=' . $group_hash . '">' . $version['post_title'] . '</a>' ;
                 }
-                $output .= '</div>'; // closes div class kwps-page-grouping-urls
 
-                $output .= '<div class="kwps-page kwps-result-url">';
+                $output .= '<div class="kwps-result-url">';
                 $output .= '<a href="' . get_permalink();
                 $output .= '?test_collection=' . $test_collection['ID'];
-                $output .= '&_kwps_result_hash=' . $result_hash . '">' . $version['post_title'] . '</a>' ;
+                $output .= '&_kwps_result_hash=' . $result_hash . '">' . __('Results') . '</a>' ;
                 $output .= '</div>'; // closes div class kwps-result-url
+	            $output .= '</div>'; // closes div class kwps-page-grouping-urls
 
                 $output .= '</div>'; // closes div class kwps-test-collection
             } elseif( isset( $url_parameters['version'] ) && isset( $url_parameters['_kwps_hash'] ) ) {
