@@ -233,11 +233,11 @@ jQuery(function ($) {
           success: function (model) {
             app.kwpsCollection.add(model);
             that.createCollectionOutro(model.get('ID'));
-            that.createVersion(model.get('ID'), 0, function() {
-              var url = window.location.pathname + window.location.search + "&action=edit&id=" + model.get('ID');
-              window.history.pushState(model.get('ID'), "Edit", url);
-              app.router.navigate('', {trigger: true});
-            });
+            that.createVersion(model.get('ID'), 0);
+
+            var url = window.location.pathname + window.location.search + "&action=edit&id=" + model.get('ID');
+            window.history.pushState(model.get('ID'), "Edit", url);
+            app.router.navigate('', {trigger: true});
           }
         });
       }
@@ -255,12 +255,9 @@ jQuery(function ($) {
         wait: true,
         success: function (model) {
           app.kwpsCollection.add(model);
-          callback();
-          for (i = 0; i < 1; i++) {
-            that.createIntroResult(model.get('ID'), i);
-            that.createQuestionGroup(model.get('ID'), i);
-            that.createOutro(model.get('ID'), i);
-          }
+          that.createIntroResult(model.get('ID'), 0);
+          that.createQuestionGroup(model.get('ID'), 0);
+          that.createOutro(model.get('ID'), 0);
         }
       });
     },
@@ -407,8 +404,6 @@ jQuery(function ($) {
     prepareData: function() {
       var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
       var testCollectionOutro = this.collection.findWhere({post_type: "kwps_coll_outro"});
-      console.log(this.collection);
-      console.log(testCollectionOutro)
       var testmodus = this.collection.findWhere({ID: testCollection.get('post_parent')});
       var y;
       var data = {};
@@ -544,7 +539,9 @@ jQuery(function ($) {
       }
       data.versions = versions;
       data.collection = testCollection.toJSON();
-      data.collectionOutro = testCollectionOutro.toJSON();
+      if(testCollectionOutro) {
+        data.collectionOutro = testCollectionOutro.toJSON();
+      }
       data.testmodus = testmodus.toJSON();
       
       data.table = [];
