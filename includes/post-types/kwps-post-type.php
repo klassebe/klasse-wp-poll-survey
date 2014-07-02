@@ -103,15 +103,21 @@ abstract class Kwps_Post_Type implements \includes\Post_Type_Interface {
      * @return array
      */
     public static function get_all_by_post_parent($post_parent_id){
-        $child_objects = get_posts( array('post_type' => static::$post_type,
+        $args = array('post_type' => static::$post_type,
             'posts_per_page' => -1,
             'post_parent' => $post_parent_id,
-            'orderby' => 'meta_value_num',
-            'order' => 'ASC',
-            'meta_key' => '_kwps_sort_order',
             'post_status'	=> array('draft', 'publish'),
             'nopaging' => true,
-        ) );
+        );
+
+        if( in_array('_kwps_sort_order', static::$required_fields) ){
+            $args['orderby'] = 'meta_value_num';
+            $args['order'] = 'ASC';
+            $args['meta_key'] = '_kwps_sort_order';
+
+        }
+
+        $child_objects = get_posts($args);
 
         $children = array();
 
