@@ -49,7 +49,7 @@ require_once __DIR__ . '/includes/uniqueness.php';
 require_once __DIR__ . '/includes/result.php';
 require_once __DIR__ . '/includes/post-types/result-profile.php';
 require_once __DIR__ . '/includes/charts/bar-chart.php';
-require_once __DIR__ . '/includes/charts/pie_chart.php';
+require_once __DIR__ . '/includes/charts/pie-chart.php';
 require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/includes/post-types/result-group.php';
 
