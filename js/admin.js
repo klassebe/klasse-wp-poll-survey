@@ -233,17 +233,16 @@ jQuery(function ($) {
           success: function (model) {
             app.kwpsCollection.add(model);
             that.createCollectionOutro(model.get('ID'));
-            for (i = 0; i < 1; i++) {
-              that.createVersion(model.get('ID'), i);
-            }
-            var url = window.location.pathname + window.location.search + "&action=edit&id=" + model.get('ID');
-            window.history.pushState(model.get('ID'), "Edit", url);
-            app.router.navigate('', {trigger: true});
+            that.createVersion(model.get('ID'), 0, function() {
+              var url = window.location.pathname + window.location.search + "&action=edit&id=" + model.get('ID');
+              window.history.pushState(model.get('ID'), "Edit", url);
+              app.router.navigate('', {trigger: true});
+            });
           }
         });
       }
     },
-    createVersion: function (post_parent, index) {
+    createVersion: function (post_parent, index, callback) {
       var that = this;
       var model = new KwpsModel({
         post_type: "kwps_version",
@@ -256,6 +255,7 @@ jQuery(function ($) {
         wait: true,
         success: function (model) {
           app.kwpsCollection.add(model);
+          callback();
           for (i = 0; i < 1; i++) {
             that.createIntroResult(model.get('ID'), i);
             that.createQuestionGroup(model.get('ID'), i);
@@ -265,18 +265,16 @@ jQuery(function ($) {
       });
     },
     createCollectionOutro: function (post_parent) {
-      var that = this;
-      var model = new KwpsModel({
+      app.kwpsCollection.create({
         post_type: "kwps_coll_outro",
         post_status: "draft",
         post_title : kwps_translations['Collection Outro'],
         post_content : kwps_translations['Collection Outro'],
         post_parent : post_parent,
         _kwps_sort_order : 0
-      });
-      model.save({},{
+      }, {
         wait: true,
-        success: function (model) {
+        success: function (model, response, options) {
           app.kwpsCollection.add(model);
         }
       });
@@ -409,6 +407,8 @@ jQuery(function ($) {
     prepareData: function() {
       var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
       var testCollectionOutro = this.collection.findWhere({post_type: "kwps_coll_outro"});
+      console.log(this.collection);
+      console.log(testCollectionOutro)
       var testmodus = this.collection.findWhere({ID: testCollection.get('post_parent')});
       var y;
       var data = {};
