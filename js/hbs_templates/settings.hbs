@@ -46,6 +46,22 @@
                     <p class="description">{{t "Show a form so participants can group entries"}}</p>
                 </td>
             </tr>
+            {{#if collection._kwps_show_grouping_form}}
+                <tr>
+                    <th>
+                        <label>
+                            {{t "Grouping results"}}
+                        </label>
+                    </th>
+                    <td>
+                        <strong>
+                            <a class="row-title" href="#edit/{{collectionOutro.ID}}" title="{{t "Edit"}}">
+                                {{subStringStripper collectionOutro.post_title 120}} - {{subStringStripper collectionOutro.post_content 120}}
+                            </a>
+                        </strong>
+                    </td>
+                </tr>
+            {{/if}}
         </tbody>
     </table>
 </div>

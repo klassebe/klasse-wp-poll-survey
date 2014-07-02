@@ -110,7 +110,8 @@ class admin_section {
 			'For people who have already completed the test.' => __('For people who have already completed the test.', 'klasse-wp-poll-survey'),
 			'Ready to Publish!' => __('Ready to Publish!'),
 			'Errors' => __('Errors'),
-			'Errors occurred. Please check below for more information.' => __('Errors occurred. Please check below for more information.')
+			'Errors occurred. Please check below for more information.' => __('Errors occurred. Please check below for more information.'),
+			'Collection Outro' => __('Collection Outro')
 		);
 		wp_localize_script( 'klasse-wp-poll-survey-admin', 'kwps_translations', $translation_array );
 
