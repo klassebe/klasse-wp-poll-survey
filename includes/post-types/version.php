@@ -398,7 +398,7 @@ class Version extends Kwps_Post_Type{
                             $subject = $data['outro']['post_content'];
                             preg_match_all($pattern, $subject, $kwps_result_matches);
                             foreach ($kwps_result_matches[0] as $kwps_result_match) {
-                                $replacement_arr[] = do_shortcode($kwps_result_match);
+	                            $replacement_arr[] = do_shortcode($kwps_result_match);
                                 $pattern_arr[] = '/\\' . substr($kwps_result_match,0,-1) . '\]/';
                             }
                             $output = preg_replace($pattern_arr, $replacement_arr, $subject);

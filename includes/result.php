@@ -128,6 +128,7 @@ class Result {
         array_push($results, array( 'question' => $question));
         return $results;
     }
+
     public static function ajax_get_result_data_of_test_collection(){
         $request_data = static::get_post_data_from_request();
         $test_collection_id = $request_data['test_collection_id'];
@@ -222,7 +223,7 @@ class Result {
             'result' => 0,
         ), $atts ) );
 
-        return '<div class="kwps-result ' . $result . '"> ' . $result . '</div>';
+        return '<div class="kwps-result ' . $result . '"></div>';
     }
 }
 /* EOF */
