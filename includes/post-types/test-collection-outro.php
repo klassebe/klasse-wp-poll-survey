@@ -5,13 +5,13 @@ namespace includes;
 require_once 'intro.php';
 
 class Test_Collection_Outro extends Intro{
-    public static $label = 'kwps-test-collection-outro';
+    public static $label = 'kwps-collection-outro';
     public static $rewrite = array(
-            'slug' => 'test-collection-outro',
+            'slug' => 'collection-outro',
             'with_front' => false,
         );
 
-    public static $post_type = 'kwps_test_collection_outro';
+    public static $post_type = 'kwps_coll_outro';
 
     public static $post_type_args = array(
         'public' => false,

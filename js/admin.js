@@ -267,7 +267,7 @@ jQuery(function ($) {
     createCollectionOutro: function (post_parent) {
       var that = this;
       var model = new KwpsModel({
-        post_type: "kwps_test_collection_outro",
+        post_type: "kwps_coll_outro",
         post_status: "draft",
         post_title : kwps_translations['Collection Outro'],
         post_content : kwps_translations['Collection Outro'],
@@ -408,7 +408,7 @@ jQuery(function ($) {
     },
     prepareData: function() {
       var testCollection = this.collection.findWhere({post_type: "kwps_test_collection"});
-      var testCollectionOutro = this.collection.findWhere({post_type: "kwps_test_collection_outro"});
+      var testCollectionOutro = this.collection.findWhere({post_type: "kwps_coll_outro"});
       var testmodus = this.collection.findWhere({ID: testCollection.get('post_parent')});
       var y;
       var data = {};
