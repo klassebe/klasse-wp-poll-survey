@@ -149,9 +149,9 @@ class admin_section {
                     echo 'post not of type kwps_test_collection';
                 } else {
                     $test_collection = Test_Collection::get_as_array($current_post->ID);
-                    $test_collection_outro = Test_Collection_Outro::get_one_by_post_parent($current_post->ID);
+                    $collection_outro = Coll_Outro::get_one_by_post_parent($current_post->ID);
 
-                    $tests = array($test_collection, $test_collection_outro);
+                    $tests = array($test_collection, $collection_outro);
 
                     $versions = Version::get_all_by_post_parent($current_post->ID);
 

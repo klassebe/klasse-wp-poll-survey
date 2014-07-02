@@ -42,7 +42,7 @@ require_once __DIR__ . '/includes/post-types/intro_result.php';
 require_once __DIR__ . '/includes/post-types/outro.php';
 require_once __DIR__ . '/includes/post-types/answer_option.php';
 require_once __DIR__ . '/includes/post-types/test_modus.php';
-require_once __DIR__ . '/includes/post-types/test-collection-outro.php';
+require_once __DIR__ . '/includes/post-types/coll-outro.php';
 require_once __DIR__ . '/includes/post-statuses/duplicate.php';
 require_once __DIR__ . '/includes/post-statuses/locked.php';
 require_once __DIR__ . '/includes/uniqueness.php';
@@ -81,7 +81,7 @@ add_action('init', array('\includes\test_modus','register_post_type'));
 add_action('init', array('\includes\test_collection','register_post_type'));
 add_action('init', array('\includes\result_profile','register_post_type'));
 add_action('init', array('\includes\result_group','register_post_type'));
-add_action('init', array('\includes\test_collection_outro','register_post_type'));
+add_action('init', array('\includes\coll_outro','register_post_type'));
 
 add_action( 'init', array('\includes\duplicate','register_post_status' ));
 add_action( 'init', array('\includes\locked','register_post_status' ));
@@ -143,8 +143,8 @@ add_action( 'wp_ajax_kwps_delete_intro_result', array('\includes\intro_result','
 add_action( 'wp_ajax_kwps_save_outro', array('\includes\outro','save_from_request'));
 add_action( 'wp_ajax_kwps_update_outro', array('\includes\outro','update_from_request'));
 
-add_action( 'wp_ajax_kwps_save_test_collection_outro', array('\includes\test_collection_outro','save_from_request'));
-add_action( 'wp_ajax_kwps_update_test_collection_outro', array('\includes\test_collection_outro','update_from_request'));
+add_action( 'wp_ajax_kwps_save_coll_outro', array('\includes\coll_outro','save_from_request'));
+add_action( 'wp_ajax_kwps_update_coll_outro', array('\includes\coll_outro','update_from_request'));
 
 // nopriv prefix to make sure this function is callable for unregistered users
 add_action( 'wp_ajax_nopriv_kwps_save_entry', array('\includes\entry','save_from_request'));

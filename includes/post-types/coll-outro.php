@@ -4,10 +4,10 @@ namespace includes;
 
 require_once 'intro.php';
 
-class Test_Collection_Outro extends Intro{
-    public static $label = 'kwps-collection-outro';
+class Coll_Outro extends Intro{
+    public static $label = 'kwps-coll-outro';
     public static $rewrite = array(
-            'slug' => 'collection-outro',
+            'slug' => 'coll-outro',
             'with_front' => false,
         );
 
