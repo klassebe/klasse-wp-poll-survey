@@ -31,6 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 require_once __DIR__ . '/includes/admin-section.php';
+require_once __DIR__ . '/includes/kwps-plugin.php';
 require_once __DIR__ . '/includes/post-types/test-collection.php';
 require_once __DIR__ . '/includes/post-types/version.php';
 require_once __DIR__ . '/includes/post-types/question.php';
@@ -81,12 +82,8 @@ add_action('admin_menu', 'add_plugin_admin_menu');
 
 include_once 'ajax-calls.php';
 
-
-
-add_filter('init', 'kwps_add_api_rewrite_rules');
-
-register_activation_hook(__FILE__, array( '\includes\test_modus' ,'on_activate' ) );
-register_deactivation_hook(__FILE__, array( '\includes\test_modus' ,'on_deactivate' ) );
+register_activation_hook(__FILE__, array( '\includes\kwps_plugin' ,'on_activate' ) );
+register_deactivation_hook(__FILE__, array( '\includes\kwps_plugin' ,'on_deactivate' ) );
 
 include_once 'add-shortcodes.php';
 
