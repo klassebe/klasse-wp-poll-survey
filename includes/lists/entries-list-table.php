@@ -9,10 +9,10 @@
 namespace includes;
 
 if(!class_exists('Base_List_Table')){
-    require_once(__DIR__ . '/../includes/base-list-table.php' );
+    require_once( __DIR__ . '/base-list-table.php');
 }
 
-require_once(__DIR__ . '/post-types/test_collection.php');
+require_once __DIR__ . '/../post-types/entry.php';
 
 
 /************************** CREATE A PACKAGE CLASS *****************************
@@ -28,7 +28,7 @@ require_once(__DIR__ . '/post-types/test_collection.php');
  *
  * Our theme for this list table is going to be movies.
  */
-class Test_Collections_List_Table extends Base_List_Table {
+class Entries_List_Table extends Base_List_Table {
 
 
     /** ************************************************************************
@@ -40,8 +40,8 @@ class Test_Collections_List_Table extends Base_List_Table {
 
         //Set parent defaults
         parent::__construct( array(
-            'singular'  => 'test_collection',     //singular name of the listed records
-            'plural'    => 'test_collections',    //plural name of the listed records
+            'singular'  => 'kwps_entry',     //singular name of the listed records
+            'plural'    => 'kwps_entries',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
 
@@ -71,25 +71,20 @@ class Test_Collections_List_Table extends Base_List_Table {
      **************************************************************************/
     function column_default($item, $column_name){
         switch($column_name){
-            case 'post_title':
+            case 'cookie_value':
                 return $this->column_name($item);
             case 'post_modified':
                 return $item[$column_name];
-            case 'view_count':
-                return $item[$column_name];
-            case 'user_id':
-                return $item[$column_name];
-            case 'crea_date':
-                return $item[$column_name];
+            case 'version':
+                return $this->formatVersion($item[$column_name]);
             default:
                 return print_r($item,true); //Show the whole array for troubleshooting purposes
         }
     }
 
-    function column_test_modus($item){
-        $test_modus = Test_Collection::get_test_modus($item['ID']);
-        return $test_modus['post_title'];
-    }
+	function formatVersion($item) {
+		return $item;
+	}
 
 
     /** ************************************************************************
@@ -112,12 +107,11 @@ class Test_Collections_List_Table extends Base_List_Table {
 
         //Build row actions
         $delete_url = sprintf("%spost.php?post=%s&action=%s", get_admin_url() ,$item['ID'], 'delete');
-        $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s", get_admin_url() ,$item['ID'], 'edit');
         $delete_url_with_nonce = wp_nonce_url($delete_url);
         $actions = array(
 //            http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=edit
 
-            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s">' . __('Edit') . '</a>',get_admin_url(), $item['ID'] ,'edit'),
+//            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
 //            'edit'      => sprintf('<a href="%spost.php?post=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
 //            'edit'      => sprintf('<a href="?page=%s&action=%s&id=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
 
@@ -126,12 +120,12 @@ class Test_Collections_List_Table extends Base_List_Table {
 //            'delete'      =>  sprintf('<a href="%spost.php?post=%s&action=%s">Delete</a>',get_admin_url(), $item['ID'] ,'trash' ) ,
 //            'delete'      =>  sprintf('<a href="%s">Delete</a>',$delete_url_with_nonce ) ,
 
-            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . __('Delete') . '</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-test_collection') ),
+//            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-test_collection') ),
         );
 
         //Return the post_title contents
-        return sprintf('<a href="' . $edit_url . '">%1$s</a><span style="color:silver">(id:%2$s)</span>%3$s',
-            /*$1%s*/ $item['post_title'],
+        return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
+            /*$1%s*/ $item['cookie_value'],
             /*$2%s*/ $item['ID'],
             /*$3%s*/ $this->row_actions($actions)
         );
@@ -171,12 +165,9 @@ class Test_Collections_List_Table extends Base_List_Table {
      **************************************************************************/
     function get_columns(){
         $columns = array(
-            'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-            'post_title'     => __('Title', 'klasse-wp-poll-survey'),
-            'test_modus'     => __('Testmodus', 'klasse-wp-poll-survey'),
-            'view_count'    => __('Views', 'klasse-wp-poll-survey'),
-//            'user_id'  => 'Author',
-            'post_modified'    => __('Date', 'klasse-wp-poll-survey'),
+            'cookie_value'     => 'Cookie',
+            'post_modified'    => 'Date',
+            'version'    => 'Version',
         );
         return $columns;
     }
@@ -198,10 +189,9 @@ class Test_Collections_List_Table extends Base_List_Table {
      **************************************************************************/
     function get_sortable_columns() {
         $sortable_columns = array(
-            'post_title'     => array('post_title',false),     //true means it's already sorted
+            'cookie_value'     => array('cookie_value',false),     //true means it's already sorted
             'post_modified'    => array('post_modified',true),
-            'view_count'    => array('view_count',false),
-//            'user_id'  => array('user_id',false)
+            'version'    => array('version',false),
         );
         return $sortable_columns;
     }
@@ -223,7 +213,6 @@ class Test_Collections_List_Table extends Base_List_Table {
      **************************************************************************/
     function get_bulk_actions() {
         $actions = array(
-            'delete'    => __('Delete', 'klasse-wp-poll-survey')
         );
         return $actions;
     }
@@ -241,24 +230,15 @@ class Test_Collections_List_Table extends Base_List_Table {
         //Detect when a bulk action is being triggered...
         if( 'delete'===$this->current_action() ) {
             if( isset( $_REQUEST['id']) ){
-                if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'delete-test_collection' ) ){
+                if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'delete-kwps_entry' ) ){
                     $post_id = (int) $_REQUEST['id'];
-					$collection = Test_Collection::get_as_array($post_id);
-	                $collection['post_status'] = 'trash';
-					Test_Collection::save_post($collection);
-
-	                foreach(Version::get_all_by_post_parent($post_id) as $version) {
-		                $version['post_status'] = 'trash';
-		                Version::save_post($version);
-	                }
+                    wp_delete_post( $post_id );
                 }
-            } elseif( isset( $_REQUEST['test_collection'] ) ) {
+            } elseif( isset( $_REQUEST['kwps_entry'] ) ) {
                 if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-' . $this->_args['plural'] ) ){
                     foreach( $_REQUEST['test_collection'] as $post_id ){
-	                    $post_id = (int) $post_id;
-	                    $collection = Test_Collection::get_as_array($post_id);
-	                    $collection['post_status'] = 'trash';
-	                    Test_Collection::save_post($collection);
+                        $post_id_int = (int) $post_id;
+                        wp_delete_post( $post_id_int );
                     }
                 }
             }
@@ -330,10 +310,16 @@ class Test_Collections_List_Table extends Base_List_Table {
 
 
         /**
-         *
+         * Instead of querying a database, we're going to fetch the example data
+         * property we created for use in this plugin. This makes this example
+         * package slightly different than one you might build on your own. In
+         * this example, we'll be using array manipulation to sort and paginate
+         * our data. In a real-world implementation, you will probably want to
+         * use sort and pagination data to build a custom query instead, as you'll
+         * be able to use your precisely-queried data immediately.
          */
         $arguments = array(
-            'post_type' => 'kwps_test_collection',
+            'post_type' => 'kwps_entry',
             'orderby' => $order_by,
             'order' => $order,
             'post_per_page' => 5,
@@ -341,22 +327,24 @@ class Test_Collections_List_Table extends Base_List_Table {
 //            'post_parent' => 0,
             'post_status' => array('draft', 'publish'),
         );
-
 //        $data = get_posts($arguments);
         $post_data = get_posts($arguments);
         $data = array();
         foreach($post_data as $object){
-            $row_data = array('ID' => $object->ID,
-                'post_title' => $object->post_title,
-                'post_modified' => $object->post_modified,
+            $version = Entry::get_version($object->ID);
+            $row_data = array(
+	            'ID' => $object->ID,
+	            'post_modified' => $object->post_modified,
+	            'version' => $version['ID'],
             );
 
-            $row_data['view_count'] = Test_Collection::get_view_count($object->ID);
+            $row_data['cookie_value'] = get_post_meta($object->ID, '_kwps_cookie_value', true);
 
             array_push($data, $row_data);
         }
 
         usort($data, 'self::usort_reorder');
+
 
         /**
          * REQUIRED for pagination. Let's figure out what page the user is currently
@@ -410,7 +398,7 @@ class Test_Collections_List_Table extends Base_List_Table {
      */
     static function usort_reorder($a,$b){
         $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'post_modified'; //If no sort, default to post_modified
-        $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'desc'; //If no order, default to asc
+        $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
         $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
         return ($order==='asc') ? $result : -$result; //Send final sort direction to usort
     }

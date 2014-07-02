@@ -1,8 +1,8 @@
 <?php
 
 namespace includes;
-require_once __DIR__ . '/test-collections-list-table.php';
-require_once __DIR__ . '/entries-list-table.php';
+require_once __DIR__ . '/lists/test-collections-list-table.php';
+require_once __DIR__ . '/lists/entries-list-table.php';
 require_once __DIR__ . '/uniqueness.php';
 
 
