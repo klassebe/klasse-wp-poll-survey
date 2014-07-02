@@ -66,9 +66,7 @@ include_once 'register-post-statuses.php';
 
 add_action( 'init', array('\includes\uniqueness','set_cookie' ));
 
-add_action('init', array( '\includes\session', 'myStartSession' ), 1  );
-add_action('wp_logout', array( '\includes\session', 'myEndSession' ) );
-add_action('wp_login', array( '\includes\session', 'myEndSession' ) );
+include_once 'add-session.php';
 
 add_filter( 'display_post_states', array('\includes\duplicate','display_post_status'), 10,2);
 
