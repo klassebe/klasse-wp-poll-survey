@@ -52,39 +52,18 @@ require_once __DIR__ . '/includes/charts/bar-chart.php';
 require_once __DIR__ . '/includes/charts/pie-chart.php';
 require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/includes/post-types/result-group.php';
+require_once __DIR__ . '/includes/overlay.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
-
-/*----------------------------------------------------------------------------*
- * Public-Facing Functionality
- *----------------------------------------------------------------------------*/
-
-/*
- * Register hooks that are fired when the plugin is activated or deactivated.
- * When the plugin is deleted, the uninstall.php file is loaded.
- */
 
 
 // Load public-facing style sheet and JavaScript.
 add_action( 'wp_enqueue_styles', 'enqueue_styles' );
 add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 
-add_action('init', array('\includes\version','register_post_type'));
-add_action('init', array('\includes\answer_option','register_post_type'));
-add_action('init', array('\includes\question','register_post_type'));
-add_action('init', array('\includes\question_group','register_post_type'));
-add_action('init', array('\includes\entry','register_post_type'));
-add_action('init', array('\includes\intro','register_post_type'));
-add_action('init', array('\includes\intro_result','register_post_type'));
-add_action('init', array('\includes\outro','register_post_type'));
-add_action('init', array('\includes\test_modus','register_post_type'));
-add_action('init', array('\includes\test_collection','register_post_type'));
-add_action('init', array('\includes\result_profile','register_post_type'));
-add_action('init', array('\includes\result_group','register_post_type'));
-add_action('init', array('\includes\coll_outro','register_post_type'));
+include_once 'register-post-types.php';
 
-add_action( 'init', array('\includes\duplicate','register_post_status' ));
-add_action( 'init', array('\includes\locked','register_post_status' ));
+include_once 'register-post-statuses.php';
 
 add_action( 'init', array('\includes\uniqueness','set_cookie' ));
 
@@ -92,9 +71,7 @@ add_action('init', array( '\includes\session', 'myStartSession' ), 1  );
 add_action('wp_logout', array( '\includes\session', 'myEndSession' ) );
 add_action('wp_login', array( '\includes\session', 'myEndSession' ) );
 
-
 add_filter( 'display_post_states', array('\includes\duplicate','display_post_status'), 10,2);
-
 
 
 add_action( 'admin_notices', array('\includes\test_modus','admin_notices' ));
@@ -105,79 +82,9 @@ add_filter('status_update_pre', array('\includes\test_modus','set_to_duplicate_w
 
 add_action('admin_menu', 'add_plugin_admin_menu');
 
-add_action( 'wp_ajax_kwps_save_test_collection', array('\includes\test_collection','save_from_request'));
-add_action( 'wp_ajax_kwps_update_test_collection', array('\includes\test_collection','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_test_collection', array('\includes\test_collection','delete_from_request'));
-
-add_action( 'wp_ajax_kwps_save_version', array('\includes\version','save_from_request'));
-add_action( 'wp_ajax_kwps_update_version', array('\includes\version','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_version', array('\includes\version','delete_from_request'));
+include_once 'ajax-calls.php';
 
 
-add_action( 'wp_ajax_kwps_validate_version', array('\includes\version','ajax_validate_for_publish'));
-
-add_action( 'wp_ajax_kwps_save_question_group', array('\includes\question_group','save_from_request'));
-add_action( 'wp_ajax_kwps_update_question_group', array('\includes\question_group','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_question_group', array('\includes\question_group','delete_from_request'));
-
-add_action( 'wp_ajax_kwps_save_result_profile', array('\includes\result_profile','save_from_request'));
-add_action( 'wp_ajax_kwps_update_result_profile', array('\includes\result_profile','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_result_profile', array('\includes\result_profile','delete_from_request'));
-
-add_action( 'wp_ajax_kwps_save_question', array('\includes\question','save_from_request'));
-add_action( 'wp_ajax_kwps_update_question', array('\includes\question','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_question', array('\includes\question','delete_from_request'));
-
-add_action( 'wp_ajax_kwps_save_answer_option', array('\includes\answer_option','save_from_request'));
-add_action( 'wp_ajax_kwps_update_answer_option', array('\includes\answer_option','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_answer_option', array('\includes\answer_option','delete_from_request'));
-
-add_action( 'wp_ajax_kwps_save_intro', array('\includes\intro','save_from_request'));
-add_action( 'wp_ajax_kwps_update_intro', array('\includes\intro','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_intro', array('\includes\intro','delete_from_request'));
-
-add_action( 'wp_ajax_kwps_save_intro_result', array('\includes\intro_result','save_from_request'));
-add_action( 'wp_ajax_kwps_update_intro_result', array('\includes\intro_result','update_from_request'));
-add_action( 'wp_ajax_kwps_delete_intro_result', array('\includes\intro_result','delete_from_request'));
-
-add_action( 'wp_ajax_kwps_save_outro', array('\includes\outro','save_from_request'));
-add_action( 'wp_ajax_kwps_update_outro', array('\includes\outro','update_from_request'));
-
-add_action( 'wp_ajax_kwps_save_coll_outro', array('\includes\coll_outro','save_from_request'));
-add_action( 'wp_ajax_kwps_update_coll_outro', array('\includes\coll_outro','update_from_request'));
-
-// nopriv prefix to make sure this function is callable for unregistered users
-add_action( 'wp_ajax_nopriv_kwps_save_entry', array('\includes\entry','save_from_request'));
-add_action( 'wp_ajax_kwps_save_entry', array('\includes\entry','save_from_request'));
-add_action( 'wp_ajax_kwps_delete_entries_from_version', array('\includes\entry','delete_from_version'));
-
-add_action( 'wp_ajax_kwps_save_result_group', array('\includes\result_group','save_from_request'));
-add_action( 'wp_ajax_nopriv_kwps_save_result_group', array('\includes\result_group','save_from_request'));
-
-add_action( 'wp_ajax_kwps_get_result_of_version_by_entry_id', array('\includes\result','get_result_of_version_by_entry_id'));
-add_action( 'wp_ajax_nopriv_kwps_get_result_of_version_by_entry_id', array('\includes\result','get_result_of_version_by_entry_id'));
-
-add_action( 'wp_ajax_kwps_get_result_of_version', array('\includes\result','get_result_of_version_from_request'));
-add_action( 'wp_ajax_nopriv_kwps_get_result_of_version', array('\includes\result','get_result_of_version_from_request'));
-
-add_action( 'wp_ajax_kwps_get_result_of_test_collection',
-    array('\includes\result','ajax_get_result_data_of_test_collection'));
-
-add_action( 'wp_ajax_kwps_get_result_profile', array('\includes\result_profile','ajax_get_by_entry_id'));
-add_action( 'wp_ajax_nopriv_kwps_get_result_profile', array('\includes\result_profile','ajax_get_by_entry_id'));
-
-add_action( 'wp_ajax_kwps_get_result_page', 'get_result_page');
-add_action( 'wp_ajax_kwps_get_video_page', 'get_video_page');
-
-function get_result_page(){
-    include __DIR__ . '/views/result_page.php';
-    exit();
-//    echo $page;
-}
-function get_video_page () {
-    include __DIR__ . '/views/video_page.php';
-    exit();
-}
 
 add_filter('init', 'kwps_add_api_rewrite_rules');
 
@@ -264,7 +171,6 @@ function enqueue_styles_admin() {
 function add_plugin_admin_menu() {
 
     add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array('\includes\admin_section', 'display_tests'));
-//    add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array($this, 'display_tests'));
 	$kwps_page_addnew = add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Add new test', 'klasse-wp-poll-survey' ), __( 'Add new', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_addnew', array('\includes\admin_section', 'display_form'));
     add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Manage entries', 'klasse-wp-poll-survey' ), __( 'Entries', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_manage_entries', array('\includes\admin_section', 'manage_entries'));
 }
