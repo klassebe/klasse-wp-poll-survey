@@ -32,6 +32,7 @@
             '_kwps_max_answer_options_per_question',
             '_kwps_allowed_input_types',
             '_kwps_allowed_output_types',
+            '_kwps_allowed_output_types_test_collection',
             '_kwps_answer_options_require_value',
         );
 
@@ -107,6 +108,7 @@
                 '_kwps_max_answer_options_per_question' => -1,
                 '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
                 '_kwps_allowed_output_types' => array( 'bar-chart-per-question', 'pie-chart-per-question' ),
+                '_kwps_allowed_output_types_test_collection' => array( 'bar-chart-per-question', 'pie-chart-per-question'),
                 '_kwps_answer_options_require_value' => 0,
             );
 
@@ -121,6 +123,7 @@
                 '_kwps_max_answer_options_per_question' => -1,
                 '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
                 '_kwps_allowed_output_types' => array( 'result-profile'),
+                '_kwps_allowed_output_types_test_collection' => array( 'grouped-bar-chart-per-profile'),
                 '_kwps_answer_options_require_value' => 1,
             );
 
@@ -134,7 +137,8 @@
                 '_kwps_max_questions_per_question_group' => -1,
                 '_kwps_max_answer_options_per_question' => -1,
                 '_kwps_allowed_input_types' => array('input_type_1', 'input_type_2'),
-                '_kwps_allowed_output_types' => array( 'bar-chart-per-question' ),
+                '_kwps_allowed_output_types' => array( 'bar-chart-per-question', 'pie-chart-per-question' ),
+                '_kwps_allowed_output_types_test_collection' => array( 'bar-chart-per-question', 'pie-chart-per-question'),
                 '_kwps_answer_options_require_value' => -1,
             );
 
