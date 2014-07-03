@@ -16,21 +16,24 @@
  }
 
  jQuery(function($) {
- $.fn.serializeObject = function(){
-   var obj = {};
+   $.fn.serializeObject = function(){
+     var obj = {};
 
-   $.each( this.serializeArray(), function(i,o){
-     var n = o.name,
-       v = o.value;
+     $.each( this.serializeArray(), function(i,o){
+       var n = o.name,
+         v = o.value;
 
-     obj[n] = obj[n] === undefined ? v
-       : $.isArray( obj[n] ) ? obj[n].concat( v )
-       : [ obj[n], v ];
-   });
+       obj[n] = obj[n] === undefined ? v
+         : $.isArray( obj[n] ) ? obj[n].concat( v )
+         : [ obj[n], v ];
+     });
 
-   return obj;
- };
-  $('.kwps-page').hide();
+     return obj;
+   };
+
+   $.fn.classList = function() {return this.attr('class').split(/\s+/);};
+
+   $('.kwps-page').hide();
 
   $.fn.pollPlugin = function ( options ) {
    return this.each( function ( ) {
@@ -291,8 +294,60 @@ $.fn.groupingPlugin = function ( options ) {
   })
 };
 
+$.fn.groupResultPlugin = function ( options ) {
+  var elem = $(this);
+
+  /* GENERAL AJAX ADMIN URL WITH ACTION KEYWORD INCLUDED */
+  var urlAjaxToAdmin = $('.admin-url').val() + "admin-ajax.php?action=";
+
+  /* AVAILABLE SERVER ACTIONS */
+  var actionGetCollectionResult = "kwps_get_result_of_test_collection";
+
+  var urlGetDataForChart = urlAjaxToAdmin + actionGetCollectionResult;
+
+  var getData = function (element, urlGetDataForChart) {
+
+    var classList = element.classList();
+    var searchClass;
+
+    $.each(classList, function(index, value) {
+      if(value.indexOf("grouped") >=0) {
+        searchClass = value;
+      }
+    });
+
+
+    var requestData = {
+      _kwps_result_hash: GetURLParameter('_kwps_result_hash'),
+      test_collection_id: GetURLParameter('test_collection'),
+      output_type: searchClass
+    };
+
+    $.ajax({
+      type: "POST",
+      url: urlGetDataForChart,
+      data: JSON.stringify(requestData),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function (data) {
+        element.highcharts(data);
+      },
+      async: false
+    });
+    elem.find('.kwps-intro').hide();
+  };
+
+  $.each(elem.find('.kwps-result'), function (key, value) {
+    if($(value).attr('class').indexOf('grouped')) {
+      getData($(value), urlGetDataForChart);
+    }
+  });
+
+};
+
 $('.kwps-version').pollPlugin();
 $('.kwps-test-collection').groupingPlugin();
+$('.kwps-coll-outro').groupResultPlugin();
 
 
 

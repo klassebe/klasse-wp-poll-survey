@@ -1095,10 +1095,6 @@ jQuery(function ($) {
       );
     },
     createResultProfile: function (post_parent, data, cb) {
-
-      var min_val = (data.get('_kwps_min_value'))? data.get('_kwps_min_value'):0;
-      var max_val = (data.get('_kwps_max_value'))? data.get('_kwps_max_value'):0;
-      
       var resultProfileData = {
         post_type: "kwps_result_profile",
         post_status: "draft",
@@ -1106,14 +1102,16 @@ jQuery(function ($) {
         post_content : "",
         post_parent : post_parent,
         _kwps_sort_order : 0,
-        _kwps_min_value: min_val,
-        _kwps_max_value: max_val
+        _kwps_min_value: 0,
+        _kwps_max_value: 0
       };
 
       if(typeof data === 'object') {
         resultProfileData.post_title = data.get('post_title');
         resultProfileData.post_content = data.get('post_content');
         resultProfileData._kwps_sort_order = data.get('_kwps_sort_order');
+        resultProfileData.min_val = data.get('_kwps_min_value');
+        resultProfileData.max_val = data.get('_kwps_min_value');
       } else {
         resultProfileData._kwps_sort_order = data;
         resultProfileData.post_title = kwps_translations["Result profile"] + " " + (data + 1);
@@ -1512,7 +1510,13 @@ jQuery(function ($) {
       var testmodus = app.kwpsCollection.findWhere({ID: testCollection.get('post_parent')});
       var data = this.model.toJSON();
       var output ='';
-      var allowedTypes = testmodus.attributes._kwps_allowed_output_types;
+      var allowedTypes;
+
+      if(this.model.get('post_type') === 'kwps_coll_outro') {
+        allowedTypes = testmodus.attributes._kwps_allowed_output_types_test_collection;
+      } else {
+        allowedTypes = testmodus.attributes._kwps_allowed_output_types;
+      }
 
       tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show-charts.php?type=image&amp;TB_iframe=true');
 

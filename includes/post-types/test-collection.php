@@ -156,8 +156,8 @@ class Test_Collection extends Kwps_Post_Type{
                     $output .= '</div>';
                 }
             } elseif( isset( $url_parameters['test_collection'] ) && isset( $url_parameters['_kwps_result_hash'] ) ) {
-                $output .= '<div class="kwps-test-collection">';
-                $output .= '<div class="kwps-coll-outro">';
+	            $output .= '<input type="hidden" class="admin-url" value="' .  admin_url() . '">';
+	            $output .= '<div class="kwps-coll-outro">';
                 $output .= '<div class="kwps-content">';
 
                 /* SEARCH THE SHORTCODE AND REPLACE IT */
@@ -174,7 +174,6 @@ class Test_Collection extends Kwps_Post_Type{
 
                 $output .= '</div>'; // closes div class kwps-content
                 $output .= '</div>'; // closes div class kwps-coll-outro
-                $output .= '</div>'; // closes div class kwps-test-collection
 
             } else {
                 $output .= '<div class="kwps-error">' ;
