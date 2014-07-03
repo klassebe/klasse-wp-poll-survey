@@ -135,6 +135,33 @@ class Result_Profile extends Kwps_Post_Type {
         );
     }
 
+    public static function get_result_profile_by_version_and_hash($version_id, $user_hash){
+        $result_profiles = Result_Profile::get_all_by_post_parent( $version_id );
+
+        $current_user_entries =
+            Entry::get_all_by_user_hash_and_version($user_hash, $version_id);
+
+        $sum_of_values = 0;
+        foreach($current_user_entries as $entry){
+            $answer_option = Answer_Option::get_as_array( $entry['post_parent'] );
+            $sum_of_values += $answer_option['_kwps_answer_option_value'];
+        }
+
+        foreach($result_profiles as $result_profile){
+            if ($sum_of_values >= $result_profile['_kwps_min_value']
+                && $sum_of_values <= $result_profile['_kwps_max_value'] ){
+                return $result_profile;
+            }
+        }
+
+        return array(
+            array(
+                'field' => 'All',
+                'message' => __( 'No valid result profile found', 'klasse-wp-poll-survey' ),
+            ),
+        );
+    }
+
 
     public static function get_html($id)
     {

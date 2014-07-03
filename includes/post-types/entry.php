@@ -23,7 +23,6 @@ class Entry extends Kwps_Post_Type{
         '_kwps_sort_order',
         '_kwps_cookie_value',
         '_kwps_ip_address',
-	    '_kwps_hash',
         '_kwps_session',
         '_kwps_group',
     );
@@ -178,22 +177,22 @@ class Entry extends Kwps_Post_Type{
     public static function check_group_exists($post) {
         $errors = array();
 
-        if( isset( $post['_kwps_hash'] ) && isset( $post['post_parent'] ) ) {
-            $version = static::get_version( $post['ID'] );
+        if( isset( $post['_kwps_group'] ) && isset( $post['post_parent'] ) ) {
+            $version = Answer_Option::get_version( $post['post_parent'] );
             $test_collection = Test_Collection::get_as_array( $version['post_parent'] );
             $result_groups = Result_Group::get_all_by_post_parent( $test_collection['ID'] );
 
             $group_exists = false;
 
             foreach( $result_groups as $result_group ) {
-                if( $post['_kwps_hash'] == $result_group['_kwps_hash'] ) {
+                if( $post['_kwps_group'] == $result_group['_kwps_hash'] ) {
                     $group_exists = true;
                     break;
                 }
             }
 
             if( !$group_exists ) {
-                array_push( $errors, array('field' => '_kwps_hash', 'message' => 'Not a valid group given') );
+                array_push( $errors, array('field' => '_kwps_group', 'message' => 'Not a valid group given') );
             }
         }
 

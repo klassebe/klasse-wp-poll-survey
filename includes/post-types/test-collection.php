@@ -110,7 +110,7 @@ class Test_Collection extends Kwps_Post_Type{
             $group_hash = bin2hex(openssl_random_pseudo_bytes($bits));
             $result_hash = bin2hex(openssl_random_pseudo_bytes($bits));
 
-            if( !isset( $url_parameters['version'] ) && !isset( $url_parameters['_kwps_hash'] ) && !isset( $url_parameters['_kwps_result_hash'] ) ) {
+            if( !isset( $url_parameters['version'] ) && !isset( $url_parameters['_kwps_group'] ) && !isset( $url_parameters['_kwps_result_hash'] ) ) {
                 $output .= '<input type="hidden" class="admin-url" value="' .  admin_url() . '">';
                 $output .= '<div class="kwps-test-collection">';
                 $output .= '<div class="kwps-page kwps-grouping-form">';
@@ -129,7 +129,7 @@ class Test_Collection extends Kwps_Post_Type{
                 foreach( $versions as $version ) {
                     $params = array(
                         'version' => $version['ID'],
-                        '_kwps_hash' => $group_hash,
+                        '_kwps_group' => $group_hash,
                     );
                     $url = add_query_arg( $params, get_permalink() );
 
@@ -147,8 +147,8 @@ class Test_Collection extends Kwps_Post_Type{
 	            $output .= '</div>'; // closes div class kwps-page-grouping-urls
 
                 $output .= '</div>'; // closes div class kwps-test-collection
-            } elseif( isset( $url_parameters['version'] ) && isset( $url_parameters['_kwps_hash'] ) ) {
-                if( Result_Group::is_valid_hash( $test_collection['ID'], $url_parameters['_kwps_hash'] ) ) {
+            } elseif( isset( $url_parameters['version'] ) && isset( $url_parameters['_kwps_group'] ) ) {
+                if( Result_Group::is_valid_hash( $test_collection['ID'], $url_parameters['_kwps_group'] ) ) {
                     $output .= Version::get_html($url_parameters['version']);
                 } else {
                     $output .= '<div class="kwps-error">' ;
