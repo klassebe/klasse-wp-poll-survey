@@ -97,6 +97,7 @@ class Test_Collection extends Kwps_Post_Type{
         $url_parameters = $_GET;
 
         $test_collection = static::get_as_array($id);
+        $test_collection_outro = Coll_Outro::get_one_by_post_parent($id);
 
         if( $test_collection['_kwps_show_grouping_form'] == 0 ) {
             $output .= '<div class="kwps-error">' ;
@@ -148,7 +149,26 @@ class Test_Collection extends Kwps_Post_Type{
                     $output .= '</div>';
                 }
             } elseif( isset( $url_parameters['test_collection'] ) && isset( $url_parameters['_kwps_result_hash'] ) ) {
-                $output .= '<div class="kwps-page kwps-group-result" id="kwps-group-result">Showing results here</div>';
+                $output .= '<div class="kwps-test-collection">';
+                $output .= '<div class="kwps-coll-outro">';
+                $output .= '<div class="kwps-content">';
+
+                /* SEARCH THE SHORTCODE AND REPLACE IT */
+                $replacement_arr = [];
+                $pattern_arr = [];
+                $pattern = '/\[kwps_result.*\]/';
+                $subject = $test_collection_outro['post_content'];
+                preg_match_all($pattern, $subject, $kwps_result_matches);
+                foreach ($kwps_result_matches[0] as $kwps_result_match) {
+                    $replacement_arr[] = do_shortcode($kwps_result_match);
+                    $pattern_arr[] = '/\\' . substr($kwps_result_match,0,-1) . '\]/';
+                }
+                $output .= preg_replace($pattern_arr, $replacement_arr, $subject);
+
+                $output .= '</div>'; // closes div class kwps-content
+                $output .= '</div>'; // closes div class kwps-coll-outro
+                $output .= '</div>'; // closes div class kwps-test-collection
+
             } else {
                 $output .= '<div class="kwps-error">' ;
                 $output .= __('Shortcode cannot be displayed due to incorrect request', 'klasse-wp-poll-survey');
