@@ -127,15 +127,22 @@ class Test_Collection extends Kwps_Post_Type{
 
                 $output .= '<div class="kwps-page kwps-grouping-urls">';
                 foreach( $versions as $version ) {
-                    $output .= '<a href="' . get_permalink();
-                    $output .= '?version=' . $version['ID'];
-                    $output .= '&_kwps_hash=' . $group_hash . '">' . $version['post_title'] . '</a>' ;
+                    $params = array(
+                        'version' => $version['ID'],
+                        '_kwps_hash' => $group_hash,
+                    );
+                    $url = add_query_arg( $params, get_permalink() );
+
+                    $output .= '<a href="' . $url . '">' . $version['post_title'] .'</a>' ;
                 }
 
                 $output .= '<div class="kwps-result-url">';
-                $output .= '<a href="' . get_permalink();
-                $output .= '?test_collection=' . $test_collection['ID'];
-                $output .= '&_kwps_result_hash=' . $result_hash . '">' . __('Results') . '</a>' ;
+                $params = array(
+                    'test_collection' => $test_collection['ID'],
+                    '_kwps_result_hash' => $result_hash,
+                );
+                $url = add_query_arg( $params, get_permalink() );
+                $output .= '<a href="' . $url . '">Results</a>';
                 $output .= '</div>'; // closes div class kwps-result-url
 	            $output .= '</div>'; // closes div class kwps-page-grouping-urls
 
