@@ -54,9 +54,11 @@ class Result {
             case 'pie-chart-per-question' :
                 $results = Pie_Chart::get_chart_per_question($id, $group);
                 break;
-            case 'grouped-bar-chart-per-collection' :
+            case 'grouped-bar-chart-per-profile' :
                 $results = Grouped_Bar_Chart::get_chart_per_profile($id, $group);
                 break;
+            default:
+                $results = 0;
         }
         wp_send_json( $results );
         die;

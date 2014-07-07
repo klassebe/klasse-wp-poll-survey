@@ -319,7 +319,7 @@ $.fn.groupResultPlugin = function ( options ) {
 
     var requestData = {
       _kwps_result_hash: GetURLParameter('_kwps_result_hash'),
-      test_collection_id: GetURLParameter('test_collection'),
+      ID: GetURLParameter('test_collection'),
       output_type: searchClass
     };
 

@@ -51,7 +51,6 @@ class Grouped_Bar_Chart
         foreach( $versions as $version ) {
 
             $version_totals = array_fill(0, sizeof(  $grouped_result_profiles ), 0 );
-
             $user_hashes = Entry::get_all_user_hashes_per_version( $version['ID'] );
 
             foreach( $user_hashes as $user_hash ) {
@@ -70,9 +69,17 @@ class Grouped_Bar_Chart
 
                 }
             }
+            $total_result_profiles_of_version = array_sum($version_totals);
+
+            foreach( $version_totals as $key => $value ) {
+                if( $value > 0 ) {
+                    $version_totals[$key] = $total_result_profiles_of_version * 100 / $value;
+                }
+            }
+
             $versions_data[] = array( 'name' => $version['post_title'] , 'data' => $version_totals );
 
-    }
+        }
 
         $data = array( $test_collection['post_title'], $titles, $versions_data);
 
@@ -117,11 +124,7 @@ class Grouped_Bar_Chart
             'exporting' => array( 'enabled' => false ),
             'legend' => array( 'enabled' => false ),
             'credits' => array( 'enabled' => false ),
-            'series' => array(
-                array(
-                    $version_data,
-                )
-            ),
+            'series' => $version_data,
         );
     }
 } 
