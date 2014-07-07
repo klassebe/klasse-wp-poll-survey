@@ -135,6 +135,28 @@ class Result_Profile extends Kwps_Post_Type {
         );
     }
 
+    public static function get_result_profile_by_version_and_min_max_value($version_id, $min, $max) {
+        $args = array(
+            'post_type' => static::$post_type,
+            'post_parent' => $version_id,
+            'meta_query' => array(
+                array(
+                    'key' => '_kwps_min_value',
+                    'value' => $min,
+                ),
+                array(
+                    'key' => '_kwps_max_value',
+                    'value' => $max,
+                ),
+            ),
+            'post_status' => array( 'draft', 'publish'),
+        );
+
+        $result_profiles = get_posts( $args );
+
+        return (array) $result_profiles[0];
+    }
+
     public static function get_result_profile_by_version_and_hash($version_id, $user_hash){
         $result_profiles = Result_Profile::get_all_by_post_parent( $version_id );
 

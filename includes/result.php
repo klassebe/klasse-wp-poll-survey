@@ -9,6 +9,7 @@
 namespace includes;
 require_once __DIR__ . '/charts/bar-chart.php';
 require_once __DIR__ . '/charts/pie-chart.php';
+require_once __DIR__ . '/charts/grouped-bar-chart.php';
 // require_once 'stacked_bar_chart.php';
 require_once __DIR__ . '/post-types/result-profile.php';
 
@@ -31,7 +32,7 @@ class Result {
             wp_send_json_error($errors);
             die();
         } else {
-            $version_id = $request_data['ID'];
+            $id = $request_data['ID'];
             $output_type = $request_data['output_type'];
 
             if(isset( $request_data['group'] ) ) {
@@ -40,18 +41,21 @@ class Result {
                 $group = '';
             }
 
-            static::send_result_of_version($version_id, $output_type, $group) ;
+            static::send_result_of_version($id, $output_type, $group) ;
         }
 
     }
 
-    public static function send_result_of_version($version_id, $output_type, $group){
+    public static function send_result_of_version($id, $output_type, $group){
         switch($output_type){
             case 'bar-chart-per-question' :
-                $results = Bar_Chart::get_chart_per_question($version_id, $group);
+                $results = Bar_Chart::get_chart_per_question($id, $group);
                 break;
             case 'pie-chart-per-question' :
-                $results = Pie_Chart::get_chart_per_question($version_id, $group);
+                $results = Pie_Chart::get_chart_per_question($id, $group);
+                break;
+            case 'grouped-bar-chart-per-collection' :
+                $results = Grouped_Bar_Chart::get_chart_per_profile($id, $group);
                 break;
         }
         wp_send_json( $results );

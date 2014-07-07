@@ -56,7 +56,7 @@ add_action( 'wp_ajax_kwps_get_result_of_version', array('\includes\result','get_
 add_action( 'wp_ajax_nopriv_kwps_get_result_of_version', array('\includes\result','get_result_of_version_from_request'));
 
 add_action( 'wp_ajax_kwps_get_result_of_test_collection',
-    array('\includes\result','ajax_get_result_data_of_test_collection'));
+    array('\includes\result','get_result_of_version_from_request'));
 
 add_action( 'wp_ajax_kwps_get_result_profile', array('\includes\result_profile','ajax_get_by_entry_id'));
 add_action( 'wp_ajax_nopriv_kwps_get_result_profile', array('\includes\result_profile','ajax_get_by_entry_id'));

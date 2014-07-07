@@ -67,7 +67,26 @@ include_once 'register-post-statuses.php';
 
 add_action( 'init', array('\includes\uniqueness','set_cookie' ));
 
+add_action('init', 'debug_settings');
+function debug_settings(){
+    ini_set('xdebug.var_display_max_depth', 10);
+    ini_set('xdebug.var_display_max_children', 256);
+    ini_set('xdebug.var_display_max_data', 1024);
+}
+
 include_once 'add-session.php';
+require_once __DIR__ . '/includes/charts/grouped-bar-chart.php';
+add_shortcode('kwps_get_test_result', 'get_result_profile' );
+
+function get_result_profile($atts){
+    extract( shortcode_atts( array(
+        'test_collection_id' => 0,
+    ), $atts ) );
+
+    $output = \includes\Grouped_Bar_Chart::get_chart_per_profile($test_collection_id, null);
+    var_dump($output); die;
+
+}
 
 add_filter( 'display_post_states', array('\includes\duplicate','display_post_status'), 10,2);
 
