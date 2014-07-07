@@ -1680,9 +1680,9 @@ jQuery(function ($) {
       this.model.save(data, {
         success: function() {
           if (otherVersions) {
-            _.each(otherVersions, function (vId, i, list) {
-              var vModel = app.kwpsCollection.get(vId);
-              vModel.save(diff);
+            _.each(otherVersions, function (otherVersionItem) {
+              console.log(otherVersionItem);
+              otherVersionItem.save(diff);
             })
           }
           that.cleanup();
@@ -1706,10 +1706,47 @@ jQuery(function ($) {
       });
     },
     getOtherVersions: function (){
-      var versions =app.kwpsCollection.where({post_type: this.model.get('post_type'), _kwps_sort_order: this.model.get('_kwps_sort_order')});
-      versions = _.map(versions, function (m) {return m.id});
-      versions = _.difference(versions, this.model.id);
-      return versions;
+      if(this.model.get('post_type') === 'kwps_answer_option') {
+
+        var parentStack = this.getParentStack();
+        var that = this;
+
+        var question_groups = app.kwpsCollection.where({post_type: 'kwps_question_group', _kwps_sort_order: parentStack.kwps_question_group._kwps_sort_order});
+        var answer_options = [];
+        _.each(question_groups, function(question_group) {
+          var question = app.kwpsCollection.findWhere({post_type: 'kwps_question', _kwps_sort_order:  parentStack.kwps_question._kwps_sort_order, post_parent: question_group.get('ID')});
+          var answer_option = app.kwpsCollection.findWhere({post_type: 'kwps_answer_option', _kwps_sort_order: parentStack.kwps_question._kwps_sort_order, post_parent: question.get('ID')});
+          answer_options.push(answer_option);
+        });
+        return answer_options;
+      } else {
+        var versions = app.kwpsCollection.where({post_type: this.model.get('post_type'), _kwps_sort_order: this.model.get('_kwps_sort_order')});
+        return versions;
+      }
+    },
+    getParent: function(postType) {
+      var parentPostType;
+      switch (postType) {
+        case 'kwps_version':
+          parentPostType = 'kwps_collection';
+          break;
+        case 'kwps_question_group':
+        case 'kwps_intro':
+        case 'kwps_outro':
+        case 'kwps_result_profile':
+          parentPostType = 'kwps_version';
+          break;
+        case 'kwps_question':
+          parentPostType = 'kwps_question_group';
+          break;
+        case 'kwps_answer_option':
+          parentPostType = 'kwps_question';
+          break;
+        default:
+          console.log('no post type was given', postType);
+      }
+
+      return parentPostType;
     },
     getParentStack: function(){
       var parentStack= {};
