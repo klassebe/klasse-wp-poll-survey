@@ -58,14 +58,9 @@ require_once __DIR__ . '/includes/overlay.php';
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
 
-// Load public-facing style sheet and JavaScript.
-add_action( 'wp_enqueue_styles', 'enqueue_styles' );
-add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
-
 include_once 'register-post-types.php';
 include_once 'register-post-statuses.php';
 
-add_action( 'init', array('\includes\uniqueness','set_cookie' ));
 
 add_action('init', 'debug_settings');
 function debug_settings(){
@@ -76,100 +71,19 @@ function debug_settings(){
 
 include_once 'add-session.php';
 
-
 add_filter( 'display_post_states', array('\includes\duplicate','display_post_status'), 10,2);
-
-
 add_action( 'admin_notices', array('\includes\test_modus','admin_notices' ));
 
 add_filter('status_save_pre', array('\includes\test_modus','set_to_duplicate_when_title_exists'));
 add_filter('status_update_pre', array('\includes\test_modus','set_to_duplicate_when_title_exists'));
 
-
-add_action('admin_menu', 'add_plugin_admin_menu');
-
-include_once 'ajax-calls.php';
+include_once 'add-ajax-calls.php';
 
 register_activation_hook(__FILE__, array( '\includes\kwps_plugin' ,'on_activate' ) );
 register_deactivation_hook(__FILE__, array( '\includes\kwps_plugin' ,'on_deactivate' ) );
 
 include_once 'add-shortcodes.php';
 
-/**
- * Register and enqueue public-facing style sheet.
- *
- * @since    1.0.0
- */
-function enqueue_styles() {
-    wp_enqueue_style( 'klasse-wp-poll-survey-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array());
-}
-
-/**
- * Register and enqueues public-facing JavaScript files.
- *
- * @since    1.0.0
- */
-function enqueue_scripts() {
-    wp_enqueue_script( 'jquery' );
-    wp_enqueue_script( 'jquery-ui-core' );
-    wp_enqueue_script( 'jquery-ui-tabs' );
-	wp_enqueue_script( 'backbone' );
-    wp_enqueue_script( 'klasse-wp-poll-survey-plugin-script', plugins_url( 'assets/js/kwps_public.js', __FILE__ ), array( 'jquery' ));
-}
-
-/**
- * Register and enqueues admin JavaScript files.
- *
- * @since    1.0.0
- */
-function enqueue_scripts_admin() {
-
-}
-
-
-
-function enqueue_styles_admin() {
-}
-
-
-/**
- * Register the administration menu for this plugin into the WordPress Dashboard menu.
- *
- * @since    1.0.0
- */
-function add_plugin_admin_menu() {
-
-    add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array('\includes\admin_section', 'display_tests'));
-	$kwps_page_addnew = add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Add new test', 'klasse-wp-poll-survey' ), __( 'Add new', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_addnew', array('\includes\admin_section', 'display_form'));
-    add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Manage entries', 'klasse-wp-poll-survey' ), __( 'Entries', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_manage_entries', array('\includes\admin_section', 'manage_entries'));
-}
-
-/*----------------------------------------------------------------------------*
- * Dashboard and Administrative Functionality
- *----------------------------------------------------------------------------*/
-
-/*
- * @TODO:
- *
- * - replace `class-plugin-name-admin.php` with the name of the plugin's admin file
- * - replace Plugin_Name_Admin with the name of the class defined in
- *   `class-plugin-name-admin.php`
- *
- * If you want to include Ajax within the dashboard, change the following
- * conditional to:
- *
- * if ( is_admin() ) {
- *   ...
- * }
- *
- * The code below is intended to to give the lightest footprint possible.
- */
-if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-    add_action('admin_init', 'enqueue_scripts_admin');
-    add_action('admin_init', 'enqueue_styles_admin');
-	load_plugin_textdomain('klasse-wp-poll-survey', false, dirname(plugin_basename(__FILE__)) . '/languages');
-}
-//  else {
-    // add_action('admin_enqueue_scripts', 'enqueue_scripts_admin');
-    // add_action('admin_enqueue_styles', 'enqueue_styles_admin');
-// }
+include_once 'enqueue-scripts.php';
+include_once 'enqueue-styles.php';
+include_once 'add-admin-menu.php';
