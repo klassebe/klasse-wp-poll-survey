@@ -214,7 +214,7 @@ class Entry extends Kwps_Post_Type{
         return true;
     }
 
-    static function get_all_user_hashes_per_version($version_id){
+    static function get_all_user_hashes_per_version($version_id, $group=''){
         $user_hashes = array();
 
         $question_groups = Question_Group::get_all_by_post_parent($version_id);
@@ -225,7 +225,13 @@ class Entry extends Kwps_Post_Type{
                 foreach($answer_options as $answer_option){
                     $entries = Entry::get_all_by_post_parent($answer_option['ID']);
                     foreach($entries as $entry){
-                        array_push( $user_hashes,  $entry['_kwps_cookie_value']);
+                        if( sizeof( $group ) > 0 ) {
+                            if( isset( $entry['_kwps_group'] ) && $entry['_kwps_group'] == $group) {
+                                array_push( $user_hashes,  $entry['_kwps_cookie_value']);
+                            }
+                        } else {
+                            array_push( $user_hashes,  $entry['_kwps_cookie_value']);
+                        }
                     }
                 }
             }

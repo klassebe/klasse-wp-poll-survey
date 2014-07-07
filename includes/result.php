@@ -36,26 +36,28 @@ class Result {
             $output_type = $request_data['output_type'];
 
             if(isset( $request_data['group'] ) ) {
-                $group = $request_data['group'];
+                $filter = $request_data['group'];
+            } elseif( isset( $request_data['_kwps_result_hash'] ) ) {
+                $filter = $request_data['_kwps_result_hash'];
             } else {
-                $group = '';
+                $filter = '';
             }
 
-            static::send_result_of_version($id, $output_type, $group) ;
+            static::send_result_of_version($id, $output_type, $filter) ;
         }
 
     }
 
-    public static function send_result_of_version($id, $output_type, $group){
+    public static function send_result_of_version($id, $output_type, $filter){
         switch($output_type){
             case 'bar-chart-per-question' :
-                $results = Bar_Chart::get_chart_per_question($id, $group);
+                $results = Bar_Chart::get_chart_per_question($id, $filter);
                 break;
             case 'pie-chart-per-question' :
-                $results = Pie_Chart::get_chart_per_question($id, $group);
+                $results = Pie_Chart::get_chart_per_question($id, $filter);
                 break;
             case 'grouped-bar-chart-per-profile' :
-                $results = Grouped_Bar_Chart::get_chart_per_profile($id, $group);
+                $results = Grouped_Bar_Chart::get_chart_per_profile($id, $filter);
                 break;
             default:
                 $results = 0;

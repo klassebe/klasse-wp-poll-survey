@@ -12,7 +12,11 @@ namespace includes;
 class Grouped_Bar_Chart
 {
 
-    public static function get_chart_per_profile($test_collection_id, $group){
+    public static function get_chart_per_profile($test_collection_id, $result_hash){
+        $result_group = Result_Group::get_by_result_hash( $result_hash );
+        if( ! $result_group) {
+            return 0;
+        }
 
         $test_collection = Test_Collection::get_as_array($test_collection_id);
         $first_version = Version::get_one_by_post_parent($test_collection_id);
@@ -51,7 +55,7 @@ class Grouped_Bar_Chart
         foreach( $versions as $version ) {
 
             $version_totals = array_fill(0, sizeof(  $grouped_result_profiles ), 0 );
-            $user_hashes = Entry::get_all_user_hashes_per_version( $version['ID'] );
+            $user_hashes = Entry::get_all_user_hashes_per_version( $version['ID'] , $result_group['_kwps_hash']);
 
             foreach( $user_hashes as $user_hash ) {
                 $result_profile = Result_Profile::get_result_profile_by_version_and_hash($version['ID'] , $user_hash);

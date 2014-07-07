@@ -57,6 +57,27 @@ class Result_Group extends Kwps_Post_Type{
         return Test_Collection::get_test_modus($result_group['post_parent']);
     }
 
+    public static function get_by_result_hash($result_hash) {
+        $args = array(
+            'post_type' => static::$post_type,
+            'meta_query' => array(
+                array(
+                    'key' => '_kwps_result_hash',
+                    'value' => $result_hash,
+                ),
+            ),
+            'post_status' => array( 'draft', 'publish'),
+        );
+        $result_groups = get_posts( $args );
+
+        if( sizeof( $result_groups ) > 0 ) {
+            return static::get_as_array( $result_groups[0]->ID );
+        } else {
+            return false;
+        }
+
+    }
+
     public static function is_valid_hash($test_collection_id, $hash){
         $result_groups = static::get_all_by_post_parent($test_collection_id);
 
