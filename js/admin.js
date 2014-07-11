@@ -1714,8 +1714,9 @@ jQuery(function ($) {
         var question_groups = app.kwpsCollection.where({post_type: 'kwps_question_group', _kwps_sort_order: parentStack.kwps_question_group._kwps_sort_order});
         var answer_options = [];
         _.each(question_groups, function(question_group) {
+          console.log(parentStack);
           var question = app.kwpsCollection.findWhere({post_type: 'kwps_question', _kwps_sort_order:  parentStack.kwps_question._kwps_sort_order, post_parent: question_group.get('ID')});
-          var answer_option = app.kwpsCollection.findWhere({post_type: 'kwps_answer_option', _kwps_sort_order: parentStack.kwps_question._kwps_sort_order, post_parent: question.get('ID')});
+          var answer_option = app.kwpsCollection.findWhere({post_type: 'kwps_answer_option', _kwps_sort_order: that.model.get('_kwps_sort_order'), post_parent: question.get('ID')});
           answer_options.push(answer_option);
         });
         return answer_options;
