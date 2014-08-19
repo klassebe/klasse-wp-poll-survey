@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klasse WordPress Poll & Survey\n"
 "POT-Creation-Date: 2014-06-16 16:47+0100\n"
-"PO-Revision-Date: 2014-06-16 16:58+0100\n"
-"Last-Translator: AppSaloon - koen <koen@appsaloon.be>\n"
+"PO-Revision-Date: 2014-08-19 14:37+0100\n"
+"Last-Translator: Toon Van de Putte <toon.vandeputte@klasse.be>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.6.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: includes/admin_section.php:35 includes/admin_section.php:81
 msgid "Intro"
-msgstr "Intro"
+msgstr "Inleiding"
 
 #: includes/admin_section.php:36 includes/admin_section.php:82
 msgid "Outro"
@@ -36,7 +36,7 @@ msgstr "Nieuwe Test"
 
 #: includes/admin_section.php:39
 msgid "Builder"
-msgstr "Bouwer"
+msgstr "Testbouwer"
 
 #: includes/admin_section.php:40
 msgid "Settings"
@@ -64,7 +64,7 @@ msgstr "Shortcode"
 
 #: includes/admin_section.php:46
 msgid "View entries"
-msgstr "Beheer invoer"
+msgstr "Bekijk ingevulde tests"
 
 #: includes/admin_section.php:47
 msgid "Results"
@@ -76,7 +76,7 @@ msgstr "Aantal keren bekeken\t"
 
 #: includes/admin_section.php:49
 msgid "Conversion Rate"
-msgstr "Conversie"
+msgstr "Conversieratio"
 
 #: includes/admin_section.php:50
 msgid "Total Participants"
@@ -88,28 +88,27 @@ msgstr "Maak live"
 
 #: includes/admin_section.php:52
 msgid "Display Intro"
-msgstr ""
+msgstr "Toon inleiding"
 
 #: includes/admin_section.php:53
 msgid "Intro Result"
-msgstr "Pagina na invullen"
+msgstr "Afsluitpagina"
 
 #: includes/admin_section.php:54
 msgid "Add Intro Result"
-msgstr "Voeg tekst na invullen toe"
+msgstr "Voeg afsluitpagina toe"
 
 #: includes/admin_section.php:55
 msgid "Question pages"
-msgstr "Pagina's"
+msgstr "Pagina’s met vragen"
 
 #: includes/admin_section.php:56
-#, fuzzy
 msgid "question page"
-msgstr "Pagina's"
+msgstr "Pagina met vragen"
 
 #: includes/admin_section.php:57
 msgid "Add question page"
-msgstr "Voeg pagina toe"
+msgstr "Voeg pagina met vragen toe"
 
 #: includes/admin_section.php:58
 msgid "Questions"
@@ -122,15 +121,15 @@ msgstr "Vraag"
 
 #: includes/admin_section.php:60
 msgid "Add question"
-msgstr "Vraag toevoegen"
+msgstr "Voeg een vraag toe"
 
 #: includes/admin_section.php:61
 msgid "Answers"
-msgstr "Antwoorden"
+msgstr "Antwoordkeuzes"
 
 #: includes/admin_section.php:62
 msgid "Add answer"
-msgstr "Antwoord toevoegen"
+msgstr "Antwoordkeuze toevoegen"
 
 #: includes/admin_section.php:63
 msgid "Add outro"
@@ -142,7 +141,7 @@ msgstr "Aanpassen"
 
 #: includes/admin_section.php:65
 msgid "Add results"
-msgstr "Voeg resultaten toe"
+msgstr "Voeg resultaatprofielen toe"
 
 #: includes/admin_section.php:66
 msgid "Add media"
@@ -162,11 +161,11 @@ msgstr "Waarde is verplicht"
 
 #: includes/admin_section.php:70
 msgid "Min value"
-msgstr "Min waarde"
+msgstr "Minimumwaarde"
 
 #: includes/admin_section.php:71
 msgid "Max value"
-msgstr "Max waarde"
+msgstr "Maximumwaarde"
 
 #: includes/admin_section.php:72
 msgid "Min value is required"
@@ -190,11 +189,11 @@ msgstr "Type is verplicht"
 
 #: includes/admin_section.php:77
 msgid "Clear entries"
-msgstr "Verwijder invoer"
+msgstr "Verwijder alle ingevulde tests"
 
 #: includes/admin_section.php:78
 msgid "This will delete all entries. Are you sure?"
-msgstr "Alle invoer zal verwijderd worden. Ben je zeker?"
+msgstr "Alle ingevulde tests zullen verwijderd worden. Ben je zeker?"
 
 #: includes/admin_section.php:79
 msgid "Version"
@@ -207,7 +206,7 @@ msgstr "Versie"
 
 #: includes/admin_section.php:83
 msgid "Intro result"
-msgstr "Pagina na invullen"
+msgstr "Afsluitpagina"
 
 #: includes/admin_section.php:84
 msgid "Question Group"
@@ -215,11 +214,11 @@ msgstr "Vragengroep"
 
 #: includes/admin_section.php:85
 msgid "Result Profile"
-msgstr "Profiel"
+msgstr "Resultaatprofiel"
 
 #: includes/admin_section.php:86
 msgid "Result Profiles"
-msgstr "Profielen"
+msgstr "Resultaatprofielen"
 
 #: includes/admin_section.php:88
 msgid "Answer Option"
@@ -231,7 +230,7 @@ msgstr "Persoonlijkheidstest"
 
 #: includes/admin_section.php:90
 msgid "Poll"
-msgstr "Opiniepeiling"
+msgstr "Poll"
 
 #: includes/admin_section.php:91 includes/version.php:324
 #: includes/version.php:351
@@ -267,11 +266,11 @@ msgstr "Eenmalig, gebaseerd op login"
 
 #: includes/admin_section.php:98
 msgid "Limit entries"
-msgstr "Beperk invoer"
+msgstr "Beperk aantal deelnames"
 
 #: includes/admin_section.php:99
 msgid "Add result profile"
-msgstr "Voeg profiel toe"
+msgstr "Voeg resultaatprofiel toe"
 
 #: includes/admin_section.php:100
 msgid "Create new test"
@@ -299,12 +298,11 @@ msgstr "Kies het type van de test die je wilt maken."
 
 #: includes/admin_section.php:106
 msgid "Copy of"
-msgstr ""
+msgstr "Kopie van"
 
 #: includes/admin_section.php:107
-#, fuzzy
 msgid "Result profile"
-msgstr "Profiel"
+msgstr "Resultaatprofiel"
 
 #: includes/admin_section.php:108
 msgid "You must add a result to the text"
@@ -356,7 +354,7 @@ msgstr "Bulkacties"
 
 #: includes/base-list-table.php:327
 msgid "Apply"
-msgstr "Uitvoeren"
+msgstr "Toepassen"
 
 #: includes/base-list-table.php:411
 msgid "Show all dates"
@@ -374,7 +372,7 @@ msgstr "Lijst"
 
 #: includes/base-list-table.php:441
 msgid "Excerpt View"
-msgstr "Abstracts"
+msgstr "Uittreksels"
 
 #: includes/base-list-table.php:467
 #, php-format
@@ -435,15 +433,15 @@ msgstr "Moet een nummer zijn"
 
 #: includes/kwps_post_type.php:311
 msgid "You cannot update once published"
-msgstr "U kan niet updaten na publicatie"
+msgstr "Je kan niet updaten na publicatie"
 
 #: includes/question.php:116
 msgid "Maximum questions already reached"
-msgstr "Maximum aantal vragen reeds bereikt"
+msgstr "Maximum aantal vragen bereikt"
 
 #: includes/question_group.php:91
 msgid "Maximum question groups already reached"
-msgstr "Maximum aantal vraag groepen reeds bereikt"
+msgstr "Maximum aantal vraaggroepen bereikt"
 
 #: includes/result_profile.php:89
 msgid "Not a valid entry ID"
@@ -478,18 +476,18 @@ msgstr "Waarde is niet toegestaan"
 
 #: includes/test_modus.php:156
 msgid "Post saved as draft - Title is empty"
-msgstr "Post opgeslagen als klad - Titel is leeg"
+msgstr "Bericht opgeslagen als concept - Titel is leeg"
 
 #: includes/test_modus.php:161
 msgid "Test Modus was saved as duplicate - new settings will not be used"
 msgstr ""
-"Test Modus opgeslagen als duplicate - nieuwe instellingen zullen niet "
-"gebruikt worden"
+"Test Modus opgeslagen als kopie - nieuwe instellingen zullen niet gebruikt "
+"worden"
 
 #: includes/test_modus.php:162
 msgid "Either rename this Test Modus or remove the Test Modus already in use"
 msgstr ""
-"Hernoem deze Test Modus of verwijder de Test Modus die reeds in gebruik is"
+"Hernoem deze Test Modus of verwijder de Test Modus die al in gebruik is"
 
 #: includes/uniqueness.php:75
 msgid "Only logged in users allowed"
@@ -501,7 +499,7 @@ msgstr "Volledig vrij voor iedereen"
 
 #: includes/uniqueness.php:90
 msgid "Limit on cookie"
-msgstr "Limiteer op cookie"
+msgstr "Beperk op cookie"
 
 #: includes/uniqueness.php:91
 msgid "Based on session cookie"
@@ -509,7 +507,7 @@ msgstr "Gebaseerd op sessie cookie"
 
 #: includes/uniqueness.php:96
 msgid "Limit on IP-address"
-msgstr "Gelimiteerd op IP-adres"
+msgstr "Beperkt op IP-adres"
 
 #: includes/uniqueness.php:97
 msgid "Based on ip address"
@@ -525,16 +523,15 @@ msgstr "Enkel aangemelde gebruikers"
 
 #: includes/version.php:125
 msgid "Cannot publish when not saved as draft first"
-msgstr "U kan niet publiceren vooraleer op te slaan als klad"
+msgstr "Je moet eerst opslaan als concept, voor je kan publiceren"
 
 #: includes/version.php:151
 msgid "No result shortcodes used!!"
-msgstr "Geen resultaat shortcodes gebruikt!!"
+msgstr "Geen resultaat-shortcodes gebruikt!"
 
 #: includes/version.php:163
-#, fuzzy
 msgid "Invalid value "
-msgstr "Min waarde"
+msgstr "Ongeldige waarde"
 
 #: includes/version.php:164
 #, fuzzy
@@ -542,9 +539,8 @@ msgid " in shortcode"
 msgstr "Shortcode"
 
 #: includes/version.php:176
-#, fuzzy
 msgid "Minimum 1 question page required"
-msgstr "Min waarde is verplicht"
+msgstr "Er is minstens één pagina met vragen nodig"
 
 #: includes/version.php:186
 msgid "Minimum 1 question per question page required"
@@ -555,26 +551,24 @@ msgid "Minimum 2 answer options per question required"
 msgstr "Minimum 2 antwoordopties per vraag vereist"
 
 #: includes/version.php:208
-#, fuzzy
 msgid "Minimum 2 result profiles needed"
-msgstr "Voeg profiel toe"
+msgstr "Er zijn minstens twee resultaatprofielen nodig"
 
 #: includes/version.php:223
 msgid "Overlap between "
-msgstr ""
+msgstr "Overlap tussen"
 
 #: includes/version.php:224
 msgid " and "
-msgstr ""
+msgstr "en"
 
 #: includes/version.php:248
-#, fuzzy
 msgid "Only 1 allowed"
-msgstr "Enkel aangemelde gebruikers zijn toegelaten"
+msgstr "Maar 1 toegelaten"
 
 #: includes/version.php:313
 msgid "You need to be logged in to view this version"
-msgstr "U moet aangemeld zijn om deze versie te zien"
+msgstr "Je moet aangemeld zijn om deze versie te zien"
 
 #: klasse-wp-poll-survey.php:298
 msgid "Tests"
@@ -594,32 +588,31 @@ msgstr "Voeg toe"
 
 #: klasse-wp-poll-survey.php:301
 msgid "Manage entries"
-msgstr "Beheer invoer"
+msgstr "Beheer ingevulde tests"
 
 #: klasse-wp-poll-survey.php:301
 msgid "Entries"
-msgstr "Invoer"
+msgstr "Ingevulde tests"
 
 #: views/poll_list.php:4
 msgid "New test"
 msgstr "Nieuwe Test"
 
 #: views/result-page.php:1
-#, fuzzy
 msgid "Result options"
-msgstr "Profielen"
+msgstr "Resultaatopties"
 
 #: views/result-page.php:3
 msgid ""
 "Select a result by clicking and press the 'Insert into Post' button to add "
 "this to the editor"
 msgstr ""
-"Selecteer een resultaat door te klikken en klik dan op de 'Voeg toe aan "
-"post' knop om het resultaat aan de tekst toe te voegen"
+"Kies een resultaat door te klikken en klik dan op de ‘Voeg toe aan bericht’ "
+"knop om het resultaat aan de tekst toe te voegen"
 
 #: views/result-page.php:8
 msgid "Insert into Post"
-msgstr "Voeg toe aan post"
+msgstr "Voeg toe aan bericht"
 
 #~ msgid "Add Intro"
 #~ msgstr "Voeg intro toe"
