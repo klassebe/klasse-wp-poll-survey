@@ -1518,7 +1518,7 @@ jQuery(function ($) {
         allowedTypes = testmodus.attributes._kwps_allowed_output_types;
       }
 
-      tb_show('','../wp-content/plugins/klasse-wp-poll-survey/includes/show-charts.php?type=image&amp;TB_iframe=true');
+      tb_show('','../wp-content/plugins/klasse-wp-poll-survey/classes/show-charts.php?type=image&amp;TB_iframe=true');
 
         var request = $.ajax({
                         url: app.url + 'kwps_get_result_page',
@@ -1580,7 +1580,7 @@ jQuery(function ($) {
     /* BEGIN ADD VIDEO URL INPUT */
     addVideo: function () {
       var videoUrl, videoUrlToEmbedUrl, videoUrlCode, outputCode, videoWidth, videoHeight, iframe;
-      tb_show('', '../wp-content/plugins/klasse-wp-poll-survey/includes/add-video.php?type=image&amp;TB_iframe=true');
+      tb_show('', '../wp-content/plugins/klasse-wp-poll-survey/classes/add-video.php?type=image&amp;TB_iframe=true');
       
       var request = $.ajax({
                         url: app.url + 'kwps_get_video_page',
