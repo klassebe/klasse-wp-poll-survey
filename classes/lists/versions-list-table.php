@@ -12,7 +12,7 @@ if(!class_exists('Base_List_Table')){
     require_once(__DIR__ . '/base-list-table.php');
 }
 
-require_once(__DIR__ . '/../post-types/test-collection.php');
+require_once(__DIR__ . '/../post-types/version.php');
 
 
 /************************** CREATE A PACKAGE CLASS *****************************
@@ -28,7 +28,7 @@ require_once(__DIR__ . '/../post-types/test-collection.php');
  *
  * Our theme for this list table is going to be movies.
  */
-class Test_Collections_List_Table extends Base_List_Table {
+class Versions_List_Table extends Base_List_Table {
 
 
     /** ************************************************************************
@@ -40,8 +40,8 @@ class Test_Collections_List_Table extends Base_List_Table {
 
         //Set parent defaults
         parent::__construct( array(
-            'singular'  => 'test_collection',     //singular name of the listed records
-            'plural'    => 'test_collections',    //plural name of the listed records
+            'singular'  => 'version',     //singular name of the listed records
+            'plural'    => 'versions',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
 
@@ -77,7 +77,7 @@ class Test_Collections_List_Table extends Base_List_Table {
                 return $item[$column_name];
             case 'view_count':
                 return $item[$column_name];
-            case 'user_id':
+            case 'shortcode':
                 return $item[$column_name];
             case 'crea_date':
                 return $item[$column_name];
@@ -87,10 +87,9 @@ class Test_Collections_List_Table extends Base_List_Table {
     }
 
     function column_test_modus($item){
-        $test_modus = Test_Collection::get_test_modus($item['ID']);
+        $test_modus = Version::get_test_modus($item['ID']);
         return $test_modus['post_title'];
     }
-
 
     /** ************************************************************************
      * Recommended. This is a custom column method and is responsible for what
@@ -112,7 +111,7 @@ class Test_Collections_List_Table extends Base_List_Table {
 
         //Build row actions
         $delete_url = sprintf("%spost.php?post=%s&action=%s", get_admin_url() ,$item['ID'], 'delete');
-        $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_edit&id=%s&action=%s", get_admin_url() ,$item['ID'], 'edit');
+        $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s", get_admin_url() ,$item['ID'], 'edit');
         $delete_url_with_nonce = wp_nonce_url($delete_url);
         $actions = array(
 //            http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=edit
@@ -126,7 +125,7 @@ class Test_Collections_List_Table extends Base_List_Table {
 //            'delete'      =>  sprintf('<a href="%spost.php?post=%s&action=%s">Delete</a>',get_admin_url(), $item['ID'] ,'trash' ) ,
 //            'delete'      =>  sprintf('<a href="%s">Delete</a>',$delete_url_with_nonce ) ,
 
-            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . __('Delete') . '</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-test_collection') ),
+            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . __('Delete') . '</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-version') ),
         );
 
         //Return the post_title contents
@@ -173,9 +172,8 @@ class Test_Collections_List_Table extends Base_List_Table {
         $columns = array(
             'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
             'post_title'     => __('Title', 'klasse-wp-poll-survey'),
-            'test_modus'     => __('Testmodus', 'klasse-wp-poll-survey'),
             'view_count'    => __('Views', 'klasse-wp-poll-survey'),
-//            'user_id'  => 'Author',
+            'shortcode'     => __('Test shortcode', 'klasse-wp-poll-survey'),
             'post_modified'    => __('Date', 'klasse-wp-poll-survey'),
         );
         return $columns;
@@ -241,24 +239,24 @@ class Test_Collections_List_Table extends Base_List_Table {
         //Detect when a bulk action is being triggered...
         if( 'delete'===$this->current_action() ) {
             if( isset( $_REQUEST['id']) ){
-                if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'delete-test_collection' ) ){
+                if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'delete-version' ) ){
                     $post_id = (int) $_REQUEST['id'];
-					$collection = Test_Collection::get_as_array($post_id);
+					$collection = Version::get_as_array($post_id);
 	                $collection['post_status'] = 'trash';
-					Test_Collection::save_post($collection);
+					Version::save_post($collection);
 
 	                foreach(Version::get_all_by_post_parent($post_id) as $version) {
 		                $version['post_status'] = 'trash';
 		                Version::save_post($version);
 	                }
                 }
-            } elseif( isset( $_REQUEST['test_collection'] ) ) {
+            } elseif( isset( $_REQUEST['version'] ) ) {
                 if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-' . $this->_args['plural'] ) ){
-                    foreach( $_REQUEST['test_collection'] as $post_id ){
+                    foreach( $_REQUEST['version'] as $post_id ){
 	                    $post_id = (int) $post_id;
-	                    $collection = Test_Collection::get_as_array($post_id);
+	                    $collection = Version::get_as_array($post_id);
 	                    $collection['post_status'] = 'trash';
-	                    Test_Collection::save_post($collection);
+	                    Version::save_post($collection);
                     }
                 }
             }
@@ -293,6 +291,12 @@ class Test_Collections_List_Table extends Base_List_Table {
             $order = $_REQUEST['order'];
         } else {
             $order = 'desc';
+        }
+
+        if( isset( $_REQUEST['id'] ) ) {
+            $post_parent = $_REQUEST['id'];
+        } else {
+            $post_parent = 0;
         }
 
          /**
@@ -333,12 +337,12 @@ class Test_Collections_List_Table extends Base_List_Table {
          *
          */
         $arguments = array(
-            'post_type' => 'kwps_test_collection',
+            'post_type' => 'kwps_version',
             'orderby' => $order_by,
             'order' => $order,
             'post_per_page' => 5,
             'numberposts' => -1,
-//            'post_parent' => 0,
+            'post_parent' => $post_parent,
             'post_status' => array('draft', 'publish'),
         );
 
@@ -351,7 +355,9 @@ class Test_Collections_List_Table extends Base_List_Table {
                 'post_modified' => $object->post_modified,
             );
 
-            $row_data['view_count'] = Test_Collection::get_view_count($object->ID);
+//            $row_data['view_count'] = Version::get_view_count($object->ID);
+            $row_data['view_count'] = get_post_meta($object->ID, '_kwps_view_count', true);
+            $row_data['shortcode'] = '[kwps_version id=' . $object->ID . ']';
 
             array_push($data, $row_data);
         }

@@ -128,92 +128,20 @@ class admin_section {
      */
     public static function display_form()
     {
-		self::enqueue_styles_admin_addnew();
-		self::enqueue_scripts_admin_addnew();
-
-	    $kwps_uniqueness_options = array(
-            'logged_in' => Uniqueness::get_options_for_logged_in_users(),
-            'logged_out' => Uniqueness::get_options_for_logged_out_users(),
-        );
-
-        $kwps_test_modi = Test_Modus::get_published_modi();
-
-        if( isset($_GET['action']) && 'edit' === $_GET['action']){
-
-            if( isset($_GET['id']) ) {
-                $current_post = get_post($_GET['id']);
-
-                if( null === $current_post ) {
-                    echo 'post not found';
-                } elseif ( 'kwps_test_collection' !== $current_post->post_type ) {
-                    echo 'post not of type kwps_test_collection';
-                } else {
-                    $test_collection = Test_Collection::get_as_array($current_post->ID);
-                    $collection_outro = Coll_Outro::get_one_by_post_parent($current_post->ID);
-
-                    $tests = array($test_collection, $collection_outro);
-
-                    $versions = Version::get_all_by_post_parent($current_post->ID);
-
-                    $question_groups = array();
-                    $result_profiles = array();
-                    $questions = array();
-                    $intros = array();
-                    $intro_results = array();
-                    $outros = array();
-                    $answer_options = array();
-
-                    foreach($versions as $version){
-                        $question_groups = array_merge($question_groups, Question_Group::get_all_by_post_parent($version['ID']));
-	                    $result_profiles = array_merge($result_profiles, Result_Profile::get_all_by_post_parent($version['ID']));
-                        $intros = array_merge($intros, Intro::get_all_by_post_parent($version['ID']));
-	                    $intro_results = array_merge($intro_results, Intro_Result::get_all_by_post_parent($version['ID']));
-                        $outros = array_merge($outros, Outro::get_all_by_post_parent($version['ID']));
-                    }
-
-                    foreach($versions as $key => $value){
-                        $versions[$key]['total_participants'] =
-                            Result::get_participants_count_of_version($value['ID']);
-                        $versions[$key]['conversion_rate'] = Result::get_conversion_rate_of_version($value);
-                    }
-
-                    foreach($question_groups as $question_group){
-                        $questions = array_merge($questions, Question::get_all_by_post_parent($question_group['ID']));
-                    }
-
-                    foreach($questions as $question){
-                        $answer_options = array_merge($answer_options, Answer_Option::get_all_by_post_parent($question['ID']));
-                    }
-
-                    $tests = array_merge(
-                        $tests, $versions, $question_groups, $result_profiles, $questions, $intros, $intro_results,
-                        $outros, $answer_options, $kwps_test_modi
-                    );
-                ?>
-                    <script>var kwpsTests=<?php echo json_encode($tests); ?></script>
-                <?php
-                }
-                ?>
-                <script>var kwpsUniquenessTypes=<?php echo json_encode(Uniqueness::get_types()) ?></script>
-                <?php
-                } else {
-                echo 'No post id given!';
-            }
+        if( ! isset($_REQUEST['action'] ) && ! isset( $_REQUEST['id'] )  ) {
+            include_once __DIR__ . '/../views/add-test-collection.php';
         } else {
-
-            ?>
-            <script>var kwpsTests=<?php echo json_encode($kwps_test_modi); ?></script>
-            <?php
+            if( isset($_REQUEST['id'] ) ) {
+                $post = get_post( $_REQUEST['id'] );
+                if( $post != null ) {
+                    if( 'kwps_test_collection' == $post->post_type ) {
+                        include_once __DIR__ . '/../views/edit-test-collection.php';
+                    } elseif( 'kwps_version' == $post->post_type ) {
+                        include_once __DIR__ . '/../views/edit-version.php';
+                    }
+                }
+            }
         }
-
-            ?>
-
-        <script>var kwpsUniquenessTypes=<?php echo json_encode($kwps_uniqueness_options) ?></script>
-        <script>var kwpsTestModi=<?php echo json_encode(Test_Modus::get_published_modi()) ?></script>
-        <?php
-
-        include_once __DIR__ . '/../views/add.php';
-
     }
 
     /**
