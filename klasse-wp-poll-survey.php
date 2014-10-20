@@ -30,30 +30,30 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-require_once __DIR__ . '/includes/admin-section.php';
-require_once __DIR__ . '/includes/kwps-plugin.php';
-require_once __DIR__ . '/includes/post-types/test-collection.php';
-require_once __DIR__ . '/includes/post-types/version.php';
-require_once __DIR__ . '/includes/post-types/question.php';
-require_once __DIR__ . '/includes/post-types/question_group.php';
-require_once __DIR__ . '/includes/post-types/result-profile.php';
-require_once __DIR__ . '/includes/post-types/entry.php';
-require_once __DIR__ . '/includes/post-types/intro.php';
-require_once __DIR__ . '/includes/post-types/intro-result.php';
-require_once __DIR__ . '/includes/post-types/outro.php';
-require_once __DIR__ . '/includes/post-types/answer-option.php';
-require_once __DIR__ . '/includes/post-types/test-modus.php';
-require_once __DIR__ . '/includes/post-types/coll-outro.php';
-require_once __DIR__ . '/includes/post-statuses/duplicate.php';
-require_once __DIR__ . '/includes/post-statuses/locked.php';
-require_once __DIR__ . '/includes/uniqueness.php';
-require_once __DIR__ . '/includes/result.php';
-require_once __DIR__ . '/includes/post-types/result-profile.php';
-require_once __DIR__ . '/includes/charts/bar-chart.php';
-require_once __DIR__ . '/includes/charts/pie-chart.php';
-require_once __DIR__ . '/includes/session.php';
-require_once __DIR__ . '/includes/post-types/result-group.php';
-require_once __DIR__ . '/includes/overlay.php';
+require_once __DIR__ . '/classes/admin-section.php';
+require_once __DIR__ . '/classes/kwps-plugin.php';
+require_once __DIR__ . '/classes/post-types/test-collection.php';
+require_once __DIR__ . '/classes/post-types/version.php';
+require_once __DIR__ . '/classes/post-types/question.php';
+require_once __DIR__ . '/classes/post-types/question_group.php';
+require_once __DIR__ . '/classes/post-types/result-profile.php';
+require_once __DIR__ . '/classes/post-types/entry.php';
+require_once __DIR__ . '/classes/post-types/intro.php';
+require_once __DIR__ . '/classes/post-types/intro-result.php';
+require_once __DIR__ . '/classes/post-types/outro.php';
+require_once __DIR__ . '/classes/post-types/answer-option.php';
+require_once __DIR__ . '/classes/post-types/test-modus.php';
+require_once __DIR__ . '/classes/post-types/coll-outro.php';
+require_once __DIR__ . '/classes/post-statuses/duplicate.php';
+require_once __DIR__ . '/classes/post-statuses/locked.php';
+require_once __DIR__ . '/classes/uniqueness.php';
+require_once __DIR__ . '/classes/result.php';
+require_once __DIR__ . '/classes/post-types/result-profile.php';
+require_once __DIR__ . '/classes/charts/bar-chart.php';
+require_once __DIR__ . '/classes/charts/pie-chart.php';
+require_once __DIR__ . '/classes/session.php';
+require_once __DIR__ . '/classes/post-types/result-group.php';
+require_once __DIR__ . '/classes/overlay.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -71,16 +71,16 @@ function debug_settings(){
 
 include_once 'add-session.php';
 
-add_filter( 'display_post_states', array('\includes\duplicate','display_post_status'), 10,2);
-add_action( 'admin_notices', array('\includes\test_modus','admin_notices' ));
+add_filter( 'display_post_states', array('\kwps_classes\duplicate','display_post_status'), 10,2);
+add_action( 'admin_notices', array('\kwps_classes\test_modus','admin_notices' ));
 
-add_filter('status_save_pre', array('\includes\test_modus','set_to_duplicate_when_title_exists'));
-add_filter('status_update_pre', array('\includes\test_modus','set_to_duplicate_when_title_exists'));
+add_filter('status_save_pre', array('\kwps_classes\test_modus','set_to_duplicate_when_title_exists'));
+add_filter('status_update_pre', array('\kwps_classes\test_modus','set_to_duplicate_when_title_exists'));
 
 include_once 'add-ajax-calls.php';
 
-register_activation_hook(__FILE__, array( '\includes\kwps_plugin' ,'on_activate' ) );
-register_deactivation_hook(__FILE__, array( '\includes\kwps_plugin' ,'on_deactivate' ) );
+register_activation_hook(__FILE__, array( '\kwps_classes\kwps_plugin' ,'on_activate' ) );
+register_deactivation_hook(__FILE__, array( '\kwps_classes\kwps_plugin' ,'on_deactivate' ) );
 
 include_once 'add-shortcodes.php';
 
