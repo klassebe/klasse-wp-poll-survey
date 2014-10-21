@@ -128,6 +128,18 @@ class admin_section {
      */
     public static function display_form()
     {
+        if( isset( $_POST['action'] ) && 'add_test_collection' == $_POST['action'] ) {
+            $post = array(
+                'post_title' => $_POST['post_title'],
+                'post_type' => $_POST['type'],
+                'post_parent' => $_POST['post_parent'],
+            );
+
+            $id = wp_insert_post($post, false);
+
+            $url = get_admin_url() . 'admin.php?page=' . $_REQUEST['page'] . '&action=edit&id=' . $id;
+            wp_redirect($url); exit;
+        }
         if( ! isset($_REQUEST['action'] ) && ! isset( $_REQUEST['id'] )  ) {
             include_once __DIR__ . '/../views/add-test-collection.php';
         } else {
