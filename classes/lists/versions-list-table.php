@@ -111,7 +111,7 @@ class Versions_List_Table extends Base_List_Table {
 
         //Build row actions
         $delete_url = sprintf("%spost.php?post=%s&action=%s", get_admin_url() ,$item['ID'], 'delete');
-        $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_addnew&id=%s&action=%s", get_admin_url() ,$item['ID'], 'edit');
+        $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_edit&id=%s&action=%s", get_admin_url() ,$item['ID'], 'edit');
         $delete_url_with_nonce = wp_nonce_url($delete_url);
         $actions = array(
 //            http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=edit
