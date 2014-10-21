@@ -77,7 +77,7 @@ class Test_Collections_List_Table extends Base_List_Table {
                 return $item[$column_name];
             case 'view_count':
                 return $item[$column_name];
-            case 'user_id':
+            case 'shortcode':
                 return $item[$column_name];
             case 'crea_date':
                 return $item[$column_name];
@@ -175,7 +175,7 @@ class Test_Collections_List_Table extends Base_List_Table {
             'post_title'     => __('Title', 'klasse-wp-poll-survey'),
             'test_modus'     => __('Testmodus', 'klasse-wp-poll-survey'),
             'view_count'    => __('Views', 'klasse-wp-poll-survey'),
-//            'user_id'  => 'Author',
+            'shortcode'  => __('Shortcode', 'klasse-wp-poll-survey'),
             'post_modified'    => __('Date', 'klasse-wp-poll-survey'),
         );
         return $columns;
@@ -352,6 +352,13 @@ class Test_Collections_List_Table extends Base_List_Table {
             );
 
             $row_data['view_count'] = Test_Collection::get_view_count($object->ID);
+
+            $test_modus = Test_Collection::get_test_modus( $object->ID );
+            if( 'kwps-personality-test' ==  $test_modus['post_name']) {
+                $row_data['shortcode'] = '[kwps_test_collection id=' . $object->ID . ']';
+            } else {
+                $row_data['shortcode'] = '-';
+            }
 
             array_push($data, $row_data);
         }

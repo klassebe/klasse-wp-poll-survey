@@ -173,7 +173,7 @@ class Versions_List_Table extends Base_List_Table {
             'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
             'post_title'     => __('Title', 'klasse-wp-poll-survey'),
             'view_count'    => __('Views', 'klasse-wp-poll-survey'),
-            'shortcode'     => __('Test shortcode', 'klasse-wp-poll-survey'),
+            'shortcode'     => __('Shortcode', 'klasse-wp-poll-survey'),
             'post_modified'    => __('Date', 'klasse-wp-poll-survey'),
         );
         return $columns;
@@ -355,7 +355,6 @@ class Versions_List_Table extends Base_List_Table {
                 'post_modified' => $object->post_modified,
             );
 
-//            $row_data['view_count'] = Version::get_view_count($object->ID);
             $row_data['view_count'] = get_post_meta($object->ID, '_kwps_view_count', true);
             $row_data['shortcode'] = '[kwps_version id=' . $object->ID . ']';
 
