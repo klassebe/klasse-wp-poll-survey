@@ -6,7 +6,7 @@ $testmodi = \kwps_classes\Test_Modus::get_published_modi();
 <div class="wrap">
     <div id="icon-users" class="icon32"><br/></div>
     <h2><?php _e(get_admin_page_title()) ?></h2>
-    <form id="create-new-test" method="post" action="?page=<?php echo $_REQUEST['page'];?>&action=edit&noheader=true">
+    <form id="create-new-test" method="post" action="?page=<?php echo $_REQUEST['page'];?>&action=add_test_collection&noheader=true">
         <table class="form-table">
             <tbody>
             <tr>
@@ -45,7 +45,6 @@ $testmodi = \kwps_classes\Test_Modus::get_published_modi();
         </table>
         <p>
             <input type="hidden" name="type" value="kwps_test_collection">
-            <input type="hidden" name="action" value="add_test_collection">
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'];?>">
         </p>
         <p class="submit">

@@ -114,17 +114,7 @@ class Versions_List_Table extends Base_List_Table {
         $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_edit&id=%s&action=%s", get_admin_url() ,$item['ID'], 'edit');
         $delete_url_with_nonce = wp_nonce_url($delete_url);
         $actions = array(
-//            http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=edit
-
             'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_edit&id=%s&action=%s">' . __('Edit') . '</a>',get_admin_url(), $item['ID'] ,'edit'),
-//            'edit'      => sprintf('<a href="%spost.php?post=%s&action=%s">Edit</a>',get_admin_url(), $item['ID'] ,'edit'),
-//            'edit'      => sprintf('<a href="?page=%s&action=%s&id=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
-
-//        http://localhost/klasse-dev/wordpress/wp-admin/post.php?post=18&action=trash&_wpnonce=25ff8209c2
-
-//            'delete'      =>  sprintf('<a href="%spost.php?post=%s&action=%s">Delete</a>',get_admin_url(), $item['ID'] ,'trash' ) ,
-//            'delete'      =>  sprintf('<a href="%s">Delete</a>',$delete_url_with_nonce ) ,
-
             'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . __('Delete') . '</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-version') ),
         );
 
@@ -245,7 +235,7 @@ class Versions_List_Table extends Base_List_Table {
 	                $collection['post_status'] = 'trash';
 					Version::save_post($collection);
 
-	                foreach(Version::get_all_by_post_parent($post_id) as $version) {
+	                foreach(Question_Group::get_all_by_post_parent($post_id) as $version) {
 		                $version['post_status'] = 'trash';
 		                Version::save_post($version);
 	                }

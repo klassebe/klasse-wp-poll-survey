@@ -72,8 +72,10 @@ class Version extends Kwps_Post_Type{
         return static::get_html($id);
     }
 
-    public static function save_post($post_data){
-        $post_id = wp_insert_post($post_data);
+    public static function save_post($post_data, $return_id = false){
+        $post_data['post_type'] = static::$post_type;
+
+        $post_id = wp_insert_post($post_data, true);
         if( ! isset($post_data['_kwps_view_count'] ) ) {
             $post_data['_kwps_view_count'] = 0;
         }
@@ -88,7 +90,11 @@ class Version extends Kwps_Post_Type{
             return null;
         }
 
-        return static::get_as_array($post_id);
+        if( $return_id ) {
+            return $post_id;
+        } else {
+            return static::get_as_array($post_id);
+        }
     }
 
     public static function ajax_validate_for_publish(){

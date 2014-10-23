@@ -2,6 +2,11 @@
 
 namespace kwps_classes;
 require_once __DIR__ . '/lists/test-collections-list-table.php';
+require_once __DIR__ . '/../classes/lists/versions-list-table.php';
+require_once __DIR__ . '/../classes/version-handler.php';
+
+//require_once __DIR__ . '/../classes/post-types/version.php';
+
 require_once __DIR__ . '/lists/entries-list-table.php';
 require_once __DIR__ . '/uniqueness.php';
 
@@ -128,31 +133,37 @@ class admin_section {
      */
     public static function display_form()
     {
-        if( isset( $_POST['action'] ) && 'add_test_collection' == $_POST['action'] ) {
-            $post = array(
-                'post_title' => $_POST['post_title'],
-                'post_type' => $_POST['type'],
-                'post_parent' => $_POST['post_parent'],
-            );
+        if( isset( $_REQUEST['action'] ) ) {
+            if( 'edit_test_collection' == $_REQUEST['action'] ) {
+                $versions_list = new \kwps_classes\Versions_List_Table();
+                $versions_list->prepare_items();
+                include_once __DIR__ . '/../views/edit-test-collection.php';
+            } elseif( 'add_version' == $_REQUEST['action'] ) {
 
-            $id = wp_insert_post($post, false);
+                $version = array(
+                    'post_title' => '',
+                    'post_parent' => $_REQUEST['post_parent'],
+                );
 
-            $url = get_admin_url() . 'admin.php?page=' . $_REQUEST['page'] . '&action=edit&id=' . $id;
-            wp_redirect($url); exit;
-        }
-        if( ! isset($_REQUEST['action'] ) && ! isset( $_REQUEST['id'] )  ) {
-            include_once __DIR__ . '/../views/add-test-collection.php';
-        } else {
-            if( isset($_REQUEST['id'] ) ) {
-                $post = get_post( $_REQUEST['id'] );
-                if( $post != null ) {
-                    if( 'kwps_test_collection' == $post->post_type ) {
-                        include_once __DIR__ . '/../views/edit-test-collection.php';
-                    } elseif( 'kwps_version' == $post->post_type ) {
-                        include_once __DIR__ . '/../views/edit-version.php';
+                include_once __DIR__ . '/../views/edit-version.php';
+            } elseif ( 'edit_version' == $_REQUEST['action'] ) {
+                if( sizeof( $_POST) > 0 ) {
+                    // TODO validate first!
+                    if( isset( $_POST['ID'] ) ) { // determine if this is an existing version or a new one
+                        // update existing version
+                    } else {
+                        $version_form_handler = new Version_Handler();
+                        $version_id = $version_form_handler->save_new_version_form($_POST);
+
+                        $url = get_admin_url() . '/admin.php?page=' . $_REQUEST['page'] . '&action=edit_version&id=' . $version_id;
+                        wp_redirect($url);
                     }
+                } else {
+                    include_once __DIR__ . '/../views/edit-version.php';
                 }
             }
+        } else {
+            include_once __DIR__ . '/../views/add-test-collection.php';
         }
     }
 

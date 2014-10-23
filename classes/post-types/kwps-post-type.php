@@ -257,7 +257,8 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
      * @param $post_data
      * @return array|null
      */
-    public static function save_post($post_data){
+    public static function save_post($post_data, $return_id = false){
+        $post_data['post_type'] = static::$post_type;
         $post_id = wp_insert_post($post_data);
 
         if( $post_id != 0 ){
@@ -270,7 +271,11 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
             return null;
         }
 
-        return static::get_as_array($post_id);
+        if( $return_id ) {
+            return $post_id;
+        } else {
+            return static::get_as_array($post_id);
+        }
     }
 
     /**
