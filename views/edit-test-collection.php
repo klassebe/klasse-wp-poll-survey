@@ -4,8 +4,8 @@
 
 <div class="wrap">
     <h2 class="nav-tab-wrapper">
-        <a href="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&tab=versions" class="nav-tab <?php echo $active_tab == 'versions' ? 'nav-tab-active' : ''; ?>">Versions</a>
-        <a href="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>">Settings</a>
+        <a href="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&action=edit_test_collection&tab=versions" class="nav-tab <?php echo $active_tab == 'versions' ? 'nav-tab-active' : ''; ?>">Versions</a>
+        <a href="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&action=edit_test_collection&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>">Settings</a>
     </h2>
 
     <?php if($active_tab == 'versions'): ?>
@@ -24,10 +24,26 @@
         ?>
     </form>
     <?php else:?>
+        <?php $allowed_dropdown_values = \kwps_classes\Test_Collection::$allowed_dropdown_values; ?>
         <form>
+            <label for="kwps_logged_in_user_limit">Aangemelde gebruikers</label>
+            <select id="kwps_logged_in_user_limit">
+            <?php foreach( $allowed_dropdown_values['_kwps_logged_in_user_limit'] as $value ): ?>
+                <option name="_kwps_logged_in_user_limit"><?php echo $value; ?></option>
+            <?php endforeach; ?>
+            </select>
+
+            <label for="kwps_logged_out_user_limit">Anonieme gebruikers</label>
+            <select id="kwps_logged_out_user_limit">
+                <?php foreach( $allowed_dropdown_values['_kwps_logged_out_user_limit'] as $value ): ?>
+                    <option name="_kwps_logged_out_user_limit"><?php echo $value; ?></option>
+                <?php endforeach; ?>
+            </select>
+
+            <label for="kwps_show_grouping_form">Show grouping form</label>
+            <input type="checkbox" name="_kwps_show_grouping_form" />
             <button type="submit">Opslaan</button>
         </form>
-        <div>Settings page</div>
     <?php endif; ?>
 
 </div> <!-- .wrap -->
