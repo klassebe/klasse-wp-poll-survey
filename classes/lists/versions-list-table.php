@@ -110,12 +110,10 @@ class Versions_List_Table extends Base_List_Table {
     function column_name($item){
 
         //Build row actions
-        $delete_url = sprintf("%spost.php?post=%s&action=%s", get_admin_url() ,$item['ID'], 'delete');
-        $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_edit&id=%s&action=%s", get_admin_url() ,$item['ID'], 'edit');
-        $delete_url_with_nonce = wp_nonce_url($delete_url);
+        $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_edit&id=%s&section=%s", get_admin_url() ,$item['ID'], 'edit_version');
         $actions = array(
-            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_edit&id=%s&action=%s">' . __('Edit') . '</a>',get_admin_url(), $item['ID'] ,'edit'),
-            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . __('Delete') . '</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-version') ),
+            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_edit&id=%s&section=%s">' . __('Edit') . '</a>',get_admin_url(), $item['ID'] ,'edit_version'),
+            'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&version_id=%s&_wpnonce=%s&section=%s">' . __('Delete') . '</a>',$_REQUEST['page'],'delete', $_REQUEST['id'] ,$item['ID'], wp_create_nonce( 'delete-version'), $_REQUEST['section'] ),
         );
 
         //Return the post_title contents
@@ -228,9 +226,9 @@ class Versions_List_Table extends Base_List_Table {
 
         //Detect when a bulk action is being triggered...
         if( 'delete'===$this->current_action() ) {
-            if( isset( $_REQUEST['id']) ){
+            if( isset( $_REQUEST['version_id']) ){
                 if( wp_verify_nonce( $_REQUEST['_wpnonce'], 'delete-version' ) ){
-                    $post_id = (int) $_REQUEST['id'];
+                    $post_id = (int) $_REQUEST['version_id'];
 					$collection = Version::get_as_array($post_id);
 	                $collection['post_status'] = 'trash';
 					Version::save_post($collection);

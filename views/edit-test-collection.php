@@ -17,6 +17,8 @@
     <form id="kwps-filter" method="get" >
         <!-- For plugins, we also need to ensure that the form posts back to our current page -->
         <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+        <input type="hidden" name="section" value="<?php echo $_REQUEST['section'] ?>" />
+        <input type="hidden" name="id" value="<?php echo $_REQUEST['id'] ?>" />
         <!-- Now we can render the completed list table -->
         <?php
 

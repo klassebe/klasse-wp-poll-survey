@@ -111,11 +111,9 @@ class Test_Collections_List_Table extends Base_List_Table {
     function column_name($item){
 
         //Build row actions
-        $delete_url = sprintf("%spost.php?post=%s&action=%s", get_admin_url() ,$item['ID'], 'delete');
-        $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_edit&action=edit_test_collection&id=%s", get_admin_url() ,$item['ID']);
-        $delete_url_with_nonce = wp_nonce_url($delete_url);
+        $edit_url = sprintf("%sadmin.php?page=klasse-wp-poll-survey_edit&section=edit_test_collection&id=%s", get_admin_url() ,$item['ID']);
         $actions = array(
-            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_edit&action=edit_test_collection&id=%s">' . __('Edit') . '</a>',get_admin_url(), $item['ID'] ),
+            'edit'      => sprintf('<a href="%sadmin.php?page=klasse-wp-poll-survey_edit&section=edit_test_collection&id=%s">' . __('Edit') . '</a>',get_admin_url(), $item['ID'] ),
             'delete'    => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . __('Delete') . '</a>',$_REQUEST['page'],'delete',$item['ID'], wp_create_nonce( 'delete-test_collection') ),
         );
 

@@ -133,12 +133,12 @@ class admin_section {
      */
     public static function display_form()
     {
-        if( isset( $_REQUEST['action'] ) ) {
-            if( 'edit_test_collection' == $_REQUEST['action'] ) {
+        if( isset( $_REQUEST['section'] ) ) {
+            if( 'edit_test_collection' == $_REQUEST['section'] ) {
                 $versions_list = new \kwps_classes\Versions_List_Table();
                 $versions_list->prepare_items();
                 include_once __DIR__ . '/../views/edit-test-collection.php';
-            } elseif( 'add_version' == $_REQUEST['action'] ) {
+            } elseif( 'add_version' == $_REQUEST['section'] ) {
 
                 $version = array(
                     'post_title' => '',
@@ -146,7 +146,7 @@ class admin_section {
                 );
 
                 include_once __DIR__ . '/../views/edit-version.php';
-            } elseif ( 'edit_version' == $_REQUEST['action'] ) {
+            } elseif ( 'edit_version' == $_REQUEST['section'] ) {
                 if( sizeof( $_POST) > 0 ) {
                     // TODO validate first!
                     if( isset( $_POST['ID'] ) ) { // determine if this is an existing version or a new one
@@ -155,7 +155,7 @@ class admin_section {
                         $version_form_handler = new Version_Handler();
                         $version_id = $version_form_handler->save_new_version_form($_POST);
 
-                        $url = get_admin_url() . '/admin.php?page=' . $_REQUEST['page'] . '&action=edit_version&id=' . $version_id;
+                        $url = get_admin_url() . '/admin.php?page=' . $_REQUEST['page'] . '&section=edit_version&id=' . $version_id;
                         wp_redirect($url);
                     }
                 } else {
