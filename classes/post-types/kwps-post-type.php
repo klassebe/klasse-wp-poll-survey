@@ -177,17 +177,17 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
      * @param array $post_as_array
      * @return array
      */
-    static function validate_for_insert($post_as_array = array()) {
-        $errors = static::check_required_fields($post_as_array);
+    static function validate_for_insert($post_as_array = array(), $require_post_parent = false) {
+        $errors = static::check_required_fields($post_as_array, $require_post_parent);
         $errors = array_merge($errors, static::check_numeric_fields($post_as_array));
 
-        foreach(static::$additional_validation_methods as $validation_method){
-            $errors = array_merge( $errors, static::$validation_method( $post_as_array ) );
-        }
-
-        if( isset( $post_as_array['post_status'] ) && 'publish' == $post_as_array['post_status']  ){
-            $errors = array_merge( $errors, static::validate_for_publish( $post_as_array ) );
-        }
+//        foreach(static::$additional_validation_methods as $validation_method){
+//            $errors = array_merge( $errors, static::$validation_method( $post_as_array ) );
+//        }
+//
+//        if( isset( $post_as_array['post_status'] ) && 'publish' == $post_as_array['post_status']  ){
+//            $errors = array_merge( $errors, static::validate_for_publish( $post_as_array ) );
+//        }
 
         return $errors;
     }
@@ -199,25 +199,17 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
      * @param $post
      * @return array
      */
-    public static function check_required_fields($post){
+    public static function check_required_fields($post, $require_post_parent){
         $errors = array();
         foreach(static::$required_fields as $field){
-            if(! isset($post[$field])) {
-                array_push($errors,
-                    array(
-                        'field' => $field,
-                        'message' => __( 'Required', 'klasse-wp-poll-survey' )
-                    )
-                );
-            } else {
-                if( is_string($post[$field])){
-                    if( strlen($post[$field]) == 0 ) {
-                        array_push($errors,
-                            array(
-                                'field' => $field,
-                                'message' => __( 'Required', 'klasse-wp-poll-survey' )
-                            )
-                        );
+            if( 'post_parent' != $field ||  $require_post_parent ) {
+                if(! isset($post[$field])) {
+                    $errors[$field] = __( 'Required', 'klasse-wp-poll-survey' );
+                } else {
+                    if( is_string($post[$field])){
+                        if( strlen($post[$field]) == 0 ) {
+                            $errors[$field] = __( 'Required', 'klasse-wp-poll-survey' );
+                        }
                     }
                 }
             }

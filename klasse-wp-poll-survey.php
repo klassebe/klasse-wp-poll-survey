@@ -54,6 +54,7 @@ require_once __DIR__ . '/classes/charts/pie-chart.php';
 require_once __DIR__ . '/classes/session.php';
 require_once __DIR__ . '/classes/post-types/result-group.php';
 require_once __DIR__ . '/classes/overlay.php';
+require_once __DIR__ . '/classes/admin-section.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 
@@ -85,5 +86,56 @@ register_deactivation_hook(__FILE__, array( '\kwps_classes\kwps_plugin' ,'on_dea
 include_once 'add-shortcodes.php';
 
 include_once 'enqueue-scripts.php';
-include_once 'enqueue-styles.php';
-include_once 'add-admin-menu.php';
+//include_once 'enqueue-styles.php';
+//include_once 'add-admin-menu.php';
+
+add_action('admin_init', 'kwps_register_styles');
+
+function kwps_register_styles(){
+    wp_register_style( 'klasse_wp_poll_survey_plugin_admin_styles',  plugins_url('admin.css', __DIR__ . '/css/admin.css')  );
+}
+
+add_action('admin_menu', 'add_plugin_admin_menu');
+
+/**
+ * Register the administration menu for this plugin into the WordPress Dashboard menu.
+ *
+ * @since    1.0.0
+ */
+function add_plugin_admin_menu() {
+
+    add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array('\kwps_classes\admin_section', 'display_tests'));
+    $page = add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Add new test', 'klasse-wp-poll-survey' ), __( 'Add new', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_edit', array('\kwps_classes\admin_section', 'display_form'));
+    add_action('admin_print_styles-' . $page, array('\kwps_classes\admin_section', 'enqueue_styles_admin_addnew'), 80 );
+    add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Manage entries', 'klasse-wp-poll-survey' ), __( 'Entries', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_manage_entries', array('\kwps_classes\admin_section', 'manage_entries'));
+}
+
+/*----------------------------------------------------------------------------*
+ * Dashboard and Administrative Functionality
+ *----------------------------------------------------------------------------*/
+
+/*
+ * @TODO:
+ *
+ * - replace `class-plugin-name-admin.php` with the name of the plugin's admin file
+ * - replace Plugin_Name_Admin with the name of the class defined in
+ *   `class-plugin-name-admin.php`
+ *
+ * If you want to include Ajax within the dashboard, change the following
+ * conditional to:
+ *
+ * if ( is_admin() ) {
+ *   ...
+ * }
+ *
+ * The code below is intended to to give the lightest footprint possible.
+ */
+//if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
+//    add_action('admin_init', 'enqueue_scripts_admin');
+//    add_action('admin_init', 'enqueue_styles_admin');
+//    load_plugin_textdomain('klasse-wp-poll-survey', false, dirname(plugin_basename(__FILE__)) . '/languages');
+//}
+//  else {
+// add_action('admin_enqueue_scripts', 'enqueue_scripts_admin');
+// add_action('admin_enqueue_styles', 'enqueue_styles_admin');
+// }

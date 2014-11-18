@@ -10,7 +10,7 @@ class Intro extends Kwps_Post_Type{
         'post_content',
         'post_status',
         'post_parent',
-        '_kwps_sort_order',
+//        '_kwps_sort_order',
     );
 
     public static $numeric_fields = array(

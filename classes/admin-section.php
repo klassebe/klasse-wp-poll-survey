@@ -20,13 +20,12 @@ require_once __DIR__ . '/uniqueness.php';
  */
 class admin_section {
 
-
     /**
      * Enqueues all styles for the admin part
      */
     static function enqueue_styles_admin_addnew() {
 		wp_enqueue_style('thickbox');
-		wp_enqueue_style( 'klasse-wp-poll-survey-plugin-admin-styles', plugins_url( '../assets/css/kwps_admin.css', __FILE__ ));
+		wp_enqueue_style( 'klasse_wp_poll_survey_plugin_admin_styles');
 	}
 
     /**
@@ -138,32 +137,43 @@ class admin_section {
                 $versions_list = new \kwps_classes\Versions_List_Table();
                 $versions_list->prepare_items();
                 include_once __DIR__ . '/../views/edit-test-collection.php';
-            } elseif( 'add_version' == $_REQUEST['section'] ) {
-
-                $version = array(
-                    'post_title' => '',
-                    'post_parent' => $_REQUEST['post_parent'],
-                );
-
-                include_once __DIR__ . '/../views/edit-version.php';
-            } elseif ( 'edit_version' == $_REQUEST['section'] ) {
-                if( sizeof( $_POST) > 0 ) {
-                    // TODO validate first!
-                    if( isset( $_POST['ID'] ) ) { // determine if this is an existing version or a new one
-                        // update existing version
-                    } else {
-                        $version_form_handler = new Version_Handler();
-                        $version_id = $version_form_handler->save_new_version_form($_POST);
-
-                        $url = get_admin_url() . '/admin.php?page=' . $_REQUEST['page'] . '&section=edit_version&id=' . $version_id;
-                        wp_redirect($url);
-                    }
+            } elseif( 'edit_version' == $_REQUEST['section'] ) {
+                if( sizeof( $_POST ) == 0  ) {
+                    include_once __DIR__ . '/../views/edit-version.php';
                 } else {
+                    if( isset( $_REQUEST['id'] ) ) {
+                        // validate/update existing version
+                        $form_handler = new Version_Handler();
+                        $validation_result = $form_handler->validate_existing_version_form($_POST);
+                        if( ! $validation_result['errors'] ) {
+                            $version_data = $form_handler->save_new_version_form($_POST);
+                        } else {
+                            $version_data = $validation_result['data'];
+                        }
+                    } else {
+                        $form_handler = new Version_Handler();
+                        $validation_result = $form_handler->validate_new_version_form($_POST);
+//                        var_dump( $validation_result['data']['question_groups'][1]['questions']);
+                        if( ! $validation_result['errors'] ) {
+                            $version_data = $form_handler->save_new_version_form($_POST);
+                        } else {
+                            $version_data = $validation_result['data'];
+                        }
+                    }
                     include_once __DIR__ . '/../views/edit-version.php';
                 }
             }
         } else {
-            include_once __DIR__ . '/../views/add-test-collection.php';
+            if( sizeof( $_POST ) == 0 ) {
+                include_once __DIR__ . '/../views/add-test-collection.php';
+            } else {
+                $data = $_POST;
+                $data['_kwps_logged_in_user_limit'] = 'free';
+                $test_collection = Test_Collection::save_post($_POST);
+                $id = $test_collection['ID'];
+                $url = get_admin_url() . '/admin.php?page=' . $_REQUEST['page'] . '&section=edit_test_collection&id=' . $id;
+                wp_redirect($url);
+            }
         }
     }
 

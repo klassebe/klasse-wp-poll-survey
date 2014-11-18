@@ -12,4 +12,5 @@ function enqueue_styles() {
 }
 
 function enqueue_styles_admin() {
+//    wp_enqueue_style( 'klasse-wp-poll-survey-plugin-styles', plugins_url( 'css/admin.css', __FILE__ ), array());
 }
