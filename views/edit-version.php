@@ -2,22 +2,26 @@
 $form_action = '?page=' . $_REQUEST['page'] . '&section=edit_version';
 
 if( isset( $_REQUEST['id'] ) ) {
-    $version = \kwps_classes\Version::get_as_array( $_REQUEST['id'] );
-    $question_groups = \kwps_classes\Question_Group::get_all_by_post_parent( $_REQUEST['id'] );
-    foreach( $question_groups as $question_group ) {
-        $questions = \kwps_classes\Question::get_all_by_post_parent( $question_group['ID'] );
-        foreach( $questions as $question ) {
-            $answer_options = \kwps_classes\Answer_Option::get_all_by_post_parent( $question['ID'] );
-            foreach( $answer_options as $answer_option ) {
-                $question['answer_options'][$answer_option['_kwps_sort_order']] = $answer_option;
+    if( isset( $_REQUEST['update'] ) && 'true' == $_REQUEST['update'] ) {
+        $version = $version_data;
+    } else {
+        $version = \kwps_classes\Version::get_as_array( $_REQUEST['id'] );
+        $question_groups = \kwps_classes\Question_Group::get_all_by_post_parent( $_REQUEST['id'] );
+        foreach( $question_groups as $question_group ) {
+            $questions = \kwps_classes\Question::get_all_by_post_parent( $question_group['ID'] );
+            foreach( $questions as $question ) {
+                $answer_options = \kwps_classes\Answer_Option::get_all_by_post_parent( $question['ID'] );
+                foreach( $answer_options as $answer_option ) {
+                    $question['answer_options'][$answer_option['_kwps_sort_order']] = $answer_option;
+                }
+                $question_group['questions'][$question['_kwps_sort_order']] = $question;
             }
-            $question_group['questions'][$question['_kwps_sort_order']] = $question;
+            $version['question_groups'][$question_group['_kwps_sort_order']] = $question_group;
         }
-        $version['question_groups'][$question_group['_kwps_sort_order']] = $question_group;
+        $version['intro'] = \kwps_classes\Intro::get_one_by_post_parent( $_REQUEST['id'] );
+        $version['outro'] = \kwps_classes\Outro::get_one_by_post_parent( $_REQUEST['id'] );
     }
-    $version['intro'] = \kwps_classes\Intro::get_one_by_post_parent( $_REQUEST['id'] );
-    $version['outro'] = \kwps_classes\Outro::get_one_by_post_parent( $_REQUEST['id'] );
-    $form_action .= '&id=' . $_REQUEST['id'];
+    $form_action .= '&id=' . $_REQUEST['id'] . '&update=true';
 } else {
     if( isset( $version_data ) ) {
         $version = $version_data;
@@ -89,6 +93,7 @@ if( isset( $_REQUEST['id'] ) ) {
             class="<?php if( isset( $version['errors']['post_title'] ) ) echo 'error'; ?>"
         />
         <?php $intro = $version['intro'];?>
+        <input type="hidden" name="intro[ID]" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
         <input type="hidden" name="intro[post_status]" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
 
         <input
@@ -192,6 +197,7 @@ if( isset( $_REQUEST['id'] ) ) {
                 <?php endforeach; ?>
             </div>
         <?php $outro = $version['outro']; ?>
+        <input type="hidden" name="outro[ID]" value="<?php if( isset( $outro['ID'] ) ) echo $outro['ID'];?>">
         <input type="hidden" name="outro[post_status]" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>">
         <input
             type="text"
