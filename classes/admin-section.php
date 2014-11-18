@@ -126,6 +126,13 @@ class admin_section {
 
 	}
 
+    public static function enqueue_scripts() {
+        if( isset( $_REQUEST['section']) && 'edit_version' == $_REQUEST['section'] ) {
+            wp_register_script('klasse_wp_poll_survey_plugin_admin_scripts', plugins_url('../js/version-handling.js', __FILE__));
+            wp_enqueue_script('klasse_wp_poll_survey_plugin_admin_scripts');
+        }
+    }
+
     /**
      * Collects all data and adds it via javascript variables wrapped in <script> tags to the view to add/edit tests
      *

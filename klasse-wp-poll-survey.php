@@ -95,18 +95,19 @@ function kwps_register_styles(){
     wp_register_style( 'klasse_wp_poll_survey_plugin_admin_styles',  plugins_url('admin.css', __DIR__ . '/css/admin.css')  );
 }
 
-add_action('admin_menu', 'add_plugin_admin_menu');
+add_action('admin_menu', 'kwps_add_plugin_admin_menu');
 
 /**
  * Register the administration menu for this plugin into the WordPress Dashboard menu.
  *
  * @since    1.0.0
  */
-function add_plugin_admin_menu() {
+function kwps_add_plugin_admin_menu() {
 
     add_menu_page(__( 'Tests', 'klasse-wp-poll-survey' ), __( 'Poll & Survey', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_tests', array('\kwps_classes\admin_section', 'display_tests'));
     $page = add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Add new test', 'klasse-wp-poll-survey' ), __( 'Add new', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_edit', array('\kwps_classes\admin_section', 'display_form'));
     add_action('admin_print_styles-' . $page, array('\kwps_classes\admin_section', 'enqueue_styles_admin_addnew'), 80 );
+    add_action('admin_print_scripts-' . $page, array('\kwps_classes\admin_section', 'enqueue_scripts'), 80 );
     add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Manage entries', 'klasse-wp-poll-survey' ), __( 'Entries', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_manage_entries', array('\kwps_classes\admin_section', 'manage_entries'));
 }
 
