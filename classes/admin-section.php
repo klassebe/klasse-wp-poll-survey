@@ -128,6 +128,9 @@ class admin_section {
 
     public static function enqueue_scripts() {
         if( isset( $_REQUEST['section']) && 'edit_version' == $_REQUEST['section'] ) {
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_script( 'jquery-ui-core' );
+
             wp_register_script('klasse_wp_poll_survey_plugin_admin_scripts', plugins_url('../js/version-handling.js', __FILE__));
             wp_enqueue_script('klasse_wp_poll_survey_plugin_admin_scripts');
         }

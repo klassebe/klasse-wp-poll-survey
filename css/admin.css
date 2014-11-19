@@ -395,3 +395,67 @@ input.error {
 form.error {
     background-color: red;
 }
+
+form.kwps-form {
+    border: 2px solid;
+    border-color: black;
+    margin: 5px;
+}
+
+div.kwps-version {
+    border: 2px solid;
+    border-color: blue;
+    margin: 5px;
+}
+
+div.kwps-intro {
+    border: 2px solid;
+    border-color: yellow;
+    margin: 5px;
+}
+
+div.kwps-question-groups {
+    border: 2px solid;
+    border-color: black;
+    margin: 5px;
+}
+
+div.kwps-question-group {
+    border: 2px solid;
+    border-color: blue;
+    margin: 5px;
+}
+
+div.kwps-questions {
+    border: 2px solid;
+    border-color: yellow;
+    margin: 5px;
+}
+
+div.kwps-question {
+    border: 2px solid;
+    border-color: black;
+    margin: 5px;
+}
+
+div.kwps-answer-options {
+    border: 2px solid;
+    border-color: blue;
+    margin: 5px;
+}
+
+div.kwps-answer-option {
+    border: 2px solid;
+    border-color: yellow;
+    margin: 5px;
+}
+
+div.kwps-outro {
+    border: 2px solid;
+    border-color: black;
+    margin: 5px;
+}
+
+button.kwps-remove-answer-option {
+    font-size: small;
+}
