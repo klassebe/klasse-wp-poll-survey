@@ -72,6 +72,11 @@ class Version_Handler {
     }
 
     public function save_new_version_form($data){
+//        var_dump( $data);
+//        $data = $this->update_kwps_sort_order_of_form( $data );
+//
+//        var_dump( $data);die;
+
         $stripped_version = array_diff_key( $data, array('question_groups' => '') );
         $version_id = Version::save_post($stripped_version, true);
 
@@ -101,18 +106,75 @@ class Version_Handler {
                 $question_id = Question::save_post( $stripped_question, true );
                 $data['question_groups'][$question_group_key]['questions'][$question_key]['ID'] = $question_group_id;
 
-
                 foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
-                    $answer_option['post_parent'] = $question_id;
+                    if( 'trash' == $answer_option['post_status'] ) {
+                        unset( $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key] );
+                        if( isset( $answer_option['ID'] ) ) {
+                            wp_delete_post( $answer_option['ID'], true );
+                        }
+                    } else {
+                        $answer_option['post_parent'] = $question_id;
 
-                    $answer_option_id = Answer_Option::save_post( $answer_option, true );
-                    $answer_option['ID'] = $answer_option_id;
-                    $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['ID'] = $answer_option_id;
+                        $answer_option_id = Answer_Option::save_post( $answer_option, true );
+                        $answer_option['ID'] = $answer_option_id;
+                        $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['ID'] = $answer_option_id;
+                    }
                 }
             }
         }
 
         return $data;
+    }
+
+    private function update_kwps_sort_order_of_form( $data ) {
+        $data['question_groups'] = $this->update_kwps_sort_order( $data['question_groups'] );
+
+        foreach( $data['question_groups'] as $question_group_key => $question_group ) {
+            $data['question_groups'][$question_group_key]['questions'] =
+                $this->update_kwps_sort_order($data['question_groups'][$question_group_key]['questions']);
+
+            foreach( $question_group['questions'] as $question_key => $question ) {
+                $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'] =
+                    $this->update_kwps_sort_order( $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'] );
+            }
+        }
+
+        return $data;
+    }
+
+    private function update_kwps_sort_order( $data ) {
+        $trashed_items = $this->get_trashed_item_indexes( $data );
+
+        $tempData = array();
+
+        foreach( $data as $index => $item ) {
+            if( 'trash' != $item['post_status'] ) {
+                $tempData[] = $item;
+            }
+        }
+
+        foreach( $tempData as $index => $item ) {
+            $tempData[$index]['_kwps_sort_order'] = $index;
+        }
+
+        foreach( $trashed_items as $index ) {
+            $tempData[] = $data[$index];
+        }
+
+        return $tempData;
+
+    }
+
+    private function get_trashed_item_indexes( $data ) {
+        $indexes = array();
+
+        foreach( $data as $index => $item ) {
+            if( 'trash' == $item['post_status'] ) {
+                $indexes[] = $index;
+            }
+        }
+
+        return $indexes;
     }
 
     public function validate_existing_version_form( $data ) {
@@ -160,6 +222,7 @@ class Version_Handler {
                 if( sizeof( $question_errors ) != 0 ) {
                     $data_has_errors = true;
                 }
+
                 foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
                     $answer_option_errors = Answer_Option::validate_for_update($answer_option);
 
