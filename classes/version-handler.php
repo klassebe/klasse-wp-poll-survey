@@ -11,6 +11,13 @@ namespace kwps_classes;
 
 class Version_Handler {
 
+    public static function test_handle_form(){
+        $data = array();
+        $handler = new Version_Handler();
+        $validated_data = $handler->validate_new_version_form($data);
+        var_dump($validated_data); die;
+    }
+
     public function validate_new_version_form( $data ) {
         $data_has_errors = false;
 
