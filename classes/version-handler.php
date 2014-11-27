@@ -8,11 +8,62 @@
 
 namespace kwps_classes;
 
+require_once __DIR__ . '/post-types/version.php';
+require_once __DIR__ . '/post-types/intro.php';
+require_once __DIR__ . '/post-types/outro.php';
+require_once __DIR__ . '/post-types/question_group.php';
+require_once __DIR__ . '/post-types/question.php';
+require_once __DIR__ . '/post-types/answer-option.php';
+
 
 class Version_Handler {
 
     public static function test_handle_form(){
-        $data = array();
+        $data = array(
+            'post_title' => '',
+            'post_parent' => 1631,
+            'post_status' => 'draft',
+            '_kwps_sort_order' => 1,
+            'intro' => array(
+                'post_content' => '',
+                '_kwps_sort_order' => 1,
+                'post_status' => 'draft',
+            ),
+            'outro' => array(
+                'post_content' => '',
+                '_kwps_sort_order' => 1,
+                'post_status' => 'draft',
+            ),
+            'question_groups' => array(
+                1 => array(
+                    '_kwps_sort_order' => 1,
+                    'post_status' => 'draft',
+                    'post_title' => '',
+                    'post_content' => '',
+                    'questions' => array(
+                        1 => array(
+                            '_kwps_sort_order' => 1,
+                            'post_status' => 'draft',
+                            'post_content' => '',
+                            'answer_options' => array(
+                                1 => array(
+                                    '_kwps_sort_order' => 1,
+                                    'post_content' => '',
+                                    'post_status' => 'draft',
+                                ),
+                                2 => array(
+                                    '_kwps_sort_order' => 2,
+                                    'post_content' => '',
+                                    'post_status' => 'draft',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+
+            ),
+        );
+
         $handler = new Version_Handler();
         $validated_data = $handler->validate_new_version_form($data);
         var_dump($validated_data); die;
