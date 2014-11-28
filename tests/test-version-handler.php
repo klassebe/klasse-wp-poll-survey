@@ -13,10 +13,10 @@ class VersionHandlerTest extends WP_UnitTestCase {
     function testNewVersionFormValidation_NoOutroIndex() {
         $this->checkOutputWithFormTestData( 'no-outro-index.php');
     }
-//
-//    function testNewVersionFormValidation_NoQuestionGroupIndex() {
-//        $this->checkOutputWithFormTestData( 'no-question-groups-index.php');
-//    }
+
+    function testNewVersionFormValidation_NoQuestionGroupsIndex() {
+        $this->checkOutputWithFormTestData( 'no-question-groups-index.php');
+    }
 //
 //    function testNewVersionFormValidation_NotAnArray() {
 //        $this->checkOutputWithFormTestData( 'not-an-array.php');
@@ -27,6 +27,7 @@ class VersionHandlerTest extends WP_UnitTestCase {
         $version_handler = new \kwps_classes\Version_Handler();
         $output = $version_handler->validate_new_version_form( $test_data['input'] );
 //        var_dump( $output['data'], $test_data['expected_output']['data'] );
+        $this->assertEquals($output['errors'], $test_data['expected_output']['errors']);
         $this->assertTrue( $this->arrays_are_similar( $output['data'], $test_data['expected_output']['data'] ) );
     }
 

@@ -27,14 +27,17 @@ return array(
                 'post_content' => 'Intro contents',
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
+                'errors' => array(),
             ),
             'outro' => array(
                 'post_content' => 'Outro contents',
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
+                'errors' => array(),
             ),
             'question_groups' => array(
                 1 => array(
+                    'errors' => array('post_content' => 'Required'),
                     '_kwps_sort_order' => 1,
                     'post_status' => 'draft',
                     'post_title' => '',
@@ -68,7 +71,9 @@ return array(
                         ),
                     ),
                 ),
+                'errors' => array(),
             ),
+            'errors' => array(),
         ),
     ),
 );

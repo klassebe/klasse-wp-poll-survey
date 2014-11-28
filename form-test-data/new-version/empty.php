@@ -2,15 +2,12 @@
 return array(
     'input' => array(),
     'expected_output' => array(
-        'errors' => array(
-            'post_title' => 'Required',
-            'post_parent' => 'Required',
-            'post_status' => 'Required',
-        ),
+        'errors' => true,
         'data' => array(
             'errors' => array(
                 'post_title' => 'Required',
                 'post_parent' => 'Required',
+                'post_status' => 'Required',
             ),
             'post_title' => '',
             'post_parent' => '',
