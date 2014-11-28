@@ -7,8 +7,10 @@ class Uniqueness {
         $bits = 50;
         $uid = bin2hex(openssl_random_pseudo_bytes($bits));
 
-        if (!isset($_COOKIE['klasse_wp_poll_survey'])) {
-            setcookie('klasse_wp_poll_survey', $uid, time() + (10 * 365 * 24 * 60 * 60), "/");
+        if( PHP_SAPI !== 'cli'){
+            if (!isset($_COOKIE['klasse_wp_poll_survey'])) {
+                setcookie('klasse_wp_poll_survey', $uid, time() + (10 * 365 * 24 * 60 * 60), "/");
+            }
         }
     }
 
