@@ -10,9 +10,9 @@ class VersionHandlerTest extends WP_UnitTestCase {
         $this->checkOutputWithFormTestData( 'no-intro-index.php');
     }
 
-//    function testNewVersionFormValidation_NoOutroIndex() {
-//        $this->checkOutputWithFormTestData( 'no-outro-index.php');
-//    }
+    function testNewVersionFormValidation_NoOutroIndex() {
+        $this->checkOutputWithFormTestData( 'no-outro-index.php');
+    }
 //
 //    function testNewVersionFormValidation_NoQuestionGroupIndex() {
 //        $this->checkOutputWithFormTestData( 'no-question-groups-index.php');
