@@ -78,6 +78,10 @@ class Version_Handler {
     public function validate_new_version_form( $data ) {
         $data_has_errors = false;
 
+        if(! is_array( $data ) ) {
+            $data = array();
+        }
+
         $data = $this->add_missing_top_level_indexes($data);
 
         $stripped_version = array_diff_key( $data, array('question_groups' => '') );

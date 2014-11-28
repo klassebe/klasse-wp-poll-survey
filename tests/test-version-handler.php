@@ -17,10 +17,10 @@ class VersionHandlerTest extends WP_UnitTestCase {
     function testNewVersionFormValidation_NoQuestionGroupsIndex() {
         $this->checkOutputWithFormTestData( 'no-question-groups-index.php');
     }
-//
-//    function testNewVersionFormValidation_NotAnArray() {
-//        $this->checkOutputWithFormTestData( 'not-an-array.php');
-//    }
+
+    function testNewVersionFormValidation_NotAnArray() {
+        $this->checkOutputWithFormTestData( 'not-an-array.php');
+    }
 
     function checkOutputWithFormTestData($file) {
         $test_data = include __DIR__ . '/../form-test-data/new-version/' . $file;
