@@ -78,7 +78,7 @@ if( isset( $_REQUEST['id'] ) ) {
 </script>
 <div class="wrap">
     <h2>Versie</h2>
-    <form action="<?php echo $form_action ?>" method="post" class="kwps-form">
+    <form id="edit-version" action="<?php echo $form_action ?>" method="post" class="kwps-form">
         <div class="kwps-version">
             <?php if( isset( $version['ID'] ) ):?>
                 <input type="hidden" name="ID" value="<?php echo $version['ID'] ?>" />

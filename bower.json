@@ -5,7 +5,8 @@
     "backbone.validation": "~0.7.1",
     "highcharts-release": "~4.0.1",
     "tinymce": "~4.0.28",
-    "jquery-ui": "~1.10.4"
+    "jquery-ui": "~1.10.4",
+    "jquery.are-you-sure": "~1.9.0"
   },
   "devDependencies": {}
 }
