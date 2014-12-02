@@ -19,16 +19,12 @@ if( isset( $_REQUEST['id'] ) ) {
             $version['question_groups'][$question_group['_kwps_sort_order']] = $question_group;
         }
         $version['intro'] = \kwps_classes\Intro::get_one_by_post_parent( $_REQUEST['id'] );
-        $version['intro_result'] = \kwps_classes\Intro_Result::get_one_by_post_parent( $_REQUEST['id'] );
         $version['outro'] = \kwps_classes\Outro::get_one_by_post_parent( $_REQUEST['id'] );
     }
     $form_action .= '&id=' . $_REQUEST['id'] . '&update=true';
 } else {
     if( isset( $version_data ) ) {
         $version = $version_data;
-        if( isset( $version_data ) ) {
-            $form_action .= '&id=' . $version_data['ID'] . '&update=true';
-        }
     } else {
         $version = array(
             'post_title' => '',
@@ -36,11 +32,6 @@ if( isset( $_REQUEST['id'] ) ) {
             'post_status' => 'draft',
             '_kwps_sort_order' => 1,
             'intro' => array(
-                'post_content' => '',
-                '_kwps_sort_order' => 1,
-                'post_status' => 'draft',
-            ),
-            'intro_result' => array(
                 'post_content' => '',
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
@@ -88,7 +79,7 @@ if( isset( $_REQUEST['id'] ) ) {
 <div class="wrap">
     <h2>Versie</h2>
     <form id="edit-version" action="<?php echo $form_action ?>" method="post" class="kwps-form">
-        <div class="kwps-version">
+        <div class="kwps kwps-single" id="kwps-version">
             <?php if( isset( $version['ID'] ) ):?>
                 <input type="hidden" name="ID" value="<?php echo $version['ID'] ?>" />
             <?php endif;?>
@@ -103,35 +94,22 @@ if( isset( $_REQUEST['id'] ) ) {
                 class="<?php if( isset( $version['errors']['post_title'] ) ) echo 'error'; ?>"
             />
         </div>
-        <div class="kwps-intro">
+        <div class="kwps kwps-single" id="kwps-intro">
             <?php $intro = $version['intro'];?>
-            <input type="hidden" name="intro[ID]" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
-            <input type="hidden" name="intro[post_status]" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
+            <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
+            <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
 
             <input
                 type="text"
-                name="intro[post_content]"
+                name="post_content"
                 placeholder="Intro"
                 value="<?php echo $intro['post_content'] ?>"
                 class="<?php if( isset( $intro['errors']['post_content'] ) )  echo 'error'; ?>"
             />
         </div>
-        <div class="kwps-intro-result">
-            <?php $intro_result = $version['intro_result'];?>
-            <input type="hidden" name="intro_result[ID]" value="<?php if( isset( $intro_result['ID'] ) ) echo $intro_result['ID'];?>">
-            <input type="hidden" name="intro_result[post_status]" value="<?php if( isset( $intro_result['post_status'] ) ) echo $intro_result['post_status'];?>">
-
-            <input
-                type="text"
-                name="intro_result[post_content]"
-                placeholder="Intro Result"
-                value="<?php echo $intro_result['post_content'] ?>"
-                class="<?php if( isset( $intro_result['errors']['post_content'] ) )  echo 'error'; ?>"
-                />
-        </div>
-        <div id="kwps-question-groups" class="kwps-question-groups">
+        <div id="kwps-question_groups" class="kwps kwps-multi kwps-question_groups">
                 <?php foreach( $version['question_groups'] as $question_group ): ?>
-                    <div id="kwps-question-group-<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question-group">
+                    <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question_group">
                         <h3>Pagina <?php echo $question_group['_kwps_sort_order'] ?></h3>
                         <?php $question_group_field_index = 'question_groups[' . $question_group['_kwps_sort_order'] .']' ?>
                         <?php if( isset ($question_group['ID'] ) ): ?>
@@ -155,10 +133,10 @@ if( isset( $_REQUEST['id'] ) ) {
                                value="<?php echo $question_group['post_content'] ?>"
                                class="<?php if( isset( $question_group['errors']['post_content'] ) ) echo 'error'; ?>"
                             />
-                        <div id="kwps-question-group-questions" class="kwps-questions" questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
+                        <div id="kwps-question_group-questions" class="kwps kwps-multi kwps-questions" questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
                             >
                             <?php foreach( $question_group['questions'] as $question ) : ?>
-                                <div id="kwps-question-group-question-<?php echo $question['_kwps_sort_order'] ?>" class="kwps-question"
+                                <div id="kwps-question_group-question-<?php echo $question['_kwps_sort_order'] ?>" class="kwps kwps-multi kwps-question"
                                      questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
                                      questionIndex="<?php echo $question['_kwps_sort_order'];?>"
                                     >
@@ -188,11 +166,11 @@ if( isset( $_REQUEST['id'] ) ) {
                                         value="<?php echo $question['post_content'];?>"
                                         class="<?php if( isset( $question['errors']['post_content'] ) ) echo 'error'; ?>"
                                         />
-                                <div id="kwps-question-group-question-answer-options" class="kwps-answer-options" questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
+                                <div id="kwps-question_group-question-answer-options" class="kwps kwps-multi kwps-answer-options" questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
                                      questionIndex="<?php echo $question['_kwps_sort_order'];?>">
                                     <?php foreach( $question['answer_options'] as $answer_option ): ?>
-                                        <div id="kwps-question-group-question-answer-option-<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer-option">
-                                            <h3>Antwoord <span><?php echo $answer_option['_kwps_sort_order'] ;?></span> <button type="button" class="kwps-remove-answer-option">remove</button></h3>
+                                        <div id="kwps-question_group-question-answer_option-<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_option">
+                                            <h3>Antwoord <span><?php echo $answer_option['_kwps_sort_order'] ;?></span> <button type="button" class="kwps-remove-answer_option">remove</button></h3>
                                             <?php
                                                 $answer_option_field_index = $question_field_index .
                                                     '[answer_options][' . $answer_option['_kwps_sort_order'] . ']';
@@ -221,7 +199,7 @@ if( isset( $_REQUEST['id'] ) ) {
                                         </div>
                                     <?php endforeach; ?>
                                     <button type="button"
-                                            class="kwps-create-answer-option"
+                                            class="kwps-create-answer_option"
                                             questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
                                             questionIndex="<?php echo $question['_kwps_sort_order'];?>"
                                         >
@@ -240,18 +218,18 @@ if( isset( $_REQUEST['id'] ) ) {
                     </div>
                 <?php endforeach; ?>
             </div>
-        <div class="kwps-outro">
+        <div class="kwps kwps-single" id="kwps-outro">
             <?php $outro = $version['outro']; ?>
-            <input type="hidden" name="outro[ID]" value="<?php if( isset( $outro['ID'] ) ) echo $outro['ID'];?>">
-            <input type="hidden" name="outro[post_status]" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>">
+            <input type="hidden" name="ID" value="<?php if( isset( $outro['ID'] ) ) echo $outro['ID'];?>">
+            <input type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>">
             <input
                 type="text"
-                name="outro[post_content]"
+                name="post_content"
                 placeholder="Outro"
                 value="<?php echo $outro['post_content'] ?>"
                 class="<?php if( isset( $outro['errors']['post_content'] ) ) echo 'error'; ?>"
                 />
         </div>
-        <button type="submit">Wijzigingen opslaan</button>
+        <button id="version-save" type="submit">Wijzigingen opslaan</button>
     </form>
 </div>

@@ -47,9 +47,11 @@ jQuery(document).ready(function($) {
       $('form').trigger('rescan.areYouSure');
     });
 
-    $(document).on('click','.kwps-create-answer-option', createAnswerOption);
+  $('#version-save').click(versionSave);
 
-    $(document).on('click','.kwps-remove-answer-option', removeAnswerOptionFunction);
+    $(document).on('click','.kwps-create-answer_option', createAnswerOption);
+
+    $(document).on('click','.kwps-remove-answer_option', removeAnswerOptionFunction);
 //    $('.kwps-remove-answer-option').on('click','button.kwps-remove-answer-option', removeAnswerOptionFunction);
 
 
@@ -119,5 +121,37 @@ jQuery(document).ready(function($) {
           divToHide.hide();
       }
     $('form').trigger('rescan.areYouSure');
+  }
+
+  function versionSave(event) {
+    var formData = {};
+
+    var form = $(this).parent();
+
+    form.children('div.kwps').each(function(i) {
+      var div = $(this);
+
+      if(div.hasClass('kwps-single')) {
+        var attribute = div.attr('id').split('-')[1];
+        var data = div.children('input');
+        data.each(function(j) {
+          var input = $(this);
+          var name = input.attr('name');
+
+          if(attribute === 'version') {
+            formData[name] = input.val();
+          } else {
+            if(!formData[attribute]) {
+              formData[attribute] = {};
+            }
+            formData[attribute][name] = input.val();
+          }
+        });
+      } else {
+
+      }
+    });
+
+    //var inputs = form.children('#kwps-version').eq(0).children('input');
   }
 });
