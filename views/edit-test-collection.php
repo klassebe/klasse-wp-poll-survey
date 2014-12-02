@@ -27,23 +27,26 @@
     </form>
     <?php else:?>
         <?php $allowed_dropdown_values = \kwps_classes\Test_Collection::$allowed_dropdown_values; ?>
-        <form>
+        <form id="kwps-test-collection-settings" method="post" action="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&section=edit_test_collection&tab=settings">
             <label for="kwps_logged_in_user_limit">Aangemelde gebruikers</label>
-            <select id="kwps_logged_in_user_limit">
+            <select id="kwps_logged_in_user_limit" name="_kwps_logged_in_user_limit">
             <?php foreach( $allowed_dropdown_values['_kwps_logged_in_user_limit'] as $value ): ?>
-                <option name="_kwps_logged_in_user_limit"><?php echo $value; ?></option>
+                <?php $selected = ($settings['_kwps_logged_in_user_limit'] == $value ? 'selected' : '' ) ?>
+                <option value="<?php echo $value; ?>" <?php echo $selected?> ><?php echo $value; ?></option>
             <?php endforeach; ?>
             </select>
 
             <label for="kwps_logged_out_user_limit">Anonieme gebruikers</label>
-            <select id="kwps_logged_out_user_limit">
+            <select id="kwps_logged_out_user_limit" name="_kwps_logged_out_user_limit">
                 <?php foreach( $allowed_dropdown_values['_kwps_logged_out_user_limit'] as $value ): ?>
-                    <option name="_kwps_logged_out_user_limit"><?php echo $value; ?></option>
+                    <?php $selected = ($settings['_kwps_logged_out_user_limit'] == $value ? 'selected' : '' ) ?>
+                    <option value="<?php echo $value; ?>" <?php echo $selected?> ><?php echo $value; ?></option>
                 <?php endforeach; ?>
             </select>
 
+            <?php $checked = ( $settings['_kwps_show_grouping_form'] !== 0 ? 'checked' : '' ) ?>
             <label for="kwps_show_grouping_form">Show grouping form</label>
-            <input type="checkbox" name="_kwps_show_grouping_form" />
+            <input id="kwps_show_grouping_form" type="checkbox" name="_kwps_show_grouping_form" value="1"<?php echo $checked; ?> />
             <button type="submit">Opslaan</button>
         </form>
     <?php endif; ?>

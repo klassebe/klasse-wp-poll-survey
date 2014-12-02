@@ -96,6 +96,20 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
         return $meta_as_array;
     }
 
+    public static function update_meta_data($post_id,  $data) {
+        foreach( $data as $key => $value ) {
+            if( in_array( $key, static::$meta_data_fields ) ) {
+                update_post_meta($post_id, $key, $value);
+            }
+        }
+
+        foreach( static::$meta_data_fields as $field ) {
+            if(! in_array($field, array_keys($data) ) ) {
+                delete_post_meta($post_id, $field);
+            }
+        }
+    }
+
     /**
      * Returns an array containing all posts of post_type with given post_parent
      *

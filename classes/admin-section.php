@@ -144,8 +144,20 @@ class admin_section {
     {
         if( isset( $_REQUEST['section'] ) ) {
             if( 'edit_test_collection' == $_REQUEST['section'] ) {
-                $versions_list = new \kwps_classes\Versions_List_Table();
-                $versions_list->prepare_items();
+                $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'versions';
+                if( 'versions' == $active_tab ) {
+                    $versions_list = new \kwps_classes\Versions_List_Table();
+                    $versions_list->prepare_items();
+                } elseif( 'settings' == $active_tab ) {
+                    if( sizeof( $_POST ) > 0 ) {
+                        // TODO add validation
+                        Test_Collection::update_meta_data($_REQUEST['id'], $_POST);
+                    }
+                    $settings = Test_Collection::get_meta_data( $_REQUEST['id'] );
+
+                    var_dump($settings, $_POST);
+                }
+
                 include_once __DIR__ . '/../views/edit-test-collection.php';
             } elseif( 'edit_version' == $_REQUEST['section'] ) {
                 if( sizeof( $_POST ) == 0  ) {
