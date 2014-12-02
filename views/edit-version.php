@@ -19,6 +19,7 @@ if( isset( $_REQUEST['id'] ) ) {
             $version['question_groups'][$question_group['_kwps_sort_order']] = $question_group;
         }
         $version['intro'] = \kwps_classes\Intro::get_one_by_post_parent( $_REQUEST['id'] );
+        $version['intro_result'] = \kwps_classes\Intro_Result::get_one_by_post_parent( $_REQUEST['id'] );
         $version['outro'] = \kwps_classes\Outro::get_one_by_post_parent( $_REQUEST['id'] );
     }
     $form_action .= '&id=' . $_REQUEST['id'] . '&update=true';
@@ -32,6 +33,11 @@ if( isset( $_REQUEST['id'] ) ) {
             'post_status' => 'draft',
             '_kwps_sort_order' => 1,
             'intro' => array(
+                'post_content' => '',
+                '_kwps_sort_order' => 1,
+                'post_status' => 'draft',
+            ),
+            'intro_result' => array(
                 'post_content' => '',
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
@@ -106,6 +112,19 @@ if( isset( $_REQUEST['id'] ) ) {
                 value="<?php echo $intro['post_content'] ?>"
                 class="<?php if( isset( $intro['errors']['post_content'] ) )  echo 'error'; ?>"
             />
+        </div>
+        <div class="kwps-intro-result">
+            <?php $intro_result = $version['intro_result'];?>
+            <input type="hidden" name="intro_result[ID]" value="<?php if( isset( $intro_result['ID'] ) ) echo $intro_result['ID'];?>">
+            <input type="hidden" name="intro_result[post_status]" value="<?php if( isset( $intro_result['post_status'] ) ) echo $intro_result['post_status'];?>">
+
+            <input
+                type="text"
+                name="intro_result[post_content]"
+                placeholder="Intro Result"
+                value="<?php echo $intro_result['post_content'] ?>"
+                class="<?php if( isset( $intro_result['errors']['post_content'] ) )  echo 'error'; ?>"
+                />
         </div>
         <div id="kwps-question-groups" class="kwps-question-groups">
                 <?php foreach( $version['question_groups'] as $question_group ): ?>

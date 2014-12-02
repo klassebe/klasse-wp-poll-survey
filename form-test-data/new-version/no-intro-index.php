@@ -5,6 +5,11 @@ return array(
         'post_parent' => 12,
         'post_status' => 'draft',
         '_kwps_sort_order' => 1,
+        'intro_result' => array(
+            'post_content' => 'Intro result contents',
+            '_kwps_sort_order' => 1,
+            'post_status' => 'draft',
+        ),
         'outro' => array(
             'post_content' => 'Outro contents',
             '_kwps_sort_order' => 1,
@@ -54,6 +59,12 @@ return array(
                 'errors' => array(
                     'post_content' => 'Required',
                 ),
+            ),
+            'intro_result' => array(
+                'post_content' => 'Intro result contents',
+                '_kwps_sort_order' => 1,
+                'post_status' => 'draft',
+                'errors' => array(),
             ),
             'outro' => array(
                 'post_content' => 'Outro contents',

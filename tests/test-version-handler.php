@@ -2,25 +2,29 @@
 
 class VersionHandlerTest extends WP_UnitTestCase {
 
-    function testNewVersionFormValidation_Empty() {
-        $this->checkOutputWithFormTestData( 'empty.php');
+//    function testNewVersionFormValidation_Empty() {
+//        $this->checkOutputWithFormTestData( 'empty.php');
+//    }
+//
+//    function testNewVersionFormValidation_NoIntroIndex() {
+//        $this->checkOutputWithFormTestData( 'no-intro-index.php');
+//    }
+//
+//    function testNewVersionFormValidation_NoOutroIndex() {
+//        $this->checkOutputWithFormTestData( 'no-outro-index.php');
+//    }
+//
+//    function testNewVersionFormValidation_NoQuestionGroupsIndex() {
+//        $this->checkOutputWithFormTestData( 'no-question-groups-index.php');
+//    }
+
+    function testNewVersionFormValidation_NoIntroResultIndex() {
+        $this->checkOutputWithFormTestData( 'no-intro-result-index.php');
     }
 
-    function testNewVersionFormValidation_NoIntroIndex() {
-        $this->checkOutputWithFormTestData( 'no-intro-index.php');
-    }
-
-    function testNewVersionFormValidation_NoOutroIndex() {
-        $this->checkOutputWithFormTestData( 'no-outro-index.php');
-    }
-
-    function testNewVersionFormValidation_NoQuestionGroupsIndex() {
-        $this->checkOutputWithFormTestData( 'no-question-groups-index.php');
-    }
-
-    function testNewVersionFormValidation_NotAnArray() {
-        $this->checkOutputWithFormTestData( 'not-an-array.php');
-    }
+//    function testNewVersionFormValidation_NotAnArray() {
+//        $this->checkOutputWithFormTestData( 'not-an-array.php');
+//    }
 
     function checkOutputWithFormTestData($file) {
         $test_data = include __DIR__ . '/../form-test-data/new-version/' . $file;
@@ -55,12 +59,12 @@ class VersionHandlerTest extends WP_UnitTestCase {
         foreach($a as $k => $v) {
             if( is_array( $v ) ) {
                 if(! $this->arrays_are_similar( $v, $b[$k] ) ) {
-                    var_dump($k, $v, $b[$k]);
+//                    var_dump($k, $v, $b[$k]);
                     return false;
                 }
             } else {
                 if ($v !== $b[$k]) {
-                    var_dump($k, $v, $b[$k]);
+//                    var_dump($k, $v, $b[$k]);
                     return false;
                 }
             }

@@ -414,6 +414,12 @@ div.kwps-intro {
     margin: 5px;
 }
 
+div.kwps-intro-result {
+    border: 2px solid;
+    border-color: purple;
+    margin: 5px;
+}
+
 div.kwps-question-groups {
     border: 2px solid;
     border-color: black;

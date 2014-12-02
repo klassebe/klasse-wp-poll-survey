@@ -10,6 +10,11 @@ return array(
             '_kwps_sort_order' => 1,
             'post_status' => 'draft',
         ),
+        'intro_result' => array(
+            'post_content' => 'Intro result contents',
+            '_kwps_sort_order' => 1,
+            'post_status' => 'draft',
+        ),
         'question_groups' => array(
             1 => array(
                 '_kwps_sort_order' => 1,
@@ -57,6 +62,12 @@ return array(
             ),
             'intro' => array(
                 'post_content' => 'Intro contents',
+                '_kwps_sort_order' => 1,
+                'post_status' => 'draft',
+                'errors' => array(),
+            ),
+            'intro_result' => array(
+                'post_content' => 'Intro result contents',
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
                 'errors' => array(),

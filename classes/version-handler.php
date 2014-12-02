@@ -100,6 +100,13 @@ class Version_Handler {
             $data_has_errors = true;
         }
 
+        $intro_result_errors = Intro_Result::validate_for_insert( $data['intro_result'] );
+        $data['intro_result']['errors'] = $intro_result_errors;
+
+        if( sizeof($intro_result_errors) != 0 ) {
+            $data_has_errors = true;
+        }
+
         $intro_errors = Outro::validate_for_insert( $data['outro'] );
         $data['outro']['errors'] = $intro_errors;
 
@@ -182,6 +189,18 @@ class Version_Handler {
             );
         }
 
+        if(! isset( $data['intro_result'] ) ) {
+            $data = array_merge(
+                $data,
+                array('intro_result' => array(
+                    'post_content' => '',
+                    '_kwps_sort_order' => 1,
+                    'post_status' => 'draft',
+                )
+                )
+            );
+        }
+
         if(! isset( $data['outro'] ) ) {
             $data['outro'] = array(
                 'post_content' => '',
@@ -238,6 +257,10 @@ class Version_Handler {
         $data['intro']['post_parent'] = $version_id;
         $intro_id = Intro::save_post($data['intro'], true);
         $data['intro']['ID'] = $intro_id;
+
+        $data['intro_result']['post_parent'] = $version_id;
+        $intro_result_id = Intro_Result::save_post($data['intro_result'], true);
+        $data['intro_result']['ID'] = $intro_result_id;
 
         $data['outro']['post_parent'] = $version_id;
         $outro_id = Outro::save_post($data['outro'], true);
@@ -349,10 +372,17 @@ class Version_Handler {
             $data_has_errors = true;
         }
 
-        $intro_errors = Outro::validate_for_update( $data['outro'] );
-        $data['outro']['errors'] = $intro_errors;
+        $intro_result_errors = Intro::validate_for_update( $data['intro_result'] );
+        $data['intro_result']['errors'] = $intro_result_errors;
 
-        if( sizeof($intro_errors) != 0 ) {
+        if( sizeof($intro_result_errors) != 0 ) {
+            $data_has_errors = true;
+        }
+
+        $outro_errors = Outro::validate_for_update( $data['outro'] );
+        $data['outro']['errors'] = $outro_errors;
+
+        if( sizeof($outro_errors) != 0 ) {
             $data_has_errors = true;
         }
 

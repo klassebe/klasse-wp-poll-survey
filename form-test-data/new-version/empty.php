@@ -21,6 +21,14 @@ return array(
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
             ),
+            'intro_result' => array(
+                'errors' => array(
+                    'post_content' => 'Required',
+                ),
+                'post_content' => '',
+                '_kwps_sort_order' => 1,
+                'post_status' => 'draft',
+            ),
             'outro' => array(
                 'errors' => array(
                     'post_content' => 'Required',
