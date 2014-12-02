@@ -26,6 +26,9 @@ if( isset( $_REQUEST['id'] ) ) {
 } else {
     if( isset( $version_data ) ) {
         $version = $version_data;
+        if( isset( $version_data ) ) {
+            $form_action .= '&id=' . $version_data['ID'] . '&update=true';
+        }
     } else {
         $version = array(
             'post_title' => '',

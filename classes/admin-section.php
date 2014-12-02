@@ -176,13 +176,16 @@ class admin_section {
                             $version_data = $validation_result['data'];
                         }
                     } else {
-                        $form_handler = new Version_Handler();
-                        $validation_result = $form_handler->validate_new_version_form($_POST);
-//                        var_dump( $validation_result['data']['question_groups'][1]['questions']);
-                        if( ! $validation_result['errors'] ) {
-                            $version_data = $form_handler->save_new_version_form($_POST);
+                        if(! isset( $_POST['ID'] ) ) {
+                            $form_handler = new Version_Handler();
+                            $validation_result = $form_handler->validate_new_version_form($_POST);
+                            if( ! $validation_result['errors'] ) {
+                                $version_data = $form_handler->save_new_version_form($_POST);
+                            } else {
+                                $version_data = $validation_result['data'];
+                            }
                         } else {
-                            $version_data = $validation_result['data'];
+                            $version_data = $_POST;
                         }
                     }
                     include_once __DIR__ . '/../views/edit-version.php';
