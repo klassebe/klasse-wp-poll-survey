@@ -36,6 +36,11 @@ if( isset( $_REQUEST['id'] ) ) {
                 '_kwps_sort_order' => 0,
                 'post_status' => 'draft',
             ),
+            'intro_result' => array(
+                'post_content' => '',
+                '_kwps_sort_order' => 0,
+                'post_status' => 'draft',
+            ),
             'outro' => array(
                 'post_content' => '',
                 '_kwps_sort_order' => 0,
@@ -107,6 +112,19 @@ if( isset( $_REQUEST['id'] ) ) {
                 class="<?php if( isset( $intro['errors']['post_content'] ) )  echo 'error'; ?>"
             />
         </div>
+        <div class="kwps kwps-single" id="kwps-intro_result">
+            <?php $intro = $version['intro_result'];?>
+            <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
+            <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
+
+            <input
+                type="text"
+                name="post_content"
+                placeholder="Intro Result"
+                value="<?php echo $intro['post_content'] ?>"
+                class="<?php if( isset( $intro['errors']['post_content'] ) )  echo 'error'; ?>"
+            />
+        </div>
         <div id="kwps-question_groups" class="kwps kwps-multi">
                 <?php foreach( $version['question_groups'] as $question_group ): ?>
                     <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question_group">
@@ -141,11 +159,6 @@ if( isset( $_REQUEST['id'] ) ) {
                                      questionIndex="<?php echo $question['_kwps_sort_order'];?>"
                                     >
                                     <h3>Vraag <span><?php echo $question['_kwps_sort_order'] ?></span></h3>
-                                    <?php
-                                        $question_field_index =
-                                            $question_group_field_index . '[questions][' .
-                                            $question['_kwps_sort_order'] . ']'
-                                    ?>
                                     <?php if( isset ($question['ID'] ) ): ?>
                                         <input type="hidden"
                                                name="ID"
@@ -171,10 +184,6 @@ if( isset( $_REQUEST['id'] ) ) {
                                     <?php foreach( $question['answer_options'] as $answer_option ): ?>
                                         <div id="kwps-question_group-question-answer_option-<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_option">
                                             <h3>Antwoord <span><?php echo $answer_option['_kwps_sort_order'] ;?></span> <button type="button" class="kwps-remove-answer_option">remove</button></h3>
-                                            <?php
-                                                $answer_option_field_index = $question_field_index .
-                                                    '[answer_options][' . $answer_option['_kwps_sort_order'] . ']';
-                                            ?>
                                             <?php if( isset ($answer_option['ID'] ) ): ?>
                                                 <input type="hidden"
                                                        name="ID"
@@ -199,7 +208,7 @@ if( isset( $_REQUEST['id'] ) ) {
                                         </div>
                                     <?php endforeach; ?>
                                     <button type="button"
-                                            class="kwps-create-answer_option"
+                                            class="kwps-create-item"
                                             questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
                                             questionIndex="<?php echo $question['_kwps_sort_order'];?>"
                                         >
@@ -209,7 +218,7 @@ if( isset( $_REQUEST['id'] ) ) {
                             </div>
                             <?php endforeach; ?>
                             <button type="button"
-                                    class="kwps-create-question"
+                                    class="kwps-create-item"
                                     questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
                                 >
                                 +
