@@ -207,25 +207,21 @@ if( isset( $_REQUEST['id'] ) ) {
                                                 />
                                         </div>
                                     <?php endforeach; ?>
-                                    <button type="button"
-                                            class="kwps-create-item"
-                                            questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
-                                            questionIndex="<?php echo $question['_kwps_sort_order'];?>"
-                                        >
-                                        +
+                                    <button class="kwps-create-item">
+                                        + AO
                                     </button>
                                 </div>
                             </div>
                             <?php endforeach; ?>
-                            <button type="button"
-                                    class="kwps-create-item"
-                                    questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
-                                >
-                                +
+                            <button class="kwps-create-item">
+                                + Q
                             </button>
                         </div>
                     </div>
                 <?php endforeach; ?>
+            <button class="kwps-create-item">
+                + QG
+            </button>
             </div>
         <div class="kwps kwps-single" id="kwps-outro">
             <?php $outro = $version['outro']; ?>

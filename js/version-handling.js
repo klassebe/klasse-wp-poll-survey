@@ -56,6 +56,7 @@ jQuery(document).ready(function($) {
 
 
   function createItem (event) {
+    event.preventDefault();
     var divToClone = $(this).prevAll(':visible:first');
     var clonedDiv = divToClone.clone();
     clonedDiv.insertAfter(divToClone);
