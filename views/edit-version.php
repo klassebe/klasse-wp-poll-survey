@@ -136,9 +136,6 @@ if( isset( $_REQUEST['id'] ) ) {
                                    value="<?php echo $question_group['ID'] ?>" />
                         <?php endif;?>
                         <input type="hidden"
-                               name="_kwps_sort_order"
-                               value="<?php echo $question_group['_kwps_sort_order'] ?>" />
-                        <input type="hidden"
                                name="post_status"
                                value="<?php echo $question_group['post_status'] ?>" />
                         <input type="text"
@@ -166,10 +163,6 @@ if( isset( $_REQUEST['id'] ) ) {
                                     <?php endif;?>
                                     <input
                                         type="hidden"
-                                        name="_kwps_sort_order"
-                                        value="<?php echo $question['_kwps_sort_order'];?>"
-                                    /><input
-                                        type="hidden"
                                         name="post_status"
                                         value="<?php echo $question['post_status'];?>"
                                         />
@@ -189,11 +182,6 @@ if( isset( $_REQUEST['id'] ) ) {
                                                        name="ID"
                                                        value="<?php echo $answer_option['ID'] ?>" />
                                             <?php endif;?>
-                                            <input
-                                                type="hidden"
-                                                name="_kwps_sort_order"
-                                                value="<?php echo $answer_option['_kwps_sort_order']; ?>"
-                                            />
                                             <input
                                                 type="hidden"
                                                 name="post_status"

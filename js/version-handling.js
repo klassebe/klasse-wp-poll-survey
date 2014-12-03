@@ -68,23 +68,19 @@ jQuery(document).ready(function($) {
         /**
          * Loop over question_groups
          */
-        div.children('div').each(function(i) {
-          var inputData = {};
+        div.children('div').each(function(questionGroupsI) {
+          var inputData = {
+            _kwps_sort_order: questionGroupsI
+          };
           var inputs = $(this).children('input');
 
           /**
            * Loop over question_groups inputs
            */
-          inputs.each(function(questionGroupsInputsI) {
+          inputs.each(function() {
             var input = $(this);
             var inputName = input.attr('name');
-            var value = input.val();
-
-            if(inputName === '_kwps_sort_order') {
-              value = questionGroupsInputsI;
-            }
-
-            inputData[inputName] = value;
+            inputData[inputName] = input.val();
           });
 
           $(this).children('.kwps').each(function(j) {
@@ -95,22 +91,18 @@ jQuery(document).ready(function($) {
             /**
              * Loop over questions
              */
-            $(this).children('div').each(function(k) {
-              var questionData = {};
+            $(this).children('div').each(function(questionsI) {
+              var questionData = {
+                _kwps_sort_order: questionsI
+              };
 
               /**
                * Loop over questions inputs
                */
-              $(this).children('input').each(function(questionInputsI) {
+              $(this).children('input').each(function() {
                 var input = $(this);
                 var inputName = input.attr('name');
-                var value = input.val();
-
-                if(inputName === '_kwps_sort_order') {
-                  value = questionInputsI;
-                }
-
-                questionData[inputName] = value;
+                questionData[inputName] = input.val();
               });
 
               $(this).children('.kwps').each(function() {
@@ -121,20 +113,17 @@ jQuery(document).ready(function($) {
                 /**
                  * Loop over answer_options
                  */
-                $(this).children('div').each(function(i) {
-                  var answerOptionData = {};
+                $(this).children('div').each(function(answerOptionI) {
+                  var answerOptionData = {
+                    _kwps_sort_order: answerOptionI
+                  };
 
                   /**
                    * Loop over answer_options inputs
                    */
-                  $(this).children('input').each(function(answerOptionInputsI) {
+                  $(this).children('input').each(function() {
                     var input = $(this);
                     var inputName = input.attr('name');
-                    var value = input.val();
-
-                    if(inputName === '_kwps_sort_order') {
-                      value = answerOptionInputsI;
-                    }
 
                     answerOptionData[inputName] = input.val();
                   });
