@@ -30,36 +30,36 @@ if( isset( $_REQUEST['id'] ) ) {
             'post_title' => '',
             'post_parent' => $_REQUEST['post_parent'],
             'post_status' => 'draft',
-            '_kwps_sort_order' => 1,
+            '_kwps_sort_order' => 0,
             'intro' => array(
                 'post_content' => '',
-                '_kwps_sort_order' => 1,
+                '_kwps_sort_order' => 0,
                 'post_status' => 'draft',
             ),
             'outro' => array(
                 'post_content' => '',
-                '_kwps_sort_order' => 1,
+                '_kwps_sort_order' => 0,
                 'post_status' => 'draft',
             ),
             'question_groups' => array(
-                1 => array(
-                    '_kwps_sort_order' => 1,
+                array(
+                    '_kwps_sort_order' => 0,
                     'post_status' => 'draft',
                     'post_title' => '',
                     'post_content' => '',
                     'questions' => array(
-                        1 => array(
-                            '_kwps_sort_order' => 1,
+                        array(
+                            '_kwps_sort_order' => 0,
                             'post_status' => 'draft',
                             'post_content' => '',
                             'answer_options' => array(
-                                1 => array(
-                                    '_kwps_sort_order' => 1,
+                                array(
+                                    '_kwps_sort_order' => 0,
                                     'post_content' => '',
                                     'post_status' => 'draft',
                                 ),
-                                2 => array(
-                                    '_kwps_sort_order' => 2,
+                                array(
+                                    '_kwps_sort_order' => 1,
                                     'post_content' => '',
                                     'post_status' => 'draft',
                                 ),
@@ -107,29 +107,29 @@ if( isset( $_REQUEST['id'] ) ) {
                 class="<?php if( isset( $intro['errors']['post_content'] ) )  echo 'error'; ?>"
             />
         </div>
-        <div id="kwps-question_groups" class="kwps kwps-multi kwps-question_groups">
+        <div id="kwps-question_groups" class="kwps kwps-multi">
                 <?php foreach( $version['question_groups'] as $question_group ): ?>
                     <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question_group">
                         <h3>Pagina <?php echo $question_group['_kwps_sort_order'] ?></h3>
                         <?php $question_group_field_index = 'question_groups[' . $question_group['_kwps_sort_order'] .']' ?>
                         <?php if( isset ($question_group['ID'] ) ): ?>
                             <input type="hidden"
-                                   name="<?php echo $question_group_field_index; ?>[ID]"
+                                   name="ID"
                                    value="<?php echo $question_group['ID'] ?>" />
                         <?php endif;?>
                         <input type="hidden"
-                               name="<?php echo $question_group_field_index; ?>[_kwps_sort_order]"
+                               name="_kwps_sort_order"
                                value="<?php echo $question_group['_kwps_sort_order'] ?>" />
                         <input type="hidden"
-                               name="<?php echo $question_group_field_index; ?>[post_status]"
+                               name="post_status"
                                value="<?php echo $question_group['post_status'] ?>" />
                         <input type="text"
-                               name="<?php echo $question_group_field_index; ?>[post_title]"
+                               name="post_title"
                                value="<?php echo $question_group['post_title'] ?>"
                                class="<?php if( isset( $question_group['errors']['post_title'] ) ) echo 'error'; ?>"
                         />
                         <input type="text"
-                               name="<?php echo $question_group_field_index; ?>[post_content]"
+                               name="post_content"
                                value="<?php echo $question_group['post_content'] ?>"
                                class="<?php if( isset( $question_group['errors']['post_content'] ) ) echo 'error'; ?>"
                             />
@@ -148,21 +148,21 @@ if( isset( $_REQUEST['id'] ) ) {
                                     ?>
                                     <?php if( isset ($question['ID'] ) ): ?>
                                         <input type="hidden"
-                                               name="<?php echo $question_field_index; ?>[ID]"
+                                               name="ID"
                                                value="<?php echo $question['ID'] ?>" />
                                     <?php endif;?>
                                     <input
                                         type="hidden"
-                                        name="<?php echo $question_field_index;?>[_kwps_sort_order]"
+                                        name="_kwps_sort_order"
                                         value="<?php echo $question['_kwps_sort_order'];?>"
                                     /><input
                                         type="hidden"
-                                        name="<?php echo $question_field_index;?>[post_status]"
+                                        name="post_status"
                                         value="<?php echo $question['post_status'];?>"
                                         />
                                     <input
                                         type="text"
-                                        name="<?php echo $question_field_index;?>[post_content]"
+                                        name="post_content"
                                         value="<?php echo $question['post_content'];?>"
                                         class="<?php if( isset( $question['errors']['post_content'] ) ) echo 'error'; ?>"
                                         />
@@ -177,22 +177,22 @@ if( isset( $_REQUEST['id'] ) ) {
                                             ?>
                                             <?php if( isset ($answer_option['ID'] ) ): ?>
                                                 <input type="hidden"
-                                                       name="<?php echo $answer_option_field_index; ?>[ID]"
+                                                       name="ID"
                                                        value="<?php echo $answer_option['ID'] ?>" />
                                             <?php endif;?>
                                             <input
                                                 type="hidden"
-                                                name="<?php echo $answer_option_field_index;?>[_kwps_sort_order]"
+                                                name="_kwps_sort_order"
                                                 value="<?php echo $answer_option['_kwps_sort_order']; ?>"
                                             />
                                             <input
                                                 type="hidden"
-                                                name="<?php echo $answer_option_field_index;?>[post_status]"
+                                                name="post_status"
                                                 value="<?php echo $answer_option['post_status']; ?>"
                                                 />
                                             <input
                                                 type="text"
-                                                name="<?php echo $answer_option_field_index;?>[post_content]"
+                                                name="post_content"
                                                 value="<?php echo $answer_option['post_content']; ?>"
                                                 class="<?php if( isset( $answer_option['errors']['post_content'] ) ) echo 'error'; ?>"
                                                 />

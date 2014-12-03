@@ -131,6 +131,9 @@ jQuery(document).ready(function($) {
     form.children('div.kwps').each(function(i) {
       var div = $(this);
 
+      /**
+       * Used for version, intro, outro
+       */
       if(div.hasClass('kwps-single')) {
         var attribute = div.attr('id').split('-')[1];
         var data = div.children('input');
@@ -147,11 +150,100 @@ jQuery(document).ready(function($) {
             formData[attribute][name] = input.val();
           }
         });
-      } else {
 
+        /**
+         * Used for question_groups and nested
+         */
+      } else if(div.hasClass('kwps-multi')) {
+        formData.question_groups = [];
+
+        /**
+         * Loop over question_groups
+         */
+        div.children('div').each(function(i) {
+          var inputData = {};
+          var inputs = $(this).children('input');
+
+          /**
+           * Loop over question_groups inputs
+           */
+          inputs.each(function(questionGroupsInputsI) {
+            var input = $(this);
+            var inputName = input.attr('name');
+            var value = input.val();
+
+            if(inputName === '_kwps_sort_order') {
+              value = questionGroupsInputsI;
+            }
+
+            inputData[inputName] = value;
+          });
+
+          $(this).children('.kwps').each(function(j) {
+            if(!inputData.questions) {
+              inputData.questions = [];
+            }
+
+            /**
+             * Loop over questions
+             */
+            $(this).children('div').each(function(k) {
+              var questionData = {};
+
+              /**
+               * Loop over questions inputs
+               */
+              $(this).children('input').each(function(questionInputsI) {
+                var input = $(this);
+                var inputName = input.attr('name');
+                var value = input.val();
+
+                if(inputName === '_kwps_sort_order') {
+                  value = questionInputsI;
+                }
+
+                questionData[inputName] = value;
+              });
+
+              $(this).children('.kwps').each(function() {
+                if(!questionData.answer_options) {
+                  questionData.answer_options = [];
+                }
+
+                /**
+                 * Loop over answer_options
+                 */
+                $(this).children('div').each(function(i) {
+                  var answerOptionData = {};
+
+                  /**
+                   * Loop over answer_options inputs
+                   */
+                  $(this).children('input').each(function(answerOptionInputsI) {
+                    var input = $(this);
+                    var inputName = input.attr('name');
+                    var value = input.val();
+
+                    if(inputName === '_kwps_sort_order') {
+                      value = answerOptionInputsI;
+                    }
+
+                    answerOptionData[inputName] = input.val();
+                  });
+                  questionData.answer_options.push(answerOptionData);
+                });
+              });
+              inputData.questions.push(questionData);
+            });
+          });
+
+          formData.question_groups.push(inputData);
+
+        });
       }
     });
 
-    //var inputs = form.children('#kwps-version').eq(0).children('input');
+    var input = $("<input>").attr('type', 'hidden').attr('name', 'formattedData').val(JSON.stringify(formData));
+    $('form').append($(input));
   }
 });
