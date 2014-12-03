@@ -2,29 +2,29 @@
 
 class VersionHandlerTest extends WP_UnitTestCase {
 
-//    function testNewVersionFormValidation_Empty() {
-//        $this->checkOutputWithFormTestData( 'empty.php');
-//    }
-//
-//    function testNewVersionFormValidation_NoIntroIndex() {
-//        $this->checkOutputWithFormTestData( 'no-intro-index.php');
-//    }
-//
-//    function testNewVersionFormValidation_NoOutroIndex() {
-//        $this->checkOutputWithFormTestData( 'no-outro-index.php');
-//    }
-//
-//    function testNewVersionFormValidation_NoQuestionGroupsIndex() {
-//        $this->checkOutputWithFormTestData( 'no-question-groups-index.php');
-//    }
-
-    function testNewVersionFormValidation_NoIntroResultIndex() {
-        $this->checkOutputWithFormTestData( 'no-intro-result-index.php');
+    function test_new_poll_version_form_validation_Empty() {
+        $this->checkOutputWithFormTestData( 'poll/empty.php');
     }
 
-//    function testNewVersionFormValidation_NotAnArray() {
-//        $this->checkOutputWithFormTestData( 'not-an-array.php');
-//    }
+    function test_new_poll_version_form_validation_NoIntroIndex() {
+        $this->checkOutputWithFormTestData( 'poll/no-intro-index.php');
+    }
+
+    function test_new_poll_version_form_validation_NoOutroIndex() {
+        $this->checkOutputWithFormTestData( 'poll/no-outro-index.php');
+    }
+
+    function test_new_poll_version_form_validation_NoQuestionGroupsIndex() {
+        $this->checkOutputWithFormTestData( 'poll/no-question-groups-index.php');
+    }
+
+    function test_new_poll_version_form_validation_NoIntroResultIndex() {
+        $this->checkOutputWithFormTestData( 'poll/no-intro-result-index.php');
+    }
+
+    function test_new_poll_version_form_validation_NotAnArray() {
+        $this->checkOutputWithFormTestData( 'poll/not-an-array.php');
+    }
 
     function checkOutputWithFormTestData($file) {
         $test_data = include __DIR__ . '/../form-test-data/new-version/' . $file;
