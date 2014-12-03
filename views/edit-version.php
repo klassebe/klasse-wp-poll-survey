@@ -125,7 +125,7 @@ if( isset( $_REQUEST['id'] ) ) {
                 class="<?php if( isset( $intro['errors']['post_content'] ) )  echo 'error'; ?>"
             />
         </div>
-        <div id="kwps-question_groups" class="kwps kwps-multi">
+        <div id="kwps-question_groups" class="kwps kwps-multi kwps-question_groups">
                 <?php foreach( $version['question_groups'] as $question_group ): ?>
                     <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question_group">
                         <h3>Pagina <?php echo $question_group['_kwps_sort_order'] ?> <button class="kwps-remove-item">remove</button></h3>
@@ -155,7 +155,7 @@ if( isset( $_REQUEST['id'] ) ) {
                                      questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
                                      questionIndex="<?php echo $question['_kwps_sort_order'];?>"
                                     >
-                                    <h3>Vraag <span><?php echo $question['_kwps_sort_order'] ?></span> <button class="kwps-remove-item">remove</button></h3>
+                                    <h3>Vraag <span><?php echo $question['_kwps_sort_order'] ?></span></h3>
                                     <?php if( isset ($question['ID'] ) ): ?>
                                         <input type="hidden"
                                                name="ID"
@@ -172,7 +172,7 @@ if( isset( $_REQUEST['id'] ) ) {
                                         value="<?php echo $question['post_content'];?>"
                                         class="<?php if( isset( $question['errors']['post_content'] ) ) echo 'error'; ?>"
                                         />
-                                <div id="kwps-question_group-question-answer-options" class="kwps kwps-multi kwps-answer-options" questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
+                                <div id="kwps-question_group-question-answer-options" class="kwps kwps-multi kwps-answer_options" questionGroupIndex="<?php echo $question_group['_kwps_sort_order'];?>"
                                      questionIndex="<?php echo $question['_kwps_sort_order'];?>">
                                     <?php foreach( $question['answer_options'] as $answer_option ): ?>
                                         <div id="kwps-question_group-question-answer_option-<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_option">
