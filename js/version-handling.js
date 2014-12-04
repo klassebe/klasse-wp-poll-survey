@@ -5,8 +5,9 @@ jQuery(document).ready(function($) {
   $('#version-save').click(versionSave);
 
   $(document).on('click','.kwps-create-item', createItem);
-
   $(document).on('click','.kwps-remove-item', removeItem);
+  $(document).on('click','.kwps-move-down', moveDown);
+  $(document).on('click','.kwps-move-up', moveUp);
 
 
   function createItem (event) {
@@ -31,6 +32,26 @@ jQuery(document).ready(function($) {
         divToHide.hide();
     }
     $('form').trigger('rescan.areYouSure');
+    updateUi();
+  }
+
+  function moveDown(event) {
+    event.preventDefault();
+
+    var divToMove = $(this).parent().closest('div');
+    var divToSwitch = $(this).parent().closest('div').next();
+    divToMove.insertAfter(divToSwitch);
+
+    updateUi();
+  }
+
+  function moveUp(event) {
+    event.preventDefault();
+
+    var divToMove = $(this).parent().closest('div');
+    var divToSwitch = $(this).parent().closest('div').prev();
+    divToMove.insertBefore(divToSwitch);
+
     updateUi();
   }
 
@@ -149,22 +170,49 @@ jQuery(document).ready(function($) {
 
   function updateUi() {
     //Clean-up UI before adding
-    $('.kwps-remove-item').remove();
+    $('.kwps-action').remove();
 
 
-    $('.kwps-question_groups').each(function() {
+    $('.kwps-question_groups').each(function(i) {
       var questionGroupsCount = $(this).children('.kwps-question_group:visible').length;
 
       if(questionGroupsCount > 1) {
-        $(this).children('.kwps-question_group').children('h3').append("<button class=\"kwps-remove-item\">remove</button>");
+        $(this).children('.kwps-question_group').children('h3').append("<button class=\"kwps-remove-item kwps-action\">remove</button>");
+
+
+        $(this).children('.kwps-question_group:visible').each(function(questionGroupI) {
+          if(questionGroupI < questionGroupsCount-1) {
+            $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action'>Down</a>");
+          }
+        });
+
+        $(this).children('.kwps-question_group:visible').each(function(questionGroupI) {
+          if(questionGroupI > 0) {
+            $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action'>Up</a>");
+          }
+        });
+
       }
+
     });
 
     $('.kwps-questions').each(function() {
       var questionsCount = $(this).children('.kwps-question:visible').length;
 
       if(questionsCount > 1) {
-        $(this).children('.kwps-question').children('h3').append("<button class=\"kwps-remove-item\">remove</button>");
+        $(this).children('.kwps-question').children('h3').append("<button class=\"kwps-remove-item kwps-action\">remove</button>");
+
+        $(this).children('.kwps-question:visible').each(function(questionI) {
+          if(questionI < questionsCount-1) {
+            $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action'>Down</a>");
+          }
+        });
+
+        $(this).children('.kwps-question:visible').each(function(questionI) {
+          if(questionI > 0) {
+            $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action'>Up</a>");
+          }
+        });
       }
     });
 
@@ -173,7 +221,19 @@ jQuery(document).ready(function($) {
       var answerOptionCount = $(this).children('.kwps-answer_option:visible').length;
 
       if(answerOptionCount > 2) {
-        $(this).children('.kwps-answer_option').children('h3').append("<button class=\"kwps-remove-item\">remove</button>");
+        $(this).children('.kwps-answer_option').children('h3').append("<button class=\"kwps-remove-item kwps-action\">remove</button>");
+
+        $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
+          if(answerOptionI < answerOptionCount-1) {
+            $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action'>Down</a>");
+          }
+        });
+
+        $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
+          if(answerOptionI > 0) {
+            $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action'>Up</a>");
+          }
+        });
       }
     });
   }
