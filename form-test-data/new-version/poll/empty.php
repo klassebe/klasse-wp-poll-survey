@@ -3,11 +3,11 @@ return array(
     'input' => array(),
     'expected_output' => array(
         'errors' => true,
+        'test_modus_errors' => array(),
         'data' => array(
             'errors' => array(
                 'post_title' => 'Required',
                 'post_parent' => 'Required',
-                'post_status' => 'Required',
             ),
             'post_title' => '',
             'post_parent' => '',
@@ -39,10 +39,7 @@ return array(
             ),
             'question_groups' => array(
                 1 => array(
-                    'errors' => array(
-                        'post_title' => 'Required',
-                        'post_content' => 'Required',
-                    ),
+                    'errors' => array(),
                     '_kwps_sort_order' => 1,
                     'post_status' => 'draft',
                     'post_title' => '',

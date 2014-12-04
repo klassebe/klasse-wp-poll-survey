@@ -46,6 +46,7 @@ return array(
     ),
     'expected_output' => array(
         'errors' => true,
+        'test_modus_errors' => array(),
         'data' => array(
             'post_title' => 'New Version',
             'post_parent' => 12,
