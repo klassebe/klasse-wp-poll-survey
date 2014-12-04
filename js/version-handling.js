@@ -8,6 +8,8 @@ jQuery(document).ready(function($) {
   $(document).on('click','.kwps-remove-item', removeItem);
   $(document).on('click','.kwps-move-down', moveDown);
   $(document).on('click','.kwps-move-up', moveUp);
+  $(document).on('click','.kwps-content-edit', showEditor);
+  $(document).on('click','.kwps-content-editor-save', updateValues);
 
 
   function createItem (event) {
@@ -53,6 +55,23 @@ jQuery(document).ready(function($) {
     divToMove.insertBefore(divToSwitch);
 
     updateUi();
+  }
+
+  function showEditor(event) {
+    event.preventDefault();
+    $(this).closest('.kwps-content').children('.kwps-content-view').hide();
+    $(this).closest('.kwps-content').children('.kwps-content-editor').show();
+  }
+
+  function updateValues(event) {
+    event.preventDefault();
+
+    var content = tinyMCE.activeEditor.getContent();
+    var contentItem = $(this).closest('.kwps-content');
+    contentItem.parent().closest('input[name="post_content"]').val(content);
+    contentItem.find('.kwps-content-view-content').html(content);
+    contentItem.children('.kwps-content-view').show();
+    contentItem.children('.kwps-content-editor').hide();
   }
 
   function versionSave(event) {
