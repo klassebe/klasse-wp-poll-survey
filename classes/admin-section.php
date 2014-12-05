@@ -166,26 +166,27 @@ class admin_section {
                 if( sizeof( $_POST ) == 0  ) {
                     include_once __DIR__ . '/../views/edit-version.php';
                 } else {
+                    $formattedData = json_decode(stripslashes($_POST['formattedData']), true);
                     if( isset( $_REQUEST['id'] ) ) {
                         // validate/update existing version
                         $form_handler = new Version_Handler();
-                        $validation_result = $form_handler->validate_existing_version_form($_POST);
+                        $validation_result = $form_handler->validate_existing_version_form($formattedData);
                         if( ! $validation_result['errors'] ) {
-                            $version_data = $form_handler->save_new_version_form($_POST);
+                            $version_data = $form_handler->save_new_version_form($formattedData);
                         } else {
                             $version_data = $validation_result['data'];
                         }
                     } else {
-                        if(! isset( $_POST['ID'] ) ) {
+                        if(! isset( $formattedData['ID'] ) ) {
                             $form_handler = new Version_Handler();
-                            $validation_result = $form_handler->validate_new_version_form($_POST);
+                            $validation_result = $form_handler->validate_new_version_form($formattedData);
                             if( ! $validation_result['errors'] ) {
-                                $version_data = $form_handler->save_new_version_form($_POST);
+                                $version_data = $form_handler->save_new_version_form($formattedData);
                             } else {
                                 $version_data = $validation_result['data'];
                             }
                         } else {
-                            $version_data = $_POST;
+                            $version_data = $formattedData;
                         }
                     }
                     include_once __DIR__ . '/../views/edit-version.php';
