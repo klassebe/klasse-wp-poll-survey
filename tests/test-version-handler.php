@@ -61,6 +61,20 @@ class VersionHandlerTest extends WP_UnitTestCase {
         $this->checkOutputWithFormTestData( 'poll/valid.php');
     }
 
+//    TODO check if this needs to be validated and how to handle this properly!
+
+//    function test_new_poll_version_form_validation_QuestionWithoutAnswerOptionsIndex() {
+//        $this->checkOutputWithFormTestData( 'poll/question-without-answer-options-index.php');
+//    }
+
+    function test_new_poll_version_form_validation_QuestionWithOneAnswerOption() {
+        $this->checkOutputWithFormTestData( 'poll/question-with-one-answer-option.php');
+    }
+
+    function test_new_poll_version_form_validation_QuestionWithEmptyAnswerOptionArray() {
+        $this->checkOutputWithFormTestData( 'poll/question-with-empty-answer-option-array.php');
+    }
+
     function checkOutputWithFormTestData($file, $link_to_test_collection = true) {
         $test_data = include __DIR__ . '/../form-test-data/new-version/' . $file;
         $input = $test_data['input'];
@@ -75,6 +89,8 @@ class VersionHandlerTest extends WP_UnitTestCase {
         $output = $version_handler->validate_new_version_form( $input );
 
 //        var_dump( $expected_output['test_modus_errors'], $output['test_modus_errors']);
+//        var_dump($expected_output);
+//        var_dump( $expected_output['errors'], $output['errors']);
 
         $this->assertEquals($output['errors'], $expected_output['errors']);
         $this->assertEquals($output['test_modus_errors'], $expected_output['test_modus_errors']);

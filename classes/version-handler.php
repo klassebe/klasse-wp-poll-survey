@@ -213,7 +213,17 @@ class Version_Handler {
                 if( sizeof( $question_group['questions'] ) > $test_modus['_kwps_max_questions_per_question_group'] ) {
                     $test_modus_errors['_kwps_max_questions_per_question_group'] = 'Only ' . $test_modus['_kwps_max_questions_per_question_group']
                         . ' question(s) per group allowed';
-                    break;
+                }
+                foreach( $question_group['questions'] as $question ) {
+                    if( isset( $question['answer_options'] ) ) {
+                        if( sizeof( $question['answer_options'] ) < 2 ) {
+                            $test_modus_errors['minimum_answer_options_per_question'] =
+                                'At least 2 answer options per question';
+                        }
+                    } else {
+                        $test_modus_errors['minimum_answer_options_per_question'] =
+                            'At least 2 answer options per question';
+                    }
                 }
             }
         }
