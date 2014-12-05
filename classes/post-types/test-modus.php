@@ -99,7 +99,7 @@
         public static function create_default_test_modi(){
             $kwps_poll = array(
                 'post_title' => 'Poll',
-                'post_content' => 'Description for Poll',
+                'post_content' => 'Collect the opinion of visitors on a single issue, based on a multiple-choice response.',
                 'post_name' => 'kwps-poll',
                 'post_status' => 'publish',
                 'post_type' => 'kwps_test_modus',
@@ -114,7 +114,7 @@
 
             $kwps_personality_test = array(
                 'post_title' => 'Personality test',
-                'post_content' => 'Description for Personality test',
+                'post_content' => 'Allow visitors to determine a character or personality type, based on their responses to a series of questions.',
                 'post_name' => 'kwps-personality-test',
                 'post_status' => 'publish',
                 'post_type' => 'kwps_test_modus',
@@ -129,7 +129,7 @@
 
             $kwps_survey = array(
                 'post_title' => 'Survey',
-                'post_content' => 'Description for Survey',
+                'post_content' => 'Collect general feedback from a large number of visitors, based on their responses to a series of questions.',
                 'post_name' => 'kwps-survey',
                 'post_status' => 'publish',
                 'post_type' => 'kwps_test_modus',
