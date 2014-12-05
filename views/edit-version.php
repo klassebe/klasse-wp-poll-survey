@@ -83,6 +83,13 @@ if( isset( $_REQUEST['id'] ) ) {
 </script>
 <div class="wrap">
     <h2>Versie</h2>
+    <?php if( isset( $test_modus_errors ) && sizeof( $test_modus_errors ) > 0 ):?>
+        <div id="test-modus-errors">
+        <?php foreach( $test_modus_errors as $rule => $message ) :?>
+            <div class="test-modus-error"><?php echo $message ?></div>
+        <?php endforeach; ?>
+        </div>
+    <?php endif;?>
     <form id="edit-version" action="<?php echo $form_action ?>" method="post" class="kwps-form">
         <div class="kwps kwps-single" id="kwps-version">
             <?php if( isset( $version['ID'] ) ):?>

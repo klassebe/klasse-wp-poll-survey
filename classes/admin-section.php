@@ -174,6 +174,7 @@ class admin_section {
                         if( ! $validation_result['errors'] ) {
                             $version_data = $form_handler->save_new_version_form($formattedData);
                         } else {
+                            $test_modus_errors = $validation_result['test_modus_errors'];
                             $version_data = $validation_result['data'];
                         }
                     } else {
@@ -183,6 +184,7 @@ class admin_section {
                             if( ! $validation_result['errors'] ) {
                                 $version_data = $form_handler->save_new_version_form($formattedData);
                             } else {
+                                $test_modus_errors = $validation_result['test_modus_errors'];
                                 $version_data = $validation_result['data'];
                             }
                         } else {
