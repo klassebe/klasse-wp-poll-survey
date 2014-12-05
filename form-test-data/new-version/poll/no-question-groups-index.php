@@ -23,6 +23,7 @@ return array(
     ),
     'expected_output' => array(
         'errors' => true,
+        'test_modus_errors' => array(),
         'data' => array(
             'post_title' => 'New Version',
             'post_parent' => 12,
@@ -48,7 +49,7 @@ return array(
             ),
             'question_groups' => array(
                 1 => array(
-                    'errors' => array('post_content' => 'Required'),
+                    'errors' => array(),
                     '_kwps_sort_order' => 1,
                     'post_status' => 'draft',
                     'post_title' => '',
@@ -82,7 +83,6 @@ return array(
                         ),
                     ),
                 ),
-                'errors' => array(),
             ),
             'errors' => array(),
         ),

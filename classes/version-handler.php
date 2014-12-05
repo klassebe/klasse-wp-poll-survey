@@ -24,57 +24,6 @@ class Version_Handler {
                                         'question_groups',
     );
 
-    public static function test_handle_form(){
-        $data = array(
-            'post_title' => '',
-            'post_parent' => 1631,
-            'post_status' => 'draft',
-            '_kwps_sort_order' => 1,
-            'intro' => array(
-                'post_content' => '',
-                '_kwps_sort_order' => 1,
-                'post_status' => 'draft',
-            ),
-            'outro' => array(
-                'post_content' => '',
-                '_kwps_sort_order' => 1,
-                'post_status' => 'draft',
-            ),
-            'question_groups' => array(
-                1 => array(
-                    '_kwps_sort_order' => 1,
-                    'post_status' => 'draft',
-                    'post_title' => '',
-                    'post_content' => '',
-                    'questions' => array(
-                        1 => array(
-                            '_kwps_sort_order' => 1,
-                            'post_status' => 'draft',
-                            'post_content' => '',
-                            'answer_options' => array(
-                                1 => array(
-                                    '_kwps_sort_order' => 1,
-                                    'post_content' => '',
-                                    'post_status' => 'draft',
-                                ),
-                                2 => array(
-                                    '_kwps_sort_order' => 2,
-                                    'post_content' => '',
-                                    'post_status' => 'draft',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-
-            ),
-        );
-
-        $handler = new Version_Handler();
-        $validated_data = $handler->validate_new_version_form($data);
-        var_dump($validated_data); die;
-    }
-
     public function validate_new_version_form( $data ) {
         $data_has_errors = false;
 
@@ -83,6 +32,12 @@ class Version_Handler {
         }
 
         $data = $this->add_missing_top_level_indexes($data);
+
+        $test_modus_errors = $this->validate_for_test_modus($data);
+
+        if( sizeof( $test_modus_errors ) != 0 ) {
+            $data_has_errors = true;
+        }
 
         $stripped_version = array_diff_key( $data, array('question_groups' => '') );
         $version_errors = Version::validate_for_insert( $stripped_version, true);
@@ -145,7 +100,7 @@ class Version_Handler {
             }
         }
 
-        return array('errors' => $data_has_errors, 'data' => $data);
+        return array('errors' => $data_has_errors, 'test_modus_errors' => $test_modus_errors, 'data' => $data);
     }
 
     public function add_missing_top_level_indexes($data) {
@@ -241,6 +196,33 @@ class Version_Handler {
         }
 
         return $data;
+    }
+
+    public function validate_for_test_modus( $data ) {
+        $test_modus_errors = array();
+
+        if( ! empty( $data['post_parent'] ) ) {
+            $test_modus = Test_Collection::get_test_modus( $data['post_parent'] );
+
+            if( sizeof( $data['question_groups'] ) > $test_modus['_kwps_max_question_groups'] ) {
+                $test_modus_errors['_kwps_max_question_groups'] = 'Only ' . $test_modus['_kwps_max_question_groups']
+                    . ' question group(s) allowed';
+            }
+
+            foreach( $data['question_groups'] as $question_group ) {
+                if( sizeof( $question_group['questions'] ) > $test_modus['_kwps_max_questions_per_question_group'] ) {
+                    $test_modus_errors['_kwps_max_questions_per_question_group'] = 'Only ' . $test_modus['_kwps_max_questions_per_question_group']
+                        . ' question(s) per group allowed';
+                    break;
+                }
+            }
+        }
+
+        return $test_modus_errors;
+    }
+
+    public function get_question_group_count( $data ) {
+        return sizeof( $data['question_groups'] );
     }
 
     public function save_new_version_form($data){

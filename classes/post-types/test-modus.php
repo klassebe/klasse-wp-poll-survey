@@ -148,6 +148,7 @@
 
             if( isset($error) && null == $error ){
                 //TODO add html to report error
+                echo 'error creating Poll test modus';
                 var_dump($error);
             }
 
@@ -157,6 +158,7 @@
 
             if( isset($error) && null == $error ){
                 //TODO add html to report error
+                echo 'error creating Personality Test test modus';
                 var_dump($error);
             }
 
@@ -166,6 +168,7 @@
 
             if( isset($error) && null == $error ){
                 //TODO add html to report error
+                echo 'error creating Survey test modus';
                 var_dump($error);
             }
         }

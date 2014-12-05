@@ -1,9 +1,5 @@
 <?php
 
-// ajax call for version form testing/developing
-add_action( 'wp_ajax_kwps_handle_form_test', array('\kwps_classes\version_handler','test_handle_form') );
-
-
 //add_action( 'wp_ajax_kwps_save_test_collection', array('\kwps_classes\test_collection','save_from_request'));
 //add_action( 'wp_ajax_kwps_update_test_collection', array('\kwps_classes\test_collection','update_from_request'));
 //add_action( 'wp_ajax_kwps_delete_test_collection', array('\kwps_classes\test_collection','delete_from_request'));

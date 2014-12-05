@@ -5,6 +5,11 @@ return array(
         'post_parent' => 12,
         'post_status' => 'draft',
         '_kwps_sort_order' => 1,
+        'intro' => array(
+            'post_content' => 'Intro contents',
+            '_kwps_sort_order' => 1,
+            'post_status' => 'draft',
+        ),
         'intro_result' => array(
             'post_content' => 'Intro result contents',
             '_kwps_sort_order' => 1,
@@ -45,7 +50,7 @@ return array(
         ),
     ),
     'expected_output' => array(
-        'errors' => true,
+        'errors' => false,
         'test_modus_errors' => array(),
         'data' => array(
             'post_title' => 'New Version',
@@ -54,12 +59,10 @@ return array(
             '_kwps_sort_order' => 1,
             'errors' => array(),
             'intro' => array(
-                'post_content' => '',
+                'post_content' => 'Intro contents',
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
-                'errors' => array(
-                    'post_content' => 'Required',
-                ),
+                'errors' => array(),
             ),
             'intro_result' => array(
                 'post_content' => 'Intro result contents',
@@ -103,6 +106,7 @@ return array(
                     ),
                     'errors' => array(),
                 ),
+
             ),
         ),
     ),
