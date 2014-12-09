@@ -1,6 +1,6 @@
 <?php
 
-class VersionHandlerTest extends WP_UnitTestCase {
+class New_Version_Handler_Test extends WP_UnitTestCase {
 
     protected $test_modus_poll;
     protected $test_collection;
@@ -120,36 +120,6 @@ class VersionHandlerTest extends WP_UnitTestCase {
             var_dump( $sorted_a, $sorted_b);
             return false;
         }
-
-        // if the indexes don't match, return immediately
-//        $array_keys_a = array_keys( $a );
-//        $array_keys_b = array_keys( $b );
-//
-//        $array_keys_diff_1 = array_diff( $array_keys_a, $array_keys_b );
-//        $array_keys_diff_2 = array_diff( $array_keys_b, $array_keys_a );
-//        $unique_keys = array_merge($array_keys_diff_1, $array_keys_diff_2);
-//
-//        if( sizeof( $unique_keys ) > 0 ) {
-//            return false;
-//        }
-//
-//        // we know that the indexes, but maybe not values, match.
-//        // compare the values between the two arrays
-//        foreach($a as $k => $v) {
-//            if( is_array( $v ) ) {
-//                if(! $this->arrays_are_similar( $v, $b[$k] ) ) {
-//                    var_dump($k, $v, $b[$k]);
-//                    return false;
-//                }
-//            } else {
-//                if ($v !== $b[$k]) {
-//                    var_dump($k, $v, $b[$k]);
-//                    return false;
-//                }
-//            }
-//        }
-//        // we have identical indexes, and no unequal values
-//        return true;
     }
 
     function sort_array_by_key( $a ) {
