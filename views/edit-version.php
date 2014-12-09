@@ -79,7 +79,7 @@ if( isset( $_REQUEST['id'] ) ) {
 }
 ?>
 <script language="JavaScript">
-    var testModus = <?php echo json_encode($test_modus = \kwps_classes\Test_Collection::get_test_modus( $_REQUEST['post_parent'] ) ) ?>;
+    var testModus = <?php echo json_encode($test_modus = \kwps_classes\Test_Collection::get_test_modus( $version['post_parent'] ) ) ?>;
     var versionData = <?php echo json_encode($version); ?>;
 </script>
 <div class="wrap">
