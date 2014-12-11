@@ -108,9 +108,14 @@ class New_Version_Handler_Test extends WP_UnitTestCase {
      * @return bool
      */
     function arrays_are_similar($a, $b) {
-        if( is_array( $a) != is_array( $b) ) {
+        if(! is_array( $a) ) {
             return false;
         }
+
+        if(! is_array( $b) ) {
+            return false;
+        }
+
         $sorted_a = $this->sort_array_by_key( $a );
         $sorted_b = $this->sort_array_by_key( $b );
 
