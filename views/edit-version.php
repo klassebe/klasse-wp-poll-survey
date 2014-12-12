@@ -19,6 +19,7 @@ if( isset( $_REQUEST['id'] ) ) {
             $version['question_groups'][$question_group['_kwps_sort_order']] = $question_group;
         }
         $version['intro'] = \kwps_classes\Intro::get_one_by_post_parent( $_REQUEST['id'] );
+        $version['intro_result'] = \kwps_classes\Intro_Result::get_one_by_post_parent( $_REQUEST['id'] );
         $version['outro'] = \kwps_classes\Outro::get_one_by_post_parent( $_REQUEST['id'] );
     }
     $form_action .= '&id=' . $_REQUEST['id'] . '&update=true';
