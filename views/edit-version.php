@@ -219,19 +219,19 @@ if( isset( $_REQUEST['id'] ) ) {
 
                                         </div>
                                     <?php endforeach; ?>
-                                    <button class="kwps-create-item">
+                                    <button class="kwps-create-item" data-kwps-max="answer_options_per_question">
                                         + AO
                                     </button>
                                 </div>
                             </div>
                             <?php endforeach; ?>
-                            <button class="kwps-create-item">
+                            <button class="kwps-create-item" data-kwps-max="questions_per_question_group">
                                 + Q
                             </button>
                         </div>
                     </div>
                 <?php endforeach; ?>
-            <button class="kwps-create-item">
+            <button class="kwps-create-item" data-kwps-max="question_groups">
                 + QG
             </button>
             </div>

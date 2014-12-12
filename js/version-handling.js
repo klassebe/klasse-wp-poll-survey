@@ -259,5 +259,31 @@ jQuery(document).ready(function($) {
         });
       }
     });
+
+    $('.kwps-create-item').hide();
+
+    $('.kwps-create-item').each(function() {
+      var name = $(this).data('kwps-max');
+      var fullName = '_kwps_max_' + name;
+      var max = testModus[fullName];
+      var count;
+
+      if(name === "question_groups") {
+        if((max > 0 && $('.kwps-question_group').length < max) || max < 0) {
+          $(this).show();
+        }
+      } else if(name === "questions_per_question_group") {
+        count = $(this).parent().children('.kwps-question').length;
+        if((max > 0 && max < count) || max < 0) {
+          $(this).show();
+        }
+      } else if(name === "answer_options_per_question") {
+        count = $(this).parent().children('.kwps-answer_option').length;
+        if((max > 0 && max < count) || max < 0) {
+          $(this).show();
+        }
+      }
+
+    });
   }
 });
