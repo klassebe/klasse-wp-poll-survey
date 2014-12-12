@@ -20,6 +20,15 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
      */
     public static $numeric_fields = array('_kwps_sort_order');
 
+
+    public static $form_fields = array(
+        'ID',
+        'post_parent',
+        'post_content',
+        '_kwps_sort_order',
+        'post_status',
+    );
+
     /**
      * @var array contains names of all the addional validation methods that need to run
      */
@@ -73,7 +82,7 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
          } else {
              $post_as_array = array_merge($post_as_array, static::get_meta_data($post_id));
          }
-        return $post_as_array;
+        return static::filter_form_fields( $post_as_array );
     }
 
     /**
@@ -94,6 +103,17 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
         }
 
         return $meta_as_array;
+    }
+
+    public static function filter_form_fields( $data ) {
+        $filtered_data = array();
+
+        foreach( $data as $key => $value ) {
+            if( in_array( $key, static::$form_fields ) ) {
+                $filtered_data[$key] = $value;
+            }
+        }
+        return $filtered_data ;
     }
 
     public static function update_meta_data($post_id,  $data) {

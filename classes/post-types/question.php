@@ -13,6 +13,14 @@ class Question extends Kwps_Post_Type{
         '_kwps_sort_order',
     );
 
+    public static $form_fields = array(
+        'ID',
+        'post_content',
+        'post_parent',
+        'post_status',
+        '_kwps_sort_order',
+    );
+
     public static $additional_validation_methods = array(
         'check_max_questions_per_question_group',
     );

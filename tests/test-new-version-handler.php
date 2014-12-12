@@ -30,6 +30,7 @@ class New_Version_Handler_Test extends WP_UnitTestCase {
             'post_title' => 'Poll collection',
             'post_parent' => $poll_modus_id,
         ) );
+
     }
 
     function tearDown()
@@ -129,6 +130,10 @@ class New_Version_Handler_Test extends WP_UnitTestCase {
         $output = $version_handler->save_new_version_form( $input );
 
         $this->assertTrue( $this->arrays_are_similar( $output, $expected_output['data'] ) );
+
+//         TODO test retrieval from DB as well here
+        $from_db = \kwps_classes\Version::get_with_all_children( $output['ID'] );
+        $this->assertTrue( $this->arrays_are_similar( $expected_output['data'], $from_db ) );
     }
 
 

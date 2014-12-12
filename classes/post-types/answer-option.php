@@ -20,6 +20,14 @@ class Answer_Option extends Kwps_Post_Type{
         '_kwps_answer_option_value',
     );
 
+    public static $form_fields = array(
+        'ID',
+        'post_content',
+        'post_parent',
+        'post_status',
+        '_kwps_sort_order',
+    );
+
     /**
      * @var array contains all meta data keys for which a value is required
      */

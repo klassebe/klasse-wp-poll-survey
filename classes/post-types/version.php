@@ -14,7 +14,17 @@ class Version extends Kwps_Post_Type{
         '_kwps_sort_order',
     );
 
-    public static $numeric_fields = array();
+    public static $numeric_fields = array(
+        '_kwps_sort_order',
+    );
+
+    public static $form_fields = array(
+        'ID',
+        'post_title',
+        'post_parent',
+        'post_status',
+        '_kwps_sort_order',
+    );
 
     public static $meta_data_fields = array(
         '_kwps_sort_order',
@@ -96,6 +106,27 @@ class Version extends Kwps_Post_Type{
         } else {
             return static::get_as_array($post_id);
         }
+    }
+
+    public static function get_with_all_children( $id ) {
+        $version = static::get_as_array( $id );
+        $question_groups = Question_Group::get_all_by_post_parent( $id );
+        foreach( $question_groups as $question_group ) {
+            $questions = Question::get_all_by_post_parent( $question_group['ID'] );
+            foreach( $questions as $question ) {
+                $answer_options = Answer_Option::get_all_by_post_parent( $question['ID'] );
+                foreach( $answer_options as $answer_option ) {
+                    $question['answer_options'][$answer_option['_kwps_sort_order']] = $answer_option;
+                }
+                $question_group['questions'][$question['_kwps_sort_order']] = $question;
+            }
+            $version['question_groups'][$question_group['_kwps_sort_order']] = $question_group;
+        }
+        $version['intro'] = Intro::get_one_by_post_parent( $id );
+        $version['intro_result'] = Intro_Result::get_one_by_post_parent( $id );
+        $version['outro'] = Outro::get_one_by_post_parent( $id );
+
+        return $version;
     }
 
     public static function ajax_validate_for_publish(){

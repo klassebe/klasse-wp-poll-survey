@@ -17,6 +17,14 @@ class Intro extends Kwps_Post_Type{
         '_kwps_sort_order',
     );
 
+    public static $form_fields = array(
+        'ID',
+        'post_parent',
+        'post_content',
+        'post_status',
+        '_kwps_sort_order',
+    );
+
     public static $additional_validation_methods = array();
 
     public static $label = 'kwps-intro';

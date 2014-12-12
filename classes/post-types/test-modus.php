@@ -19,6 +19,16 @@
             '_kwps_max_answer_options_per_question',
         );
 
+        public static $form_fields = array(
+            'post_title',
+            '_kwps_max_question_groups',
+            '_kwps_max_questions_per_question_group',
+            '_kwps_max_answer_options_per_question',
+            '_kwps_allowed_input_types',
+            '_kwps_allowed_output_types',
+            '_kwps_answer_options_require_value',
+        );
+
         public static $answer_option_types = array(
             'free-text-only',   // free text, no value assigned
             'scale',            // free text, each question has the same answer_options, free text + integer value

@@ -5,22 +5,7 @@ if( isset( $_REQUEST['id'] ) ) {
     if( isset( $_REQUEST['update'] ) && 'true' == $_REQUEST['update'] ) {
         $version = $version_data;
     } else {
-        $version = \kwps_classes\Version::get_as_array( $_REQUEST['id'] );
-        $question_groups = \kwps_classes\Question_Group::get_all_by_post_parent( $_REQUEST['id'] );
-        foreach( $question_groups as $question_group ) {
-            $questions = \kwps_classes\Question::get_all_by_post_parent( $question_group['ID'] );
-            foreach( $questions as $question ) {
-                $answer_options = \kwps_classes\Answer_Option::get_all_by_post_parent( $question['ID'] );
-                foreach( $answer_options as $answer_option ) {
-                    $question['answer_options'][$answer_option['_kwps_sort_order']] = $answer_option;
-                }
-                $question_group['questions'][$question['_kwps_sort_order']] = $question;
-            }
-            $version['question_groups'][$question_group['_kwps_sort_order']] = $question_group;
-        }
-        $version['intro'] = \kwps_classes\Intro::get_one_by_post_parent( $_REQUEST['id'] );
-        $version['intro_result'] = \kwps_classes\Intro_Result::get_one_by_post_parent( $_REQUEST['id'] );
-        $version['outro'] = \kwps_classes\Outro::get_one_by_post_parent( $_REQUEST['id'] );
+        $version = \kwps_classes\Version::get_with_all_children( $_REQUEST['id'] );
     }
     $form_action .= '&id=' . $_REQUEST['id'] . '&update=true';
 } else {
