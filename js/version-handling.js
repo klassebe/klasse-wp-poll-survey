@@ -18,8 +18,7 @@ jQuery(document).ready(function($) {
     var clonedDiv = divToClone.clone();
     clonedDiv.children("input[name='ID']").val('');
     clonedDiv.insertAfter(divToClone);
-    $('form').trigger('rescan.areYouSure');
-    updateUi()
+    $('#version-save').click();
   }
 
   function removeItem (event) {
@@ -33,8 +32,7 @@ jQuery(document).ready(function($) {
         divToHide.children("input[name='post_status']").val('trash');
         divToHide.hide();
     }
-    $('form').trigger('rescan.areYouSure');
-    updateUi();
+    $('#version-save').click();
   }
 
   function moveDown(event) {
@@ -68,7 +66,7 @@ jQuery(document).ready(function($) {
 
     var content = tinyMCE.activeEditor.getContent();
     var contentItem = $(this).closest('.kwps-content');
-    contentItem.parent().closest('input[name="post_content"]').val(content);
+    contentItem.parent().find('input[name="post_content"]').val(content);
     contentItem.find('.kwps-content-view-content').html(content);
     contentItem.children('.kwps-content-view').show();
     contentItem.children('.kwps-content-editor').hide();
