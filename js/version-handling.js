@@ -1,4 +1,6 @@
 jQuery(document).ready(function($) {
+  var prevContent = '';
+
   updateUi();
   $('form').areYouSure({'addRemoveFieldsMarksDirty':true});
 
@@ -65,11 +67,15 @@ jQuery(document).ready(function($) {
     event.preventDefault();
 
     var content = tinyMCE.activeEditor.getContent();
-    var contentItem = $(this).closest('.kwps-content');
-    contentItem.parent().find('input[name="post_content"]').val(content);
-    contentItem.find('.kwps-content-view-content').html(content);
-    contentItem.children('.kwps-content-view').show();
-    contentItem.children('.kwps-content-editor').hide();
+
+    if(content !== prevContent) {
+      var contentItem = $(this).closest('.kwps-content');
+      contentItem.parent().children('[name="post_content"]').val(content);
+      contentItem.find('.kwps-content-view-content').html(content);
+      contentItem.children('.kwps-content-view').show();
+      contentItem.children('.kwps-content-editor').hide();
+      content = prevContent;
+    }
   }
 
   function versionSave(event) {
@@ -85,7 +91,7 @@ jQuery(document).ready(function($) {
        */
       if(div.hasClass('kwps-single')) {
         var attribute = div.attr('id').split('-')[1];
-        var data = div.children('input');
+        var data = div.children('input, textarea');
         data.each(function(j) {
           var input = $(this);
           var name = input.attr('name');
@@ -113,7 +119,7 @@ jQuery(document).ready(function($) {
           var inputData = {
             _kwps_sort_order: questionGroupsI
           };
-          var inputs = $(this).children('input');
+          var inputs = $(this).children('input, textarea');
 
           /**
            * Loop over question_groups inputs
@@ -140,7 +146,7 @@ jQuery(document).ready(function($) {
               /**
                * Loop over questions inputs
                */
-              $(this).children('input').each(function() {
+              $(this).children('input, textarea').each(function() {
                 var input = $(this);
                 var inputName = input.attr('name');
                 questionData[inputName] = input.val();
@@ -162,7 +168,7 @@ jQuery(document).ready(function($) {
                   /**
                    * Loop over answer_options inputs
                    */
-                  $(this).children('input').each(function() {
+                  $(this).children('input, textarea').each(function() {
                     var input = $(this);
                     var inputName = input.attr('name');
 
