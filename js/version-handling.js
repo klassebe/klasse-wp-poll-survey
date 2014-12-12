@@ -1,6 +1,9 @@
 jQuery(document).ready(function($) {
+  var prevContent = '';
+
   updateUi();
   $('form').areYouSure({'addRemoveFieldsMarksDirty':true});
+  $('h3').closest('div').children('div').toggle();
 
   $('#version-save').click(versionSave);
 
@@ -8,6 +11,7 @@ jQuery(document).ready(function($) {
   $(document).on('click','.kwps-remove-item', removeItem);
   $(document).on('click','.kwps-move-down', moveDown);
   $(document).on('click','.kwps-move-up', moveUp);
+  $(document).on('click','.kwps-collapse', collapse);
   $(document).on('click','.kwps-content-edit', showEditor);
   $(document).on('click','.kwps-content-editor-save', updateValues);
 
@@ -55,6 +59,16 @@ jQuery(document).ready(function($) {
     updateUi();
   }
 
+  function collapse() {
+    if($(this).closest('div').children('div').is(':visible')) {
+      $(this).html('Open');
+    } else {
+      $(this).html('Close');
+    }
+    $(this).closest('div').children('div').toggle()
+
+  }
+
   function showEditor(event) {
     event.preventDefault();
     $(this).closest('.kwps-content').children('.kwps-content-view').hide();
@@ -65,11 +79,15 @@ jQuery(document).ready(function($) {
     event.preventDefault();
 
     var content = tinyMCE.activeEditor.getContent();
-    var contentItem = $(this).closest('.kwps-content');
-    contentItem.parent().find('input[name="post_content"]').val(content);
-    contentItem.find('.kwps-content-view-content').html(content);
-    contentItem.children('.kwps-content-view').show();
-    contentItem.children('.kwps-content-editor').hide();
+
+    if(content !== prevContent) {
+      var contentItem = $(this).closest('.kwps-content');
+      contentItem.parent().children('[name="post_content"]').val(content);
+      contentItem.find('.kwps-content-view-content').html(content);
+      contentItem.children('.kwps-content-view').show();
+      contentItem.children('.kwps-content-editor').hide();
+      content = prevContent;
+    }
   }
 
   function versionSave(event) {
@@ -85,7 +103,7 @@ jQuery(document).ready(function($) {
        */
       if(div.hasClass('kwps-single')) {
         var attribute = div.attr('id').split('-')[1];
-        var data = div.children('input');
+        var data = div.children('input, textarea');
         data.each(function(j) {
           var input = $(this);
           var name = input.attr('name');
@@ -113,7 +131,7 @@ jQuery(document).ready(function($) {
           var inputData = {
             _kwps_sort_order: questionGroupsI
           };
-          var inputs = $(this).children('input');
+          var inputs = $(this).children('input, textarea');
 
           /**
            * Loop over question_groups inputs
@@ -140,7 +158,7 @@ jQuery(document).ready(function($) {
               /**
                * Loop over questions inputs
                */
-              $(this).children('input').each(function() {
+              $(this).children('input, textarea').each(function() {
                 var input = $(this);
                 var inputName = input.attr('name');
                 questionData[inputName] = input.val();
@@ -162,7 +180,7 @@ jQuery(document).ready(function($) {
                   /**
                    * Loop over answer_options inputs
                    */
-                  $(this).children('input').each(function() {
+                  $(this).children('input, textarea').each(function() {
                     var input = $(this);
                     var inputName = input.attr('name');
 
@@ -252,6 +270,32 @@ jQuery(document).ready(function($) {
           }
         });
       }
+    });
+
+    $('.kwps-create-item').hide();
+
+    $('.kwps-create-item').each(function() {
+      var name = $(this).data('kwps-max');
+      var fullName = '_kwps_max_' + name;
+      var max = testModus[fullName];
+      var count;
+
+      if(name === "question_groups") {
+        if((max > 0 && $('.kwps-question_group').length < max) || max < 0) {
+          $(this).show();
+        }
+      } else if(name === "questions_per_question_group") {
+        count = $(this).parent().children('.kwps-question').length;
+        if((max > 0 && max < count) || max < 0) {
+          $(this).show();
+        }
+      } else if(name === "answer_options_per_question") {
+        count = $(this).parent().children('.kwps-answer_option').length;
+        if((max > 0 && max < count) || max < 0) {
+          $(this).show();
+        }
+      }
+
     });
   }
 });
