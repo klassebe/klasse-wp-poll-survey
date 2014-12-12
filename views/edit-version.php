@@ -104,7 +104,7 @@ if( isset( $_REQUEST['id'] ) ) {
                 name="post_title"
                 id="kwps-post-title"
                 value="<?php echo $version['post_title'] ?>"
-                class="<?php if( isset( $version['errors']['post_title'] ) ) echo 'error'; ?>"
+                class="<?php if( isset( $version['errors']['post_title'] ) ) echo 'kwps_error'; ?>"
             />
         </div>
         <div class="kwps kwps-single" id="kwps-intro">
@@ -112,15 +112,15 @@ if( isset( $_REQUEST['id'] ) ) {
             <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
             <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
 
-            <textarea style="display: none" n ame="post_content"><?php echo $intro['post_content'];?></textarea>
-            <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' error'; ?>">
+            <textarea style="display: none" n ame="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
+            <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                 <div style="display: none" class="kwps-content-editor">
-                    <?php wp_editor( $intro['post_content'], 'intro', array('teeny' => true ) ); ?>
+                    <?php wp_editor( (isset($intro['post_content']))? $intro['post_content'] : "Intro", 'intro', array('teeny' => true ) ); ?>
                     <button class="kwps-content-editor-save">Save</button>
                 </div>
                 <div class="kwps-content-view">
                     <div class="kwps-content-view-content">
-                        <?php echo $intro['post_content'] ?>
+                        <?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro"  ?>
                     </div>
                     <a class="kwps-content-edit">Edit</a>
                 </div>
@@ -131,16 +131,16 @@ if( isset( $_REQUEST['id'] ) ) {
             <?php $intro = $version['intro_result'];?>
             <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
             <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
-            <textarea style="display: none" n ame="post_content"><?php echo $intro['post_content'];?></textarea>
+            <textarea style="display: none" n ame="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro Result" ?></textarea>
 
-            <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' error'; ?>">
+            <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                 <div style="display: none" class="kwps-content-editor">
-                    <?php wp_editor( $intro['post_content'], 'post_content_intro_result', array('teeny' => true ) ); ?>
+                    <?php wp_editor( (isset($intro['post_content']))? $intro['post_content'] : "Intro Result", 'post_content_intro_result', array('teeny' => true ) ); ?>
                     <button class="kwps-content-editor-save">Save</button>
                 </div>
                 <div class="kwps-content-view">
                     <div class="kwps-content-view-content">
-                        <?php echo $intro['post_content'] ?>
+                        <?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro Result" ?>
                     </div><a class="kwps-content-edit">Edit</a>
                 </div>
             </div>
@@ -154,17 +154,17 @@ if( isset( $_REQUEST['id'] ) ) {
                             <input type="hidden" name="ID" value="<?php echo $question_group['ID'] ?>" />
                         <?php endif;?>
                         <input type="hidden" name="post_status" value="<?php echo $question_group['post_status'] ?>" />
-                        <input type="text" name="post_title" value="<?php echo $question_group['post_title'] ?>" class="<?php if( isset( $question_group['errors']['post_title'] ) ) echo 'error'; ?>" />
+                        <input type="text" name="post_title" value="<?php echo $question_group['post_title'] ?>" class="<?php if( isset( $question_group['errors']['post_title'] ) ) echo 'kwps_error'; ?>" />
 
-                        <textarea style="display: none" n ame="post_content"><?php echo $question_group['post_content'];?></textarea>
-                        <div class="kwps-content<?php if( isset( $question_group['errors']['post_content'] ) )  echo ' error'; ?>">
+                        <textarea style="display: none" n ame="post_content"><?php echo (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1) ?></textarea>
+                        <div class="kwps-content<?php if( isset( $question_group['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                             <div style="display: none" class="kwps-content-editor">
-                                <?php wp_editor( $question_group['post_content'], 'question_group_' . $question_group_key, array('teeny' => true ) ); ?>
+                                <?php wp_editor( (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1), 'question_group_' . $question_group_key, array('teeny' => true ) ); ?>
                                 <button class="kwps-content-editor-save">Save</button>
                             </div>
                             <div class="kwps-content-view">
                                 <div class="kwps-content-view-content">
-                                    <?php echo $question_group['post_content'] ?>
+                                    <?php echo (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1) ?>
                                 </div><a class="kwps-content-edit">Edit</a>
                             </div>
                         </div>
@@ -179,15 +179,15 @@ if( isset( $_REQUEST['id'] ) ) {
                                                value="<?php echo $question['ID'] ?>" />
                                     <?php endif;?>
                                     <input type="hidden" name="post_status" value="<?php echo $question['post_status'];?>" />
-                                    <textarea style="display: none" name="post_content" ><?php echo $question['post_content'];?></textarea>
-                                    <div class="kwps-content<?php if( isset( $question['errors']['post_content'] ) )  echo ' error'; ?>">
+                                    <textarea style="display: none" name="post_content" ><?php echo (isset($question['post_content']))? $question['post_content'] : "Question " . ($question_key+1) ?></textarea>
+                                    <div class="kwps-content<?php if( isset( $question['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                                         <div style="display: none" class="kwps-content-editor">
-                                            <?php wp_editor( $question['post_content'], 'question_' . $question_group_key . '_' . $question_key, array('teeny' => true ) ); ?>
+                                            <?php wp_editor( (isset($question['post_content']))? $question['post_content'] : "Question " . ($question_key+1), 'question_' . $question_group_key . '_' . $question_key, array('teeny' => true ) ); ?>
                                             <button class="kwps-content-editor-save">Save</button>
                                         </div>
                                         <div class="kwps-content-view">
                                             <div class="kwps-content-view-content">
-                                                <?php echo $question['post_content'] ?>
+                                                <?php echo (isset($question['post_content']))? $question['post_content'] : "Question " . ($question_key+1) ?>
                                             </div><a class="kwps-content-edit">Edit</a>
                                         </div>
                                     </div>
@@ -202,16 +202,16 @@ if( isset( $_REQUEST['id'] ) ) {
                                                 <input type="hidden" name="ID" value="<?php echo $answer_option['ID'] ?>" />
                                             <?php endif;?>
                                             <input type="hidden" name="post_status" value="<?php echo $answer_option['post_status']; ?>" />
-                                            <textarea style="display: none" name="post_content" ><?php echo $answer_option['post_content'];?></textarea>
+                                            <textarea style="display: none" name="post_content" ><?php echo (isset($answer_option['post_content']))? $answer_option['post_content'] : "Answer " . ($answer_option_key+1) ?></textarea>
 
-                                            <div class="kwps-content<?php if( isset( $answer_option['errors']['post_content'] ) )  echo ' error'; ?>">
+                                            <div class="kwps-content<?php if( isset( $answer_option['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                                                 <div style="display: none" class="kwps-content-editor">
-                                                    <?php wp_editor( $answer_option['post_content'], 'answer_option_' . $question_group_key . '_' . $question_key . '_' . $answer_option_key, array('teeny' => true ) ); ?>
+                                                    <?php wp_editor( (isset($answer_option['post_content']))? $answer_option['post_content'] : "Answer " . ($answer_option_key+1), 'answer_option_' . $question_group_key . '_' . $question_key . '_' . $answer_option_key, array('teeny' => true ) ); ?>
                                                     <button class="kwps-content-editor-save">Save</button>
                                                 </div>
                                                 <div class="kwps-content-view">
                                                     <div class="kwps-content-view-content">
-                                                        <?php echo $answer_option['post_content'] ?>
+                                                        <?php echo (isset($answer_option['post_content']))? $answer_option['post_content'] : "Answer " . ($answer_option_key+1) ?>
                                                     </div><a class="kwps-content-edit">Edit</a>
                                                 </div>
                                             </div>
@@ -238,15 +238,15 @@ if( isset( $_REQUEST['id'] ) ) {
             <?php $outro = $version['outro']; ?>
             <input type="hidden" name="ID" value="<?php if( isset( $outro['ID'] ) ) echo $outro['ID'];?>">
             <input type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>">
-            <textarea style="display: none" name="post_content" ><?php echo $outro['post_content'];?></textarea>
-            <div class="kwps-content<?php if( isset( $outro['errors']['post_content'] ) )  echo ' error'; ?>">
+            <textarea style="display: none" name="post_content" ><?php echo (isset($outro['post_content']))? $outro['post_content'] : "Outro" ?></textarea>
+            <div class="kwps-content<?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                 <div style="display: none" class="kwps-content-editor">
-                    <?php wp_editor( $outro['post_content'], 'outro', array('teeny' => true ) ); ?>
+                    <?php wp_editor( (isset($outro['post_content']))? $outro['post_content'] : "Outro", 'outro', array('teeny' => true ) ); ?>
                     <button class="kwps-content-editor-save">Save</button>
                 </div>
                 <div class="kwps-content-view">
                     <div class="kwps-content-view-content">
-                        <?php echo $outro['post_content'] ?>
+                        <?php echo (isset($outro['post_content']))? $outro['post_content'] : "Outro" ?>
                     </div>
                     <a class="kwps-content-edit">Edit</a>
                 </div>
