@@ -266,13 +266,15 @@ class Version_Handler {
 
             $question_group_id = Question_Group::save_post($stripped_question_group, true);
             $data['question_groups'][$question_group_key]['ID'] = $question_group_id;
+            $data['question_groups'][$question_group_key]['post_parent'] = $version_id;
 
             foreach( $question_group['questions'] as $question_key => $question ) {
                 $stripped_question = array_diff_key($question, array( 'answer_options' => '' ) );
                 $stripped_question['post_parent'] = $question_group_id;
 
                 $question_id = Question::save_post( $stripped_question, true );
-                $data['question_groups'][$question_group_key]['questions'][$question_key]['ID'] = $question_group_id;
+                $data['question_groups'][$question_group_key]['questions'][$question_key]['ID'] = $question_id;
+                $data['question_groups'][$question_group_key]['questions'][$question_key]['post_parent'] = $question_group_id;
 
                 foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
                     if( 'trash' == $answer_option['post_status'] ) {
@@ -286,6 +288,7 @@ class Version_Handler {
                         $answer_option_id = Answer_Option::save_post( $answer_option, true );
                         $answer_option['ID'] = $answer_option_id;
                         $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['ID'] = $answer_option_id;
+                        $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['post_parent'] = $question_id;
                     }
                 }
             }
