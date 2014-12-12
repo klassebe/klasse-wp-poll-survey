@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
 
   updateUi();
   $('form').areYouSure({'addRemoveFieldsMarksDirty':true});
+  $('h3').closest('div').children('div').toggle();
 
   $('#version-save').click(versionSave);
 
@@ -10,6 +11,7 @@ jQuery(document).ready(function($) {
   $(document).on('click','.kwps-remove-item', removeItem);
   $(document).on('click','.kwps-move-down', moveDown);
   $(document).on('click','.kwps-move-up', moveUp);
+  $(document).on('click','.kwps-collapse', collapse);
   $(document).on('click','.kwps-content-edit', showEditor);
   $(document).on('click','.kwps-content-editor-save', updateValues);
 
@@ -55,6 +57,16 @@ jQuery(document).ready(function($) {
     divToMove.insertBefore(divToSwitch);
 
     updateUi();
+  }
+
+  function collapse() {
+    if($(this).closest('div').children('div').is(':visible')) {
+      $(this).html('Open');
+    } else {
+      $(this).html('Close');
+    }
+    $(this).closest('div').children('div').toggle()
+
   }
 
   function showEditor(event) {
