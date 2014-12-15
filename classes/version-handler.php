@@ -350,6 +350,7 @@ class Version_Handler {
 
     public function validate_existing_version_form( $data ) {
         $data_has_errors = false;
+        $test_modus_errors = array();
 
         $stripped_version = array_diff_key( $data, array('question_groups' => '') );
         $version_errors = Version::validate_for_update($stripped_version);
@@ -401,8 +402,26 @@ class Version_Handler {
                     $data_has_errors = true;
                 }
 
+                $set_trashed_to_draft = false;
+
+                $trashed_answer_options_count = $this->get_trashed_items_count( $question['answer_options'] );
+
+                if( ( sizeof( $question['answer_options'] ) - $trashed_answer_options_count ) < 2 ) {
+                    $data_has_errors = true;
+                    $test_modus_errors['_kwps_min_answer_options_per_question'] =
+                        'Minimum 2 answer options required per question';
+                    $set_trashed_to_draft = true;
+                }
+
                 foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
+
                     $answer_option_errors = Answer_Option::validate_for_update($answer_option);
+
+                    if( $set_trashed_to_draft && $answer_option['post_status'] == 'trash' ) {
+                        $answer_option_errors['post_status'] = 'Minimum 2 answer options required per question';
+                        $answer_option['post_status'] = 'draft';
+                        $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['post_status'] = 'draft';
+                    }
 
                     $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['errors'] = $answer_option_errors;
 
@@ -410,10 +429,23 @@ class Version_Handler {
                         $data_has_errors = true;
                     }
                 }
+
+
             }
         }
 
-        return array('errors' => $data_has_errors, 'data' => $data);
+        return array( 'errors' => $data_has_errors, 'test_modus_errors' => $test_modus_errors, 'data' => $data );
+    }
+
+    private function get_trashed_items_count( $data ) {
+        $trashed_items_count = 0;
+        foreach( $data as $item ) {
+            if( $item['post_status'] == 'trash' ) {
+                $trashed_items_count++;
+            }
+        }
+
+        return $trashed_items_count;
     }
 
 
