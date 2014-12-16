@@ -204,16 +204,22 @@ class Version_Handler {
         if( ! empty( $data['post_parent'] ) ) {
             $test_modus = Test_Collection::get_test_modus( $data['post_parent'] );
 
-            if( sizeof( $data['question_groups'] ) > $test_modus['_kwps_max_question_groups'] ) {
-                $test_modus_errors['_kwps_max_question_groups'] = 'Only ' . $test_modus['_kwps_max_question_groups']
-                    . ' question group(s) allowed';
+            if( $test_modus['_kwps_max_question_groups'] > 0 ) {
+                if( sizeof( $data['question_groups'] ) > $test_modus['_kwps_max_question_groups'] ) {
+                    $test_modus_errors['_kwps_max_question_groups'] = 'Only ' . $test_modus['_kwps_max_question_groups']
+                        . ' question group(s) allowed';
+                }
             }
 
+
             foreach( $data['question_groups'] as $question_group ) {
-                if( sizeof( $question_group['questions'] ) > $test_modus['_kwps_max_questions_per_question_group'] ) {
-                    $test_modus_errors['_kwps_max_questions_per_question_group'] = 'Only ' . $test_modus['_kwps_max_questions_per_question_group']
-                        . ' question(s) per group allowed';
+                if( $test_modus['_kwps_max_questions_per_question_group'] > 0 ) {
+                    if( sizeof( $question_group['questions'] ) > $test_modus['_kwps_max_questions_per_question_group'] ) {
+                        $test_modus_errors['_kwps_max_questions_per_question_group'] = 'Only ' . $test_modus['_kwps_max_questions_per_question_group']
+                            . ' question(s) per group allowed';
+                    }
                 }
+
                 foreach( $question_group['questions'] as $question ) {
                     if( isset( $question['answer_options'] ) ) {
                         if( sizeof( $question['answer_options'] ) < 2 ) {
