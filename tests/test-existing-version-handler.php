@@ -62,6 +62,22 @@ class Existing_Version_Handler_Test extends WP_UnitTestCase {
         $this->checkOutPutWithFormTestData( 'add-too-many-question-groups-test.php');
     }
 
+    // test the saving of a poll where an answer options is trashed/removed
+    function test_save_trashed_answer_option() {
+        $test_data = include __DIR__ . '/../form-test-data/existing-version/poll/save-trashed-answer-option-test.php';
+        $input = $test_data['input'];
+        $expected_output = $test_data['expected_output'];
+
+        $version_handler = new \kwps_classes\Version_Handler();
+        $output = $version_handler->save_existing_version_form( $input );
+
+        $this->assertTrue( $this->arrays_are_similar( $output, $expected_output['data'] ) );
+
+//         TODO test retrieval from DB as well here
+        $from_db = \kwps_classes\Version::get_with_all_children( $output['ID'] );
+        $this->assertTrue( $this->arrays_are_similar( $expected_output['data'], $from_db ) );
+    }
+
     function checkOutPutWithFormTestData( $file ){
         $test_data = include __DIR__ . '/../form-test-data/existing-version/poll/' . $file;
         $input = $test_data['input'];

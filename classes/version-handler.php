@@ -236,10 +236,66 @@ class Version_Handler {
     }
 
     public function save_new_version_form($data){
-//        var_dump( $data);
-//        $data = $this->update_kwps_sort_order_of_form( $data );
-//
-//        var_dump( $data);die;
+
+        $stripped_version = array_diff_key( $data, array('question_groups' => '') );
+        $version_id = Version::save_post($stripped_version, true);
+
+        $data['ID'] = $version_id;
+
+        $data['intro']['post_parent'] = $version_id;
+        $intro_id = Intro::save_post($data['intro'], true);
+        $data['intro']['ID'] = $intro_id;
+
+        $data['intro_result']['post_parent'] = $version_id;
+        $intro_result_id = Intro_Result::save_post($data['intro_result'], true);
+        $data['intro_result']['ID'] = $intro_result_id;
+
+        $data['outro']['post_parent'] = $version_id;
+        $outro_id = Outro::save_post($data['outro'], true);
+        $data['outro']['ID'] = $outro_id;
+
+
+        foreach( $data['question_groups'] as $question_group_key => $question_group ) {
+            $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
+            $stripped_question_group['post_parent'] = $version_id;
+
+
+            $question_group_id = Question_Group::save_post($stripped_question_group, true);
+            $data['question_groups'][$question_group_key]['ID'] = $question_group_id;
+            $data['question_groups'][$question_group_key]['post_parent'] = $version_id;
+
+            foreach( $question_group['questions'] as $question_key => $question ) {
+                $stripped_question = array_diff_key($question, array( 'answer_options' => '' ) );
+                $stripped_question['post_parent'] = $question_group_id;
+
+                $question_id = Question::save_post( $stripped_question, true );
+                $data['question_groups'][$question_group_key]['questions'][$question_key]['ID'] = $question_id;
+                $data['question_groups'][$question_group_key]['questions'][$question_key]['post_parent'] = $question_group_id;
+
+                foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
+                    if( 'trash' == $answer_option['post_status'] ) {
+                        unset( $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key] );
+                        if( isset( $answer_option['ID'] ) ) {
+                            wp_delete_post( $answer_option['ID'], true );
+                        }
+                    } else {
+                        $answer_option['post_parent'] = $question_id;
+
+                        $answer_option_id = Answer_Option::save_post( $answer_option, true );
+                        $answer_option['ID'] = $answer_option_id;
+                        $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['ID'] = $answer_option_id;
+                        $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['post_parent'] = $question_id;
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    public function save_existing_version_form($passed_data){
+
+        $data = $this->update_kwps_sort_order_of_form( $passed_data );
 
         $stripped_version = array_diff_key( $data, array('question_groups' => '') );
         $version_id = Version::save_post($stripped_version, true);
@@ -303,7 +359,9 @@ class Version_Handler {
         foreach( $data['question_groups'] as $question_group_key => $question_group ) {
             $data['question_groups'][$question_group_key]['questions'] =
                 $this->update_kwps_sort_order($data['question_groups'][$question_group_key]['questions']);
+        }
 
+        foreach( $data['question_groups'] as $question_group_key => $question_group ) {
             foreach( $question_group['questions'] as $question_key => $question ) {
                 $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'] =
                     $this->update_kwps_sort_order( $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'] );
