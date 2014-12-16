@@ -98,7 +98,7 @@ if( isset( $_REQUEST['id'] ) ) {
             <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
             <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
 
-            <textarea style="display: none" n ame="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
+            <textarea style="display: none" name="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
             <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                 <div style="display: none" class="kwps-content-editor">
                     <?php wp_editor( (isset($intro['post_content']))? $intro['post_content'] : "Intro", 'intro', array('teeny' => true ) ); ?>
@@ -117,7 +117,7 @@ if( isset( $_REQUEST['id'] ) ) {
             <?php $intro = $version['intro_result'];?>
             <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
             <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
-            <textarea style="display: none" n ame="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro Result" ?></textarea>
+            <textarea style="display: none" name="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro Result" ?></textarea>
 
             <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                 <div style="display: none" class="kwps-content-editor">
@@ -142,7 +142,7 @@ if( isset( $_REQUEST['id'] ) ) {
                         <input type="hidden" name="post_status" value="<?php echo $question_group['post_status'] ?>" />
                         <input type="text" name="post_title" value="<?php echo $question_group['post_title'] ?>" class="<?php if( isset( $question_group['errors']['post_title'] ) ) echo 'kwps_error'; ?>" />
 
-                        <textarea style="display: none" n ame="post_content"><?php echo (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1) ?></textarea>
+                        <textarea style="display: none" name="post_content"><?php echo (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1) ?></textarea>
                         <div class="kwps-content<?php if( isset( $question_group['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                             <div style="display: none" class="kwps-content-editor">
                                 <?php wp_editor( (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1), 'question_group_' . $question_group_key, array('teeny' => true ) ); ?>
