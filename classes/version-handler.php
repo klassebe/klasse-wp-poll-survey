@@ -416,6 +416,10 @@ class Version_Handler {
                 $question_group_errors = Question_Group::validate_for_update( $stripped_question_group );
             } else {
                 $question_group_errors = Question_Group::validate_for_insert( $stripped_question_group );
+
+                if( isset( $test_modus_errors['_kwps_max_question_groups'] ) ) {
+                    $question_group_errors['_kwps_max_question_groups'] = $test_modus_errors['_kwps_max_question_groups'];
+                }
             }
 
             if( $set_trashed_question_groups_to_draft && $question_group['post_status'] == 'trash' ) {
