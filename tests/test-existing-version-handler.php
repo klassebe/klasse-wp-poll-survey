@@ -31,12 +31,10 @@ class Existing_Version_Handler_Test extends WP_UnitTestCase {
             'post_parent' => $poll_modus_id,
         ) );
 
-        $test_data = include __DIR__ . '/../form-test-data/new-version/poll/valid-for-save-test.php';
-        $input = $test_data['input'];
-        $expected_output = $test_data['expected_output'];
+        $test_data = include __DIR__ . '/../form-test-data/existing-version/poll/fixture.php';
 
         $version_handler = new \kwps_classes\Version_Handler();
-        $this->existing_version = $version_handler->save_new_version_form( $input );
+        $this->existing_version = $version_handler->save_new_version_form( $test_data );
 
     }
 
@@ -54,6 +52,10 @@ class Existing_Version_Handler_Test extends WP_UnitTestCase {
 
     function test_validate_remove_too_many_question_groups() {
         $this->checkOutPutWithFormTestData( 'removing-too-many-question-groups-test.php');
+    }
+
+    function test_validate_add_too_many_questions() {
+        $this->checkOutPutWithFormTestData( 'add-too-many-questions-test.php');
     }
 
     function checkOutPutWithFormTestData( $file ){

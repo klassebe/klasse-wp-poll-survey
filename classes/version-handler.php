@@ -350,7 +350,12 @@ class Version_Handler {
 
     public function validate_existing_version_form( $data ) {
         $data_has_errors = false;
-        $test_modus_errors = array();
+
+        $test_modus_errors = $this->validate_for_test_modus($data);
+
+        if( sizeof( $test_modus_errors ) != 0 ) {
+            $data_has_errors = true;
+        }
 
         $stripped_version = array_diff_key( $data, array('question_groups' => '') );
         $version_errors = Version::validate_for_update($stripped_version);
@@ -361,21 +366,33 @@ class Version_Handler {
             $data_has_errors = true;
         }
 
-        $intro_errors = Intro::validate_for_update( $data['intro'] );
+        if( isset( $data['intro']['ID'] ) ) {
+            $intro_errors = Intro::validate_for_update( $data['intro'] );
+        } else {
+            $intro_errors = Intro::validate_for_insert( $data['intro'] );
+        }
         $data['intro']['errors'] = $intro_errors;
 
         if( sizeof($intro_errors) != 0 ) {
             $data_has_errors = true;
         }
 
-        $intro_result_errors = Intro::validate_for_update( $data['intro_result'] );
+        if( isset( $data['intro_result']['ID'] ) ) {
+            $intro_result_errors = Intro::validate_for_update( $data['intro_result'] );
+        } else {
+            $intro_result_errors = Intro::validate_for_insert( $data['intro_result'] );
+        }
         $data['intro_result']['errors'] = $intro_result_errors;
 
         if( sizeof($intro_result_errors) != 0 ) {
             $data_has_errors = true;
         }
 
-        $outro_errors = Outro::validate_for_update( $data['outro'] );
+        if( isset( $data['outro']['ID'] ) ) {
+            $outro_errors = Outro::validate_for_update( $data['outro'] );
+        } else {
+            $outro_errors = Outro::validate_for_insert( $data['outro'] );
+        }
         $data['outro']['errors'] = $outro_errors;
 
         if( sizeof($outro_errors) != 0 ) {
@@ -395,7 +412,11 @@ class Version_Handler {
 
         foreach( $data['question_groups'] as $question_group_key => $question_group ) {
             $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
-            $question_group_errors = Question_Group::validate_for_update( $stripped_question_group );
+            if( isset( $stripped_question_group['ID'] ) ) {
+                $question_group_errors = Question_Group::validate_for_update( $stripped_question_group );
+            } else {
+                $question_group_errors = Question_Group::validate_for_insert( $stripped_question_group );
+            }
 
             if( $set_trashed_question_groups_to_draft && $question_group['post_status'] == 'trash' ) {
                 $question_group_errors['post_status'] = 'Minimum 1 question group required per version';
@@ -422,7 +443,17 @@ class Version_Handler {
 
             foreach( $question_group['questions'] as $question_key => $question ) {
                 $stripped_question = array_diff_key($question, array( 'answer_options' => '' ) );
-                $question_errors = Question::validate_for_update($stripped_question);
+
+                if( isset( $stripped_question['ID'] ) ) {
+                    $question_errors = Question::validate_for_update($stripped_question);
+                } else {
+                    $question_errors = Question::validate_for_insert($stripped_question);
+
+                    if( isset( $test_modus_errors['_kwps_max_questions_per_question_group'] ) ) {
+                        $question_errors['_kwps_max_questions_per_question_group'] =
+                            $test_modus_errors['_kwps_max_questions_per_question_group'];
+                    }
+                }
 
                 if( $set_trashed_questions_to_draft && $question['post_status'] == 'trash' ) {
                     $question_errors['post_status'] = 'Minimum 1 question required per question group';
@@ -448,8 +479,11 @@ class Version_Handler {
                 }
 
                 foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
-
-                    $answer_option_errors = Answer_Option::validate_for_update($answer_option);
+                    if( isset( $answer_option['ID'] ) ) {
+                        $answer_option_errors = Answer_Option::validate_for_update($answer_option);
+                    } else {
+                        $answer_option_errors = Answer_Option::validate_for_insert($answer_option);
+                    }
 
                     if( $set_trashed_answer_options_to_draft && $answer_option['post_status'] == 'trash' ) {
                         $answer_option_errors['post_status'] = 'Minimum 2 answer options required per question';
