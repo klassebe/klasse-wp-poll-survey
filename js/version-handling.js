@@ -206,13 +206,14 @@ jQuery(document).ready(function($) {
   function updateUi() {
     //Clean-up UI before adding
     $('.kwps-action').remove();
+    $('.kwps-remove-item').attr('disabled', true);
 
 
     $('.kwps-question_groups').each(function(i) {
       var questionGroupsCount = $(this).children('.kwps-question_group:visible').length;
 
       if(questionGroupsCount > 1) {
-        $(this).children('.kwps-question_group').children('h3').append("<button class=\"kwps-remove-item kwps-action\">remove</button>");
+        $(this).children('.kwps-question_group').children('h3').children('.kwps-remove-item').removeAttr('disabled');
 
 
         $(this).children('.kwps-question_group:visible').each(function(questionGroupI) {
@@ -235,7 +236,7 @@ jQuery(document).ready(function($) {
       var questionsCount = $(this).children('.kwps-question:visible').length;
 
       if(questionsCount > 1) {
-        $(this).children('.kwps-question').children('h3').append("<button class=\"kwps-remove-item kwps-action\">remove</button>");
+        $(this).children('.kwps-question').children('h3').children('.kwps-remove-item').removeAttr('disabled');
 
         $(this).children('.kwps-question:visible').each(function(questionI) {
           if(questionI < questionsCount-1) {
@@ -256,7 +257,7 @@ jQuery(document).ready(function($) {
       var answerOptionCount = $(this).children('.kwps-answer_option:visible').length;
 
       if(answerOptionCount > 2) {
-        $(this).children('.kwps-answer_option').children('h3').append("<button class=\"kwps-remove-item kwps-action\">remove</button>");
+        $(this).children('.kwps-answer_option').children('h3').children('.kwps-remove-item').removeAttr('disabled');
 
         $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
           if(answerOptionI < answerOptionCount-1) {
