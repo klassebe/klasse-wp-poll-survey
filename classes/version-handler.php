@@ -382,9 +382,26 @@ class Version_Handler {
             $data_has_errors = true;
         }
 
+        $set_trashed_question_groups_to_draft = false;
+
+        $trashed_question_groups_count = $this->get_trashed_items_count( $data['question_groups'] );
+
+        if( ( sizeof( $data['question_groups'] ) - $trashed_question_groups_count ) < 1 ) {
+            $data_has_errors = true;
+            $test_modus_errors['_kwps_min_question_groups_per_version'] =
+                'Minimum 1 question group required per version';
+            $set_trashed_question_groups_to_draft = true;
+        }
+
         foreach( $data['question_groups'] as $question_group_key => $question_group ) {
             $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
             $question_group_errors = Question_Group::validate_for_update( $stripped_question_group );
+
+            if( $set_trashed_question_groups_to_draft && $question_group['post_status'] == 'trash' ) {
+                $question_group_errors['post_status'] = 'Minimum 1 question group required per version';
+                $question_group['post_status'] = 'draft';
+                $data['question_groups'][$question_group_key]['post_status'] = 'draft';
+            }
 
             $data['question_groups'][$question_group_key]['errors'] = $question_group_errors;
 
@@ -394,9 +411,9 @@ class Version_Handler {
 
             $set_trashed_questions_to_draft = false;
 
-            $trashed_answer_options_count = $this->get_trashed_items_count( $question_group['questions'] );
+            $trashed_questions_count = $this->get_trashed_items_count( $question_group['questions'] );
 
-            if( ( sizeof( $question_group['questions'] ) - $trashed_answer_options_count ) < 1 ) {
+            if( ( sizeof( $question_group['questions'] ) - $trashed_questions_count ) < 1 ) {
                 $data_has_errors = true;
                 $test_modus_errors['_kwps_min_questions_per_question_group'] =
                     'Minimum 1 question required per question group';
