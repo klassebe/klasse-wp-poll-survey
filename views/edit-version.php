@@ -155,9 +155,9 @@ if( isset( $_REQUEST['id'] ) ) {
                             </div>
                         </div>
 
-                        <div id="kwps-question_group-questions" class="kwps kwps-multi kwps-questions">
+                        <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-questions" class="kwps kwps-multi kwps-questions">
                             <?php foreach( $question_group['questions'] as $question_key => $question ) : ?>
-                                <div id="kwps-question_group-question-<?php echo $question['_kwps_sort_order'] ?>" class="kwps kwps-multi kwps-question">
+                                <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-question-<?php echo $question['_kwps_sort_order'] ?>" class="kwps kwps-multi kwps-question">
                                     <h3><span class="kwps-collapse">Open</span> Vraag <span><?php echo $question['_kwps_sort_order'] ?></span></h3>
                                     <?php if( isset ($question['ID'] ) ): ?>
                                         <input type="hidden"
@@ -180,9 +180,9 @@ if( isset( $_REQUEST['id'] ) ) {
 
 
 
-                                <div id="kwps-question_group-question-answer-options" class="kwps kwps-multi kwps-answer_options">
+                                <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-question-<?php echo $question['_kwps_sort_order'] ?>-answer-options" class="kwps kwps-multi kwps-answer_options">
                                     <?php foreach( $question['answer_options'] as $answer_option_key => $answer_option ): ?>
-                                        <div id="kwps-question_group-question-answer_option-<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_option">
+                                        <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-question-<?php echo $question['_kwps_sort_order'] ?>-answer_option-<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_option">
                                             <h3><span class="kwps-collapse">Open</span> Antwoord <span><?php echo $answer_option['_kwps_sort_order'] ;?></span></h3>
                                             <?php if( isset ($answer_option['ID'] ) ): ?>
                                                 <input type="hidden" name="ID" value="<?php echo $answer_option['ID'] ?>" />
