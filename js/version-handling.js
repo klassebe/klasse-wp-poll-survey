@@ -61,12 +61,37 @@ jQuery(document).ready(function($) {
 
   function collapse() {
     if($(this).closest('div').children('div').is(':visible')) {
-      $(this).html('Open');
-    } else {
-      $(this).html('Close');
-    }
-    $(this).closest('div').children('div').toggle()
+      //Open > Close
+      $(this).removeClass(function(i, className) {
+        //dashicons-[.\S]*
+        var classes = className.split(" ");
+        var classesToRemove = [];
 
+        $.each(classes, function(index, classItem) {
+          if(classItem.match('^dashicons-')) {
+            classesToRemove.push(classItem);
+          }
+        });
+
+        return classesToRemove.join(' ');
+      }).addClass('dashicons-arrow-right');
+    } else {
+      //Close > Open
+      $(this).removeClass(function(i, className) {
+        //dashicons-[.\S]*
+        var classes = className.split(" ");
+        var classesToRemove = [];
+
+        $.each(classes, function(index, classItem) {
+          if(classItem.match('^dashicons-')) {
+            classesToRemove.push(classItem);
+          }
+        });
+
+        return classesToRemove.join(' ');
+      }).addClass('dashicons-arrow-down');
+    }
+    $(this).closest('div').children('div').toggle();
   }
 
   function showEditor(event) {
