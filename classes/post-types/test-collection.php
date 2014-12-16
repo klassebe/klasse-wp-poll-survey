@@ -198,8 +198,8 @@ class Test_Collection extends Kwps_Post_Type{
 
         public static function get_test_modus($test_collection_id)
     {
-        $test_collection = static::get_as_array($test_collection_id);
-        return Test_Modus::get_as_array($test_collection['post_parent']);
+        $test_collection = static::get_as_array($test_collection_id, false);
+        return Test_Modus::get_as_array($test_collection['post_parent'], false);
     }
 
     public static function get_view_count($test_collection_id){
