@@ -94,6 +94,7 @@ if( isset( $_REQUEST['id'] ) ) {
             />
         </div>
         <div class="kwps kwps-single" id="kwps-intro">
+            <h2>Intro</h2>
             <?php $intro = $version['intro'];?>
             <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
             <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
@@ -114,6 +115,7 @@ if( isset( $_REQUEST['id'] ) ) {
 
         </div>
         <div class="kwps kwps-single" id="kwps-intro_result">
+            <h2>Intro result</h2>
             <?php $intro = $version['intro_result'];?>
             <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
             <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
@@ -221,6 +223,7 @@ if( isset( $_REQUEST['id'] ) ) {
             </button>
             </div>
         <div class="kwps kwps-single" id="kwps-outro">
+            <h2>Outro result</h2>
             <?php $outro = $version['outro']; ?>
             <input type="hidden" name="ID" value="<?php if( isset( $outro['ID'] ) ) echo $outro['ID'];?>">
             <input type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>">
