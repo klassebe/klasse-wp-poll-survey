@@ -266,7 +266,7 @@
             $posts_with_meta = array();
 
             foreach($posts as $post){
-                $post_with_meta = static::get_as_array($post->ID);
+                $post_with_meta = static::get_as_array($post->ID, false);
                 array_push($posts_with_meta, $post_with_meta);
             }
             return $posts_with_meta;

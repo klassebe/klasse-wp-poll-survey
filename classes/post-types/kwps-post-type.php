@@ -74,7 +74,7 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
      * @param $post_id
      * @return array|bool|null|\WP_Post
      */
-    public static function get_as_array($post_id){
+    public static function get_as_array($post_id, $filter_form_fields = true){
         $post_as_array = get_post($post_id,  ARRAY_A);
 
          if(null == $post_as_array){
@@ -82,7 +82,12 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
          } else {
              $post_as_array = array_merge($post_as_array, static::get_meta_data($post_id));
          }
-        return static::filter_form_fields( $post_as_array );
+
+        if( $filter_form_fields ) {
+            return static::filter_form_fields( $post_as_array );
+        } else {
+            return $post_as_array;
+        }
     }
 
     /**
