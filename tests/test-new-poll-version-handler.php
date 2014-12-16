@@ -1,6 +1,6 @@
 <?php
 
-class New_Version_Handler_Test extends WP_UnitTestCase {
+class New_Poll_Version_Handler_Test extends WP_UnitTestCase {
 
     protected $test_modus_poll;
     protected $test_collection;
