@@ -48,6 +48,10 @@ class Existing_Version_Handler_Test extends WP_UnitTestCase {
         $this->checkOutPutWithFormTestData( 'removing-too-many-answer-options-test.php' );
     }
 
+    function test_validate_remove_too_many_questions() {
+        $this->checkOutPutWithFormTestData( 'removing-too-many-questions-test.php' );
+    }
+
     function checkOutPutWithFormTestData( $file ){
         $test_data = include __DIR__ . '/../form-test-data/existing-version/poll/' . $file;
         $input = $test_data['input'];

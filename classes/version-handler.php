@@ -392,9 +392,26 @@ class Version_Handler {
                 $data_has_errors = true;
             }
 
+            $set_trashed_questions_to_draft = false;
+
+            $trashed_answer_options_count = $this->get_trashed_items_count( $question_group['questions'] );
+
+            if( ( sizeof( $question_group['questions'] ) - $trashed_answer_options_count ) < 1 ) {
+                $data_has_errors = true;
+                $test_modus_errors['_kwps_min_questions_per_question_group'] =
+                    'Minimum 1 question required per question group';
+                $set_trashed_questions_to_draft = true;
+            }
+
             foreach( $question_group['questions'] as $question_key => $question ) {
                 $stripped_question = array_diff_key($question, array( 'answer_options' => '' ) );
                 $question_errors = Question::validate_for_update($stripped_question);
+
+                if( $set_trashed_questions_to_draft && $question['post_status'] == 'trash' ) {
+                    $question_errors['post_status'] = 'Minimum 1 question required per question group';
+                    $question['post_status'] = 'draft';
+                    $data['question_groups'][$question_group_key]['questions'][$question_key]['post_status'] = 'draft';
+                }
 
                 $data['question_groups'][$question_group_key]['questions'][$question_key]['errors'] = $question_errors;
 
@@ -402,7 +419,7 @@ class Version_Handler {
                     $data_has_errors = true;
                 }
 
-                $set_trashed_to_draft = false;
+                $set_trashed_answer_options_to_draft = false;
 
                 $trashed_answer_options_count = $this->get_trashed_items_count( $question['answer_options'] );
 
@@ -410,14 +427,14 @@ class Version_Handler {
                     $data_has_errors = true;
                     $test_modus_errors['_kwps_min_answer_options_per_question'] =
                         'Minimum 2 answer options required per question';
-                    $set_trashed_to_draft = true;
+                    $set_trashed_answer_options_to_draft = true;
                 }
 
                 foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
 
                     $answer_option_errors = Answer_Option::validate_for_update($answer_option);
 
-                    if( $set_trashed_to_draft && $answer_option['post_status'] == 'trash' ) {
+                    if( $set_trashed_answer_options_to_draft && $answer_option['post_status'] == 'trash' ) {
                         $answer_option_errors['post_status'] = 'Minimum 2 answer options required per question';
                         $answer_option['post_status'] = 'draft';
                         $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['post_status'] = 'draft';
