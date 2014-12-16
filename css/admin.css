@@ -417,19 +417,19 @@ div.kwps-intro {
     margin: 5px;
 }
 
-div.kwps-intro-result {
+div.kwps-intro_result {
     border: 2px solid;
     border-color: purple;
     margin: 5px;
 }
 
-div.kwps-question-groups {
+div.kwps-question_groups {
     border: 2px solid;
     border-color: black;
     margin: 5px;
 }
 
-div.kwps-question-group {
+div.kwps-question_group {
     border: 2px solid;
     border-color: blue;
     margin: 5px;
@@ -447,13 +447,13 @@ div.kwps-question {
     margin: 5px;
 }
 
-div.kwps-answer-options {
+div.kwps-answer_options {
     border: 2px solid;
     border-color: blue;
     margin: 5px;
 }
 
-div.kwps-answer-option {
+div.kwps-answer_option {
     border: 2px solid;
     border-color: yellow;
     margin: 5px;
