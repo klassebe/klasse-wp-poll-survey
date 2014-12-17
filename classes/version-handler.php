@@ -40,6 +40,14 @@ class Version_Handler {
         }
 
         $stripped_version = array_diff_key( $data, array('question_groups' => '') );
+
+        if( isset( $stripped_version['post_parent'] ) ) {
+            $test_modus = Test_Collection::get_test_modus( $stripped_version['post_parent'], false );
+            $answer_options_require_value = ($test_modus['_kwps_answer_options_require_value'] > 0);
+        } else {
+            $answer_options_require_value = false;
+        }
+
         $version_errors = Version::validate_for_insert( $stripped_version, true);
 
         $data['errors'] = $version_errors;
@@ -90,6 +98,24 @@ class Version_Handler {
                 }
                 foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
                     $answer_option_errors = Answer_Option::validate_for_insert($answer_option);
+
+                    if( $answer_options_require_value ) {
+                        if(! isset($answer_option['_kwps_answer_option_value'])) {
+                            $answer_option_errors['_kwps_answer_option_value'] = 'Required';
+                        } else {
+                            if( is_string($answer_option['_kwps_answer_option_value'])){
+                                if( strlen($answer_option['_kwps_answer_option_value']) == 0 ) {
+                                    $answer_option_errors['_kwps_answer_option_value'] = 'Required';
+                                }
+                            }
+                        }
+
+                        if( isset( $answer_option['_kwps_answer_option_value']) ) {
+                            if(! is_numeric( $answer_option['_kwps_answer_option_value'] ) ){
+                                $answer_option_errors['_kwps_answer_option_value'] = 'Needs to be a number';
+                            }
+                        }
+                    }
 
                     $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['errors'] = $answer_option_errors;
 
@@ -192,6 +218,37 @@ class Version_Handler {
                     ),
                 ),
 
+            );
+        }
+
+        $test_modus = Test_Collection::get_test_modus( $data['post_parent'] );
+
+        if( 'kwps-personality-test' == $test_modus['post_name'] && ! isset( $data['result_profiles'] ) ) {
+            $data['result_profiles'] = array(
+                1 => array(
+                    'post_title' => '',
+                    '_kwps_sort_order' => 1,
+                    '_kwps_min_value' => '',
+                    '_kwps_max_value' => '',
+                    'errors' => array(
+                        'post_title' => 'Required',
+                        'post_parent' => 'Required',
+                        '_kwps_min_value' => 'Required',
+                        '_kwps_max_value' => 'Required',
+                    ),
+                ),
+                2 => array(
+                    'post_title' => '',
+                    '_kwps_sort_order' => 2,
+                    '_kwps_min_value' => '',
+                    '_kwps_max_value' => '',
+                    'errors' => array(
+                        'post_title' => 'Required',
+                        'post_parent' => 'Required',
+                        '_kwps_min_value' => 'Required',
+                        '_kwps_max_value' => 'Required',
+                    ),
+                ),
             );
         }
 
