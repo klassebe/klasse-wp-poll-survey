@@ -479,6 +479,10 @@ class Version_Handler {
         }
 
         $stripped_version = array_diff_key( $data, array('question_groups' => '') );
+
+        $test_modus = Test_Collection::get_test_modus( $stripped_version['post_parent'], false );
+        $answer_options_require_value = ($test_modus['_kwps_answer_options_require_value'] > 0);
+
         $version_errors = Version::validate_for_update($stripped_version);
 
         $data['errors'] = $version_errors;
@@ -608,6 +612,24 @@ class Version_Handler {
                         $answer_option_errors = Answer_Option::validate_for_update($answer_option);
                     } else {
                         $answer_option_errors = Answer_Option::validate_for_insert($answer_option);
+                    }
+
+                    if( $answer_options_require_value ) {
+                        if(! isset($answer_option['_kwps_answer_option_value'])) {
+                            $answer_option_errors['_kwps_answer_option_value'] = 'Required';
+                        } else {
+                            if( is_string($answer_option['_kwps_answer_option_value'])){
+                                if( strlen($answer_option['_kwps_answer_option_value']) == 0 ) {
+                                    $answer_option_errors['_kwps_answer_option_value'] = 'Required';
+                                }
+                            }
+                        }
+
+                        if( isset( $answer_option['_kwps_answer_option_value']) ) {
+                            if(! is_numeric( $answer_option['_kwps_answer_option_value'] ) ){
+                                $answer_option_errors['_kwps_answer_option_value'] = 'Needs to be a number';
+                            }
+                        }
                     }
 
                     if( $set_trashed_answer_options_to_draft && $answer_option['post_status'] == 'trash' ) {

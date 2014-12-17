@@ -26,6 +26,7 @@ class Answer_Option extends Kwps_Post_Type{
         'post_parent',
         'post_status',
         '_kwps_sort_order',
+        '_kwps_answer_option_value',
     );
 
     /**

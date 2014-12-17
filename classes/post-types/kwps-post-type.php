@@ -101,10 +101,15 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
         $meta_as_array = array();
 
         foreach(static::$meta_data_fields as $field){
-            $meta_as_array[$field] = get_post_meta($post_id, $field, true);
-	        if(in_array($field, static::$numeric_fields)) {
-		        $meta_as_array[$field] = (int) $meta_as_array[$field];
-	        }
+            $meta_data = get_post_meta($post_id, $field, true);
+
+	        if( in_array($field, static::$numeric_fields) ){
+                if(strlen( $meta_data ) != 0 ) {
+                    $meta_as_array[$field] = (int) $meta_data;
+                }
+	        } else {
+                $meta_as_array[$field] = $meta_data;
+            }
         }
 
         return $meta_as_array;
@@ -268,12 +273,7 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
         foreach(static::$numeric_fields as $field){
             if( isset( $post[$field]) ) {
                 if(! is_numeric( $post[$field] ) ){
-                    array_push( $errors ,
-                        array(
-                            'field' => $field,
-                            'message' => __( 'Needs to be a number', 'klasse-wp-poll-survey' )
-                        )
-                    );
+                    $errors [$field] = 'Needs to be a number';
                 }
             }
         }
