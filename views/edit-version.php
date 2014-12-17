@@ -136,7 +136,7 @@ if( isset( $_REQUEST['id'] ) ) {
         <div id="kwps-question_groups" class="kwps kwps-multi kwps-question_groups">
                 <?php foreach( $version['question_groups'] as $question_group_key => $question_group ): ?>
                     <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question_group">
-                        <h3><span class="kwps-collapse">Open</span> Pagina <?php echo $question_group['_kwps_sort_order'] ?></h3>
+                        <h3><span class="kwps-collapse dashicons dashicons-arrow-right"></span> Pagina <?php echo $question_group['_kwps_sort_order'] ?> <button class="kwps-remove-item">remove</button></h3>
                         <?php $question_group_field_index = 'question_groups[' . $question_group['_kwps_sort_order'] .']' ?>
                         <?php if( isset ($question_group['ID'] ) ): ?>
                             <input type="hidden" name="ID" value="<?php echo $question_group['ID'] ?>" />
@@ -160,7 +160,7 @@ if( isset( $_REQUEST['id'] ) ) {
                         <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-questions" class="kwps kwps-multi kwps-questions">
                             <?php foreach( $question_group['questions'] as $question_key => $question ) : ?>
                                 <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-question-<?php echo $question['_kwps_sort_order'] ?>" class="kwps kwps-multi kwps-question">
-                                    <h3><span class="kwps-collapse">Open</span> Vraag <span><?php echo $question['_kwps_sort_order'] ?></span></h3>
+                                    <h3><span class="kwps-collapse dashicons dashicons-arrow-right"></span> Vraag <span><?php echo $question['_kwps_sort_order'] ?></span> <button class="kwps-remove-item">remove</button></h3>
                                     <?php if( isset ($question['ID'] ) ): ?>
                                         <input type="hidden"
                                                name="ID"
@@ -185,7 +185,7 @@ if( isset( $_REQUEST['id'] ) ) {
                                 <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-question-<?php echo $question['_kwps_sort_order'] ?>-answer-options" class="kwps kwps-multi kwps-answer_options">
                                     <?php foreach( $question['answer_options'] as $answer_option_key => $answer_option ): ?>
                                         <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-question-<?php echo $question['_kwps_sort_order'] ?>-answer_option-<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_option">
-                                            <h3><span class="kwps-collapse">Open</span> Antwoord <span><?php echo $answer_option['_kwps_sort_order'] ;?></span></h3>
+                                            <h3><span class="kwps-collapse dashicons dashicons-arrow-right"></span> Antwoord <span><?php echo $answer_option['_kwps_sort_order'] ;?></span> <button class="kwps-remove-item">remove</button></h3>
                                             <?php if( isset ($answer_option['ID'] ) ): ?>
                                                 <input type="hidden" name="ID" value="<?php echo $answer_option['ID'] ?>" />
                                             <?php endif;?>
