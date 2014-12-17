@@ -290,7 +290,8 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
      */
     public static function save_post($post_data, $return_id = false){
         $post_data['post_type'] = static::$post_type;
-        $post_id = wp_insert_post($post_data);
+            $post_id = wp_insert_post($post_data);
+
 
         if( $post_id != 0 ){
             foreach($post_data as $field => $value){

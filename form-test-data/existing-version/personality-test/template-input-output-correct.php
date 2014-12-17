@@ -89,7 +89,7 @@ return array(
                                 'post_parent' => 14,
                                 '_kwps_sort_order' => 2,
                                 'post_content' => 'Answer option 2',
-                                'post_status' => 'trash',
+                                'post_status' => 'draft',
                                 '_kwps_answer_option_value' => 10,
                             ),
                             3 => array(
@@ -124,7 +124,7 @@ return array(
                                 'post_parent' => 19,
                                 '_kwps_sort_order' => 1,
                                 'post_content' => 'Answer option 1',
-                                'post_status' => 'trash',
+                                'post_status' => 'draft',
                                 '_kwps_answer_option_value' => 5,
                             ),
                             2 => array(
@@ -270,9 +270,17 @@ return array(
                                     '_kwps_answer_option_value' => 5,
                                 ),
                                 1 => array(
-                                    'ID' => 17,
+                                    'ID' => 16,
                                     'post_parent' => 14,
                                     '_kwps_sort_order' => 1,
+                                    'post_content' => 'Answer option 2',
+                                    'post_status' => 'draft',
+                                    '_kwps_answer_option_value' => 10,
+                                ),
+                                2 => array(
+                                    'ID' => 17,
+                                    'post_parent' => 14,
+                                    '_kwps_sort_order' => 2,
                                     'post_content' => 'Answer option 3',
                                     'post_status' => 'draft',
                                     '_kwps_answer_option_value' => 15,
@@ -297,17 +305,25 @@ return array(
                             'post_content' => 'Question 1',
                             'answer_options' => array(
                                 0 => array(
-                                    'ID' => 21,
+                                    'ID' => 20,
                                     'post_parent' => 19,
                                     '_kwps_sort_order' => 0,
+                                    'post_content' => 'Answer option 1',
+                                    'post_status' => 'draft',
+                                    '_kwps_answer_option_value' => 5,
+                                ),
+                                1 => array(
+                                    'ID' => 21,
+                                    'post_parent' => 19,
+                                    '_kwps_sort_order' => 1,
                                     'post_content' => 'Answer option 2',
                                     'post_status' => 'draft',
                                     '_kwps_answer_option_value' => 10,
                                 ),
-                                1 => array(
+                                2 => array(
                                     'ID' => 22,
                                     'post_parent' => 19,
-                                    '_kwps_sort_order' => 1,
+                                    '_kwps_sort_order' => 2,
                                     'post_content' => 'Answer option 3',
                                     'post_status' => 'draft',
                                     '_kwps_answer_option_value' => 15,

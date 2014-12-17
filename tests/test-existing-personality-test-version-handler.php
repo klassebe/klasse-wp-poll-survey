@@ -60,11 +60,23 @@ class Existing_Personality_Test_Version_Handler_Test extends WP_UnitTestCase {
 
     function test_validate_add_answer_option_invalid_value() {
             $this->checkOutPutWithFormTestData( 'add-answer-option-invalid-value.php');
-        }
+    }
 
-    // test the saving of a personality_test where an answer options is trashed/removed
-    function test_save_trashed_answer_option() {
-        $test_data = include __DIR__ . '/../form-test-data/existing-version/personality-test/save-trashed-answer-option-test.php';
+//     test the saving of a personality_test where an answer options is trashed/removed
+//    function test_save_trashed_answer_option() {
+//        $this->checkOutputForSavedVersion( 'save-trashed-answer-option-test.php' );
+//    }
+
+    function test_save_trashed_question() {
+        $this->checkOutputForSavedVersion( 'save-trashed-question-test.php' );
+    }
+
+    function test_save_trashed_question_group() {
+        $this->checkOutputForSavedVersion( 'save-trashed-question-group-test.php' );
+    }
+
+    function checkOutputForSavedVersion($file) {
+        $test_data = include __DIR__ . '/../form-test-data/existing-version/personality-test/' . $file;
         $input = $test_data['input'];
         $expected_output = $test_data['expected_output'];
 

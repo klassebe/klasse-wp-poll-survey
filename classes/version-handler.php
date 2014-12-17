@@ -379,35 +379,70 @@ class Version_Handler {
 
 
         foreach( $data['question_groups'] as $question_group_key => $question_group ) {
-            $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
-            $stripped_question_group['post_parent'] = $version_id;
+            if( 'trash' == $question_group['post_status'] ) {
+                if( isset( $question_group['ID'] ) ) {
+                    wp_delete_post( $question_group['ID'], true );
 
-
-            $question_group_id = Question_Group::save_post($stripped_question_group, true);
-            $data['question_groups'][$question_group_key]['ID'] = $question_group_id;
-            $data['question_groups'][$question_group_key]['post_parent'] = $version_id;
-
-            foreach( $question_group['questions'] as $question_key => $question ) {
-                $stripped_question = array_diff_key($question, array( 'answer_options' => '' ) );
-                $stripped_question['post_parent'] = $question_group_id;
-
-                $question_id = Question::save_post( $stripped_question, true );
-                $data['question_groups'][$question_group_key]['questions'][$question_key]['ID'] = $question_id;
-                $data['question_groups'][$question_group_key]['questions'][$question_key]['post_parent'] = $question_group_id;
-
-                foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
-                    if( 'trash' == $answer_option['post_status'] ) {
-                        unset( $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key] );
-                        if( isset( $answer_option['ID'] ) ) {
-                            wp_delete_post( $answer_option['ID'], true );
+                    foreach( $question_group['questions'] as $question_key => $question ) {
+                        if( isset( $question['ID'] ) ) {
+                            wp_delete_post( $question['ID'], true );
                         }
-                    } else {
-                        $answer_option['post_parent'] = $question_id;
 
-                        $answer_option_id = Answer_Option::save_post( $answer_option, true );
-                        $answer_option['ID'] = $answer_option_id;
-                        $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['ID'] = $answer_option_id;
-                        $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['post_parent'] = $question_id;
+                        foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
+                            if( isset( $answer_option['ID'] ) ) {
+                                wp_delete_post( $answer_option['ID'], true );
+                            }
+                        }
+                    }
+
+                }
+                unset( $data['question_groups'][$question_group_key] );
+
+            } else {
+                $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
+                $stripped_question_group['post_parent'] = $version_id;
+
+
+                $question_group_id = Question_Group::save_post($stripped_question_group, true);
+                $data['question_groups'][$question_group_key]['ID'] = $question_group_id;
+                $data['question_groups'][$question_group_key]['post_parent'] = $version_id;
+
+                foreach( $question_group['questions'] as $question_key => $question ) {
+                    if( 'trash' == $question['post_status'] ) {
+                        if( isset( $question['ID'] ) ) {
+                            wp_delete_post( $question['ID'], true );
+
+                            foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
+                                if( isset( $answer_option['ID'] ) ) {
+                                    wp_delete_post( $answer_option['ID'], true );
+                                }
+                            }
+                        }
+                        unset( $data['question_groups'][$question_group_key]['questions'][$question_key] );
+
+                    } else {
+                        $stripped_question = array_diff_key($question, array( 'answer_options' => '' ) );
+                        $stripped_question['post_parent'] = $question_group_id;
+
+                        $question_id = Question::save_post( $stripped_question, true );
+                        $data['question_groups'][$question_group_key]['questions'][$question_key]['ID'] = $question_id;
+                        $data['question_groups'][$question_group_key]['questions'][$question_key]['post_parent'] = $question_group_id;
+
+                        foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
+                            if( 'trash' == $answer_option['post_status'] ) {
+                                unset( $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key] );
+                                if( isset( $answer_option['ID'] ) ) {
+                                    wp_delete_post( $answer_option['ID'], true );
+                                }
+                            } else {
+                                $answer_option['post_parent'] = $question_id;
+
+                                $answer_option_id = Answer_Option::save_post( $answer_option, true );
+                                $answer_option['ID'] = $answer_option_id;
+                                $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['ID'] = $answer_option_id;
+                                $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['post_parent'] = $question_id;
+                            }
+                        }
                     }
                 }
             }
