@@ -15,6 +15,16 @@ jQuery(document).ready(function($) {
   $(document).on('click','.kwps-content-edit', showEditor);
   $(document).on('click','.kwps-content-editor-save', updateValues);
 
+  var openCollapse = function () {
+    var objectName = $('#kwps-version');
+    objectName = 'collapseStatusVersionID' + objectName.find('input[name="ID"]').attr('value') + 'post_parent' + objectName.find('input[name="post_parent"]').attr('value');
+    var objectData = JSON.parse(localStorage[objectName]||'{}');
+    for ( var key in objectData ) {
+      if ( objectData[key] === 'open' ) {
+        collapse(false, key);
+      }
+    }
+  }()
 
   function createItem (event) {
     event.preventDefault();
@@ -59,10 +69,18 @@ jQuery(document).ready(function($) {
     updateUi();
   }
 
-  function collapse() {
-    if($(this).closest('div').children('div').is(':visible')) {
+  function collapse(event, id) {
+
+    var span;
+    if ( event ) {
+      span = this;
+    } else {
+      span = $('#'+id).find('span.kwps-collapse').first();
+    }
+
+    if($(span).closest('div').children('div').is(':visible')) {
       //Open > Close
-      $(this).removeClass(function(i, className) {
+      $(span).removeClass(function(i, className) {
         //dashicons-[.\S]*
         var classes = className.split(" ");
         var classesToRemove = [];
@@ -75,9 +93,14 @@ jQuery(document).ready(function($) {
 
         return classesToRemove.join(' ');
       }).addClass('dashicons-arrow-right');
+
+     if ( event ) {
+       updateLocalStorage(span, 'closed');
+     }
+
     } else {
       //Close > Open
-      $(this).removeClass(function(i, className) {
+      $(span).removeClass(function(i, className) {
         //dashicons-[.\S]*
         var classes = className.split(" ");
         var classesToRemove = [];
@@ -90,8 +113,24 @@ jQuery(document).ready(function($) {
 
         return classesToRemove.join(' ');
       }).addClass('dashicons-arrow-down');
+
+      if ( event ) {
+        updateLocalStorage(span, 'open');
+      }
+
     }
-    $(this).closest('div').children('div').toggle();
+    $(span).closest('div').children('div').toggle();
+  }
+
+  var updateLocalStorage = function (target, status) {
+    var objectName = $('#kwps-version');
+    objectName = 'collapseStatusVersionID' + objectName.find('input[name="ID"]').attr('value') + 'post_parent' + objectName.find('input[name="post_parent"]').attr('value');
+
+    var objectData = JSON.parse(localStorage[objectName]||'{}');
+    var collapseID = $(target).closest('div').attr('id');
+    var collapseStatus = status;
+    objectData[collapseID] = collapseStatus;
+    localStorage.setItem(objectName, JSON.stringify(objectData));
   }
 
   function showEditor(event) {
