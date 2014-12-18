@@ -391,11 +391,11 @@ div.test-modus-error {
     border-color: red;
 }
 
-input.error {
+input.kwps_error {
     border-color: red;
 }
 
-form.error {
+form.kwps_error {
     background-color: red;
 }
 
