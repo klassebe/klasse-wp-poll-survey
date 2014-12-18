@@ -171,7 +171,7 @@ class admin_section {
                         // validate/update existing version
                         $form_handler = new Version_Handler();
                         $validation_result = $form_handler->validate_existing_version_form($formattedData);
-                        var_dump( $validation_result ) ;
+//                        var_dump( $validation_result ) ;
                         if( ! $validation_result['errors'] ) {
                             $version_data = $form_handler->save_new_version_form($formattedData);
                         } else {
@@ -182,7 +182,7 @@ class admin_section {
                         if(! isset( $formattedData['ID'] ) ) {
                             $form_handler = new Version_Handler();
                             $validation_result = $form_handler->validate_new_version_form($formattedData);
-                            var_dump( $validation_result ) ;
+//                            var_dump( $validation_result ) ;
                             if( ! $validation_result['errors'] ) {
                                 $version_data = $form_handler->save_new_version_form($formattedData);
                             } else {
