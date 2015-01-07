@@ -111,7 +111,6 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
                 $meta_as_array[$field] = $meta_data;
             }
         }
-
         return $meta_as_array;
     }
 

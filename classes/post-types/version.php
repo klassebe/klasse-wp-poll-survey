@@ -16,6 +16,7 @@ class Version extends Kwps_Post_Type{
 
     public static $numeric_fields = array(
         '_kwps_sort_order',
+        '_kwps_view_count',
     );
 
     public static $form_fields = array(
@@ -24,6 +25,7 @@ class Version extends Kwps_Post_Type{
         'post_parent',
         'post_status',
         '_kwps_sort_order',
+        '_kwps_view_count',
     );
 
     public static $meta_data_fields = array(
