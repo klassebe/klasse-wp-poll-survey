@@ -101,10 +101,11 @@ if( isset( $_REQUEST['id'] ) ) {
             <input type="hidden" name="post_parent" value="<?php echo $version['post_parent']; ?>">
             <input type="hidden" name="post_status" value="<?php echo $version['post_status']; ?>">
         </div>
+
+        <?php $intro = $version['intro'];?>
         <div class="kwps kwps-single<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-intro">
             <h3>Intro</h3>
             <div class="inside">
-                <?php $intro = $version['intro'];?>
                 <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
                 <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
 
@@ -123,10 +124,10 @@ if( isset( $_REQUEST['id'] ) ) {
                 </div>
             </div>
         </div>
+        <?php $intro = $version['intro_result'];?>
         <div class="kwps kwps-single<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-intro_result">
             <h3>Intro result</h3>
             <div class="inside">
-                <?php $intro = $version['intro_result'];?>
                 <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
                 <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
                 <textarea style="display: none" name="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro Result" ?></textarea>
@@ -234,26 +235,27 @@ if( isset( $_REQUEST['id'] ) ) {
                 + QG
             </button>
             </div>
-        <div class="kwps kwps-single" id="kwps-outro">
+        <?php $outro = $version['outro']; ?>
+        <div class="kwps kwps-single<?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-outro">
             <h3>Outro result</h3>
-            <a class="button" id="kwps-add-result-button">Add result</a>
-            <?php $outro = $version['outro']; ?>
-            <input type="hidden" name="ID" value="<?php if( isset( $outro['ID'] ) ) echo $outro['ID'];?>">
-            <input type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>">
-            <textarea style="display: none" name="post_content" ><?php echo (isset($outro['post_content']))? $outro['post_content'] : "Outro" ?></textarea>
-            <div class="kwps-content<?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
-                <div style="display: none" class="kwps-content-editor">
-                    <?php wp_editor( (isset($outro['post_content']))? $outro['post_content'] : "Outro", 'outro', array('teeny' => true ) ); ?>
-                    <button class="kwps-content-editor-save">Save</button>
-                </div>
-                <div class="kwps-content-view">
-                    <div class="kwps-content-view-content">
-                        <?php echo (isset($outro['post_content']))? $outro['post_content'] : "Outro" ?>
+            <div class="inside">
+                <a class="button" id="kwps-add-result-button">Add result</a>
+                <input type="hidden" name="ID" value="<?php if( isset( $outro['ID'] ) ) echo $outro['ID'];?>">
+                <input type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>">
+                <textarea style="display: none" name="post_content" ><?php echo (isset($outro['post_content']))? $outro['post_content'] : "Outro" ?></textarea>
+                <div class="kwps-content<?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
+                    <div style="display: none" class="kwps-content-editor">
+                        <?php wp_editor( (isset($outro['post_content']))? $outro['post_content'] : "Outro", 'outro', array('teeny' => true ) ); ?>
+                        <button class="kwps-content-editor-save">Save</button>
                     </div>
-                    <a class="kwps-content-edit">Edit</a>
+                    <div class="kwps-content-view">
+                        <div class="kwps-content-view-content">
+                            <?php echo (isset($outro['post_content']))? $outro['post_content'] : "Outro" ?>
+                        </div>
+                        <a class="kwps-content-edit button">Edit</a>
+                    </div>
                 </div>
             </div>
-
         </div>
         <button id="version-save" type="submit" class="button button-primary">Wijzigingen opslaan</button>
     </form>
