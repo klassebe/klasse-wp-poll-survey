@@ -236,6 +236,7 @@ if( isset( $_REQUEST['id'] ) ) {
             </div>
         <div class="kwps kwps-single" id="kwps-outro">
             <h3>Outro result</h3>
+            <a class="button" id="kwps-add-result-button">Add result</a>
             <?php $outro = $version['outro']; ?>
             <input type="hidden" name="ID" value="<?php if( isset( $outro['ID'] ) ) echo $outro['ID'];?>">
             <input type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>">

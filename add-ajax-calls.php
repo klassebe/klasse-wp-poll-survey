@@ -61,5 +61,5 @@ add_action( 'wp_ajax_kwps_save_entry', array('\kwps_classes\entry','save_from_re
 //add_action( 'wp_ajax_kwps_get_result_profile', array('\kwps_classes\result_profile','ajax_get_by_entry_id'));
 //add_action( 'wp_ajax_nopriv_kwps_get_result_profile', array('\kwps_classes\result_profile','ajax_get_by_entry_id'));
 //
-//add_action( 'wp_ajax_kwps_get_result_page', array('\kwps_classes\overlay','get_result_page') );
+add_action( 'wp_ajax_kwps_get_result_page', array('\kwps_classes\overlay','get_result_page') );
 //add_action( 'wp_ajax_kwps_get_video_page', array('\kwps_classes\overlay','get_video_page') );

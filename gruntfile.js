@@ -129,7 +129,7 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['dev','watch']);
-  grunt.registerTask('dev',['jshint', 'handlebars','clean:assets','concat:admin','clean:temp', 'concat:public', 'copy:tinymce', 'copy:images'])
+  grunt.registerTask('dev',['handlebars','clean:assets','concat:admin','clean:temp', 'concat:public', 'copy:tinymce', 'copy:images'])
   grunt.registerTask('build', ['dev','uglify']);
   grunt.registerTask('deploy', ['build','clean:deploy','copy:deploy','preprocess:deploy']);
 };
