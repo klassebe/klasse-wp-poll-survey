@@ -3,7 +3,7 @@ jQuery(document).ready(function($) {
 
   updateUi();
   $('form').areYouSure({'addRemoveFieldsMarksDirty':true});
-  $('h3').closest('div').children('div').toggle();
+  $('h3.collapsables').closest('div').children('div').toggle();
 
   $('#version-save').click(versionSave);
 
