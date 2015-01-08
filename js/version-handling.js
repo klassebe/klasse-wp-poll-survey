@@ -142,7 +142,14 @@ jQuery(document).ready(function($) {
   function updateValues(event) {
     event.preventDefault();
 
-    var content = tinyMCE.activeEditor.getContent();
+    var content,
+        textarea = $(event.target).closest('div').find('textarea');
+
+    if ( textarea.css('display') !== 'none' ) {
+      content = textarea[0].value;
+    } else {
+      content =  $(event.target).closest('div').find('iframe').contents().find('#tinymce')[0].innerHTML;
+    }
 
     if(content !== prevContent) {
       var contentItem = $(this).closest('.kwps-content');
