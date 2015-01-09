@@ -399,19 +399,19 @@ jQuery(document).ready(function($) {
 
       if(answerOptionCount > 2) {
         $(this).children('.kwps-answer_option').children('h3').children('.kwps-remove-item').removeAttr('disabled');
-
-        $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
-          if(answerOptionI < answerOptionCount-1) {
-            $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action'>Down</a>");
-          }
-        });
-
-        $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
-          if(answerOptionI > 0) {
-            $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action'>Up</a>");
-          }
-        });
       }
+
+      $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
+        if(answerOptionI < answerOptionCount-1) {
+          $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action'>Down</a>");
+        }
+      });
+
+      $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
+        if(answerOptionI > 0) {
+          $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action'>Up</a>");
+        }
+      });
     });
 
     $('.kwps-create-item').attr('disabled','disabled');
@@ -437,14 +437,6 @@ jQuery(document).ready(function($) {
           $(this).removeAttr('disabled');
         }
       }
-
     });
-
-    //checks to see if there are 'up' and 'down' buttons with the answers and add them if there aren't any
-    var answerHeads = $('.kwps-answer_option h3');
-    if ( answerHeads.find('.kwps-action').length === 0 ) {
-      $(answerHeads[0]).append('<a href="" class="kwps-move-down kwps-action">Down</a>');
-      $(answerHeads[1]).append('<a href="" class="kwps-move-up kwps-action">Up</a>');
-    }
   }
 });
