@@ -12,8 +12,8 @@ namespace kwps_classes;
 class Bar_Chart 
 {
 
-    public static function get_chart_per_question($version_id, $group){
-        $version = Version::get_as_array($version_id);
+    public static function get_chart_per_question($entry_id, $group){
+        $version = Entry::get_version($entry_id);
 
         /* QUESTION GROUP DATA */
         $question_group = Question_Group::get_one_by_post_parent($version['ID']);
