@@ -268,11 +268,11 @@ jQuery(document).ready(function($) {
         /**
          * Loop over question_groups
          */
-        div.children('div').each(function(questionGroupsI) {
+        div.children('div.inside').children('div').each(function(questionGroupsI) {
           var inputData = {
             _kwps_sort_order: questionGroupsI
           };
-          var inputs = $(this).children('input, textarea');
+          var inputs = $(this).find('input.kwps-question_group_input, textarea.kwps-question_group_input');
 
           /**
            * Loop over question_groups inputs
@@ -283,7 +283,7 @@ jQuery(document).ready(function($) {
             inputData[inputName] = input.val();
           });
 
-          $(this).children('.kwps').each(function(j) {
+          $(this).children('.inside').children('.kwps').each(function(j) {
             if(!inputData.questions) {
               inputData.questions = [];
             }
@@ -299,7 +299,7 @@ jQuery(document).ready(function($) {
               /**
                * Loop over questions inputs
                */
-              $(this).children('input, textarea').each(function() {
+              $(this).find('input.kwps-question_input, textarea.kwps-question_input').each(function() {
                 var input = $(this);
                 var inputName = input.attr('name');
                 questionData[inputName] = input.val();
@@ -321,7 +321,7 @@ jQuery(document).ready(function($) {
                   /**
                    * Loop over answer_options inputs
                    */
-                  $(this).children('input, textarea').each(function() {
+                  $(this).find('input.kwps-answer_input, textarea.kwps-answer_input').each(function() {
                     var input = $(this);
                     var inputName = input.attr('name');
 

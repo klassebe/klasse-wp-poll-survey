@@ -399,52 +399,10 @@ form.kwps_error {
     background-color: red;
 }
 
-div.kwps-version {
-    border: 2px solid;
-    border-color: blue;
-    margin: 5px;
-}
 
-div.kwps-intro {
-    border: 2px solid;
-    border-color: yellow;
-    margin: 5px;
-}
 
-div.kwps-intro_result {
-    border: 2px solid;
-    border-color: purple;
-    margin: 5px;
-}
-
-div.kwps-question_group {
-    border: 2px solid;
-    border-color: blue;
-    margin: 5px;
-}
-
-div.kwps-questions {
-    border: 2px solid;
-    border-color: yellow;
-    margin: 5px;
-}
-
-div.kwps-question {
-    border: 2px solid;
-    border-color: black;
-    margin: 5px;
-}
-
-div.kwps-answer_options {
-    border: 2px solid;
-    border-color: blue;
-    margin: 5px;
-}
-
-div.kwps-answer_option {
-    border: 2px solid;
-    border-color: yellow;
-    margin: 5px;
+.kwps-answer_options, .kwps-questions{
+    margin-top: 10px;
 }
 
 div.kwps-outro {
@@ -457,7 +415,7 @@ button.kwps-remove-answer-option {
     font-size: small;
 }
 
-#titlediv #kwps-post-title {
+.titlediv .kwps-post-title {
   padding: 3px 8px;
   font-size: 1.7em;
   line-height: 100%;
@@ -468,7 +426,7 @@ button.kwps-remove-answer-option {
   background-color: #fff;
 }
 
-.kwps-single, .kwps-question_groups {
+.kwps-single, .kwps-question_groups, .kwps-box {
   position: relative;
   min-width: 255px;
   border: 1px solid #e5e5e5;
@@ -480,7 +438,7 @@ button.kwps-remove-answer-option {
   line-height: 1;
 }
 
-.kwps-single.kwps_error{
+.kwps_error{
   border-color: red;
 }
 
@@ -492,9 +450,41 @@ button.kwps-remove-answer-option {
   border-bottom: 1px solid #eee;
 }
 
+.kwps-question_groups > h3{
+  color: #F80;
+}
+.kwps-question_group > h3{
+  border-color: #F80;
+  border-width: 3px;
+}
+
+.kwps-questions > h3{
+  color: rgb(104, 200, 0);
+}
+.kwps-question > h3{
+  border-color: rgb(104, 200, 0);
+  border-width: 3px;
+}
+.kwps-answer_options >h3{
+  color: rgb(0, 129, 255);
+}
+.kwps-answer_option > h3{
+  border-color: rgb(0, 129, 255);
+  border-width: 3px;
+}
+
 .kwps-single .inside, .kwps-question_groups .inside{
-  margin: 6px 0 0;
-  padding: 0 12px 12px;
+  padding: 6px 12px 12px;
   line-height: 1.4em;
   font-size: 13px;
+}
+
+.kwps-question_groups > .inside{
+  background-color: rgb(255, 246, 236);
+}
+.kwps-questions > .inside{
+  background-color: rgb(244, 255, 231);
+}
+.kwps-answer_options > .inside{
+  background-color: rgb(236, 246, 255);
 }
