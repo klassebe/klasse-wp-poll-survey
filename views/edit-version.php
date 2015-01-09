@@ -79,6 +79,12 @@ if( isset( $_REQUEST['id'] ) ) {
     <?php endif;?>
     <form id="edit-version" action="<?php echo $form_action ?>" method="post" class="kwps-form">
         <div class="kwps kwps-single" id="kwps-version">
+            <?php if( isset( $version['ID'] ) ):?>
+                <input type="hidden" name="ID" value="<?php echo $version['ID'] ?>" />
+            <?php endif;?>
+            <input type="hidden" name="_kwps_sort_order" value="<?php echo $version['_kwps_sort_order']; ?>">
+            <input type="hidden" name="post_parent" value="<?php echo $version['post_parent']; ?>">
+            <input type="hidden" name="post_status" value="<?php echo $version['post_status']; ?>">
             <div id="titlediv">
                 <div id="titlewrap">
                     <label class="screen-reader-text" id="title-prompt-text" for="kwps-post-title">Enter title here</label>
@@ -94,12 +100,6 @@ if( isset( $_REQUEST['id'] ) ) {
                     />
                 </div>
             </div>
-            <?php if( isset( $version['ID'] ) ):?>
-                <input type="hidden" name="ID" value="<?php echo $version['ID'] ?>" />
-            <?php endif;?>
-            <input type="hidden" name="_kwps_sort_order" value="<?php echo $version['_kwps_sort_order']; ?>">
-            <input type="hidden" name="post_parent" value="<?php echo $version['post_parent']; ?>">
-            <input type="hidden" name="post_status" value="<?php echo $version['post_status']; ?>">
         </div>
 
         <?php $intro = $version['intro'];?>
