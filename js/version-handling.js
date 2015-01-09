@@ -439,5 +439,12 @@ jQuery(document).ready(function($) {
       }
 
     });
+
+    //checks to see if there are 'up' and 'down' buttons with the answers and add them if there aren't any
+    var answerHeads = $('.kwps-answer_option h3');
+    if ( answerHeads.find('.kwps-action').length === 0 ) {
+      $(answerHeads[0]).append('<a href="" class="kwps-move-down kwps-action">Down</a>');
+      $(answerHeads[1]).append('<a href="" class="kwps-move-up kwps-action">Up</a>');
+    }
   }
 });
