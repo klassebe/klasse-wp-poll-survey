@@ -85,58 +85,70 @@ if( isset( $_REQUEST['id'] ) ) {
             <input type="hidden" name="_kwps_sort_order" value="<?php echo $version['_kwps_sort_order']; ?>">
             <input type="hidden" name="post_parent" value="<?php echo $version['post_parent']; ?>">
             <input type="hidden" name="post_status" value="<?php echo $version['post_status']; ?>">
-            <input
-                type="text"
-                name="post_title"
-                id="kwps-post-title"
-                value="<?php echo $version['post_title'] ?>"
-                class="<?php if( isset( $version['errors']['post_title'] ) ) echo 'kwps_error'; ?>"
-            />
-        </div>
-        <div class="kwps kwps-single" id="kwps-intro">
-            <h2>Intro</h2>
-            <?php $intro = $version['intro'];?>
-            <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
-            <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
-
-            <textarea style="display: none" name="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
-            <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
-                <div style="display: none" class="kwps-content-editor">
-                    <?php wp_editor( (isset($intro['post_content']))? $intro['post_content'] : "Intro", 'intro', array('teeny' => true ) ); ?>
-                    <button class="kwps-content-editor-save">Save</button>
-                </div>
-                <div class="kwps-content-view">
-                    <div class="kwps-content-view-content">
-                        <?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro"  ?>
-                    </div>
-                    <a class="kwps-content-edit">Edit</a>
+            <div id="titlediv">
+                <div id="titlewrap">
+                    <label class="screen-reader-text" id="title-prompt-text" for="kwps-post-title">Enter title here</label>
+                    <input
+                        type="text"
+                        name="post_title"
+                        id="kwps-post-title"
+                        size="30"
+                        spellcheck="true" 
+                        autocomplete="off"
+                        value="<?php echo $version['post_title'] ?>"
+                        class="<?php if( isset( $version['errors']['post_title'] ) ) echo 'kwps_error'; ?>"
+                    />
                 </div>
             </div>
-
         </div>
-        <div class="kwps kwps-single" id="kwps-intro_result">
-            <h2>Intro result</h2>
-            <?php $intro = $version['intro_result'];?>
-            <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
-            <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
-            <textarea style="display: none" name="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro Result" ?></textarea>
+        <div class="kwps kwps-single<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-intro">
+            <h3>Intro</h3>
+            <div class="inside">
+                <?php $intro = $version['intro'];?>
+                <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
+                <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
 
-            <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
-                <div style="display: none" class="kwps-content-editor">
-                    <?php wp_editor( (isset($intro['post_content']))? $intro['post_content'] : "Intro Result", 'post_content_intro_result', array('teeny' => true ) ); ?>
-                    <button class="kwps-content-editor-save">Save</button>
+                <textarea style="display: none" name="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
+                <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
+                    <div style="display: none" class="kwps-content-editor">
+                        <?php wp_editor( (isset($intro['post_content']))? $intro['post_content'] : "Intro", 'intro', array('teeny' => true ) ); ?>
+                        <button class="kwps-content-editor-save button">Save</button>
+                    </div>
+                    <div class="kwps-content-view">
+                        <div class="kwps-content-view-content">
+                            <?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro"  ?>
+                        </div>
+                        <a class="kwps-content-edit button">Edit</a>
+                    </div>
                 </div>
-                <div class="kwps-content-view">
-                    <div class="kwps-content-view-content">
-                        <?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro Result" ?>
-                    </div><a class="kwps-content-edit">Edit</a>
+            </div>
+        </div>
+        <div class="kwps kwps-single<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-intro_result">
+            <h3>Intro result</h3>
+            <div class="inside">
+                <?php $intro = $version['intro_result'];?>
+                <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>">
+                <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>">
+                <textarea style="display: none" name="post_content"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro Result" ?></textarea>
+
+                <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
+                    <div style="display: none" class="kwps-content-editor">
+                        <?php wp_editor( (isset($intro['post_content']))? $intro['post_content'] : "Intro Result", 'post_content_intro_result', array('teeny' => true ) ); ?>
+                        <button class="kwps-content-editor-save button">Save</button>
+                    </div>
+                    <div class="kwps-content-view">
+                        <div class="kwps-content-view-content">
+                            <?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro Result" ?>
+                        </div><a class="kwps-content-edit button">Edit</a>
+                    </div>
                 </div>
             </div>
         </div>
         <div id="kwps-question_groups" class="kwps kwps-multi kwps-question_groups">
+            <h3>Question pages</h3>
                 <?php foreach( $version['question_groups'] as $question_group_key => $question_group ): ?>
                     <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question_group">
-                        <h3><span class="kwps-collapse dashicons dashicons-arrow-right"></span> Pagina <?php echo $question_group['_kwps_sort_order'] ?> <button class="kwps-remove-item">remove</button></h3>
+                        <h3 class="collapsables"><span class="kwps-collapse dashicons dashicons-arrow-right"></span> Pagina <?php echo $question_group['_kwps_sort_order'] ?> <button class="kwps-remove-item">remove</button></h3>
                         <?php $question_group_field_index = 'question_groups[' . $question_group['_kwps_sort_order'] .']' ?>
                         <?php if( isset ($question_group['ID'] ) ): ?>
                             <input type="hidden" name="ID" value="<?php echo $question_group['ID'] ?>" />
@@ -160,7 +172,7 @@ if( isset( $_REQUEST['id'] ) ) {
                         <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-questions" class="kwps kwps-multi kwps-questions">
                             <?php foreach( $question_group['questions'] as $question_key => $question ) : ?>
                                 <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-question-<?php echo $question['_kwps_sort_order'] ?>" class="kwps kwps-multi kwps-question">
-                                    <h3><span class="kwps-collapse dashicons dashicons-arrow-right"></span> Vraag <span><?php echo $question['_kwps_sort_order'] ?></span> <button class="kwps-remove-item">remove</button></h3>
+                                    <h3 class="collapsables"><span class="kwps-collapse dashicons dashicons-arrow-right"></span> Vraag <span><?php echo $question['_kwps_sort_order'] ?></span> <button class="kwps-remove-item">remove</button></h3>
                                     <?php if( isset ($question['ID'] ) ): ?>
                                         <input type="hidden"
                                                name="ID"
@@ -185,7 +197,7 @@ if( isset( $_REQUEST['id'] ) ) {
                                 <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-question-<?php echo $question['_kwps_sort_order'] ?>-answer-options" class="kwps kwps-multi kwps-answer_options">
                                     <?php foreach( $question['answer_options'] as $answer_option_key => $answer_option ): ?>
                                         <div id="kwps-question_group-<?php echo $question_group['_kwps_sort_order'] ?>-question-<?php echo $question['_kwps_sort_order'] ?>-answer_option-<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_option">
-                                            <h3><span class="kwps-collapse dashicons dashicons-arrow-right"></span> Antwoord <span><?php echo $answer_option['_kwps_sort_order'] ;?></span> <button class="kwps-remove-item">remove</button></h3>
+                                            <h3 class="collapsables"><span class="kwps-collapse dashicons dashicons-arrow-right"></span> Antwoord <span><?php echo $answer_option['_kwps_sort_order'] ;?></span> <button class="kwps-remove-item">remove</button></h3>
                                             <?php if( isset ($answer_option['ID'] ) ): ?>
                                                 <input type="hidden" name="ID" value="<?php echo $answer_option['ID'] ?>" />
                                             <?php endif;?>
@@ -223,7 +235,8 @@ if( isset( $_REQUEST['id'] ) ) {
             </button>
             </div>
         <div class="kwps kwps-single" id="kwps-outro">
-            <h2>Outro result</h2>
+            <h3>Outro result</h3>
+            <a class="button" id="kwps-add-result-button">Add result</a>
             <?php $outro = $version['outro']; ?>
             <input type="hidden" name="ID" value="<?php if( isset( $outro['ID'] ) ) echo $outro['ID'];?>">
             <input type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>">
@@ -242,6 +255,6 @@ if( isset( $_REQUEST['id'] ) ) {
             </div>
 
         </div>
-        <button id="version-save" type="submit">Wijzigingen opslaan</button>
+        <button id="version-save" type="submit" class="button button-primary">Wijzigingen opslaan</button>
     </form>
 </div>
