@@ -244,7 +244,7 @@ jQuery(document).ready(function($) {
        */
       if(div.hasClass('kwps-single')) {
         var attribute = div.attr('id').split('-')[1];
-        var data = div.find('input, textarea');
+        var data = div.find('input.kwps-single_input, textarea.kwps-single_input');
         data.each(function(j) {
           var input = $(this);
           var name = input.attr('name');
@@ -313,7 +313,7 @@ jQuery(document).ready(function($) {
                 /**
                  * Loop over answer_options
                  */
-                $(this).children('.inside').children('div').each(function(answerOptionI) {
+                $(this).children('.inside').find('div.kwps-answer_option').each(function(answerOptionI) {
                   var answerOptionData = {
                     _kwps_sort_order: answerOptionI
                   };
