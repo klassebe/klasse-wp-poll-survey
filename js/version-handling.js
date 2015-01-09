@@ -360,13 +360,13 @@ jQuery(document).ready(function($) {
 
       $(this).children('.kwps-question_group:visible').each(function(questionGroupI) {
         if(questionGroupI < questionGroupsCount-1) {
-          $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'>Down</a>");
+          $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
         }
       });
 
       $(this).children('.kwps-question_group:visible').each(function(questionGroupI) {
         if(questionGroupI > 0) {
-          $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'>Up</a>");
+          $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
         }
       });
 
@@ -381,13 +381,13 @@ jQuery(document).ready(function($) {
 
       $(this).children('.kwps-question:visible').each(function(questionI) {
         if(questionI < questionsCount-1) {
-          $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'>Down</a>");
+          $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
         }
       });
 
       $(this).children('.kwps-question:visible').each(function(questionI) {
         if(questionI > 0) {
-          $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'>Up</a>");
+          $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
         }
       });
     });
@@ -402,13 +402,13 @@ jQuery(document).ready(function($) {
 
       $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
         if(answerOptionI < answerOptionCount-1) {
-          $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'>Down</a>");
+          $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
         }
       });
 
       $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
         if(answerOptionI > 0) {
-          $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'>Up</a>");
+          $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
         }
       });
     });
