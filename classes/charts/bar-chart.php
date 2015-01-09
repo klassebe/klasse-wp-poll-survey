@@ -30,7 +30,7 @@ class Bar_Chart
         $answer_option_contents = array();
 
         foreach ($answer_options as $answer_option) {
-            if( sizeof( $group ) > 0 ) {
+            if( strlen( $group ) > 0 ) {
                 $entries = Entry::get_all_of_result_group($answer_option['ID'], $group);
             } else {
                 $entries = Entry::get_all_by_post_parent($answer_option['ID']);

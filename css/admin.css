@@ -399,6 +399,10 @@ form.kwps_error {
     background-color: red;
 }
 
+div.kwps_error {
+    background-color: red;
+}
+
 form.kwps-form {
     border: 2px solid;
     border-color: black;

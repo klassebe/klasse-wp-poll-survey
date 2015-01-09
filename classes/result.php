@@ -75,7 +75,7 @@ class Result {
         }
 
         if( ! isset($request_data['output_type']) ) {
-            $errors[] = array('field' => 'ID', 'Required');
+            $errors[] = array('field' => 'output_type', 'Required');
         }
 
         if( sizeof( $errors ) > 0 ) {
@@ -83,7 +83,7 @@ class Result {
             wp_send_json_error($errors);
             die();
         } else {
-            $version = Entry::get_version($request_data['ID']);
+            $version = Version::get_as_array($request_data['ID']);
             $version_id = $version['ID'];
             $output_type = $request_data['output_type'];
 
