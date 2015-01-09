@@ -53,26 +53,29 @@ jQuery(document).ready(function($) {
       findInIFrame('#charts').append(output);
 
       findInIFrame('input:radio').hide();
+
 			findInIFrame('input:radio').on('click', function () {
         findInIFrame('.selected').removeClass();
         $(this).next().addClass('selected');
 				selectedResult = $(this).next().attr('alt');
 			});
+
 			findInIFrame('#add-result-to-editor').on('click', function () {
 				if (selectedResult) {
 					findInIFrame('#tinymce').append('[kwps_result result='+ selectedResult + ']');
           var textarea = $('#wp-outro-editor-container textarea');
-          var newText = textarea.text() + '[kwps_result result=' + selectedResult + ']';
-          textarea.text(newText);
-					tb_remove();
+          var newText = textarea[0].value + '[kwps_result result=' + selectedResult + ']';
+          textarea[0].value = newText;
+          tb_remove();
 				} else {
 					alert('Please select a result view to import');
 				}
 			});
+
 			if (findInIFrame('#charts').length > 0) {
 				clearInterval(timer);
 			}
-		}, 100);
+		}, 100); //end timer
 
 			return false;
 	});
@@ -396,19 +399,19 @@ jQuery(document).ready(function($) {
 
       if(answerOptionCount > 2) {
         $(this).children('.kwps-answer_option').children('h3').children('.kwps-remove-item').removeAttr('disabled');
-
-        $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
-          if(answerOptionI < answerOptionCount-1) {
-            $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action'>Down</a>");
-          }
-        });
-
-        $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
-          if(answerOptionI > 0) {
-            $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action'>Up</a>");
-          }
-        });
       }
+
+      $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
+        if(answerOptionI < answerOptionCount-1) {
+          $(this).children('h3').append("<a href=\'\' class='kwps-move-down kwps-action'>Down</a>");
+        }
+      });
+
+      $(this).children('.kwps-answer_option:visible').each(function(answerOptionI) {
+        if(answerOptionI > 0) {
+          $(this).children('h3').append("<a href=\'\' class='kwps-move-up kwps-action'>Up</a>");
+        }
+      });
     });
 
     $('.kwps-create-item').attr('disabled','disabled');
@@ -434,7 +437,6 @@ jQuery(document).ready(function($) {
           $(this).removeAttr('disabled');
         }
       }
-
     });
   }
 });
