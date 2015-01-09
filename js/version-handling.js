@@ -241,7 +241,7 @@ jQuery(document).ready(function($) {
        */
       if(div.hasClass('kwps-single')) {
         var attribute = div.attr('id').split('-')[1];
-        var data = div.children('input, textarea');
+        var data = div.find('input, textarea');
         data.each(function(j) {
           var input = $(this);
           var name = input.attr('name');
