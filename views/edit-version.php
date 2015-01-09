@@ -71,9 +71,9 @@ if( isset( $_REQUEST['id'] ) ) {
 <div class="wrap">
     <h2>Versie</h2>
     <?php if( isset( $test_modus_errors ) && sizeof( $test_modus_errors ) > 0 ):?>
-        <div id="test-modus-errors" class="alternate">
+        <div id="test-modus-errors" class="error form-invalid below-h2">
         <?php foreach( $test_modus_errors as $rule => $message ) :?>
-            <div class="test-modus-error"><?php echo $message ?></div>
+            <p class=""><?php echo $message ?></p>
         <?php endforeach; ?>
         </div>
     <?php endif;?>
