@@ -158,7 +158,7 @@ class admin_section {
                     }
                     $settings = Test_Collection::get_meta_data( $_REQUEST['id'] );
 
-                    var_dump($settings, $_POST);
+//                    var_dump($settings, $_POST);
                 }
 
                 include_once __DIR__ . '/../views/edit-test-collection.php';
@@ -202,7 +202,10 @@ class admin_section {
             } else {
                 $data = $_POST;
                 $data['_kwps_logged_in_user_limit'] = 'free';
-                $test_collection = Test_Collection::save_post($_POST);
+                $data['_kwps_logged_out_user_limit'] = 'free';
+                $data['_kwps_show_grouping_form'] = 0;
+
+                $test_collection = Test_Collection::save_post($data);
                 $id = $test_collection['ID'];
                 $url = get_admin_url() . '/admin.php?page=' . $_REQUEST['page'] . '&section=edit_test_collection&id=' . $id;
                 wp_redirect($url);

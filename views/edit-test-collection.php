@@ -44,7 +44,13 @@
                 <?php endforeach; ?>
             </select>
 
-            <?php $checked = ( $settings['_kwps_show_grouping_form'] !== 0 ? 'checked' : '' ) ?>
+            <?php
+                if( isset( $settings['_kwps_show_grouping_form'] ) && $settings['_kwps_show_grouping_form'] == 1 ) {
+                    $checked = 'checked';
+                } else {
+                    $checked = '';
+                }
+            ?>
             <label for="kwps_show_grouping_form">Show grouping form</label>
             <input id="kwps_show_grouping_form" type="checkbox" name="_kwps_show_grouping_form" value="1"<?php echo $checked; ?> />
             <button type="submit">Opslaan</button>
