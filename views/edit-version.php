@@ -63,6 +63,15 @@ if( isset( $_REQUEST['id'] ) ) {
         );
     }
 }
+
+$required_fields_version = \kwps_classes\Version::$required_fields;
+$required_fields_intro = \kwps_classes\Intro::$required_fields;
+$required_fields_outro = \kwps_classes\Outro::$required_fields;
+$required_fields_intro_result = \kwps_classes\Intro_Result::$required_fields;
+$required_fields_question_group = \kwps_classes\Question_Group::$required_fields;
+$required_fields_question = \kwps_classes\Question::$required_fields;
+$required_fields_answer_option = \kwps_classes\Answer_Option::$required_fields;
+
 ?>
 <script language="JavaScript">
     var testModus = <?php echo json_encode($test_modus = \kwps_classes\Test_Collection::get_test_modus( $version['post_parent'] ) ) ?>;
@@ -85,7 +94,7 @@ if( isset( $_REQUEST['id'] ) ) {
             <input type="hidden" name="_kwps_sort_order" value="<?php echo $version['_kwps_sort_order']; ?>" class="kwps-single_input">
             <input type="hidden" name="post_parent" value="<?php echo $version['post_parent']; ?>" class="kwps-single_input">
             <input type="hidden" name="post_status" value="<?php echo $version['post_status']; ?>" class="kwps-single_input">
-            <div class="titlediv">
+            <div class="titlediv ">
                 <div class="titlewrap">
                     <label class="screen-reader-text" id="title-prompt-text" for="kwps-post-title">Enter title here</label>
                     <input
@@ -96,7 +105,7 @@ if( isset( $_REQUEST['id'] ) ) {
                         spellcheck="true" 
                         autocomplete="off"
                         value="<?php echo $version['post_title'] ?>"
-                        class="<?php if( isset( $version['errors']['post_title'] ) ) echo 'kwps_error'; ?> kwps-post-title kwps-single_input"
+                        class="<?php if( isset( $version['errors']['post_title'] ) ) echo 'kwps_error'; ?>  kwps-post-title kwps-single_input <?php if( in_array( 'post_title', $required_fields_version ) ) echo 'kwps-required-field' ?>"
                     />
                 </div>
             </div>
@@ -108,7 +117,7 @@ if( isset( $_REQUEST['id'] ) ) {
                 <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>" class="kwps-single_input">
                 <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>" class="kwps-single_input">
 
-                <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
+                <textarea style="display: none" name="post_content" class="kwps-single_input <?php if( in_array( 'post_content', $required_fields_intro ) ) echo 'kwps-required-field' ?>"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
                 <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                     <div style="display: none" class="kwps-content-editor">
                         <?php wp_editor( (isset($intro['post_content']))? $intro['post_content'] : "Intro", 'intro', array('teeny' => true ) ); ?>
@@ -129,7 +138,7 @@ if( isset( $_REQUEST['id'] ) ) {
                 <?php $intro_result = $version['intro_result'];?>
                 <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>" class="kwps-single_input">
                 <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>" class="kwps-single_input">
-                <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($intro_result['post_content']))? $intro_result['post_content'] : "Intro Result" ?></textarea>
+                <textarea style="display: none" name="post_content" class="kwps-single_input <?php if( in_array( 'post_content', $required_fields_intro_result ) ) echo 'kwps-required-field' ?>"><?php echo (isset($intro_result['post_content']))? $intro_result['post_content'] : "Intro Result" ?></textarea>
 
                 <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                     <div style="display: none" class="kwps-content-editor">
@@ -170,7 +179,7 @@ if( isset( $_REQUEST['id'] ) ) {
                                     />
                                 </div>
                             </div>
-                            <textarea style="display: none" name="post_content" class="kwps-question_group_input"><?php echo (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1) ?></textarea>
+                            <textarea style="display: none" name="post_content" class="kwps-question_group_input  <?php if( in_array( 'post_content', $required_fields_question_group ) ) echo 'kwps-required-field' ?>"><?php echo (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1) ?></textarea>
                             <div class="kwps-content">
                                 <div style="display: none" class="kwps-content-editor">
                                     <?php wp_editor( (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1), 'question_group_' . $question_group_key, array('teeny' => true ) ); ?>
@@ -209,7 +218,7 @@ if( isset( $_REQUEST['id'] ) ) {
                                                 <textarea 
                                                     style="display: none" 
                                                     name="post_content" 
-                                                    class="kwps-question_input">
+                                                    class="kwps-question_input <?php if( in_array( 'post_content', $required_fields_question ) ) echo 'kwps-required-field' ?>">
                                                     <?php echo (isset($question['post_content']))? $question['post_content'] : "Question " . ($question_key+1) ?>
                                                 </textarea>
                                                 <div class="kwps-content">
@@ -240,11 +249,11 @@ if( isset( $_REQUEST['id'] ) ) {
                                                                             type="hidden" 
                                                                             name="ID" 
                                                                             value="<?php echo $answer_option['ID'] ?>"
-                                                                            class="kwps-answer_input" 
+                                                                            class="kwps-answer_input "
                                                                         />
                                                                     <?php endif;?>
                                                                     <input type="hidden" name="post_status" value="<?php echo $answer_option['post_status']; ?>" class="kwps-answer_input"/>
-                                                                    <textarea style="display: none" name="post_content" class="kwps-answer_input"><?php echo (isset($answer_option['post_content']))? $answer_option['post_content'] : "Answer " . ($answer_option_key+1) ?></textarea>
+                                                                    <textarea style="display: none" name="post_content" class="kwps-answer_input  <?php if( in_array( 'post_content', $required_fields_answer_option ) ) echo 'kwps-required-field' ?>"><?php echo (isset($answer_option['post_content']))? $answer_option['post_content'] : "Answer " . ($answer_option_key+1) ?></textarea>
 
                                                                     <div class="kwps-content">
                                                                         <div style="display: none" class="kwps-content-editor">
