@@ -256,13 +256,6 @@ class Test_Collection extends Kwps_Post_Type{
             }
         }
 
-        if( sizeof( $errors ) != 0 ) {
-            foreach($versions as $version){
-                $version['post_status'] = 'publish';
-                Version::save_post($version);
-            }
-        }
-
         return $errors;
     }
 
