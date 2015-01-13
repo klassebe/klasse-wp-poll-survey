@@ -47,6 +47,82 @@ class Versions_List_Table extends Base_List_Table {
 
     }
 
+    /**
+     * Generates content for a single row of the table
+     *
+     * @since 3.1.0
+     * @access protected
+     *
+     * @param object $item The current item
+     */
+    function single_row( $item ) {
+        static $row_class = '';
+        $row_class = ( $row_class == '' ? ' class="alternate"' : '' );
+
+        if( sizeof( Version::validate_for_publish( $item['ID'] ) ) > 0 ) {
+            if( $row_class == ' class="alternate"' ) {
+                $row_class = ' class="alternate kwps-publish-error"';
+            } else {
+                $row_class = ' class="kwps-publish-error"';
+            }
+        }
+
+        echo '<tr' . $row_class . '>';
+        $this->single_row_columns( $item );
+        echo '</tr>';
+    }
+
+    /**
+     * Generates the columns for a single row of the table
+     *
+     * @since 3.1.0
+     * @access protected
+     *
+     * @param object $item The current item
+     */
+    function single_row_columns( $item ) {
+        if( sizeof( Version::validate_for_publish( $item['ID'] ) ) > 0 ) {
+            $has_publish_errors = true;
+        } else {
+            $has_publish_errors = false;
+        }
+
+
+        list( $columns, $hidden ) = $this->get_column_info();
+
+        foreach ( $columns as $column_name => $column_display_name ) {
+            $class = "class='$column_name column-$column_name'";
+
+            if( $has_publish_errors ) {
+                $class = "class='$column_name column-$column_name kwps-publish-error'";
+            }
+
+            $style = '';
+            if ( in_array( $column_name, $hidden ) )
+                $style = ' style="display:none;"';
+
+            $attributes = "$class$style";
+
+            if ( 'cb' == $column_name ) {
+                echo '<th scope="row" class="check-column">';
+                echo $this->column_cb( $item );
+                echo '</th>';
+            }
+            elseif ( method_exists( $this, 'column_' . $column_name ) ) {
+                echo "<td $attributes>";
+                echo call_user_func( array( $this, 'column_' . $column_name ), $item );
+                echo "</td>";
+            }
+            else {
+                echo "<td $attributes>";
+                echo $this->column_default( $item, $column_name );
+                echo "</td>";
+            }
+        }
+    }
+
+
+
 
     /** ************************************************************************
      * Recommended. This method is called when the parent class can't find a method

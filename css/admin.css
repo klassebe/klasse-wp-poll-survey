@@ -395,7 +395,9 @@ form.kwps_error {
     background-color: red;
 }
 
-
+td.kwps-publish-error {
+    color: red ;
+}
 
 .kwps-answer_options, .kwps-questions{
     margin-top: 10px;

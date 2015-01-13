@@ -291,11 +291,16 @@ $required_fields_answer_option = \kwps_classes\Answer_Option::$required_fields;
                 </button>
             </div>
         </div>
-        <div class="kwps kwps-single" id="kwps-outro">
+        <?php $outro = $version['outro']; ?>
+        <div class="kwps kwps-single <?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-outro">
             <h3>Outro result</h3>
             <div class="inside">
+                <?php if( isset( $outro['errors']['post_content'] ) ):?>
+                <div class="error form-invalid below-h2">
+                        <p class=""><?php echo $outro['errors']['post_content'] ?></p>
+                </div>
+                <?php endif;?>
                 <a class="button" id="kwps-add-result-button">Add result</a>
-                <?php $outro = $version['outro']; ?>
                 <input type="hidden" name="ID" value="<?php if( isset( $outro['ID'] ) ) echo $outro['ID'];?>" class="kwps-single_input">
                 <input type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>" class="kwps-single_input">
                 <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($outro['post_content']))? $outro['post_content'] : "Outro" ?></textarea>

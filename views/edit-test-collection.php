@@ -11,7 +11,13 @@
     <?php if($active_tab == 'versions'): ?>
 
     <div id="icon-users" class="icon32"><br/></div>
-    <h2><?php _e('Manage versions', 'klasse-wp-poll-survey') ?> <a href="?page=klasse-wp-poll-survey_edit&section=edit_version&post_parent=<?php echo $_REQUEST['id']; ?>" class="add-new-h2"><?php _e('New version') ?></a></h2>
+    <h2><?php _e('Manage versions', 'klasse-wp-poll-survey') ?> <a href="?page=klasse-wp-poll-survey_edit&section=edit_version&post_parent=<?php echo $_REQUEST['id']; ?>" class="add-new-h2"><?php _e('New version'); ?></a>
+        <?php if( sizeof( $test_collection_publish_errors ) == 0  ):?>
+            <a href="?page=klasse-wp-poll-survey_edit&section=edit_test_collection&action=publish&id=<?php echo $_REQUEST['id']; ?>" class="add-new-h2"><?php _e('Publish') ?></a>
+        <?php else: ?>
+            <p >Alle versies moeten correct zijn om te kunnen publiceren</p>
+        <?php endif; ?>
+    </h2>
 
     <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
     <form id="kwps-filter" method="get" >

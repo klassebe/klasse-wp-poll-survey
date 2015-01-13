@@ -40,9 +40,9 @@ class Version_Handler {
         }
 
         $stripped_version = array_diff_key( $data, array('question_groups' => '') );
+        $test_modus = Test_Collection::get_test_modus( $stripped_version['post_parent'], false );
 
         if( isset( $stripped_version['post_parent'] ) ) {
-            $test_modus = Test_Collection::get_test_modus( $stripped_version['post_parent'], false );
             $answer_options_require_value = ($test_modus['_kwps_answer_options_require_value'] > 0);
         } else {
             $answer_options_require_value = false;
@@ -70,10 +70,17 @@ class Version_Handler {
             $data_has_errors = true;
         }
 
-        $intro_errors = Outro::validate_for_insert( $data['outro'] );
-        $data['outro']['errors'] = $intro_errors;
+        $outro_errors = Outro::validate_for_insert( $data['outro'] );
+        $data['outro']['errors'] = $outro_errors;
 
-        if( sizeof($intro_errors) != 0 ) {
+        if( ! Outro::has_valid_result_code_in_post_content( $data['outro'], $test_modus ) ) {
+            var_dump( 'gaat in error' );
+            if( ! isset( $outro_errors['post_content']) ) {
+                $outro_errors['post_content'] = 'No valid result code used';
+            }
+        }
+
+        if( sizeof($outro_errors) != 0 ) {
             $data_has_errors = true;
         }
 
@@ -553,6 +560,15 @@ class Version_Handler {
         } else {
             $outro_errors = Outro::validate_for_insert( $data['outro'] );
         }
+
+        if( ! Outro::has_valid_result_code_in_post_content( $data['outro'], $test_modus ) ) {
+            var_dump( 'gaat in error' );
+
+            if( ! isset( $outro_errors['post_content']) ) {
+                $outro_errors['post_content'] = 'No valid result code used';
+            }
+        }
+
         $data['outro']['errors'] = $outro_errors;
 
         if( sizeof($outro_errors) != 0 ) {

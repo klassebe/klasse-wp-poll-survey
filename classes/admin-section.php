@@ -147,6 +147,16 @@ class admin_section {
     {
         if( isset( $_REQUEST['section'] ) ) {
             if( 'edit_test_collection' == $_REQUEST['section'] ) {
+                $test_collection_publish_errors = Test_Collection::validate_for_publish( array('ID' => $_REQUEST['id'] ) );
+
+                if( isset( $_REQUEST['action'] ) && 'publish' == $_REQUEST['action'] ) {
+                    if( sizeof( $test_collection_publish_errors ) == 0  ) {
+                        $versions = Version::get_all_by_post_parent( $_REQUEST['id'] );
+                        foreach( $versions as $version ) {
+                            wp_publish_post( $version['ID']);
+                        }
+                    }
+                }
                 $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'versions';
                 if( 'versions' == $active_tab ) {
                     $versions_list = new \kwps_classes\Versions_List_Table();
@@ -171,7 +181,7 @@ class admin_section {
                         // validate/update existing version
                         $form_handler = new Version_Handler();
                         $validation_result = $form_handler->validate_existing_version_form($formattedData);
-                       //var_dump( $validation_result ) ;
+//                       var_dump( $validation_result ) ;
                         if( ! $validation_result['errors'] ) {
                             $version_data = $form_handler->save_new_version_form($formattedData);
                         } else {
@@ -182,7 +192,7 @@ class admin_section {
                         if(! isset( $formattedData['ID'] ) ) {
                             $form_handler = new Version_Handler();
                             $validation_result = $form_handler->validate_new_version_form($formattedData);
-                           //var_dump( $validation_result ) ;
+//                           var_dump( $validation_result ) ;
                             if( ! $validation_result['errors'] ) {
                                 $version_data = $form_handler->save_new_version_form($formattedData);
                             } else {
