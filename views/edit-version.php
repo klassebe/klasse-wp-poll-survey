@@ -132,15 +132,15 @@ $required_fields_answer_option = \kwps_classes\Answer_Option::$required_fields;
                 </div>
             </div>
         </div>
-        <div class="kwps kwps-single<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-intro_result">
+        <?php $intro_result = $version['intro_result'];?>
+        <div class="kwps kwps-single<?php if( isset( $intro_result['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-intro_result">
             <h3>Intro result</h3>
             <div class="inside">
-                <?php $intro_result = $version['intro_result'];?>
-                <input type="hidden" name="ID" value="<?php if( isset( $intro['ID'] ) ) echo $intro['ID'];?>" class="kwps-single_input">
-                <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>" class="kwps-single_input">
+                <input type="hidden" name="ID" value="<?php if( isset( $intro_result['ID'] ) ) echo $intro_result['ID'];?>" class="kwps-single_input">
+                <input type="hidden" name="post_status" value="<?php if( isset( $intro_result['post_status'] ) ) echo $intro_result['post_status'];?>" class="kwps-single_input">
                 <textarea style="display: none" name="post_content" class="kwps-single_input <?php if( in_array( 'post_content', $required_fields_intro_result ) ) echo 'kwps-required-field' ?>"><?php echo (isset($intro_result['post_content']))? $intro_result['post_content'] : "Intro Result" ?></textarea>
 
-                <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
+                <div class="kwps-content<?php if( isset( $intro_result['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                     <div style="display: none" class="kwps-content-editor">
                         <?php wp_editor( (isset($intro_result['post_content']))? $intro_result['post_content'] : "Intro Result", 'post_content_intro_result', array('teeny' => true ) ); ?>
                         <button class="kwps-content-editor-save button">Save</button>
