@@ -71,14 +71,14 @@ class Version_Handler {
         }
 
         $outro_errors = Outro::validate_for_insert( $data['outro'] );
-        $data['outro']['errors'] = $outro_errors;
 
         if( ! Outro::has_valid_result_code_in_post_content( $data['outro'], $test_modus ) ) {
-            var_dump( 'gaat in error' );
             if( ! isset( $outro_errors['post_content']) ) {
                 $outro_errors['post_content'] = 'No valid result code used';
             }
         }
+
+        $data['outro']['errors'] = $outro_errors;
 
         if( sizeof($outro_errors) != 0 ) {
             $data_has_errors = true;
@@ -562,8 +562,6 @@ class Version_Handler {
         }
 
         if( ! Outro::has_valid_result_code_in_post_content( $data['outro'], $test_modus ) ) {
-            var_dump( 'gaat in error' );
-
             if( ! isset( $outro_errors['post_content']) ) {
                 $outro_errors['post_content'] = 'No valid result code used';
             }
