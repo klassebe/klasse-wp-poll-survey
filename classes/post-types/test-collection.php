@@ -249,14 +249,61 @@ class Test_Collection extends Kwps_Post_Type{
 
         $errors = array();
 
+        if( ! static::have_all_versions_same_amount_of_items( $test_collection ) ) {
+            $errors[] = 'Not all versions have the same amount of items';
+        }
+
         foreach($versions as $version){
             $version_errors = Version::validate_for_publish($version);
-            if( sizeof( $version_errors) > 0) {
+            if( sizeof( $version_errors ) > 0) {
                 $errors[] = $version_errors;
             }
         }
 
         return $errors;
+    }
+
+    public static function have_all_versions_same_amount_of_items( $test_collection ) {
+        $versions = Version::get_all_by_post_parent($test_collection['ID']);
+
+        if( sizeof( $versions ) <= 1) {
+            return true;
+        } else {
+            $base_version = Version::get_with_all_children( $versions[0]['ID'] );
+
+            for( $i = 1; $i < sizeof( $versions ) - 1; $i++ ) {
+                $version = Version::get_with_all_children( $versions[$i]['ID'] );
+
+                if( isset( $base_version['intro'] ) != isset ($version['intro'] ) ) {
+                    return false;
+                } elseif( isset( $base_version['intro_result'] ) != isset ($version['intro_result'] ) ) {
+                    return false;
+                } elseif( isset( $base_version['outro'] ) != isset ($version['outro'] ) ) {
+                    return false;
+                } elseif( sizeof( $base_version['question_groups'] ) != sizeof( $version['question_groups'] ) ) {
+                    return false;
+                } else {
+                    foreach( $base_version['question_groups'] as $key => $base_question_group ) {
+                        if( ! isset( $version['question_groups'][$key] )) {
+                            return false;
+                        } elseif( sizeof( $base_question_group['questions'] ) != sizeof( $version['question_groups'][$key]['questions'] ) ) {
+                            return false;
+                        } else {
+                            foreach( $base_question_group['questions'] as $question_index => $base_question ) {
+                                if( ! isset( $version['question_groups'][$key]['questions'][$question_index] )) {
+                                    return false;
+                                } elseif( sizeof( $base_question['answer_options'] ) != sizeof( $version['question_groups'][$key]['questions'][$question_index]['answer_options'] ) ) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+
     }
 
     public static function validate_for_delete($post_id = 0)
