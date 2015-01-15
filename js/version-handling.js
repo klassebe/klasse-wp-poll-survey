@@ -100,7 +100,7 @@ jQuery(document).ready(function($) {
     event.preventDefault();
     var divToClone = $(this).prevAll(':visible:first');
     var clonedDiv = divToClone.clone();
-    clonedDiv.find("input[name='ID']").val('');
+    clonedDiv.find("input[name='ID']").remove();
     clonedDiv.insertAfter(divToClone);
     $('#version-save').click();
   }
