@@ -81,7 +81,7 @@ class Versions_List_Table extends Base_List_Table {
      * @param object $item The current item
      */
     function single_row_columns( $item ) {
-        if( sizeof( Version::validate_for_publish( $item['ID'] ) ) > 0 ) {
+        if( sizeof( Version::validate_for_publish( Version::get_as_array( $item['ID'] ) ) ) > 0 ) {
             $has_publish_errors = true;
         } else {
             $has_publish_errors = false;
