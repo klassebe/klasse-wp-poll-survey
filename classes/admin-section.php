@@ -133,6 +133,7 @@ class admin_section {
 
             wp_register_script('klasse_wp_poll_survey_plugin_admin_ays', plugins_url('../js/bower_components/jquery.are-you-sure/jquery.are-you-sure.js', __FILE__));
             wp_register_script('klasse_wp_poll_survey_plugin_admin_scripts', plugins_url('../js/version-handling.js', __FILE__));
+            wp_localize_script('klasse_wp_poll_survey_plugin_admin_scripts', 'WPURLS', array( 'siteurl' => get_option('siteurl') ));
 
             wp_enqueue_script('klasse_wp_poll_survey_plugin_admin_ays');
             wp_enqueue_script('klasse_wp_poll_survey_plugin_admin_scripts');

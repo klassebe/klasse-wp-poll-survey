@@ -29,7 +29,7 @@ jQuery(document).ready(function($) {
 			allowedTypes = testModus._kwps_allowed_output_types;
 		}
 
-		tb_show('','../../wp-content/plugins/klasse-wp-poll-survey/classes/show-charts.php?type=image&amp;TB_iframe=true');
+		tb_show('', WPURLS.siteurl + '/wp-content/plugins/klasse-wp-poll-survey/classes/show-charts.php?type=image&amp;TB_iframe=true');
 
 		var request = $.ajax({
 										url: 'admin-ajax.php?action=kwps_get_result_page',
