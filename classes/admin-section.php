@@ -175,9 +175,11 @@ class admin_section {
                 include_once __DIR__ . '/../views/edit-test-collection.php';
             } elseif( 'edit_version' == $_REQUEST['section'] ) {
                 if( sizeof( $_POST ) == 0  ) {
-                    $versions = Version::get_all_by_post_parent( $_REQUEST['post_parent']);
-                    if( sizeof( $versions) >= 1 ) {
-                        $version_data = Version::get_with_all_children( $versions[0]['ID'], true);
+                    if( isset( $_REQUEST['post_parent'])) {
+                        $versions = Version::get_all_by_post_parent( $_REQUEST['post_parent']);
+                        if( sizeof( $versions) >= 1 ) {
+                            $version_data = Version::get_with_all_children( $versions[0]['ID'], true);
+                        }
                     }
 
                     include_once __DIR__ . '/../views/edit-version.php';
