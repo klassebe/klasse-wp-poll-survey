@@ -89,6 +89,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
         </div>
     <?php endif;?>
     <form id="edit-version" action="<?php echo $form_action ?>" method="post" class="kwps-form">
+        <?php if( in_array( 'post_title', $required_fields_version ) ) echo '<span class="kwps-required">*</span>' ?>
         <div class="kwps kwps-single" id="kwps-version">
             <?php if( isset( $version['ID'] ) ):?>
                 <input type="hidden" name="ID" value="<?php echo $version['ID'] ?>" class="kwps-single_input"/>
@@ -107,13 +108,13 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                         spellcheck="true" 
                         autocomplete="off"
                         value="<?php echo $version['post_title'] ?>"
-                        class="<?php if( isset( $version['errors']['post_title'] ) ) echo 'kwps_error'; ?>  kwps-post-title kwps-single_input <?php if( in_array( 'post_title', $required_fields_version ) ) echo 'kwps-required-field' ?>"
+                        class="<?php if( isset( $version['errors']['post_title'] ) ) echo 'kwps_error'; ?>  kwps-post-title kwps-single_input "
                     />
                 </div>
             </div>
         </div>
         <div class="kwps kwps-single<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-intro">
-            <h3>Intro</h3>
+            <h3>Intro <?php if( in_array( 'post_content', $required_fields_intro ) ) echo '<span class="kwps-required">*</span>' ?></h3>
             <div class="inside">
                 <?php $intro = $version['intro'];?>
                 <?php if( isset( $intro['ID'] ) ): ?>
@@ -121,7 +122,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                 <?php endif;?>
                 <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>" class="kwps-single_input">
 
-                <textarea style="display: none" name="post_content" class="kwps-single_input <?php if( in_array( 'post_content', $required_fields_intro ) ) echo 'kwps-required-field' ?>"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
+                <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
                 <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                     <div style="display: none" class="kwps-content-editor">
                         <?php wp_editor( (isset($intro['post_content']))? $intro['post_content'] : "Intro", 'intro', array('teeny' => true ) ); ?>
@@ -138,13 +139,13 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
         </div>
         <?php $intro_result = $version['intro_result'];?>
         <div class="kwps kwps-single<?php if( isset( $intro_result['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-intro_result">
-            <h3>Intro result</h3>
+            <h3>Intro result <?php if( in_array( 'post_content', $required_fields_intro_result ) ) echo '<span class="kwps-required">*</span>' ?></h3>
             <div class="inside">
                 <?php if( isset( $intro_result['ID'] ) ): ?>
                     <input type="hidden" name="ID" value="<?php echo $intro_result['ID'];?>" class="kwps-single_input">
                 <?php endif;?>
                 <input type="hidden" name="post_status" value="<?php if( isset( $intro_result['post_status'] ) ) echo $intro_result['post_status'];?>" class="kwps-single_input">
-                <textarea style="display: none" name="post_content" class="kwps-single_input <?php if( in_array( 'post_content', $required_fields_intro_result ) ) echo 'kwps-required-field' ?>"><?php echo (isset($intro_result['post_content']))? $intro_result['post_content'] : "Intro Result" ?></textarea>
+                <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($intro_result['post_content']))? $intro_result['post_content'] : "Intro Result" ?></textarea>
 
                 <div class="kwps-content<?php if( isset( $intro_result['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                     <div style="display: none" class="kwps-content-editor">
@@ -167,6 +168,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                         <h3 class="collapsables">
                             <span class="kwps-collapse dashicons dashicons-arrow-right"></span> 
                                 Pagina <?php echo $question_group['_kwps_sort_order'] ?> 
+                                <?php if( in_array( 'post_content', $required_fields_question_group ) ) echo '<span class="kwps-required">*</span>' ?> 
                             <button class="kwps-remove-item button button-small">remove</button>
                         </h3>
                         <div class="inside">
@@ -185,7 +187,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                     />
                                 </div>
                             </div>
-                            <textarea style="display: none" name="post_content" class="kwps-question_group_input  <?php if( in_array( 'post_content', $required_fields_question_group ) ) echo 'kwps-required-field' ?>"><?php echo (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1) ?></textarea>
+                            <textarea style="display: none" name="post_content" class="kwps-question_group_input"><?php echo (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1) ?></textarea>
                             <div class="kwps-content">
                                 <div style="display: none" class="kwps-content-editor">
                                     <?php wp_editor( (isset($question_group['post_content']))? $question_group['post_content'] : "Page " . ($question_group_key+1), 'question_group_' . $question_group_key, array('teeny' => true ) ); ?>
@@ -206,6 +208,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                             <h3 class="collapsables">
                                                 <span class="kwps-collapse dashicons dashicons-arrow-right"></span> Vraag 
                                                 <span><?php echo $question['_kwps_sort_order'] ?></span> 
+                                                <?php if( in_array( 'post_content', $required_fields_question ) ) echo '<span class="kwps-required">*</span>' ?>
                                                 <button class="kwps-remove-item button button-small">remove</button>
                                             </h3>
                                             <div class="inside">
@@ -224,7 +227,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                 <textarea 
                                                     style="display: none" 
                                                     name="post_content" 
-                                                    class="kwps-question_input <?php if( in_array( 'post_content', $required_fields_question ) ) echo 'kwps-required-field' ?>">
+                                                    class="kwps-question_input">
                                                     <?php echo (isset($question['post_content']))? $question['post_content'] : "Question " . ($question_key+1) ?>
                                                 </textarea>
                                                 <div class="kwps-content">
@@ -247,6 +250,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                                 <h3 class="collapsables">
                                                                     <span class="kwps-collapse dashicons dashicons-arrow-right"></span> Antwoord 
                                                                     <span><?php echo $answer_option['_kwps_sort_order'] ;?></span> 
+                                                                    <?php if( in_array( 'post_content', $required_fields_answer_option ) ) echo '<span class="kwps-required">*</span>' ?>
                                                                     <button class="kwps-remove-item button button-small">remove</button>
                                                                 </h3>
                                                                 <div class="inside">
@@ -259,7 +263,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                                         />
                                                                     <?php endif;?>
                                                                     <input type="hidden" name="post_status" value="<?php echo $answer_option['post_status']; ?>" class="kwps-answer_input"/>
-                                                                    <textarea style="display: none" name="post_content" class="kwps-answer_input  <?php if( in_array( 'post_content', $required_fields_answer_option ) ) echo 'kwps-required-field' ?>"><?php echo (isset($answer_option['post_content']))? $answer_option['post_content'] : "Answer " . ($answer_option_key+1) ?></textarea>
+                                                                    <textarea style="display: none" name="post_content" class="kwps-answer_input"><?php echo (isset($answer_option['post_content']))? $answer_option['post_content'] : "Answer " . ($answer_option_key+1) ?></textarea>
 
                                                                     <div class="kwps-content">
                                                                         <div style="display: none" class="kwps-content-editor">
@@ -299,7 +303,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
         </div>
         <?php $outro = $version['outro']; ?>
         <div class="kwps kwps-single <?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-outro">
-            <h3>Outro result</h3>
+            <h3>Outro result <?php if( in_array( 'post_content', $required_fields_outro ) ) echo '<span class="kwps-required">*</span>' ?></h3>
             <div class="inside">
                 <?php if( isset( $outro['errors']['post_content'] ) ):?>
                 <div class="error form-invalid below-h2">

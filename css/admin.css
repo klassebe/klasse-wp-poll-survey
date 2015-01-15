@@ -395,6 +395,10 @@ form.kwps_error {
     background-color: red;
 }
 
+.kwps-required{
+  color: red;
+}
+
 td.kwps-publish-error {
     color: red ;
 }
@@ -495,3 +499,4 @@ button.kwps-remove-answer-option {
 .kwps-answer_options > .inside{
   background-color: rgb(236, 246, 255);
 }
+
