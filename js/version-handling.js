@@ -354,7 +354,7 @@ jQuery(document).ready(function($) {
       var questionGroupsCount = $(this).find('.kwps-question_group:visible').length;
 
       if(questionGroupsCount > 1) {
-        $(this).children('.kwps-question_group').children('h3').children('.kwps-remove-item').removeAttr('disabled');
+        $(this).find('.kwps-question_group').children('h3').children('.kwps-remove-item').removeAttr('disabled');
       }
 
 
@@ -376,7 +376,7 @@ jQuery(document).ready(function($) {
       var questionsCount = $(this).find('.kwps-question:visible').length;
 
       if(questionsCount > 1) {
-        $(this).children('.kwps-question').children('h3').children('.kwps-remove-item').removeAttr('disabled');
+        $(this).find('.kwps-question').children('h3').children('.kwps-remove-item').removeAttr('disabled');
       }
 
       $(this).find('.kwps-question:visible').each(function(questionI) {
@@ -397,7 +397,7 @@ jQuery(document).ready(function($) {
       var answerOptionCount = $(this).find('.kwps-answer_option:visible').length;
 
       if(answerOptionCount > 2) {
-        $(this).children('.kwps-answer_option').children('h3').children('.kwps-remove-item').removeAttr('disabled');
+        $(this).find('.kwps-answer_option').children('h3').children('.kwps-remove-item').removeAttr('disabled');
       }
 
       $(this).find('.kwps-answer_option:visible').each(function(answerOptionI) {
