@@ -100,7 +100,7 @@ jQuery(document).ready(function($) {
     event.preventDefault();
     var divToClone = $(this).prevAll(':visible:first');
     var clonedDiv = divToClone.clone();
-    clonedDiv.children("input[name='ID']").val('');
+    clonedDiv.find("input[name='ID']").val('');
     clonedDiv.insertAfter(divToClone);
     $('#version-save').click();
   }
@@ -110,10 +110,10 @@ jQuery(document).ready(function($) {
 
     var divToHide = $(this).parent().closest('div');
 
-    if( divToHide.children("input[name='ID']").val() === '' ) {
+    if( divToHide.find("input[name='ID']").val() === '' ) {
         divToHide.remove();
     } else {
-        divToHide.children("input[name='post_status']").val('trash');
+        divToHide.find("input[name='post_status']").val('trash');
         divToHide.hide();
     }
     $('#version-save').click();
