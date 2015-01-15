@@ -110,25 +110,65 @@ class Version extends Kwps_Post_Type{
         }
     }
 
-    public static function get_with_all_children( $id ) {
+    public static function get_with_all_children( $id, $load_as_new = false ) {
         $version = static::get_as_array( $id );
+        if( $load_as_new ) {
+            unset( $version['ID']);
+        }
         $question_groups = Question_Group::get_all_by_post_parent( $id );
         foreach( $question_groups as $question_group ) {
             $questions = Question::get_all_by_post_parent( $question_group['ID'] );
+
+            if( $load_as_new ) {
+                unset( $question_group['ID'] );
+            }
+
             foreach( $questions as $question ) {
                 $answer_options = Answer_Option::get_all_by_post_parent( $question['ID'] );
+
+                if( $load_as_new ) {
+                    unset( $question['ID'] );
+                }
+
                 foreach( $answer_options as $answer_option ) {
+                    if( $load_as_new ) {
+                        unset( $answer_option['ID'] );
+                    }
                     $question['answer_options'][$answer_option['_kwps_sort_order']] = $answer_option;
                 }
                 $question_group['questions'][$question['_kwps_sort_order']] = $question;
             }
             $version['question_groups'][$question_group['_kwps_sort_order']] = $question_group;
         }
-        $version['intro'] = Intro::get_one_by_post_parent( $id );
-        $version['intro_result'] = Intro_Result::get_one_by_post_parent( $id );
-        $version['outro'] = Outro::get_one_by_post_parent( $id );
+
+        $intro = Intro::get_one_by_post_parent( $id );
+        $intro_result = Intro_Result::get_one_by_post_parent( $id );
+        $outro = Outro::get_one_by_post_parent( $id );
+
+        if( $load_as_new ) {
+            unset( $intro['ID']);
+            unset( $intro_result['ID']);
+            unset( $outro['ID']);
+        }
+
+
+        $version['intro'] = $intro;
+        $version['intro_result'] = $intro_result;
+        $version['outro'] = $outro;
 
         return $version;
+    }
+
+
+    private static function remove_id_and_post_parent_index_result( $nested_arrays ) {
+        foreach( $nested_arrays as $key => $value ) {
+            if( is_array( $value ) ) {
+
+            }
+            if( $key == 'ID' ) {
+                unset($nested_arrays[$key]);
+            }
+        }
     }
 
     public static function ajax_validate_for_publish(){
