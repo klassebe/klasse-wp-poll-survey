@@ -399,6 +399,15 @@ td.kwps-publish-error {
     color: red ;
 }
 
+span.kwps-gray {
+    font-size: 16px;
+    color: gray;
+}
+
+div.kwps-nav-spacer {
+    padding-top: 15px;
+}
+
 .kwps-answer_options, .kwps-questions{
     margin-top: 10px;
 }

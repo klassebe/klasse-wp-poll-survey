@@ -72,13 +72,15 @@ $required_fields_question_group = \kwps_classes\Question_Group::$required_fields
 $required_fields_question = \kwps_classes\Question::$required_fields;
 $required_fields_answer_option = \kwps_classes\Answer_Option::$required_fields;
 
+$test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_edit&section=edit_test_collection&id=' . $version['post_parent'];
 ?>
 <script language="JavaScript">
     var testModus = <?php echo json_encode($test_modus = \kwps_classes\Test_Collection::get_test_modus( $version['post_parent'] ) ) ?>;
     var versionData = <?php echo json_encode($version); ?>;
 </script>
 <div class="wrap">
-    <h2>Versie</h2>
+    <a href="<?php echo $test_collection_url ?>">Terug</a>
+    <h2>Versie <span class="kwps-gray">(<?php if( isset( $version['ID'] ) ) { echo $version['ID']; } else {echo 'Nieuw';}  ?>)</span></h2>
     <?php if( isset( $test_modus_errors ) && sizeof( $test_modus_errors ) > 0 ):?>
         <div id="test-modus-errors" class="error form-invalid below-h2">
         <?php foreach( $test_modus_errors as $rule => $message ) :?>
@@ -320,4 +322,7 @@ $required_fields_answer_option = \kwps_classes\Answer_Option::$required_fields;
         </div>
         <button id="version-save" type="submit" class="button button-primary">Wijzigingen opslaan</button>
     </form>
+    <div class="kwps-nav-spacer"></div>
+    <a href="<?php echo $test_collection_url ?>">Terug</a>
+
 </div>
