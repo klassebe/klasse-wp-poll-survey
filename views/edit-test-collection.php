@@ -12,7 +12,7 @@
 
     <div id="icon-users" class="icon32"><br/></div>
     <h2><?php _e('Manage versions', 'klasse-wp-poll-survey') ?> <a href="?page=klasse-wp-poll-survey_edit&section=edit_version&post_parent=<?php echo $_REQUEST['id']; ?>" class="add-new-h2"><?php _e('New version'); ?></a>
-        <?php if( sizeof( $test_collection_publish_errors ) == 0  ):?>
+        <?php if( sizeof( $test_collection_publish_errors ) == 0 && sizeof( \kwps_classes\Version::get_all_by_post_parent($_REQUEST['id'] ) ) > 0 ):?>
             <a href="?page=klasse-wp-poll-survey_edit&section=edit_test_collection&action=publish&id=<?php echo $_REQUEST['id']; ?>" class="add-new-h2"><?php _e('Publish') ?></a>
         <?php else: ?>
             <p >Alle versies moeten correct zijn om te kunnen publiceren</p>
