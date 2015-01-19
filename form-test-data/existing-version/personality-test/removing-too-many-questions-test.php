@@ -22,7 +22,7 @@ return array(
         ),
         'outro' => array(
             'ID' => 8,
-            'post_content' => 'Outro contents',
+            'post_content' => 'Outro contents [kwps_result result=result-profile]',
             '_kwps_sort_order' => 1,
             'post_status' => 'draft',
             'post_parent' => 5,
@@ -96,7 +96,7 @@ return array(
             ),
             'outro' => array(
                 'ID' => 8,
-                'post_content' => 'Outro contents',
+                'post_content' => 'Outro contents [kwps_result result=result-profile]',
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
                 'post_parent' => 5,

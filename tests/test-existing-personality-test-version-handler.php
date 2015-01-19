@@ -63,9 +63,9 @@ class Existing_Personality_Test_Version_Handler_Test extends WP_UnitTestCase {
     }
 
 //     test the saving of a personality_test where an answer options is trashed/removed
-//    function test_save_trashed_answer_option() {
-//        $this->checkOutputForSavedVersion( 'save-trashed-answer-option-test.php' );
-//    }
+    function test_save_trashed_answer_option() {
+        $this->checkOutputForSavedVersion( 'save-trashed-answer-option-test.php' );
+    }
 
     function test_save_trashed_question() {
         $this->checkOutputForSavedVersion( 'save-trashed-question-test.php' );
@@ -97,6 +97,8 @@ class Existing_Personality_Test_Version_Handler_Test extends WP_UnitTestCase {
 
         $version_handler = new \kwps_classes\Version_Handler();
         $output = $version_handler->validate_existing_version_form( $input );
+
+//        var_dump( $output, $expected_output);
 
         $this->assertEquals($output['errors'], $expected_output['errors']);
         $this->assertEquals($output['test_modus_errors'], $expected_output['test_modus_errors']);
