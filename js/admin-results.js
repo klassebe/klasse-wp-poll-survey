@@ -1,0 +1,1 @@
+console.log('admin results js file loaded');

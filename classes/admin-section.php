@@ -137,6 +137,9 @@ class admin_section {
 
             wp_enqueue_script('klasse_wp_poll_survey_plugin_admin_ays');
             wp_enqueue_script('klasse_wp_poll_survey_plugin_admin_scripts');
+        } elseif( isset( $_REQUEST['section'] ) && isset( $_REQUEST['tab'] ) && 'edit_test_collection' == $_REQUEST['section'] && 'results' == $_REQUEST['tab'] ) {
+            wp_register_script('klasse_wp_poll_survey_plugin_admin_results_scripts', plugins_url('../js/admin-results.js', __FILE__));
+            wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_results_scripts');
         }
     }
 

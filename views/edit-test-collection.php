@@ -6,6 +6,7 @@
     <h2 class="nav-tab-wrapper">
         <a href="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&section=edit_test_collection&tab=versions" class="nav-tab <?php echo $active_tab == 'versions' ? 'nav-tab-active' : ''; ?>">Versions</a>
         <a href="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&section=edit_test_collection&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>">Settings</a>
+        <a href="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&section=edit_test_collection&tab=results" class="nav-tab <?php echo $active_tab == 'results' ? 'nav-tab-active' : ''; ?>">Results</a>
     </h2>
 
     <?php if($active_tab == 'versions'): ?>
@@ -31,7 +32,7 @@
         $versions_list->display();
         ?>
     </form>
-    <?php else:?>
+    <?php elseif( $active_tab == 'settings'):?>
         <?php $allowed_dropdown_values = \kwps_classes\Test_Collection::$allowed_dropdown_values; ?>
         <form id="kwps-test-collection-settings" method="post" action="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&section=edit_test_collection&tab=settings">
             <table class="form-table">
@@ -87,6 +88,18 @@
             </table>
             
         </form>
+    <?php else: ?>
+        <?php
+            $current_test_modus = \kwps_classes\Test_Collection::get_test_modus( $_REQUEST['id'] );
+            $versions = \kwps_classes\Version::get_all_by_post_parent( $_REQUEST['id'] );
+        ?>
+        <select>
+            <option value="all">All Versions</option>
+            <?php foreach( $versions as $version ):?>
+                <option value="<?php echo $version['ID']; ?>"><?php echo $version['post_title'];?></option>
+            <?php endforeach;?>
+        </select>
+        <div id="kwps-results-container"></div>
     <?php endif; ?>
 
 </div> <!-- .wrap -->
