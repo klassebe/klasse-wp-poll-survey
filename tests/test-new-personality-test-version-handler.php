@@ -81,7 +81,7 @@ class New_Personality_Test_Version_Handler_Test extends WP_UnitTestCase {
 
 //    TODO check if this needs to be validated and how to handle this properly!
 
-//    function test_new_personality_test_version_form_validation_QuestionWithoutAnswerOptionsIndex() {
+//       function test_new_personality_test_version_form_validation_QuestionWithoutAnswerOptionsIndex() {
 //        $this->checkOutputWithFormTestData( 'personality-test/question-without-answer-options-index.php');
 //    }
 

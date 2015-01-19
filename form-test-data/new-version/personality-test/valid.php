@@ -16,7 +16,7 @@ return array(
             'post_status' => 'draft',
         ),
         'outro' => array(
-            'post_content' => 'Outro contents',
+            'post_content' => 'Outro contents [kwps_result result=result-profile]',
             '_kwps_sort_order' => 1,
             'post_status' => 'draft',
         ),
@@ -88,7 +88,7 @@ return array(
                 'errors' => array(),
             ),
             'outro' => array(
-                'post_content' => 'Outro contents',
+                'post_content' => 'Outro contents [kwps_result result=result-profile]',
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
                 'errors' => array(),
