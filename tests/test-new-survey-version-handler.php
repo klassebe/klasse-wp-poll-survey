@@ -111,7 +111,7 @@ class New_Survey_Version_Handler_Test extends WP_UnitTestCase {
         $this->assertTrue( $this->arrays_are_similar( $output['data'], $expected_output['data'] ) );
     }
 
-    ////// saving a new version is tested below
+    //// saving a new version is tested below
 
     function test_save_new_version() {
         $test_data = include __DIR__ . '/../form-test-data/new-version/survey/valid-for-save-test.php';
