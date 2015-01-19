@@ -11,7 +11,7 @@ return array(
             'post_status' => 'draft',
         ),
         'outro' => array(
-            'post_content' => 'Outro contents',
+            'post_content' => 'Outro contents [kwps_result result=bar-chart-per-question]',
             '_kwps_sort_order' => 1,
             'post_status' => 'draft',
         ),
@@ -67,7 +67,7 @@ return array(
                     'post_content' => 'Required',
                 ),),
             'outro' => array(
-                'post_content' => 'Outro contents',
+                'post_content' => 'Outro contents [kwps_result result=bar-chart-per-question]',
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
                 'errors' => array(),

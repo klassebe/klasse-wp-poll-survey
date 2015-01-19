@@ -16,7 +16,7 @@ return array(
             'post_status' => 'draft',
         ),
         'outro' => array(
-            'post_content' => 'Outro contents',
+            'post_content' => 'Outro contents [kwps_result result=bar-chart-per-question]',
             '_kwps_sort_order' => 1,
             'post_status' => 'draft',
         ),
@@ -61,6 +61,7 @@ return array(
             'post_parent' => 4,
             'post_status' => 'draft',
             '_kwps_sort_order' => 1,
+            '_kwps_view_count' => 0,
             'intro' => array(
                 'ID' => 6,
                 'post_content' => 'Intro contents',
@@ -77,7 +78,7 @@ return array(
             ),
             'outro' => array(
                 'ID' => 8,
-                'post_content' => 'Outro contents',
+                'post_content' => 'Outro contents [kwps_result result=bar-chart-per-question]',
                 '_kwps_sort_order' => 1,
                 'post_status' => 'draft',
                 'post_parent' => 5,
