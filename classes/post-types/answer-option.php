@@ -92,6 +92,11 @@ class Answer_Option extends Kwps_Post_Type{
         'publicly_queryable' => false,
     );
 
+    public static function get_test_collection( $answer_option_id ) {
+        $answer_option = static::get_as_array( $answer_option_id );
+        return Question::get_as_array( $answer_option['post_parent'] );
+    }
+
     /**
      * Returns the test modus, as an associative array, to which the answer_option belongs
      *
@@ -246,5 +251,26 @@ class Answer_Option extends Kwps_Post_Type{
         }
 
         return $errors;
+    }
+
+    public static function get_matches_in_other_versions( $id ) {
+        $answer_option = static::get_as_array( $id );
+        $question = Question::get_as_array( $answer_option['post_parent'] );
+
+        $matching_questions = Question::get_matches_in_other_versions( $question['ID'] );
+
+        $matching_ids = array();
+
+        foreach( $matching_questions as $matching_question_id ) {
+            if( $matching_question_id != $question['ID'] ) {
+                foreach( static::get_all_by_post_parent( $matching_question_id ) as $tmp_answer_option ) {
+                    if( $answer_option['_kwps_sort_order'] == $tmp_answer_option['_kwps_sort_order'] ) {
+                        $matching_ids[] = $tmp_answer_option['ID'];
+                    }
+                }
+            }
+        }
+
+        return $matching_ids;
     }
 }

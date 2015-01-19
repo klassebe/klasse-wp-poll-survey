@@ -64,6 +64,11 @@ class Version extends Kwps_Post_Type{
             'hierarchical' => true,
     );
 
+    public static function get_test_collection( $version_id ) {
+        $version = static::get_as_array( $version_id );
+        return Test_Collection::get_as_array( $version['post_parent'] );
+    }
+
     public static function get_test_modus($version_id)
     {
         $version = static::get_as_array($version_id);

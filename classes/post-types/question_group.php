@@ -62,6 +62,11 @@ class Question_Group extends Kwps_Post_Type {
         'hierarchical' => true,
     );
 
+    public static function get_test_collection( $question_group_id ) {
+        $question_group = static::get_as_array( $question_group_id );
+        return Version::get_test_collection( $question_group['post_parent'] );
+    }
+
     public static function get_test_modus($question_group_id)
     {
         $question_group = static::get_as_array($question_group_id);
@@ -111,5 +116,25 @@ class Question_Group extends Kwps_Post_Type {
         return true;
     }
 
+    public static function get_matches_in_other_versions( $id ) {
+        $question_group = static::get_as_array( $id );
+        $test_collection = static::get_test_collection( $id );
 
+        $versions = Version::get_all_by_post_parent( $test_collection['ID'] );
+
+        $matching_ids = array();
+
+        foreach( $versions as $version ) {
+            if( $question_group['post_parent'] != $version['ID'] ) {
+                $tmp_question_groups = Question_Group::get_all_by_post_parent( $version['ID'] );
+                foreach( $tmp_question_groups as $tmp_question_group ) {
+                    if( $question_group['_kwps_sort_order'] == $tmp_question_group['_kwps_sort_order'] ) {
+                        $matching_ids[] = $tmp_question_group['ID'];
+                    }
+                }
+            }
+        }
+
+        return $matching_ids;
+    }
 } 
