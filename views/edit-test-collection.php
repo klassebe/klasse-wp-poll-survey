@@ -1,5 +1,6 @@
 <?php
     $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'versions';
+    $test_collection = \kwps_classes\Test_Collection::get_as_array( $_REQUEST['id'], true );
 ?>
 
 <div class="wrap">
@@ -18,6 +19,9 @@
         <?php else: ?>
             <p >Alle versies moeten correct zijn om te kunnen publiceren</p>
         <?php endif; ?>
+        <p>
+            You are currently managing versions for the test <b>'<?php echo $test_collection['post_title']; ?>' (<?php echo $test_collection['ID']; ?>).</b>
+        </p>
     </h2>
 
     <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->

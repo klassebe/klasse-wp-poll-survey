@@ -23,6 +23,7 @@ class Test_Collection extends Kwps_Post_Type{
         'post_parent',
         'post_content',
         '_kwps_sort_order',
+        'post_title',
         'post_status',
         '_kwps_logged_in_user_limit',
         '_kwps_logged_out_user_limit',
@@ -32,6 +33,7 @@ class Test_Collection extends Kwps_Post_Type{
             'post_status',
             'post_parent',
             '_kwps_sort_order',
+            'post_title',
             '_kwps_logged_in_user_limit',
             '_kwps_logged_out_user_limit',
         );
