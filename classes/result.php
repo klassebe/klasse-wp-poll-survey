@@ -43,18 +43,36 @@ class Result {
                 $filter = '';
             }
 
-            static::send_result_of_version($id, $output_type, $filter) ;
+            static::send_result_of_version_by_version_id($id, $output_type, $filter) ;
         }
 
     }
 
-    public static function send_result_of_version($id, $output_type, $filter){
+    public static function send_result_of_version_by_version_id($id, $output_type, $filter){
         switch($output_type){
             case 'bar-chart-per-question' :
-                $results = Bar_Chart::get_chart_per_question($id, $filter);
+                $results = Bar_Chart::get_chart_per_question_per_version($id, $filter);
                 break;
             case 'pie-chart-per-question' :
-                $results = Pie_Chart::get_chart_per_question($id, $filter);
+                $results = Pie_Chart::get_chart_per_question_per_version($id, $filter);
+                break;
+            case 'grouped-bar-chart-per-profile' :
+                $results = Grouped_Bar_Chart::get_chart_per_profile($id, $filter);
+                break;
+            default:
+                $results = 0;
+        }
+        wp_send_json( $results );
+        die;
+    }
+
+    public static function send_result_of_version_by_entry_id($id, $output_type, $filter){
+        switch($output_type){
+            case 'bar-chart-per-question' :
+                $results = Bar_Chart::get_chart_per_question_by_entry_id($id, $filter);
+                break;
+            case 'pie-chart-per-question' :
+                $results = Pie_Chart::get_chart_per_question_by_entry_id($id, $filter);
                 break;
             case 'grouped-bar-chart-per-profile' :
                 $results = Grouped_Bar_Chart::get_chart_per_profile($id, $filter);
@@ -93,7 +111,7 @@ class Result {
                 $group = '';
             }
 
-            static::send_result_of_version($version_id, $output_type, $group) ;
+            static::send_result_of_version_by_entry_id($version_id, $output_type, $group) ;
         }
     }
 

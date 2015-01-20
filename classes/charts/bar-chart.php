@@ -11,12 +11,57 @@ namespace kwps_classes;
 
 class Bar_Chart 
 {
+    public static function get_chart_per_test_collection( $test_collection_id, $group ) {
+        $versions = Version::get_all_by_post_parent( $test_collection_id );
 
-    public static function get_chart_per_question($entry_id, $group){
-        $version = Entry::get_version($entry_id);
+        foreach( $versions as $version ) {
+            /* QUESTION GROUP DATA */
+            $question_group = Question_Group::get_one_by_post_parent($version['ID']);
 
+            /* QUESTION DATA */
+            $question = Question::get_one_by_post_parent($question_group['ID']);
+
+            /* ANSWER OPTIONS DATA */
+            $answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
+
+            /* ENTRY DATA */
+            $total_entries = 0;
+            $entry_totals_per_answer_option = array();
+            $answer_option_contents = array();
+
+            foreach ($answer_options as $answer_option) {
+                if( strlen( $group ) > 0 ) {
+                    $entries = Entry::get_all_of_result_group($answer_option['ID'], $group);
+                } else {
+                    $entries = Entry::get_all_by_post_parent($answer_option['ID']);
+                }
+
+                $entry_totals_per_answer_option[$answer_option['ID']] = sizeof($entries);
+                $answer_option_contents[] = $answer_option['post_content'];
+                $total_entries += sizeof($entries);
+            }
+
+            $percentages = array();
+
+            foreach ($entry_totals_per_answer_option as $id => $count) {
+                // check if total_entries is not 0!
+                if ($total_entries !== 0) {
+                    $percentages[] = $count/$total_entries*100;
+                } else {
+                    $percentages[] = 0;
+                }
+            }
+
+            $data = array( $question, $answer_option_contents, $percentages );
+            $bar_chart = static::get_consolidated_chart( $data );
+
+            return $bar_chart;
+        }
+    }
+
+    public static function get_chart_per_question_per_version( $version_id, $group ) {
         /* QUESTION GROUP DATA */
-        $question_group = Question_Group::get_one_by_post_parent($version['ID']);
+        $question_group = Question_Group::get_one_by_post_parent($version_id);
 
         /* QUESTION DATA */
         $question = Question::get_one_by_post_parent($question_group['ID']);
@@ -58,6 +103,12 @@ class Bar_Chart
         return $bar_chart;
     }
 
+    public static function get_chart_per_question_by_entry_id($entry_id, $group){
+        $version = Entry::get_version($entry_id);
+        return static::get_chart_per_question_per_version( $version['ID'], $group);
+
+    }
+
     public static function get_post_data_from_request(){
         $json = file_get_contents("php://input");
         $request_data = json_decode($json, true);
@@ -89,5 +140,9 @@ class Bar_Chart
             'credits' => array( 'enabled' => false ),
             'series' => array(array( 'name' => 'Votes', 'data' => $percentages)),
         );
+    }
+
+    public static function get_consolidated_chart( $data ) {
+
     }
 } 

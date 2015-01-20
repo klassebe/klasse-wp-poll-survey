@@ -5,7 +5,7 @@ namespace kwps_classes;
 
 class Pie_Chart extends Bar_Chart
 {
-    public static function get_chart_per_question($entry_id, $group) {
+    public static function get_chart_per_question_by_entry_id($entry_id, $group) {
 	    $version = Entry::get_version($entry_id);
 
         return static::get_chart_per_question_per_version( $version['ID'], $group);
