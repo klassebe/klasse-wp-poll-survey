@@ -108,6 +108,7 @@
         }
 
         public static function create_default_test_modi(){
+            static::register_post_type();
             $kwps_poll = array(
                 'post_title' => 'Poll',
                 'post_content' => 'Collect the opinion of visitors on a single issue, based on a multiple-choice response.',
@@ -160,7 +161,7 @@
             if( isset($error) && null == $error ){
                 //TODO add html to report error
                 echo 'error creating Poll test modus';
-                var_dump($error);
+                error_log( print_r($error, true) );
             }
 
             if( ! static::default_test_modus_exists($kwps_personality_test) ){
@@ -170,7 +171,7 @@
             if( isset($error) && null == $error ){
                 //TODO add html to report error
                 echo 'error creating Personality Test test modus';
-                var_dump($error);
+                error_log( print_r($error, true) );
             }
 
             if( ! static::default_test_modus_exists($kwps_survey) ){
@@ -180,7 +181,7 @@
             if( isset($error) && null == $error ){
                 //TODO add html to report error
                 echo 'error creating Survey test modus';
-                var_dump($error);
+                error_log( print_r($error, true) );
             }
         }
 
