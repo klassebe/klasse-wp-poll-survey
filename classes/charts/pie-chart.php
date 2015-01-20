@@ -8,22 +8,27 @@ class Pie_Chart extends Bar_Chart
     public static function get_chart_per_question($entry_id, $group) {
 	    $version = Entry::get_version($entry_id);
 
-	    /* QUESTION GROUP DATA */
-	    $question_group = Question_Group::get_one_by_post_parent($version['ID']);
+        return static::get_chart_per_question_per_version( $version['ID'], $group);
 
-	    /* QUESTION DATA */
-	    $question = Question::get_one_by_post_parent($question_group['ID']);
+    }
 
-	    /* ANSWER OPTIONS DATA */
-	    $answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
+    public static function get_chart_per_question_per_version( $version_id, $group ) {
+        /* QUESTION GROUP DATA */
+        $question_group = Question_Group::get_one_by_post_parent( $version_id );
 
-	    /* ENTRY DATA */
-	    $total_entries = 0;
-	    $entry_totals_per_answer_option = array();
-	    $answer_option_contents = array();
+        /* QUESTION DATA */
+        $question = Question::get_one_by_post_parent($question_group['ID']);
+
+        /* ANSWER OPTIONS DATA */
+        $answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
+
+        /* ENTRY DATA */
+        $total_entries = 0;
+        $entry_totals_per_answer_option = array();
+        $answer_option_contents = array();
 
         foreach($answer_options as $answer_option){
-            if( sizeof( $group ) > 0 ) {
+            if( strlen( $group ) > 0 ) {
                 $entries = Entry::get_all_of_result_group($answer_option['ID'], $group);
             } else {
                 $entries = Entry::get_all_by_post_parent($answer_option['ID']);
