@@ -97,13 +97,18 @@
             $current_test_modus = \kwps_classes\Test_Collection::get_test_modus( $_REQUEST['id'] );
             $versions = \kwps_classes\Version::get_all_by_post_parent( $_REQUEST['id'] );
         ?>
-        <select>
-            <option value="all">All Versions</option>
-            <?php foreach( $versions as $version ):?>
-                <option value="<?php echo $version['ID']; ?>"><?php echo $version['post_title'];?></option>
-            <?php endforeach;?>
-        </select>
-        <div id="kwps-results-container"></div>
+        <p>
+            <select id="showResultVersion">
+                <option value="all">All Versions</option>
+                <?php foreach( $versions as $version ):?>
+                    <option value="<?php echo $version['ID']; ?>"><?php echo $version['post_title'];?></option>
+                <?php endforeach;?>
+            </select> <span>Select a version to see any result.</span>
+        </p>
+        
+        <div id="kwps-results-container">
+            
+        </div>
     <?php endif; ?>
 
 </div> <!-- .wrap -->
