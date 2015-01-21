@@ -142,6 +142,8 @@ class admin_section {
             wp_register_script('klasse_wp_poll_survey_plugin_admin_results_highcharts', plugins_url('../js/bower_components/highcharts-release/highcharts.js', __FILE__));
             wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_results_scripts');
             wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_results_highcharts');
+            wp_localize_script('klasse_wp_poll_survey_plugin_admin_results_highcharts', 'WPURLS', array( 'siteurl' => admin_url() ));
+
         }
     }
 
