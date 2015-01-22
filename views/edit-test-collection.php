@@ -105,6 +105,14 @@
                 <?php endforeach;?>
             </select> <span>Select a version to see any result.</span>
         </p>
+
+        <p>
+            <select id="outputTypes">
+                <?php foreach( $current_test_modus['_kwps_allowed_output_types_test_collection'] as $output_type ):?>
+                    <option value="<?php echo $output_type; ?>"><?php echo $output_type;?></option>
+                <?php endforeach;?>
+            </select> <span>Select a version to see any result.</span>
+        </p>
         
         <div id="kwps-results-container">
             

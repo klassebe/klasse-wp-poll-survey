@@ -15,9 +15,20 @@ require_once __DIR__ . '/post-types/result-profile.php';
 
 class Result {
 
-    public static function get_result_of_version_from_request(){
+    public static function get_result_from_request() {
         $request_data = static::get_post_data_from_request();
+        static::validate_request( $request_data );
 
+        $filter = static::get_filter( $request_data );
+
+        return array(
+            'id' => $request_data['ID'],
+            'output_type' => $request_data['output_type'],
+            'filter' => $filter,
+        );
+    }
+
+    private static function validate_request( $request_data ) {
         $errors = array();
         if( ! isset($request_data['ID']) ) {
             $errors[] = array('field' => 'ID', 'Required');
@@ -31,20 +42,29 @@ class Result {
             header( $_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
             wp_send_json_error($errors);
             die();
-        } else {
-            $id = $request_data['ID'];
-            $output_type = $request_data['output_type'];
-
-            if(isset( $request_data['group'] ) ) {
-                $filter = $request_data['group'];
-            } elseif( isset( $request_data['_kwps_result_hash'] ) ) {
-                $filter = $request_data['_kwps_result_hash'];
-            } else {
-                $filter = '';
-            }
-
-            static::send_result_of_version_by_version_id($id, $output_type, $filter) ;
         }
+    }
+
+    private static function get_filter( $request_data ) {
+        if(isset( $request_data['group'] ) ) {
+            return $request_data['group'];
+        } elseif( isset( $request_data['_kwps_result_hash'] ) ) {
+            return $request_data['_kwps_result_hash'];
+        } else {
+            return '';
+        }
+    }
+
+    public static function get_result_of_version_from_request(){
+        $request_data = static::get_result_from_request();
+
+        static::send_result_of_version_by_version_id($request_data['id'], $request_data['output_type'], $request_data['filter']) ;
+    }
+
+    public static function get_result_of_test_collection_from_request() {
+        $request_data = static::get_result_from_request();
+
+        static::send_result_of_test_collection($request_data['id'], $request_data['output_type'], $request_data['filter']) ;
 
     }
 
@@ -58,6 +78,24 @@ class Result {
                 break;
             case 'grouped-bar-chart-per-profile' :
                 $results = Grouped_Bar_Chart::get_chart_per_profile($id, $filter);
+                break;
+            default:
+                $results = 0;
+        }
+        wp_send_json( $results );
+        die;
+    }
+
+    public static function send_result_of_test_collection($id, $output_type, $filter){
+        switch($output_type){
+            case 'bar-chart-per-question' :
+                $results = Bar_Chart::get_chart_per_question_per_test_collection($id, $filter);
+                break;
+            case 'pie-chart-per-question' :
+                $results = Pie_Chart::get_chart_per_question_per_test_collection($id, $filter);
+                break;
+            case 'grouped-bar-chart-per-profile' :
+                $results = Grouped_Bar_Chart::get_chart_per_question_per_test_collection($id, $filter);
                 break;
             default:
                 $results = 0;

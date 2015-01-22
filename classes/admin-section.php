@@ -138,11 +138,19 @@ class admin_section {
             wp_enqueue_script('klasse_wp_poll_survey_plugin_admin_ays');
             wp_enqueue_script('klasse_wp_poll_survey_plugin_admin_scripts');
         } elseif( isset( $_REQUEST['section'] ) && isset( $_REQUEST['tab'] ) && 'edit_test_collection' == $_REQUEST['section'] && 'results' == $_REQUEST['tab'] ) {
+            $testmodus = Test_Collection::get_test_modus( $_REQUEST['id']);
             wp_register_script('klasse_wp_poll_survey_plugin_admin_results_scripts', plugins_url('../js/admin-results.js', __FILE__));
             wp_register_script('klasse_wp_poll_survey_plugin_admin_results_highcharts', plugins_url('../js/bower_components/highcharts-release/highcharts.js', __FILE__));
             wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_results_scripts');
             wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_results_highcharts');
-            wp_localize_script('klasse_wp_poll_survey_plugin_admin_results_highcharts', 'WPURLS', array( 'siteurl' => admin_url() ));
+            wp_localize_script('klasse_wp_poll_survey_plugin_admin_results_highcharts',
+                'WPURLS',
+                array(
+                    'siteurl' => admin_url(),
+                    'testmodusOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
+                    'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
+                )
+            );
 
         }
     }

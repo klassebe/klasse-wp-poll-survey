@@ -11,7 +11,7 @@ namespace kwps_classes;
 
 class Bar_Chart 
 {
-    public static function get_chart_per_test_collection( $test_collection_id, $group ) {
+    public static function get_chart_per_question_per_test_collection( $test_collection_id, $group ) {
         $versions = Version::get_all_by_post_parent( $test_collection_id );
 
         foreach( $versions as $version ) {
@@ -140,9 +140,5 @@ class Bar_Chart
             'credits' => array( 'enabled' => false ),
             'series' => array(array( 'name' => 'Votes', 'data' => $percentages)),
         );
-    }
-
-    public static function get_consolidated_chart( $data ) {
-
     }
 } 
