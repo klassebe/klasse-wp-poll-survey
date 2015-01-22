@@ -16,10 +16,19 @@ jQuery(document).ready(function($) {
   $(document).on('click','.kwps-content-editor-save', updateValues);
 
 
-  var button = $('#kwps-add-result-button').detach();
-  $('#wp-outro-media-buttons').after(button);
+	var button = $('.kwps-add-result-button.outro-result-button').detach();
+	$('#wp-outro-media-buttons').append(button);
 
-	$('#kwps-add-result-button').on('click', function() {
+	button = $('.kwps-add-result-button.intro-result-button').detach();
+	$('#wp-post_content_intro_result-media-buttons').after(button);
+
+	$('.kwps-add-result-button').on('click', function(event) {
+		var buttonClass;
+		if ( $(event.currentTarget).prop('class').split(' ')[2].split('-')[0] === 'intro' ) {
+			buttonClass = 'intro';
+		} else {
+			buttonClass = 'outro';
+		}
 		var output ='';
 		var allowedTypes;
 
@@ -50,23 +59,29 @@ jQuery(document).ready(function($) {
 		// Check the iframe if the content is already loaded
 		var timer = setInterval( function () {
 
-      findInIFrame('#charts').append(output);
+			findInIFrame('#charts').append(output);
 
-      findInIFrame('input:radio').hide();
+			findInIFrame('input:radio').hide();
 
 			findInIFrame('input:radio').on('click', function () {
-        findInIFrame('.selected').removeClass();
-        $(this).next().addClass('selected');
+				findInIFrame('.selected').removeClass();
+				$(this).next().addClass('selected');
 				selectedResult = $(this).next().attr('alt');
 			});
 
 			findInIFrame('#add-result-to-editor').on('click', function () {
 				if (selectedResult) {
-					findInIFrame('#tinymce').append('[kwps_result result='+ selectedResult + ']');
-          var textarea = $('#wp-outro-editor-container textarea');
-          var newText = textarea[0].value + '[kwps_result result=' + selectedResult + ']';
-          textarea[0].value = newText;
-          tb_remove();
+					var textarea;
+					if ( buttonClass === 'intro' ) {
+						$('#post_content_intro_result_ifr').contents().find('#tinymce').append('[kwps_result result='+ selectedResult + ']');
+						textarea = $('#wp-post_content_intro_result-editor-container textarea');
+					} else {
+						$('#outro_ifr').contents().find('#tinymce').append('[kwps_result result='+ selectedResult + ']');
+						textarea = $('#wp-outro-editor-container textarea');
+					}
+					var newText = textarea[0].value + '[kwps_result result=' + selectedResult + ']';
+					$(textarea).prop('value', newText);
+					tb_remove();
 				} else {
 					alert('Please select a result view to import');
 				}
