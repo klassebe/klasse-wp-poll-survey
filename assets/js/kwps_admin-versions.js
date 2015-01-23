@@ -1,0 +1,649 @@
+jQuery(document).ready(function($) {
+  var prevContent = '';
+
+  updateUi();
+  $('form').areYouSure({'addRemoveFieldsMarksDirty':true});
+  $('h3.collapsables').closest('div').children('div').toggle();
+
+  $('#version-save').click(versionSave);
+
+  $(document).on('click','.kwps-create-item', createItem);
+  $(document).on('click','.kwps-remove-item', removeItem);
+  $(document).on('click','.kwps-move-down', moveDown);
+  $(document).on('click','.kwps-move-up', moveUp);
+  $(document).on('click','.kwps-collapse', collapse);
+  $(document).on('click','.kwps-content-edit', showEditor);
+  $(document).on('click','.kwps-content-editor-save', updateValues);
+
+
+	var button = $('.kwps-add-result-button.outro-result-button').detach();
+	$('#wp-outro-media-buttons').append(button);
+
+	button = $('.kwps-add-result-button.intro-result-button').detach();
+	$('#wp-post_content_intro_result-media-buttons').after(button);
+
+	$('.kwps-add-result-button').on('click', function(event) {
+		var buttonClass;
+		if ( $(event.currentTarget).prop('class').split(' ')[2].split('-')[0] === 'intro' ) {
+			buttonClass = 'intro';
+		} else {
+			buttonClass = 'outro';
+		}
+		var output ='';
+		var allowedTypes;
+
+		if(testModus.post_type === 'kwps_coll_outro') {
+			allowedTypes = testModus._kwps_allowed_output_types_test_collection;
+		} else {
+			allowedTypes = testModus._kwps_allowed_output_types;
+		}
+
+		tb_show('', WPURLS.siteurl + '/wp-content/plugins/klasse-wp-poll-survey/classes/show-charts.php?type=image&amp;TB_iframe=true');
+
+		var request = $.ajax({
+										url: 'admin-ajax.php?action=kwps_get_result_page',
+										context: document.body
+									});
+		request.done(function(request, status, error) {
+				$('iframe').contents().find('#kwps-result-page').append(request);
+		});
+		request.fail(function() {
+				alert(kwps_translations['Errors occurred. Please check below for more information.']);
+		});
+
+		$.each(allowedTypes, function (key, value) {
+			output +=	 '<div id="' + value + '" class="media-item left"><label><h4>' + value.charAt(0).toUpperCase() + value.slice(1).split('-').join(' ') + '</h4><input type="radio" name="results" value="' + value + '"><img class="thumbnail" src="images/' + value + '.png" alt="' + value + '" height="128" width="128"></label></div>';
+		});
+
+		var selectedResult;
+		// Check the iframe if the content is already loaded
+		var timer = setInterval( function () {
+
+			findInIFrame('#charts').append(output);
+
+			findInIFrame('input:radio').hide();
+
+			findInIFrame('input:radio').on('click', function () {
+				findInIFrame('.selected').removeClass();
+				$(this).next().addClass('selected');
+				selectedResult = $(this).next().attr('alt');
+			});
+
+			findInIFrame('#add-result-to-editor').on('click', function () {
+				if (selectedResult) {
+					var textarea;
+					if ( buttonClass === 'intro' ) {
+						$('#post_content_intro_result_ifr').contents().find('#tinymce').append('[kwps_result result='+ selectedResult + ']');
+						textarea = $('#wp-post_content_intro_result-editor-container textarea');
+					} else {
+						$('#outro_ifr').contents().find('#tinymce').append('[kwps_result result='+ selectedResult + ']');
+						textarea = $('#wp-outro-editor-container textarea');
+					}
+					var newText = textarea[0].value + '[kwps_result result=' + selectedResult + ']';
+					$(textarea).prop('value', newText);
+					tb_remove();
+				} else {
+					alert('Please select a result view to import');
+				}
+			});
+
+			if (findInIFrame('#charts').length > 0) {
+				clearInterval(timer);
+			}
+		}, 100); //end timer
+
+			return false;
+	});
+
+  var findInIFrame = function (element) {
+    return $('iframe').contents().find(element);
+  };
+
+
+  var openCollapse = function () {
+    var objectName = $('#kwps-version');
+    objectName = 'collapseStatusVersionID' + objectName.find('input[name="ID"]').attr('value') + 'post_parent' + objectName.find('input[name="post_parent"]').attr('value');
+    var objectData = JSON.parse(localStorage[objectName]||'{}');
+    for ( var key in objectData ) {
+      if ( objectData[key] === 'open' ) {
+        collapse(false, key);
+      }
+    }
+  }();
+
+  function createItem (event) {
+    event.preventDefault();
+    var divToClone = $(this).prevAll(':visible:first');
+    var clonedDiv = divToClone.clone();
+    clonedDiv.find("input[name='ID']").remove();
+    clonedDiv.insertAfter(divToClone);
+    $('#version-save').click();
+  }
+
+  function removeItem (event) {
+    event.preventDefault();
+
+    var divToHide = $(this).parent().closest('div');
+
+    if( divToHide.find("input[name='ID']").val() === '' ) {
+        divToHide.remove();
+    } else {
+        divToHide.find("input[name='post_status']").val('trash');
+        divToHide.hide();
+    }
+    $('#version-save').click();
+  }
+
+  function moveDown(event) {
+    event.preventDefault();
+
+    var divToMove = $(this).parent().closest('div');
+    var divToSwitch = $(this).parent().closest('div').next();
+    divToMove.insertAfter(divToSwitch);
+
+    updateUi();
+  }
+
+  function moveUp(event) {
+    event.preventDefault();
+
+    var divToMove = $(this).parent().closest('div');
+    var divToSwitch = $(this).parent().closest('div').prev();
+    divToMove.insertBefore(divToSwitch);
+
+    updateUi();
+  }
+
+  function collapse(event, id) {
+
+    var span;
+    if ( event ) {
+      span = this;
+    } else {
+      span = $('#'+id).find('span.kwps-collapse').first();
+    }
+
+    if($(span).closest('div').children('div').is(':visible')) {
+      //Open > Close
+      $(span).removeClass(function(i, className) {
+        //dashicons-[.\S]*
+        var classes = className.split(" ");
+        var classesToRemove = [];
+
+        $.each(classes, function(index, classItem) {
+          if(classItem.match('^dashicons-')) {
+            classesToRemove.push(classItem);
+          }
+        });
+
+        return classesToRemove.join(' ');
+      }).addClass('dashicons-arrow-right');
+
+     if ( event ) {
+       updateLocalStorage(span, 'closed');
+     }
+
+    } else {
+      //Close > Open
+      $(span).removeClass(function(i, className) {
+        //dashicons-[.\S]*
+        var classes = className.split(" ");
+        var classesToRemove = [];
+
+        $.each(classes, function(index, classItem) {
+          if(classItem.match('^dashicons-')) {
+            classesToRemove.push(classItem);
+          }
+        });
+
+        return classesToRemove.join(' ');
+      }).addClass('dashicons-arrow-down');
+
+      if ( event ) {
+        updateLocalStorage(span, 'open');
+      }
+
+    }
+    $(span).closest('div').children('div').toggle();
+  }
+
+  var updateLocalStorage = function (target, status) {
+    var objectName = $('#kwps-version');
+    objectName = 'collapseStatusVersionID' + objectName.find('input[name="ID"]').attr('value') + 'post_parent' + objectName.find('input[name="post_parent"]').attr('value');
+
+    var objectData = JSON.parse(localStorage[objectName]||'{}');
+    var collapseID = $(target).closest('div').attr('id');
+    var collapseStatus = status;
+    objectData[collapseID] = collapseStatus;
+    localStorage.setItem(objectName, JSON.stringify(objectData));
+  };
+
+  function showEditor(event) {
+    event.preventDefault();
+    $(this).closest('.kwps-content').children('.kwps-content-view').hide();
+    $(this).closest('.kwps-content').children('.kwps-content-editor').show();
+  }
+
+  function updateValues(event) {
+    event.preventDefault();
+
+    var content,
+        textarea = $(event.target).closest('div').find('textarea');
+
+    if ( textarea.css('display') !== 'none' ) {
+      content = textarea[0].value;
+    } else {
+      content =  $(event.target).closest('div').find('iframe').contents().find('#tinymce')[0].innerHTML;
+    }
+
+    if(content !== prevContent) {
+      var contentItem = $(this).closest('.kwps-content');
+      contentItem.parent().children('[name="post_content"]').val(content);
+      contentItem.find('.kwps-content-view-content').html(content);
+      contentItem.children('.kwps-content-view').show();
+      contentItem.children('.kwps-content-editor').hide();
+      content = prevContent;
+    }
+  }
+
+  function versionSave(event) {
+    var formData = {};
+
+    var form = $(this).parent();
+
+    form.children('div.kwps').each(function(i) {
+      var div = $(this);
+
+      /**
+       * Used for version, intro, outro
+       */
+      if(div.hasClass('kwps-single')) {
+        var attribute = div.attr('id').split('-')[1];
+        var data = div.find('input.kwps-single_input, textarea.kwps-single_input');
+        data.each(function(j) {
+          var input = $(this);
+          var name = input.attr('name');
+
+          if(attribute === 'version') {
+            formData[name] = input.val();
+          } else {
+            if(!formData[attribute]) {
+              formData[attribute] = {};
+            }
+            formData[attribute][name] = input.val();
+          }
+        });
+
+        /**
+         * Used for question_groups and nested
+         */
+      } else if(div.hasClass('kwps-multi')) {
+        formData.question_groups = [];
+
+        /**
+         * Loop over question_groups
+         */
+        div.children('div.inside').children('div').each(function(questionGroupsI) {
+          var inputData = {
+            _kwps_sort_order: questionGroupsI
+          };
+          var inputs = $(this).find('input.kwps-question_group_input, textarea.kwps-question_group_input');
+
+          /**
+           * Loop over question_groups inputs
+           */
+          inputs.each(function() {
+            var input = $(this);
+            var inputName = input.attr('name');
+            inputData[inputName] = input.val();
+          });
+
+          $(this).children('.inside').children('.kwps').each(function(j) {
+            if(!inputData.questions) {
+              inputData.questions = [];
+            }
+
+            /**
+             * Loop over questions
+             */
+            $(this).find('.kwps-question').each(function(questionsI) {
+              var questionData = {
+                _kwps_sort_order: questionsI
+              };
+
+              /**
+               * Loop over questions inputs
+               */
+              $(this).find('input.kwps-question_input, textarea.kwps-question_input').each(function() {
+                var input = $(this);
+                var inputName = input.attr('name');
+                questionData[inputName] = input.val();
+              });
+
+              $(this).find('.kwps-answer_options').each(function() {
+                if(!questionData.answer_options) {
+                  questionData.answer_options = [];
+                }
+
+                /**
+                 * Loop over answer_options
+                 */
+                $(this).children('.inside').find('div.kwps-answer_option').each(function(answerOptionI) {
+                  var answerOptionData = {
+                    _kwps_sort_order: answerOptionI
+                  };
+
+                  /**
+                   * Loop over answer_options inputs
+                   */
+                  $(this).find('input.kwps-answer_input, textarea.kwps-answer_input').each(function() {
+                    var input = $(this);
+                    var inputName = input.attr('name');
+
+                    answerOptionData[inputName] = input.val();
+                  });
+                  questionData.answer_options.push(answerOptionData);
+                });
+              });
+              inputData.questions.push(questionData);
+            });
+          });
+
+          formData.question_groups.push(inputData);
+
+        });
+      }
+    });
+
+    var input = $("<input>").attr('type', 'hidden').attr('name', 'formattedData').val(JSON.stringify(formData));
+    $('form').append($(input));
+  }
+
+  function updateUi() {
+    //Clean-up UI before adding
+    $('.kwps-action').remove();
+    $('.kwps-remove-item').attr('disabled', true);
+
+
+    $('.kwps-question_groups').each(function(i) {
+      var questionGroupsCount = $(this).find('.kwps-question_group:visible').length;
+
+      if(questionGroupsCount > 1) {
+        $(this).find('.kwps-question_group').children('h3').children('.kwps-remove-item').removeAttr('disabled');
+      }
+
+
+      $(this).find('.kwps-question_group:visible').each(function(questionGroupI) {
+        if(questionGroupI < questionGroupsCount-1) {
+          $(this).find('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
+        }
+      });
+
+      $(this).find('.kwps-question_group:visible').each(function(questionGroupI) {
+        if(questionGroupI > 0) {
+          $(this).find('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
+        }
+      });
+
+    });
+
+    $('.kwps-questions').each(function() {
+      var questionsCount = $(this).find('.kwps-question:visible').length;
+
+      if(questionsCount > 1) {
+        $(this).find('.kwps-question').children('h3').children('.kwps-remove-item').removeAttr('disabled');
+      }
+
+      $(this).find('.kwps-question:visible').each(function(questionI) {
+        if(questionI < questionsCount-1) {
+          $(this).find('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
+        }
+      });
+
+      $(this).find('.kwps-question:visible').each(function(questionI) {
+        if(questionI > 0) {
+          $(this).find('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
+        }
+      });
+    });
+
+
+    $('.kwps-answer_options').each(function() {
+      var answerOptionCount = $(this).find('.kwps-answer_option:visible').length;
+
+      if(answerOptionCount > 2) {
+        $(this).find('.kwps-answer_option').children('h3').children('.kwps-remove-item').removeAttr('disabled');
+      }
+
+      $(this).find('.kwps-answer_option:visible').each(function(answerOptionI) {
+        if(answerOptionI < answerOptionCount-1) {
+          $(this).find('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
+        }
+      });
+
+      $(this).find('.kwps-answer_option:visible').each(function(answerOptionI) {
+        if(answerOptionI > 0) {
+          $(this).find('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
+        }
+      });
+    });
+
+    $('.kwps-create-item').attr('disabled','disabled');
+
+    $('.kwps-create-item').each(function() {
+      var name = $(this).data('kwps-max');
+      var fullName = '_kwps_max_' + name;
+      var max = testModus[fullName];
+      var count;
+
+      if(name === "question_groups") {
+        if((max > 0 && $('.kwps-question_group').length < max) || max < 0) {
+          $(this).removeAttr('disabled');
+        }
+      } else if(name === "questions_per_question_group") {
+        count = $(this).parent().children('.kwps-question').length;
+        if((max > 0 && max < count) || max < 0) {
+          $(this).removeAttr('disabled');
+        }
+      } else if(name === "answer_options_per_question") {
+        count = $(this).parent().children('.kwps-answer_option').length;
+        if((max > 0 && max < count) || max < 0) {
+          $(this).removeAttr('disabled');
+        }
+      }
+    });
+  }
+});
+
+/*!
+ * jQuery Plugin: Are-You-Sure (Dirty Form Detection)
+ * https://github.com/codedance/jquery.AreYouSure/
+ *
+ * Copyright (c) 2012-2014, Chris Dance and PaperCut Software http://www.papercut.com/
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * Author:  chris.dance@papercut.com
+ * Version: 1.9.0
+ * Date:    13th August 2014
+ */
+(function($) {
+  
+  $.fn.areYouSure = function(options) {
+      
+    var settings = $.extend(
+      {
+        'message' : 'You have unsaved changes!',
+        'dirtyClass' : 'dirty',
+        'change' : null,
+        'silent' : false,
+        'addRemoveFieldsMarksDirty' : false,
+        'fieldEvents' : 'change keyup propertychange input',
+        'fieldSelector': ":input:not(input[type=submit]):not(input[type=button])"
+      }, options);
+
+    var getValue = function($field) {
+      if ($field.hasClass('ays-ignore')
+          || $field.hasClass('aysIgnore')
+          || $field.attr('data-ays-ignore')
+          || $field.attr('name') === undefined) {
+        return null;
+      }
+
+      if ($field.is(':disabled')) {
+        return 'ays-disabled';
+      }
+
+      var val;
+      var type = $field.attr('type');
+      if ($field.is('select')) {
+        type = 'select';
+      }
+
+      switch (type) {
+        case 'checkbox':
+        case 'radio':
+          val = $field.is(':checked');
+          break;
+        case 'select':
+          val = '';
+          $field.find('option').each(function(o) {
+            var $option = $(this);
+            if ($option.is(':selected')) {
+              val += $option.val();
+            }
+          });
+          break;
+        default:
+          val = $field.val();
+      }
+
+      return val;
+    };
+
+    var storeOrigValue = function($field) {
+      $field.data('ays-orig', getValue($field));
+    };
+
+    var checkForm = function(evt) {
+
+      var isFieldDirty = function($field) {
+        var origValue = $field.data('ays-orig');
+        if (undefined === origValue) {
+          return false;
+        }
+        return (getValue($field) != origValue);
+      };
+
+      var $form = ($(this).is('form')) 
+                    ? $(this)
+                    : $(this).parents('form');
+
+      // Test on the target first as it's the most likely to be dirty
+      if (isFieldDirty($(evt.target))) {
+        setDirtyStatus($form, true);
+        return;
+      }
+
+      $fields = $form.find(settings.fieldSelector);
+
+      if (settings.addRemoveFieldsMarksDirty) {              
+        // Check if field count has changed
+        var origCount = $form.data("ays-orig-field-count");
+        if (origCount != $fields.length) {
+          setDirtyStatus($form, true);
+          return;
+        }
+      }
+
+      // Brute force - check each field
+      var isDirty = false;
+      $fields.each(function() {
+        $field = $(this);
+        if (isFieldDirty($field)) {
+          isDirty = true;
+          return false; // break
+        }
+      });
+      
+      setDirtyStatus($form, isDirty);
+    };
+
+    var initForm = function($form) {
+      var fields = $form.find(settings.fieldSelector);
+      $(fields).each(function() { storeOrigValue($(this)); });
+      $(fields).unbind(settings.fieldEvents, checkForm);
+      $(fields).bind(settings.fieldEvents, checkForm);
+      $form.data("ays-orig-field-count", $(fields).length);
+      setDirtyStatus($form, false);
+    };
+
+    var setDirtyStatus = function($form, isDirty) {
+      var changed = isDirty != $form.hasClass(settings.dirtyClass);
+      $form.toggleClass(settings.dirtyClass, isDirty);
+        
+      // Fire change event if required
+      if (changed) {
+        if (settings.change) settings.change.call($form, $form);
+
+        if (isDirty) $form.trigger('dirty.areYouSure', [$form]);
+        if (!isDirty) $form.trigger('clean.areYouSure', [$form]);
+        $form.trigger('change.areYouSure', [$form]);
+      }
+    };
+
+    var rescan = function() {
+      var $form = $(this);
+      var fields = $form.find(settings.fieldSelector);
+      $(fields).each(function() {
+        var $field = $(this);
+        if (!$field.data('ays-orig')) {
+          storeOrigValue($field);
+          $field.bind(settings.fieldEvents, checkForm);
+        }
+      });
+      // Check for changes while we're here
+      $form.trigger('checkform.areYouSure');
+    };
+
+    var reinitialize = function() {
+      initForm($(this));
+    }
+
+    if (!settings.silent && !window.aysUnloadSet) {
+      window.aysUnloadSet = true;
+      $(window).bind('beforeunload', function() {
+        $dirtyForms = $("form").filter('.' + settings.dirtyClass);
+        if ($dirtyForms.length == 0) {
+          return;
+        }
+        // Prevent multiple prompts - seen on Chrome and IE
+        if (navigator.userAgent.toLowerCase().match(/msie|chrome/)) {
+          if (window.aysHasPrompted) {
+            return;
+          }
+          window.aysHasPrompted = true;
+          window.setTimeout(function() {window.aysHasPrompted = false;}, 900);
+        }
+        return settings.message;
+      });
+    }
+
+    return this.each(function(elem) {
+      if (!$(this).is('form')) {
+        return;
+      }
+      var $form = $(this);
+        
+      $form.submit(function() {
+        $form.removeClass(settings.dirtyClass);
+      });
+      $form.bind('reset', function() { setDirtyStatus($form, false); });
+      // Add a custom events
+      $form.bind('rescan.areYouSure', rescan);
+      $form.bind('reinitialize.areYouSure', reinitialize);
+      $form.bind('checkform.areYouSure', checkForm);
+      initForm($form);
+    });
+  };
+})(jQuery);
