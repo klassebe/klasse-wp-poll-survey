@@ -306,7 +306,7 @@ jQuery(document).ready(function($) {
             /**
              * Loop over questions
              */
-            $(this).children('div').each(function(questionsI) {
+            $(this).find('.kwps-question').each(function(questionsI) {
               var questionData = {
                 _kwps_sort_order: questionsI
               };
@@ -320,7 +320,7 @@ jQuery(document).ready(function($) {
                 questionData[inputName] = input.val();
               });
 
-              $(this).children('.kwps').each(function() {
+              $(this).find('.kwps-answer_options').each(function() {
                 if(!questionData.answer_options) {
                   questionData.answer_options = [];
                 }
