@@ -366,7 +366,7 @@ class Version_Handler {
         return $data;
     }
 
-    public function save_existing_version_form($passed_data){
+    public function save_existing_version_form($passed_data, $update_siblings = true){
 
         $data = $this->update_kwps_sort_order_of_form( $passed_data );
 
@@ -445,6 +445,7 @@ class Version_Handler {
                             if( 'trash' == $answer_option['post_status'] ) {
                                 unset( $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key] );
                                 if( isset( $answer_option['ID'] ) ) {
+                                    Answer_Option::set_matching_to_trash( $answer_option['ID'] );
                                     wp_delete_post( $answer_option['ID'], true );
                                 }
                             } else {
@@ -457,6 +458,16 @@ class Version_Handler {
                             }
                         }
                     }
+                }
+            }
+        }
+
+        if( $update_siblings ) {
+            $matching_versions = Version::get_all_by_post_parent( $data['post_parent'] );
+            foreach( $matching_versions as $matched_version ) {
+                if( $version_id != $matched_version['ID'] ) {
+                    $sibling = Version::get_with_all_children( $matched_version['ID'] );
+                    static::save_existing_version_form( $sibling, false);
                 }
             }
         }

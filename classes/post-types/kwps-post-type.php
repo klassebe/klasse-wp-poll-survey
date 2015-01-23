@@ -406,5 +406,12 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
         }
     }
 
-
+    public static function set_matching_to_trash( $id_to_match ) {
+        foreach( static::get_matches_in_other_versions( $id_to_match ) as $id ) {
+            wp_update_post( array(
+                'ID' => $id,
+                'post_status' => 'trash',
+            ) );
+        }
+    }
 }
