@@ -46,7 +46,7 @@ jQuery(document).ready(function($) {
 									});
 		request.done(function(request, status, error) {
 				$('iframe').contents().find('#kwps-result-page').append(request);
-		})
+		});
 		request.fail(function() {
 				alert(kwps_translations['Errors occurred. Please check below for more information.']);
 		});
@@ -97,7 +97,7 @@ jQuery(document).ready(function($) {
 
   var findInIFrame = function (element) {
     return $('iframe').contents().find(element);
-  }
+  };
 
 
   var openCollapse = function () {
@@ -109,7 +109,7 @@ jQuery(document).ready(function($) {
         collapse(false, key);
       }
     }
-  }()
+  }();
 
   function createItem (event) {
     event.preventDefault();
@@ -216,7 +216,7 @@ jQuery(document).ready(function($) {
     var collapseStatus = status;
     objectData[collapseID] = collapseStatus;
     localStorage.setItem(objectName, JSON.stringify(objectData));
-  }
+  };
 
   function showEditor(event) {
     event.preventDefault();

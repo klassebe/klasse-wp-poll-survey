@@ -8,7 +8,7 @@ jQuery(function ($){
 		var value = getValueOfSelectBox($(event.currentTarget));
 		console.info('Changed select box to version ' + value);
 		getDataAndShowPieChart(value);
-	})
+	});
 
 	function init () {
 		var value = getValueOfSelectBox();
@@ -24,25 +24,25 @@ jQuery(function ($){
 	function getDataAndShowPieChart (version) {
 		elem.text('loading ...');
 		$.ajax({
-	        type: "POST",
-	        url: url,
-	        data: JSON.stringify({ID:version,output_type:'pie-chart-per-question'}),
-	        success: function (data) {
-	        	if (data) {
-	        		showPieChart(data);
-	        	} else {
-	        		elem.empty();
-	        	}
-	        },
-	        error: function (data) {
-	        	var errorText = errorElement.clone();
-	        	errorText.find('span').html(data.responseText);
-	        	elem.html(errorText);
-	        },
-	        dataType: "json",
-	        contentType: "application/json",
-	        processData: false
-	    });
+			type: "POST",
+			url: url,
+			data: JSON.stringify({ID:version,output_type:'pie-chart-per-question'}),
+			success: function (data) {
+				if (data) {
+					showPieChart(data);
+				} else {
+					elem.empty();
+				}
+			},
+			error: function (data) {
+				var errorText = errorElement.clone();
+				errorText.find('span').html(data.responseText);
+				elem.html(errorText);
+			},
+			dataType: "json",
+			contentType: "application/json",
+			processData: false
+		});
 	}
 
 	function showPieChart (data) {
@@ -51,4 +51,4 @@ jQuery(function ($){
 	}
 
 	init();
-})
+});
