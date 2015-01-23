@@ -9,3 +9,16 @@ To let the target audience submit their entries, you have to put a shortcode in 
 Based on your configuration, they will see an intro first. Page by page, they can answer the questions and on the last page, feedback will be provided.
 
 Depending on your configuration, the result will be a graph, text or number.
+
+## Contributing
+
+### First time
+1. Clone repo
+2. Open terminal in the klasse-wp-poll-survey folder
+3. `nmp install` (if you don't have npm installed https://docs.npmjs.com/getting-started/installing-node)
+4. `bower install` (if you don't have bower installed http://bower.io/)
+5. `composer install` (if you don't have composer installed https://getcomposer.org/doc/00-intro.md)
+6. `grunt githooks` (only once)
+
+### Developing
+1. `grunt` this will run a watch file and build the css and js files in the assets folder
