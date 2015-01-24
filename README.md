@@ -10,15 +10,15 @@ Based on your configuration, they will see an intro first. Page by page, they ca
 
 Depending on your configuration, the result will be a graph, text or number.
 
-## Contributing
+## Contribute
 
 ### First time
-1. Clone repo
+1. Clone this repo
 2. Open terminal in the klasse-wp-poll-survey folder
 3. `nmp install` (if you don't have npm installed https://docs.npmjs.com/getting-started/installing-node)
 4. `bower install` (if you don't have bower installed http://bower.io/)
 5. `composer install` (if you don't have composer installed https://getcomposer.org/doc/00-intro.md)
-6. `grunt githooks` (only once)
-
+6. `grunt githooks` (only once) This will install a git pre-commit hook that will do a `grunt build`
+on git commit
 ### Developing
 1. `grunt` this will run a watch file and build the css and js files in the assets folder

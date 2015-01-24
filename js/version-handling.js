@@ -1,7 +1,16 @@
+/**
+Version Handling
+- Takes care of all the dom manimulations on the Version edit page
+- It parses the form in a stacked json format on add/remove and save
+- Restore collapse states after page refreshes (states are stored in LocalStorage)
+- Disables add and remove buttons as first level of validation
+*/
+
 jQuery(document).ready(function($) {
   var prevContent = '';
 
   updateUi();
+
   $('form').areYouSure({'addRemoveFieldsMarksDirty':true});
   $('h3.collapsables').closest('div').children('div').toggle();
 
@@ -109,7 +118,9 @@ jQuery(document).ready(function($) {
         collapse(false, key);
       }
     }
-  }();
+  };
+
+  openCollapse();
 
   function createItem (event) {
     event.preventDefault();
@@ -138,7 +149,7 @@ jQuery(document).ready(function($) {
     event.preventDefault();
 
     var divToMove = $(this).parent().closest('div');
-    var divToSwitch = $(this).parent().closest('div').next();
+    var divToSwitch = divToMove.next();
     divToMove.insertAfter(divToSwitch);
 
     updateUi();
@@ -148,14 +159,13 @@ jQuery(document).ready(function($) {
     event.preventDefault();
 
     var divToMove = $(this).parent().closest('div');
-    var divToSwitch = $(this).parent().closest('div').prev();
+    var divToSwitch = divToMove.prev();
     divToMove.insertBefore(divToSwitch);
 
     updateUi();
   }
 
   function collapse(event, id) {
-
     var span;
     if ( event ) {
       span = this;
@@ -220,8 +230,9 @@ jQuery(document).ready(function($) {
 
   function showEditor(event) {
     event.preventDefault();
-    $(this).closest('.kwps-content').children('.kwps-content-view').hide();
-    $(this).closest('.kwps-content').children('.kwps-content-editor').show();
+    var kwpsContent = $(this).closest('.kwps-content')
+    kwpsContent.children('.kwps-content-view').hide();
+    kwpsContent.children('.kwps-content-editor').show();
   }
 
   function updateValues(event) {
