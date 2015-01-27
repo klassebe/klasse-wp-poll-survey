@@ -89,6 +89,10 @@ class New_Poll_Version_Handler_Test extends WP_UnitTestCase {
         $this->checkOutputWithFormTestData( 'poll/question-without-answer-options-index.php');
     }
 
+    function test_new_poll_version_form_validation_QuestionGroupWithoutQuestionsIndex() {
+        $this->checkOutputWithFormTestData( 'poll/question-group-without-questions-index.php');
+    }
+
     function test_new_poll_version_form_validation_QuestionWithOneAnswerOption() {
         $this->checkOutputWithFormTestData( 'poll/question-with-one-answer-option.php');
     }
