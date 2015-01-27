@@ -200,23 +200,23 @@ class Version_Handler {
         if(! isset( $data['question_groups'] ) ) {
             $data['question_groups'] = array(
                 1 => array(
-                    '_kwps_sort_order' => 1,
+                    '_kwps_sort_order' => 0,
                     'post_status' => 'draft',
                     'post_title' => '',
                     'post_content' => '',
                     'questions' => array(
                         1 => array(
-                            '_kwps_sort_order' => 1,
+                            '_kwps_sort_order' => 0,
                             'post_status' => 'draft',
                             'post_content' => '',
                             'answer_options' => array(
                                 1 => array(
-                                    '_kwps_sort_order' => 1,
+                                    '_kwps_sort_order' => 0,
                                     'post_content' => '',
                                     'post_status' => 'draft',
                                 ),
                                 2 => array(
-                                    '_kwps_sort_order' => 2,
+                                    '_kwps_sort_order' => 1,
                                     'post_content' => '',
                                     'post_status' => 'draft',
                                 ),
@@ -226,6 +226,47 @@ class Version_Handler {
                 ),
 
             );
+        }
+
+        foreach( $data['question_groups'] as $question_group_key => $question_group ) {
+            if(! isset( $question_group['questions'] ) ) {
+                $data['question_groups'][$question_group_key]['questions'] = array(
+                    1 => array(
+                        '_kwps_sort_order' => 0,
+                        'post_status' => 'draft',
+                        'post_content' => '',
+                        'answer_options' => array(
+                            1 => array(
+                                '_kwps_sort_order' => 0,
+                                'post_content' => '',
+                                'post_status' => 'draft',
+                            ),
+                            2 => array(
+                                '_kwps_sort_order' => 1,
+                                'post_content' => '',
+                                'post_status' => 'draft',
+                            ),
+                        ),
+                    ),
+                );
+            } else {
+                foreach( $question_group['questions'] as $question_key => $question ) {
+                    if( ! isset( $question['answer_options'] ) ) {
+                        $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'] = array(
+                            1 => array(
+                                '_kwps_sort_order' => 0,
+                                'post_content' => '',
+                                'post_status' => 'draft',
+                            ),
+                            2 => array(
+                                '_kwps_sort_order' => 1,
+                                'post_content' => '',
+                                'post_status' => 'draft',
+                            ),
+                        );
+                    }
+                }
+            }
         }
 
         $test_modus = Test_Collection::get_test_modus( $data['post_parent'] );
