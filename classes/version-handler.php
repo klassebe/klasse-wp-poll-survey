@@ -452,6 +452,16 @@ class Version_Handler {
                                 $answer_option['post_parent'] = $question_id;
 
                                 $answer_option_id = Answer_Option::save_post( $answer_option, true );
+
+                                if( ! isset($answer_option['ID'] ) ) {
+                                    $matching_question_ids = Question::get_matches_in_other_versions( $question_id );
+                                    foreach( $matching_question_ids as $matched_id ) {
+                                        $new_answer_option = $answer_option;
+                                        $new_answer_option['post_parent'] = $matched_id;
+                                        Answer_Option::save_post( $new_answer_option, true );
+                                    }
+                                }
+
                                 $answer_option['ID'] = $answer_option_id;
                                 $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['ID'] = $answer_option_id;
                                 $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['post_parent'] = $question_id;

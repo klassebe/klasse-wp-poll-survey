@@ -83,11 +83,37 @@ class Existing_Poll_Version_Handler_Test extends WP_UnitTestCase {
         $from_db = \kwps_classes\Version::get_with_all_children( $output['ID'] );
         $this->assertTrue( $this->arrays_are_similar( $expected_output_version_1['data'], $from_db ) );
 
-        // Test if the 2 other versions have ansswer_option removed as well
+        // Test if the 2 other versions have answer_option removed as well
         $from_db_version_2 = \kwps_classes\Version::get_with_all_children( $this->existing_version[1]['ID'] );
         $this->assertTrue( $this->arrays_are_similar( $expected_output_version_2['data'], $from_db_version_2 ) );
+
+        $from_db_version_3 = \kwps_classes\Version::get_with_all_children( $this->existing_version[2]['ID'] );
+        $this->assertTrue( $this->arrays_are_similar( $expected_output_version_3['data'], $from_db_version_3 ) );
+    }
+
+    // TODO Implement further save tests!
+    function test_save_added_answer_option() {
+        $test_data = include __DIR__ . '/../form-test-data/existing-version/poll/save-added-answer-option-test.php';
+        $input = $test_data['input'];
+        $expected_output_version_1 = $test_data['expected_output'][0];
+        $expected_output_version_2 = $test_data['expected_output'][1];
+        $expected_output_version_3 = $test_data['expected_output'][2];
+
+        $version_handler = new \kwps_classes\Version_Handler();
+        $output = $version_handler->save_existing_version_form( $input );
+
+        $this->assertTrue( $this->arrays_are_similar( $output, $expected_output_version_1['data'] ) );
+
+//         TODO test retrieval from DB as well here
+        $from_db = \kwps_classes\Version::get_with_all_children( $output['ID'] );
+        $this->assertTrue( $this->arrays_are_similar( $expected_output_version_1['data'], $from_db ) );
+
+        // Test if the 2 other versions have ansser_option added as well
         $from_db_version_2 = \kwps_classes\Version::get_with_all_children( $this->existing_version[1]['ID'] );
         $this->assertTrue( $this->arrays_are_similar( $expected_output_version_2['data'], $from_db_version_2 ) );
+
+        $from_db_version_3 = \kwps_classes\Version::get_with_all_children( $this->existing_version[2]['ID'] );
+        $this->assertTrue( $this->arrays_are_similar( $expected_output_version_3['data'], $from_db_version_3 ) );
     }
 
     function checkOutPutWithFormTestData( $file ){
