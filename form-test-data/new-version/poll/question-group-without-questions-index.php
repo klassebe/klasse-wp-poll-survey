@@ -33,7 +33,6 @@ return array(
     ),
     'expected_output' => array(
         'errors' => true,
-//        'test_modus_errors' => array('minimum_answer_options_per_question' => 'At least 2 answer options per question'),
         'test_modus_errors' => array(),
         'data' => array(
             'post_title' => 'New Version',
