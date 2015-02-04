@@ -3,12 +3,10 @@
 require_once 'kwps-test.php';
 
 class Existing_Survey_Version_Handler_Test extends Kwps_Test {
-    protected $test_modus_survey;
-    protected $test_collection;
-    protected $existing_version;
 
     function __construct() {
         parent::__construct();
+        $this->test_modus_name = 'kwps-survey';
         $this->test_data_folder = __DIR__ . '/../form-test-data/existing-version/survey/';
     }
 
@@ -31,5 +29,6 @@ class Existing_Survey_Version_Handler_Test extends Kwps_Test {
     function test_save_trashed_answer_option() {
         $this->check_saved_and_updated_siblings( 'save-trashed-answer-option-test.php' );
     }
+
 }
 
