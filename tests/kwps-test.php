@@ -1,6 +1,6 @@
 <?php
 
-class Kwps_Test extends WP_UnitTestCase {
+abstract class Kwps_Test extends WP_UnitTestCase {
     protected $test_modus_name;
     protected $test_data_folder;
     protected $existing_versions = array();
