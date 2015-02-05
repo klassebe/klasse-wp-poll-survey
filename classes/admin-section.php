@@ -186,6 +186,8 @@ class admin_section {
                         $versions = Version::get_all_by_post_parent( $_REQUEST['post_parent']);
                         if( sizeof( $versions) >= 1 ) {
                             $version_data = Version::get_with_all_children( $versions[0]['ID'], true);
+                            $form_handler = new Version_Handler();
+                            $version_data = $form_handler->save_new_version_form( $version_data );
                         }
                     }
 

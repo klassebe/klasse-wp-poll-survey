@@ -154,6 +154,7 @@ class Version extends Kwps_Post_Type{
             unset( $intro['ID']);
             unset( $intro_result['ID']);
             unset( $outro['ID']);
+            $version['post_title'] =  __( 'Copy of ', 'klasse-wp-poll-survey') . $version['post_title'];
         }
 
 
