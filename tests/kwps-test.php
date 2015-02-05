@@ -37,11 +37,6 @@ abstract class Kwps_Test extends WP_UnitTestCase {
             $returned_version = $version_handler->save_new_version_form( $new_version );
             $this->existing_versions[] = $returned_version;
         }
-
-        global $wpdb;
-        var_dump( $wpdb->get_var( 'SELECT MAX(ID) FROM ' . $wpdb->posts ) );
-//        var_dump( $this->existing_versions );
-
     }
 
     function checkOutPutWithFormTestData( $file ){
