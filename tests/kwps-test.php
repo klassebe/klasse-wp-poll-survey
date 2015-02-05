@@ -38,6 +38,10 @@ abstract class Kwps_Test extends WP_UnitTestCase {
             $this->existing_versions[] = $returned_version;
         }
 
+        global $wpdb;
+        var_dump( $wpdb->get_var( 'SELECT MAX(ID) FROM ' . $wpdb->posts ) );
+//        var_dump( $this->existing_versions );
+
     }
 
     function checkOutPutWithFormTestData( $file ){
@@ -63,17 +67,16 @@ abstract class Kwps_Test extends WP_UnitTestCase {
         $version_handler = new \kwps_classes\Version_Handler();
         $output = $version_handler->save_existing_version_form( $input );
 
-        $this->assertTrue( $this->arrays_are_similar( $output, $expected_output_version_1['data'] ) );
+        $this->assertTrue( $this->arrays_are_similar( $output, $expected_output_version_1 ) );
 
         $from_db = \kwps_classes\Version::get_with_all_children( $output['ID'] );
-        $this->assertTrue( $this->arrays_are_similar( $expected_output_version_1['data'], $from_db ) );
+        $this->assertTrue( $this->arrays_are_similar( $expected_output_version_1, $from_db ) );
 
-        // Test if the 2 other versions have answer_option removed as well
         $from_db_version_2 = \kwps_classes\Version::get_with_all_children( $this->existing_versions[1]['ID'] );
-        $this->assertTrue( $this->arrays_are_similar( $expected_output_version_2['data'], $from_db_version_2 ) );
+        $this->assertTrue( $this->arrays_are_similar( $expected_output_version_2, $from_db_version_2 ) );
 
         $from_db_version_3 = \kwps_classes\Version::get_with_all_children( $this->existing_versions[2]['ID'] );
-        $this->assertTrue( $this->arrays_are_similar( $expected_output_version_3['data'], $from_db_version_3 ) );
+        $this->assertTrue( $this->arrays_are_similar( $expected_output_version_3, $from_db_version_3 ) );
     }
 
     /**
