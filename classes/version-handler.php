@@ -463,17 +463,12 @@ class Version_Handler {
 
                 foreach( $question_group['questions'] as $question_key => $question ) {
                     if( 'trash' == $question['post_status'] ) {
-                        if( isset( $question['ID'] ) ) {
-                            wp_delete_post( $question['ID'], true );
-
-                            foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
-                                if( isset( $answer_option['ID'] ) ) {
-                                    wp_delete_post( $answer_option['ID'], true );
-                                }
-                            }
-                        }
                         unset( $data['question_groups'][$question_group_key]['questions'][$question_key] );
 
+                        if( isset( $question['ID'] ) ) {
+                            Question::set_matching_to_trash( $question['ID'] );
+                            wp_delete_post( $question['ID'], true );
+                        }
                     } else {
                         $stripped_question = array_diff_key($question, array( 'answer_options' => '' ) );
                         $stripped_question['post_parent'] = $question_group_id;
@@ -484,6 +479,7 @@ class Version_Handler {
 
                         foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
                             if( 'trash' == $answer_option['post_status'] ) {
+//                                var_dump( 'ID of answer option to trash: ' . $answer_option['ID'] );
                                 unset( $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key] );
                                 if( isset( $answer_option['ID'] ) ) {
                                     Answer_Option::set_matching_to_trash( $answer_option['ID'] );
