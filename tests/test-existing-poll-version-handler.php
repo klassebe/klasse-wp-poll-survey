@@ -35,7 +35,6 @@ class Existing_Poll_Version_Handler_Test extends Kwps_Test {
         $this->checkOutPutWithFormTestData( 'add-too-many-question-groups-test.php');
     }
 
-//     test the saving of a poll where an answer options is trashed/removed
     function test_save_trashed_answer_option() {
         $this->check_saved_and_updated_siblings( 'save-trashed-answer-option-test.php' );
     }
