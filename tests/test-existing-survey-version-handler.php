@@ -34,9 +34,13 @@ class Existing_Survey_Version_Handler_Test extends Kwps_Test {
         $this->check_saved_and_updated_siblings( 'save-added-answer-option-test.php' );
     }
 
-    function test_save_trashed_question_group() {
+    function test_save_trashed_question() {
         $this->check_saved_and_updated_siblings( 'save-trashed-questions-test.php' );
     }
+
+//    function test_save_added_question() {
+//        $this->check_saved_and_updated_siblings( 'save-added-question-test.php' );
+//    }
 
 }
 
