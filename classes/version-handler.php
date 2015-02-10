@@ -524,8 +524,19 @@ class Version_Handler {
             $stripped_question['post_parent'] = $this->question_group_id;
 
             $this->question_id = Question::save_post( $stripped_question, true );
+
+            if( ! isset( $question['ID'] ) ) {
+                $matching_question_group_ids = Question_Group::get_matches_in_other_versions( $this->question_group_id );
+                foreach( $matching_question_group_ids as $matched_id ) {
+                    $new_question = $stripped_question;
+                    $new_question['post_parent'] = $matched_id;
+                    Question::save_post( $new_question, true);
+                }
+            }
+
             $this->existing_version_data['question_groups'][$this->question_group_key]['questions'][$this->question_key]['ID'] = $this->question_id;
             $this->existing_version_data['question_groups'][$this->question_group_key]['questions'][$this->question_key]['post_parent'] = $this->question_group_id;
+
 
             foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
                 $this->answer_option_key = $answer_option_key;

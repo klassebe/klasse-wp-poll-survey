@@ -27,19 +27,70 @@ class Existing_Survey_Version_Handler_Test extends Kwps_Test {
     }
 
     function test_save_trashed_answer_option() {
-        $this->check_saved_and_updated_siblings( 'save-trashed-answer-options-test.php' );
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['questions'][1]['answer_options'][2]['post_status'] = 'trash';
+        $input['question_groups'][1]['questions'][3]['answer_options'][3]['post_status'] = 'trash';
+        $input['question_groups'][3]['questions'][1]['answer_options'][1]['post_status'] = 'trash';
+
+        $this->check_saved_and_updated_siblings( $input, 'save-trashed-answer-options-test.php' );
     }
 
     function test_save_added_answer_option() {
-        $this->check_saved_and_updated_siblings( 'save-added-answer-option-test.php' );
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['questions'][1]['answer_options'][4] = array(
+            '_kwps_sort_order' => 3,
+            'post_content' => 'Answer option 4',
+            'post_status' => 'draft',
+            'post_parent' => 10,
+        );
+
+        $this->check_saved_and_updated_siblings( $input, 'save-added-answer-option-test.php' );
     }
 
     function test_save_trashed_question() {
-        $this->check_saved_and_updated_siblings( 'save-trashed-questions-test.php' );
+        $input = $this->existing_versions[0];
+        $input['question_groups'][2]['questions'][1]['post_status'] = 'trash';
+
+        $this->check_saved_and_updated_siblings( $input, 'save-trashed-questions-test.php' );
     }
 
-//    function test_save_added_question() {
-//        $this->check_saved_and_updated_siblings( 'save-added-question-test.php' );
+    function test_save_added_question() {
+        $input = $this->existing_versions[0];
+
+        $input['question_groups'][1]['questions'][] =
+            array(
+                '_kwps_sort_order' => 3,
+                'post_status' => 'draft',
+                'post_content' => 'Question 4 - new',
+                'post_parent' => 9,
+                'answer_options' => array(
+                    0 => array(
+                        '_kwps_sort_order' => 0,
+                        'post_content' => 'Answer option 1',
+                        'post_status' => 'draft',
+                    ),
+                    1 => array(
+                        '_kwps_sort_order' => 1,
+                        'post_content' => 'Answer option 2',
+                        'post_status' => 'draft',
+                    ),
+                    2 => array(
+                        '_kwps_sort_order' => 2,
+                        'post_content' => 'Answer option 3',
+                        'post_status' => 'draft',
+                    ),
+                ),
+        );
+
+        $this->check_saved_and_updated_siblings( $input, 'save-added-question-test.php' );
+    }
+
+//    function test_save_changed_sort_order_question() {
+//        $input = $this->existing_versions[0];
+//        $input['question_groups'][1]['questions'][1]['_kwps_new_sort_order'] = 1;
+//        $input['question_groups'][1]['questions'][2]['_kwps_new_sort_order'] = 0;
+//
+//        $this->check_saved_and_updated_siblings( $input, 'save-changed-sort-order-question.php');
 //    }
 
 }

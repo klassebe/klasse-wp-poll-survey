@@ -52,9 +52,8 @@ abstract class Kwps_Test extends WP_UnitTestCase {
         $this->assertTrue( $this->arrays_are_similar( $output['data'], $expected_output['data'] ) );
     }
 
-    function check_saved_and_updated_siblings( $file ) {
+    function check_saved_and_updated_siblings( $input, $file ) {
         $test_data = include $this->test_data_folder . $file;
-        $input = $test_data['input'];
         $expected_output_version_1 = $test_data['expected_output'][0];
         $expected_output_version_2 = $test_data['expected_output'][1];
         $expected_output_version_3 = $test_data['expected_output'][2];

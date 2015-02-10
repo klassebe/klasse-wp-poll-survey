@@ -138,6 +138,9 @@ class Question extends Kwps_Post_Type{
 
     public static function get_matches_in_other_versions( $id ) {
         $question = static::get_as_array( $id );
+        if( ! isset( $question['_kwps_sort_order'] ) ) {
+            return array();
+        }
         $question_group = Question_Group::get_as_array( $question['post_parent'] );
 
         $matching_question_groups = Question_Group::get_matches_in_other_versions( $question_group['ID'] );
