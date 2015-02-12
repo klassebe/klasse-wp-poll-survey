@@ -85,6 +85,86 @@ class Existing_Survey_Version_Handler_Test extends Kwps_Test {
         $this->check_saved_and_updated_siblings( $input, 'save-added-question-test.php' );
     }
 
+    function test_save_added_question_group() {
+        $input = $this->existing_versions[0];
+        $input['question_groups'][] = array(
+            '_kwps_sort_order' => 3,
+            'post_status' => 'draft',
+            'post_title' => 'Question page 4',
+            'post_content' => 'These are the questions of page 4',
+            'questions' => array(
+                0 => array(
+                    '_kwps_sort_order' => 0,
+                    'post_status' => 'draft',
+                    'post_content' => 'Question 1',
+                    'answer_options' => array(
+                        0 => array(
+                            '_kwps_sort_order' => 0,
+                            'post_content' => 'Answer option 1',
+                            'post_status' => 'draft',
+                        ),
+                        1 => array(
+                            '_kwps_sort_order' => 1,
+                            'post_content' => 'Answer option 2',
+                            'post_status' => 'draft',
+                        ),
+                        2 => array(
+                            '_kwps_sort_order' => 2,
+                            'post_content' => 'Answer option 3',
+                            'post_status' => 'draft',
+                        ),
+                    ),
+                ),
+                1 => array(
+                    '_kwps_sort_order' => 1,
+                    'post_status' => 'draft',
+                    'post_content' => 'Question 2',
+                    'answer_options' => array(
+                        0 => array(
+                            '_kwps_sort_order' => 0,
+                            'post_content' => 'Answer option 1',
+                            'post_status' => 'draft',
+                        ),
+                        1 => array(
+                            '_kwps_sort_order' => 1,
+                            'post_content' => 'Answer option 2',
+                            'post_status' => 'draft',
+                        ),
+                        2 => array(
+                            '_kwps_sort_order' => 2,
+                            'post_content' => 'Answer option 3',
+                            'post_status' => 'draft',
+                        ),
+                    ),
+                ),
+                2 => array(
+                    '_kwps_sort_order' => 2,
+                    'post_status' => 'draft',
+                    'post_content' => 'Question 3',
+                    'answer_options' => array(
+                        0 => array(
+                            '_kwps_sort_order' => 0,
+                            'post_content' => 'Answer option 1',
+                            'post_status' => 'draft',
+                        ),
+                        1 => array(
+                            '_kwps_sort_order' => 1,
+                            'post_content' => 'Answer option 2',
+                            'post_status' => 'draft',
+                        ),
+                        2 => array(
+                            '_kwps_sort_order' => 2,
+                            'post_content' => 'Answer option 3',
+                            'post_status' => 'draft',
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $this->check_saved_and_updated_siblings( $input, 'save-added-question-group.php' );
+    }
+
 //    function test_save_changed_sort_order_question() {
 //        $input = $this->existing_versions[0];
 //        $input['question_groups'][1]['questions'][1]['_kwps_new_sort_order'] = 1;

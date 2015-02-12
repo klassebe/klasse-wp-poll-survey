@@ -499,8 +499,18 @@ class Version_Handler {
             $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
             $stripped_question_group['post_parent'] = $this->version_id;
 
-
             $this->question_group_id = Question_Group::save_post($stripped_question_group, true);
+
+            if( ! isset( $question_group['ID'] ) ) {
+                $matching_version_ids = Version::get_other_ids_in_parent( $this->version_id );
+
+                foreach( $matching_version_ids as $version_id ) {
+                    $new_question_group = $stripped_question_group;
+                    $new_question_group['post_parent'] = $version_id;
+                    Question_Group::save_post( $new_question_group, true );
+                }
+            }
+
             $this->existing_version_data['question_groups'][$this->question_group_key]['ID'] = $this->question_group_id;
             $this->existing_version_data['question_groups'][$this->question_group_key]['post_parent'] = $this->version_id;
 
@@ -547,7 +557,6 @@ class Version_Handler {
 
     private function save_answer_option_of_existing_version( $answer_option ) {
         if( 'trash' == $answer_option['post_status'] ) {
-//                                var_dump( 'ID of answer option to trash: ' . $answer_option['ID'] );
             unset( $this->existing_version_data['question_groups'][$this->question_group_key]['questions'][$this->question_key]['answer_options'][$this->answer_option_key] );
             if( isset( $answer_option['ID'] ) ) {
                 Answer_Option::set_matching_to_trash( $answer_option['ID'] );

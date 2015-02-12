@@ -414,4 +414,19 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
             ) );
         }
     }
+
+    public static function get_other_ids_in_parent( $id ) {
+        $kwps_post = static::get_as_array( $id );
+        $all_kwps_posts_of_same_parent = static::get_all_by_post_parent( $kwps_post['post_parent'] );
+
+        $ids = array();
+
+        foreach( $all_kwps_posts_of_same_parent as $found_kwps_post ) {
+            if( $found_kwps_post['ID'] != $id ) {
+                $ids[] = $found_kwps_post['ID'];
+            }
+        }
+
+        return $ids;
+    }
 }

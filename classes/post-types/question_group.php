@@ -118,19 +118,16 @@ class Question_Group extends Kwps_Post_Type {
 
     public static function get_matches_in_other_versions( $id ) {
         $question_group = static::get_as_array( $id );
-        $test_collection = static::get_test_collection( $id );
 
-        $versions = Version::get_all_by_post_parent( $test_collection['ID'] );
+        $version_ids = Version::get_other_ids_in_parent( $question_group['post_parent']) ;
 
         $matching_ids = array();
 
-        foreach( $versions as $version ) {
-            if( $question_group['post_parent'] != $version['ID'] ) {
-                $tmp_question_groups = Question_Group::get_all_by_post_parent( $version['ID'] );
-                foreach( $tmp_question_groups as $tmp_question_group ) {
-                    if( $question_group['_kwps_sort_order'] == $tmp_question_group['_kwps_sort_order'] ) {
-                        $matching_ids[] = $tmp_question_group['ID'];
-                    }
+        foreach( $version_ids as $version_id ) {
+            $tmp_question_groups = Question_Group::get_all_by_post_parent( $version_id );
+            foreach( $tmp_question_groups as $tmp_question_group ) {
+                if( $question_group['_kwps_sort_order'] == $tmp_question_group['_kwps_sort_order'] ) {
+                    $matching_ids[] = $tmp_question_group['ID'];
                 }
             }
         }
