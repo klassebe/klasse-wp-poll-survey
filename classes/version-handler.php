@@ -36,6 +36,8 @@ class Version_Handler {
 
     protected $answer_option_key;
 
+    protected $sort_orders_to_update;
+
     public function validate_new_version_form( $data ) {
         $data_has_errors = false;
 
@@ -420,6 +422,7 @@ class Version_Handler {
     }
 
     public function save_existing_version_form($passed_data, $update_siblings = true){
+        $this->sort_orders_to_update = array();
 
         $this->existing_version_data = $this->update_kwps_sort_order_of_form( $passed_data );
 
@@ -444,9 +447,13 @@ class Version_Handler {
                     $version_handler->save_existing_version_form( $sibling, false);
                 }
             }
+
+            foreach( $this->sort_orders_to_update as $sort_order_data ) {
+                update_post_meta( $sort_order_data[0], '_kwps_sort_order', $sort_order_data[1] );
+            }
         }
 
-        return $this->existing_version_data;
+        return Version::get_with_all_children( $this->version_id );
     }
 
     private function save_existing_version() {
@@ -532,6 +539,16 @@ class Version_Handler {
         } else {
             $stripped_question = array_diff_key($question, array( 'answer_options' => '' ) );
             $stripped_question['post_parent'] = $this->question_group_id;
+
+            if( isset( $stripped_question['_kwps_new_sort_order'] ) ) {
+                $this->sort_orders_to_update[] = array( $stripped_question['ID'], $stripped_question['_kwps_new_sort_order'] );
+                $matching_question_ids = Question::get_matches_in_other_versions( $stripped_question['ID'] );
+                foreach( $matching_question_ids as $question_id ) {
+                    $this->sort_orders_to_update[] = array( $question_id, $stripped_question['_kwps_new_sort_order'] );
+                }
+
+                unset( $stripped_question['_kwps_new_sort_order'] );
+            }
 
             $this->question_id = Question::save_post( $stripped_question, true );
 

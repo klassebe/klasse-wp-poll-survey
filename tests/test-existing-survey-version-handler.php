@@ -165,13 +165,13 @@ class Existing_Survey_Version_Handler_Test extends Kwps_Test {
         $this->check_saved_and_updated_siblings( $input, 'save-added-question-group.php' );
     }
 
-//    function test_save_changed_sort_order_question() {
-//        $input = $this->existing_versions[0];
-//        $input['question_groups'][1]['questions'][1]['_kwps_new_sort_order'] = 1;
-//        $input['question_groups'][1]['questions'][2]['_kwps_new_sort_order'] = 0;
-//
-//        $this->check_saved_and_updated_siblings( $input, 'save-changed-sort-order-question.php');
-//    }
+    function test_save_changed_sort_order_question() {
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['questions'][1]['_kwps_new_sort_order'] = 1;
+        $input['question_groups'][1]['questions'][2]['_kwps_new_sort_order'] = 0;
+
+        $this->check_saved_and_updated_siblings( $input, 'save-changed-sort-order-question.php');
+    }
 
 }
 
