@@ -36,11 +36,21 @@ class Existing_Poll_Version_Handler_Test extends Kwps_Test {
     }
 
     function test_save_trashed_answer_option() {
-        $this->check_saved_and_updated_siblings( 'save-trashed-answer-option-test.php' );
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['questions'][1]['answer_options'][2]['post_status'] = 'trash';
+        $this->check_saved_and_updated_siblings($input, 'save-trashed-answer-option-test.php' );
     }
 
     function test_save_added_answer_option() {
-        $this->check_saved_and_updated_siblings( 'save-added-answer-option-test.php' );
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['questions'][1]['answer_options'][4] = array(
+            '_kwps_sort_order' => 3,
+            'post_content' => 'Answer option 4',
+            'post_status' => 'draft',
+            'post_parent' => 10,
+        );
+
+        $this->check_saved_and_updated_siblings( $input, 'save-added-answer-option-test.php' );
     }
 }
 
