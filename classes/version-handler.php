@@ -500,8 +500,6 @@ class Version_Handler {
                 }
 
             }
-            unset( $this->existing_version_data['question_groups'][$this->question_group_key] );
-
         } else {
             $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
             $stripped_question_group['post_parent'] = $this->version_id;
@@ -518,9 +516,6 @@ class Version_Handler {
                 }
             }
 
-            $this->existing_version_data['question_groups'][$this->question_group_key]['ID'] = $this->question_group_id;
-            $this->existing_version_data['question_groups'][$this->question_group_key]['post_parent'] = $this->version_id;
-
             foreach( $question_group['questions'] as $question_key => $question ) {
                 $this->question_key = $question_key;
                 $this->save_question_of_existing_version( $question );
@@ -530,8 +525,6 @@ class Version_Handler {
 
     private function save_question_of_existing_version( $question ) {
         if( 'trash' == $question['post_status'] ) {
-            unset( $this->existing_version_data['question_groups'][$this->question_group_key]['questions'][$this->question_key] );
-
             if( isset( $question['ID'] ) ) {
                 Question::set_matching_to_trash( $question['ID'] );
                 wp_delete_post( $question['ID'], true );
@@ -561,10 +554,6 @@ class Version_Handler {
                 }
             }
 
-            $this->existing_version_data['question_groups'][$this->question_group_key]['questions'][$this->question_key]['ID'] = $this->question_id;
-            $this->existing_version_data['question_groups'][$this->question_group_key]['questions'][$this->question_key]['post_parent'] = $this->question_group_id;
-
-
             foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
                 $this->answer_option_key = $answer_option_key;
                 $this->save_answer_option_of_existing_version( $answer_option );
@@ -574,7 +563,6 @@ class Version_Handler {
 
     private function save_answer_option_of_existing_version( $answer_option ) {
         if( 'trash' == $answer_option['post_status'] ) {
-            unset( $this->existing_version_data['question_groups'][$this->question_group_key]['questions'][$this->question_key]['answer_options'][$this->answer_option_key] );
             if( isset( $answer_option['ID'] ) ) {
                 Answer_Option::set_matching_to_trash( $answer_option['ID'] );
                 wp_delete_post( $answer_option['ID'], true );
@@ -592,10 +580,6 @@ class Version_Handler {
                     Answer_Option::save_post( $new_answer_option, true );
                 }
             }
-
-            $answer_option['ID'] = $answer_option_id;
-            $this->existing_version_data['question_groups'][$this->question_group_key]['questions'][$this->question_key]['answer_options'][$this->answer_option_key]['ID'] = $answer_option_id;
-            $this->existing_version_data['question_groups'][$this->question_group_key]['questions'][$this->question_key]['answer_options'][$this->answer_option_key]['post_parent'] = $this->question_id;
         }
     }
 
