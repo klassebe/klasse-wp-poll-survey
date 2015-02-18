@@ -173,5 +173,20 @@ class Existing_Survey_Version_Handler_Test extends Kwps_Test {
         $this->check_saved_and_updated_siblings( $input, 'save-changed-sort-order-question.php');
     }
 
+    function test_save_changed_sort_order_question_group() {
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['_kwps_new_sort_order'] = 1;
+        $input['question_groups'][2]['_kwps_new_sort_order'] = 0;
+
+        $this->check_saved_and_updated_siblings( $input, 'save-changed-sort-order-question-group.php');
+    }
+
+    function test_save_changed_sort_order_answer_option() {
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['questions'][1]['answer_options'][1]['_kwps_new_sort_order'] = 1;
+        $input['question_groups'][1]['questions'][1]['answer_options'][2]['_kwps_new_sort_order'] = 0;
+
+        $this->check_saved_and_updated_siblings( $input, 'save-changed-sort-order-answer-option.php');
+    }
 }
 

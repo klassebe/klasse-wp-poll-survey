@@ -448,6 +448,7 @@ class Version_Handler {
                 }
             }
 
+
             foreach( $this->sort_orders_to_update as $sort_order_data ) {
                 update_post_meta( $sort_order_data[0], '_kwps_sort_order', $sort_order_data[1] );
             }
@@ -503,6 +504,16 @@ class Version_Handler {
         } else {
             $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
             $stripped_question_group['post_parent'] = $this->version_id;
+
+            if( isset( $stripped_question_group['_kwps_new_sort_order'] ) ) {
+                $this->sort_orders_to_update[] = array( $stripped_question_group['ID'], $stripped_question_group['_kwps_new_sort_order'] );
+                $matching_question_group_ids = Question_Group::get_matches_in_other_versions( $stripped_question_group['ID'] );
+                foreach( $matching_question_group_ids as $question_id ) {
+                    $this->sort_orders_to_update[] = array( $question_id, $stripped_question_group['_kwps_new_sort_order'] );
+                }
+
+                unset( $stripped_question_group['_kwps_new_sort_order'] );
+            }
 
             $this->question_group_id = Question_Group::save_post($stripped_question_group, true);
 
@@ -570,7 +581,17 @@ class Version_Handler {
         } else {
             $answer_option['post_parent'] = $this->question_id;
 
-            $answer_option_id = Answer_Option::save_post( $answer_option, true );
+            if( isset( $answer_option['_kwps_new_sort_order'] ) ) {
+                $this->sort_orders_to_update[] = array( $answer_option['ID'], $answer_option['_kwps_new_sort_order'] );
+                $matching_answer_option_ids = Answer_Option::get_matches_in_other_versions( $answer_option['ID'] );
+                foreach( $matching_answer_option_ids as $answer_option_id ) {
+                    $this->sort_orders_to_update[] = array( $answer_option_id, $answer_option['_kwps_new_sort_order'] );
+                }
+
+                unset( $answer_option['_kwps_new_sort_order'] );
+            }
+
+            Answer_Option::save_post( $answer_option, true );
 
             if( ! isset($answer_option['ID'] ) ) {
                 $matching_question_ids = Question::get_matches_in_other_versions( $this->question_id );
