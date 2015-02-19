@@ -382,6 +382,14 @@ class Version_Handler {
         $outro_id = Outro::save_post($data['outro'], true);
         $data['outro']['ID'] = $outro_id;
 
+        if( isset( $data['result_profiles'] ) ) {
+            foreach( $data['result_profiles'] as $result_profile_key => $result_profile ) {
+                $data['result_profiles'][$result_profile_key]['post_parent'] = $version_id;
+                $profile_id = Result_Profile::save_post( $data['result_profiles'][$result_profile_key], true );
+                $data['result_profiles'][$result_profile_key]['ID'] = $profile_id;
+            }
+        }
+
 
         foreach( $data['question_groups'] as $question_group_key => $question_group ) {
             $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
@@ -433,6 +441,13 @@ class Version_Handler {
         $this->save_intro_result_of_existing_version();
         $this->save_outro_of_existing_version();
 
+        if( isset( $this->existing_version_data['result_profiles'] ) ) {
+            foreach( $this->existing_version_data['result_profiles'] as $result_profile_key => $result_profile ) {
+                $this->result_profile_key = $result_profile_key;
+                $this->save_result_profile_of_existing_version( $result_profile );
+            }
+        }
+
         foreach( $this->existing_version_data['question_groups'] as $question_group_key => $question_group ) {
             $this->question_group_key = $question_group_key;
             $this->save_question_group_of_existing_version( $question_group );
@@ -481,6 +496,11 @@ class Version_Handler {
         $this->existing_version_data['outro']['post_parent'] = $this->version_id;
         $outro_id = Outro::save_post($this->existing_version_data['outro'], true);
         $this->existing_version_data['outro']['ID'] = $outro_id;
+    }
+
+    private function save_result_profile_of_existing_version( $result_profile ) {
+        $result_profile['post_parent'] = $this->version_id;
+        Result_Profile::save_post( $result_profile );
     }
 
     private function save_question_group_of_existing_version( $question_group ) {
@@ -691,9 +711,9 @@ class Version_Handler {
         }
 
         if( isset( $data['intro_result']['ID'] ) ) {
-            $intro_result_errors = Intro::validate_for_update( $data['intro_result'] );
+            $intro_result_errors = Intro_Result::validate_for_update( $data['intro_result'] );
         } else {
-            $intro_result_errors = Intro::validate_for_insert( $data['intro_result'] );
+            $intro_result_errors = Intro_Result::validate_for_insert( $data['intro_result'] );
         }
         $data['intro_result']['errors'] = $intro_result_errors;
 
@@ -718,6 +738,35 @@ class Version_Handler {
         if( sizeof($outro_errors) != 0 ) {
             $data_has_errors = true;
         }
+
+        if( $answer_options_require_value ) {
+            $set_trashed_result_profiles_to_draft = false;
+
+            $trashed_result_profiles_count = $this->get_trashed_items_count( $data['result_profiles'] );
+
+            if( ( sizeof( $data['result_profiles'] ) - $trashed_result_profiles_count ) < 2 ) {
+                $data_has_errors = true;
+                $test_modus_errors['_kwps_min_result_profiles_per_version'] =
+                    'Minimum 2 result profiles required per version';
+                $set_trashed_result_profiles_to_draft = true;
+            }
+
+            foreach( $data['result_profiles'] as $result_profile_key => $result_profile ) {
+                if( isset( $result_profile['ID'] ) ) {
+                    $result_profile_errors = Result_Profile::validate_for_update( $result_profile );
+                } else {
+                    $result_profile_errors = Result_Profile::validate_for_insert( $result_profile );
+                }
+
+
+                $data['result_profiles'][$result_profile_key]['errors'] = $result_profile_errors;
+
+                if( $set_trashed_result_profiles_to_draft && $result_profile['post_status'] == 'trash' ) {
+                    $result_profile_errors['post_status'] = 'Minimum 2 result profiles required per version';
+                    $result_profile['post_status'] = 'draft';
+                    $data['result_profiles'][$result_profile_key]['post_status'] = 'draft';
+                }
+            }}
 
         $set_trashed_question_groups_to_draft = false;
 

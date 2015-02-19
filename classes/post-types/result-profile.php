@@ -25,6 +25,16 @@ class Result_Profile extends Kwps_Post_Type {
 	    '_kwps_max_value'
     );
 
+    public static $form_fields = array(
+        'ID',
+        'post_title',
+        'post_parent',
+        'post_status',
+        '_kwps_sort_order',
+        '_kwps_min_value',
+        '_kwps_max_value',
+    );
+
     public static $meta_data_fields = array(
         '_kwps_sort_order',
         '_kwps_min_value',
