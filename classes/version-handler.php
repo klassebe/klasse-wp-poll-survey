@@ -501,6 +501,16 @@ class Version_Handler {
     private function save_result_profile_of_existing_version( $result_profile ) {
         $result_profile['post_parent'] = $this->version_id;
         Result_Profile::save_post( $result_profile );
+
+        if( ! isset( $result_profile['ID'] ) ) {
+            $matching_version_ids = Version::get_other_ids_in_parent( $this->version_id );
+
+            foreach( $matching_version_ids as $version_id ) {
+                $new_result_profile = $result_profile;
+                $new_result_profile['post_parent'] = $version_id;
+                Result_Profile::save_post( $new_result_profile, true );
+            }
+        }
     }
 
     private function save_question_group_of_existing_version( $question_group ) {
@@ -758,15 +768,15 @@ class Version_Handler {
                     $result_profile_errors = Result_Profile::validate_for_insert( $result_profile );
                 }
 
-
-                $data['result_profiles'][$result_profile_key]['errors'] = $result_profile_errors;
-
                 if( $set_trashed_result_profiles_to_draft && $result_profile['post_status'] == 'trash' ) {
                     $result_profile_errors['post_status'] = 'Minimum 2 result profiles required per version';
                     $result_profile['post_status'] = 'draft';
                     $data['result_profiles'][$result_profile_key]['post_status'] = 'draft';
                 }
-            }}
+
+                $data['result_profiles'][$result_profile_key]['errors'] = $result_profile_errors;
+            }
+        }
 
         $set_trashed_question_groups_to_draft = false;
 
