@@ -523,19 +523,8 @@ class Version_Handler {
     private function save_question_group_of_existing_version( $question_group ) {
         if( 'trash' == $question_group['post_status'] ) {
             if( isset( $question_group['ID'] ) ) {
-                wp_delete_post( $question_group['ID'], true );
-
-                foreach( $question_group['questions'] as $question_key => $question ) {
-                    if( isset( $question['ID'] ) ) {
-                        wp_delete_post( $question['ID'], true );
-                    }
-
-                    foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
-                        if( isset( $answer_option['ID'] ) ) {
-                            wp_delete_post( $answer_option['ID'], true );
-                        }
-                    }
-                }
+                Question_Group::set_matching_to_trash( $question_group['ID'] );
+                wp_delete_post( $question_group['ID'], true ); // this will also delete all child posts
             }
         } else {
             $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
