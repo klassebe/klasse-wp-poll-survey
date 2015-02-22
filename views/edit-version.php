@@ -61,12 +61,33 @@ if( isset( $_REQUEST['id'] ) ) {
 
             ),
         );
+        $test_modus = \kwps_classes\Test_Collection::get_test_modus( $_REQUEST['post_parent'] );
+
+        if( $test_modus['_kwps_answer_options_require_value'] > 0 ) {
+            $version['result_profiles'] = array(
+                array(
+                    'post_title' => '',
+                    'post_status' => 'draft',
+                    '_kwps_sort_order' => 0,
+                    '_kwps_min_value' => 0,
+                    '_kwps_max_value' => 10,
+                ),
+                array(
+                    'post_title' => '',
+                    'post_status' => 'draft',
+                    '_kwps_sort_order' => 1,
+                    '_kwps_min_value' => 11,
+                    '_kwps_max_value' => 20,
+                ),
+            );
+        }
     }
 }
 
 $required_fields_version = \kwps_classes\Version::$required_fields;
 $required_fields_intro = \kwps_classes\Intro::$required_fields;
 $required_fields_outro = \kwps_classes\Outro::$required_fields;
+$required_fields_result_profile = \kwps_classes\Result_Profile::$required_fields;
 $required_fields_intro_result = \kwps_classes\Intro_Result::$required_fields;
 $required_fields_question_group = \kwps_classes\Question_Group::$required_fields;
 $required_fields_question = \kwps_classes\Question::$required_fields;
@@ -331,6 +352,22 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                 </div>
             </div>
         </div>
+        <?php if( isset( $version['result_profiles'] ) ): ?>
+            <?php foreach( $version['result_profiles'] as $result_profile ): ?>
+                <div class="kwps kwps-single <?php if( isset( $result_profile['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-outro">
+                    <h3>Result Profile <?php if( in_array( 'post_content', $required_fields_result_profile ) ) echo '<span class="kwps-required">*</span>' ?></h3>
+                    <div>
+                        <?php if( isset( $result_profile['ID'] ) ): ?>
+                            <input type="hidden" name="ID" value="<?php echo $result_profile['ID'] ?>">
+                       <?php endif;?>
+                        <input type="hidden" name="post_status" value="<?php echo $result_profile['post_status'] ?>" >
+                        <input type="text" name="post_title" value="<?php echo $result_profile['post_title'] ?>">
+                        <input type="text" name="_kwps_min_value" value="<?php echo $result_profile['_kwps_min_value'] ?>" >
+                        <input type="text" name="_kwps_max_value" value="<?php echo $result_profile['_kwps_max_value'] ?>" >
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif;?>
         <button id="version-save" type="submit" class="button button-primary">Wijzigingen opslaan</button>
     </form>
     <div class="kwps-nav-spacer"></div>
