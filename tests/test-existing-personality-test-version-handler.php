@@ -76,5 +76,12 @@ class Existing_Personality_Test_Version_Handler_Test extends Kwps_Test {
 
         $this->check_saved_and_updated_siblings( $input, 'save-added-result-profile-test.php');
     }
+
+    function test_save_trashed_result_profile() {
+        $input = $this->existing_versions[0];
+        $input['result_profiles'][1]['post_status'] = 'trash';
+
+        $this->check_saved_and_updated_siblings( $input, 'save-trashed-result-profile-test.php' );
+    }
 }
 

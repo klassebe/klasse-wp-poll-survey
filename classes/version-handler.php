@@ -499,16 +499,23 @@ class Version_Handler {
     }
 
     private function save_result_profile_of_existing_version( $result_profile ) {
-        $result_profile['post_parent'] = $this->version_id;
-        Result_Profile::save_post( $result_profile );
+        if( 'trash' == $result_profile['post_status'] ) {
+            if( isset( $result_profile['ID'] ) ) {
+                Result_Profile::set_matching_to_trash( $result_profile['ID'] );
+                wp_delete_post( $result_profile['ID'], true );
+            }
+        } else {
+            $result_profile['post_parent'] = $this->version_id;
+            Result_Profile::save_post( $result_profile );
 
-        if( ! isset( $result_profile['ID'] ) ) {
-            $matching_version_ids = Version::get_other_ids_in_parent( $this->version_id );
+            if( ! isset( $result_profile['ID'] ) ) {
+                $matching_version_ids = Version::get_other_ids_in_parent( $this->version_id );
 
-            foreach( $matching_version_ids as $version_id ) {
-                $new_result_profile = $result_profile;
-                $new_result_profile['post_parent'] = $version_id;
-                Result_Profile::save_post( $new_result_profile, true );
+                foreach( $matching_version_ids as $version_id ) {
+                    $new_result_profile = $result_profile;
+                    $new_result_profile['post_parent'] = $version_id;
+                    Result_Profile::save_post( $new_result_profile, true );
+                }
             }
         }
     }
@@ -529,7 +536,6 @@ class Version_Handler {
                         }
                     }
                 }
-
             }
         } else {
             $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
@@ -635,6 +641,10 @@ class Version_Handler {
     }
 
     private function update_kwps_sort_order_of_form( $data ) {
+        if( isset( $data['result_profiles'] ) ) {
+            $data['result_profiles'] = $this->update_kwps_sort_order( $data['result_profiles'] );
+        }
+
         $data['question_groups'] = $this->update_kwps_sort_order( $data['question_groups'] );
 
         foreach( $data['question_groups'] as $question_group_key => $question_group ) {

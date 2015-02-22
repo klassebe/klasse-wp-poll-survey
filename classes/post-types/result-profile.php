@@ -207,5 +207,24 @@ class Result_Profile extends Kwps_Post_Type {
         return true;
     }
 
+    public static function get_matches_in_other_versions( $id ) {
+        $result_profile = static::get_as_array( $id );
+        $version = static::get_version( $id );
+
+        $version_ids = Version::get_other_ids_in_parent( $version['ID'] );
+
+        $matching_ids = array();
+
+        foreach( $version_ids as $tmp_version_id ) {
+            $tmp_result_profiles = static::get_all_by_post_parent( $tmp_version_id );
+            foreach( $tmp_result_profiles as $tmp_result_profile ) {
+                if( $result_profile['_kwps_sort_order'] == $tmp_result_profile['_kwps_sort_order'] ) {
+                    $matching_ids[] = $tmp_result_profile['ID'];
+                }
+            }
+        }
+
+        return $matching_ids;
+    }
 
 }
