@@ -1,6 +1,6 @@
 <?php
 return array(
-    'expected_output' => array(
+    'expected_output' =>  array(
         array(
             'ID' => 5,
             'post_title' => 'New Version',
@@ -57,6 +57,15 @@ return array(
                     'post_title' => 'Result profile 3',
                     'post_status' => 'draft',
                 ),
+                3 => array(
+                    'ID' => 143,
+                    'post_parent' => 5,
+                    '_kwps_sort_order' => 3,
+                    '_kwps_min_value' => 101,
+                    '_kwps_max_value' => 150,
+                    'post_title' => 'Result profile 4',
+                    'post_status' => 'draft',
+                ),
             ),
             'question_groups' => array(
                 0 => array(
@@ -83,9 +92,17 @@ return array(
                                     '_kwps_answer_option_value' => 5,
                                 ),
                                 1 => array(
-                                    'ID' => 16,
+                                    'ID' => 15,
                                     'post_parent' => 13,
                                     '_kwps_sort_order' => 1,
+                                    'post_content' => 'Answer option 2',
+                                    'post_status' => 'draft',
+                                    '_kwps_answer_option_value' => 10,
+                                ),
+                                2 => array(
+                                    'ID' => 16,
+                                    'post_parent' => 13,
+                                    '_kwps_sort_order' => 2,
                                     'post_content' => 'Answer option 3',
                                     'post_status' => 'draft',
                                     '_kwps_answer_option_value' => 15,
@@ -437,6 +454,15 @@ return array(
                     'post_title' => 'Result profile 3',
                     'post_status' => 'draft',
                 ),
+                3 => array(
+                    'ID' => 144,
+                    'post_parent' => 51,
+                    '_kwps_sort_order' => 3,
+                    '_kwps_min_value' => 101,
+                    '_kwps_max_value' => 150,
+                    'post_title' => 'Result profile 4',
+                    'post_status' => 'draft',
+                ),
             ),
             'question_groups' => array(
                 0 => array(
@@ -463,9 +489,17 @@ return array(
                                     '_kwps_answer_option_value' => 5,
                                 ),
                                 1 => array(
-                                    'ID' => 62,
+                                    'ID' => 61,
                                     'post_parent' => 59,
                                     '_kwps_sort_order' => 1,
+                                    'post_content' => 'Answer option 2',
+                                    'post_status' => 'draft',
+                                    '_kwps_answer_option_value' => 10,
+                                ),
+                                2 => array(
+                                    'ID' => 62,
+                                    'post_parent' => 59,
+                                    '_kwps_sort_order' => 2,
                                     'post_content' => 'Answer option 3',
                                     'post_status' => 'draft',
                                     '_kwps_answer_option_value' => 15,
@@ -817,6 +851,15 @@ return array(
                     'post_title' => 'Result profile 3',
                     'post_status' => 'draft',
                 ),
+                3 => array(
+                    'ID' => 145,
+                    'post_parent' => 97,
+                    '_kwps_sort_order' => 3,
+                    '_kwps_min_value' => 101,
+                    '_kwps_max_value' => 150,
+                    'post_title' => 'Result profile 4',
+                    'post_status' => 'draft',
+                ),
             ),
             'question_groups' => array(
                 0 => array(
@@ -843,9 +886,17 @@ return array(
                                     '_kwps_answer_option_value' => 5,
                                 ),
                                 1 => array(
-                                    'ID' => 108,
+                                    'ID' => 107,
                                     'post_parent' => 105,
                                     '_kwps_sort_order' => 1,
+                                    'post_content' => 'Answer option 2',
+                                    'post_status' => 'draft',
+                                    '_kwps_answer_option_value' => 10,
+                                ),
+                                2 => array(
+                                    'ID' => 108,
+                                    'post_parent' => 105,
+                                    '_kwps_sort_order' => 2,
                                     'post_content' => 'Answer option 3',
                                     'post_status' => 'draft',
                                     '_kwps_answer_option_value' => 15,
@@ -1140,5 +1191,5 @@ return array(
                 ),
             ),
         ),
-    ),
+    )
 );

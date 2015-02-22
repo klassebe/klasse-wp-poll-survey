@@ -273,4 +273,13 @@ class Answer_Option extends Kwps_Post_Type{
 
         return $matching_ids;
     }
+
+    public static function delete_matches( $answer_option_id ) {
+        $matching_ids = static::get_matches_in_other_versions( $answer_option_id );
+        foreach( $matching_ids as $matched_id ) {
+            wp_delete_post( $matched_id, true );
+        }
+    }
+
+
 }

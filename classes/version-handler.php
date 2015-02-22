@@ -24,6 +24,20 @@ class Version_Handler {
                                         'question_groups',
     );
 
+    protected $existing_version_data;
+
+    protected $version_id;
+
+    protected $question_group_key;
+    protected $question_group_id;
+
+    protected $question_key;
+    protected $question_id;
+
+    protected $answer_option_key;
+
+    protected $sort_orders_to_update;
+
     public function validate_new_version_form( $data ) {
         $data_has_errors = false;
 
@@ -200,23 +214,23 @@ class Version_Handler {
         if(! isset( $data['question_groups'] ) ) {
             $data['question_groups'] = array(
                 1 => array(
-                    '_kwps_sort_order' => 1,
+                    '_kwps_sort_order' => 0,
                     'post_status' => 'draft',
                     'post_title' => '',
                     'post_content' => '',
                     'questions' => array(
                         1 => array(
-                            '_kwps_sort_order' => 1,
+                            '_kwps_sort_order' => 0,
                             'post_status' => 'draft',
                             'post_content' => '',
                             'answer_options' => array(
                                 1 => array(
-                                    '_kwps_sort_order' => 1,
+                                    '_kwps_sort_order' => 0,
                                     'post_content' => '',
                                     'post_status' => 'draft',
                                 ),
                                 2 => array(
-                                    '_kwps_sort_order' => 2,
+                                    '_kwps_sort_order' => 1,
                                     'post_content' => '',
                                     'post_status' => 'draft',
                                 ),
@@ -226,6 +240,47 @@ class Version_Handler {
                 ),
 
             );
+        }
+
+        foreach( $data['question_groups'] as $question_group_key => $question_group ) {
+            if(! isset( $question_group['questions'] ) ) {
+                $data['question_groups'][$question_group_key]['questions'] = array(
+                    1 => array(
+                        '_kwps_sort_order' => 0,
+                        'post_status' => 'draft',
+                        'post_content' => '',
+                        'answer_options' => array(
+                            1 => array(
+                                '_kwps_sort_order' => 0,
+                                'post_content' => '',
+                                'post_status' => 'draft',
+                            ),
+                            2 => array(
+                                '_kwps_sort_order' => 1,
+                                'post_content' => '',
+                                'post_status' => 'draft',
+                            ),
+                        ),
+                    ),
+                );
+            } else {
+                foreach( $question_group['questions'] as $question_key => $question ) {
+                    if( ! isset( $question['answer_options'] ) ) {
+                        $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'] = array(
+                            1 => array(
+                                '_kwps_sort_order' => 0,
+                                'post_content' => '',
+                                'post_status' => 'draft',
+                            ),
+                            2 => array(
+                                '_kwps_sort_order' => 1,
+                                'post_content' => '',
+                                'post_status' => 'draft',
+                            ),
+                        );
+                    }
+                }
+            }
         }
 
         $test_modus = Test_Collection::get_test_modus( $data['post_parent'] );
@@ -327,6 +382,14 @@ class Version_Handler {
         $outro_id = Outro::save_post($data['outro'], true);
         $data['outro']['ID'] = $outro_id;
 
+        if( isset( $data['result_profiles'] ) ) {
+            foreach( $data['result_profiles'] as $result_profile_key => $result_profile ) {
+                $data['result_profiles'][$result_profile_key]['post_parent'] = $version_id;
+                $profile_id = Result_Profile::save_post( $data['result_profiles'][$result_profile_key], true );
+                $data['result_profiles'][$result_profile_key]['ID'] = $profile_id;
+            }
+        }
+
 
         foreach( $data['question_groups'] as $question_group_key => $question_group ) {
             $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
@@ -366,105 +429,211 @@ class Version_Handler {
         return $data;
     }
 
-    public function save_existing_version_form($passed_data){
+    public function save_existing_version_form($passed_data, $update_siblings = true){
+        $this->sort_orders_to_update = array();
 
-        $data = $this->update_kwps_sort_order_of_form( $passed_data );
+        $this->existing_version_data = $this->update_kwps_sort_order_of_form( $passed_data );
 
-        $stripped_version = array_diff_key( $data, array('question_groups' => '') );
-        $version_id = Version::save_post($stripped_version, true);
-        if( ! isset( $stripped_version['_kwps_view_count'] ) ) {
-            $data['_kwps_view_count'] = 0;
-        }
+        $this->save_existing_version();
+        $this->existing_version_data['ID'] = $this->version_id;
 
-        $data['ID'] = $version_id;
+        $this->save_intro_of_existing_version();
+        $this->save_intro_result_of_existing_version();
+        $this->save_outro_of_existing_version();
 
-        $data['intro']['post_parent'] = $version_id;
-        $intro_id = Intro::save_post($data['intro'], true);
-        $data['intro']['ID'] = $intro_id;
-
-        $data['intro_result']['post_parent'] = $version_id;
-        $intro_result_id = Intro_Result::save_post($data['intro_result'], true);
-        $data['intro_result']['ID'] = $intro_result_id;
-
-        $data['outro']['post_parent'] = $version_id;
-        $outro_id = Outro::save_post($data['outro'], true);
-        $data['outro']['ID'] = $outro_id;
-
-
-        foreach( $data['question_groups'] as $question_group_key => $question_group ) {
-            if( 'trash' == $question_group['post_status'] ) {
-                if( isset( $question_group['ID'] ) ) {
-                    wp_delete_post( $question_group['ID'], true );
-
-                    foreach( $question_group['questions'] as $question_key => $question ) {
-                        if( isset( $question['ID'] ) ) {
-                            wp_delete_post( $question['ID'], true );
-                        }
-
-                        foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
-                            if( isset( $answer_option['ID'] ) ) {
-                                wp_delete_post( $answer_option['ID'], true );
-                            }
-                        }
-                    }
-
-                }
-                unset( $data['question_groups'][$question_group_key] );
-
-            } else {
-                $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
-                $stripped_question_group['post_parent'] = $version_id;
-
-
-                $question_group_id = Question_Group::save_post($stripped_question_group, true);
-                $data['question_groups'][$question_group_key]['ID'] = $question_group_id;
-                $data['question_groups'][$question_group_key]['post_parent'] = $version_id;
-
-                foreach( $question_group['questions'] as $question_key => $question ) {
-                    if( 'trash' == $question['post_status'] ) {
-                        if( isset( $question['ID'] ) ) {
-                            wp_delete_post( $question['ID'], true );
-
-                            foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
-                                if( isset( $answer_option['ID'] ) ) {
-                                    wp_delete_post( $answer_option['ID'], true );
-                                }
-                            }
-                        }
-                        unset( $data['question_groups'][$question_group_key]['questions'][$question_key] );
-
-                    } else {
-                        $stripped_question = array_diff_key($question, array( 'answer_options' => '' ) );
-                        $stripped_question['post_parent'] = $question_group_id;
-
-                        $question_id = Question::save_post( $stripped_question, true );
-                        $data['question_groups'][$question_group_key]['questions'][$question_key]['ID'] = $question_id;
-                        $data['question_groups'][$question_group_key]['questions'][$question_key]['post_parent'] = $question_group_id;
-
-                        foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
-                            if( 'trash' == $answer_option['post_status'] ) {
-                                unset( $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key] );
-                                if( isset( $answer_option['ID'] ) ) {
-                                    wp_delete_post( $answer_option['ID'], true );
-                                }
-                            } else {
-                                $answer_option['post_parent'] = $question_id;
-
-                                $answer_option_id = Answer_Option::save_post( $answer_option, true );
-                                $answer_option['ID'] = $answer_option_id;
-                                $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['ID'] = $answer_option_id;
-                                $data['question_groups'][$question_group_key]['questions'][$question_key]['answer_options'][$answer_option_key]['post_parent'] = $question_id;
-                            }
-                        }
-                    }
-                }
+        if( isset( $this->existing_version_data['result_profiles'] ) ) {
+            foreach( $this->existing_version_data['result_profiles'] as $result_profile_key => $result_profile ) {
+                $this->result_profile_key = $result_profile_key;
+                $this->save_result_profile_of_existing_version( $result_profile );
             }
         }
 
-        return $data;
+        foreach( $this->existing_version_data['question_groups'] as $question_group_key => $question_group ) {
+            $this->question_group_key = $question_group_key;
+            $this->save_question_group_of_existing_version( $question_group );
+        }
+
+        if( $update_siblings ) {
+            $matching_versions = Version::get_all_by_post_parent( $this->existing_version_data['post_parent'] );
+            foreach( $matching_versions as $matched_version ) {
+                $version_handler = new Version_Handler();
+                if( $this->version_id != $matched_version['ID'] ) {
+                    $sibling = Version::get_with_all_children( $matched_version['ID'] );
+                    $version_handler->save_existing_version_form( $sibling, false);
+                }
+            }
+
+
+            foreach( $this->sort_orders_to_update as $sort_order_data ) {
+                update_post_meta( $sort_order_data[0], '_kwps_sort_order', $sort_order_data[1] );
+            }
+        }
+
+        return Version::get_with_all_children( $this->version_id );
+    }
+
+    private function save_existing_version() {
+        $stripped_version = array_diff_key( $this->existing_version_data, array('question_groups' => '') );
+        $this->version_id = Version::save_post($stripped_version, true);
+        if( ! isset( $stripped_version['_kwps_view_count'] ) ) {
+            $this->existing_version_data['_kwps_view_count'] = 0;
+        }
+    }
+
+    private function save_intro_of_existing_version() {
+        $this->existing_version_data['intro']['post_parent'] = $this->version_id;
+        $intro_id = Intro::save_post($this->existing_version_data['intro'], true);
+        $this->existing_version_data['intro']['ID'] = $intro_id;
+    }
+
+    private function save_intro_result_of_existing_version() {
+        $this->existing_version_data['intro_result']['post_parent'] = $this->version_id;
+        $intro_result_id = Intro_Result::save_post($this->existing_version_data['intro_result'], true);
+        $this->existing_version_data['intro_result']['ID'] = $intro_result_id;
+    }
+
+    private function save_outro_of_existing_version() {
+        $this->existing_version_data['outro']['post_parent'] = $this->version_id;
+        $outro_id = Outro::save_post($this->existing_version_data['outro'], true);
+        $this->existing_version_data['outro']['ID'] = $outro_id;
+    }
+
+    private function save_result_profile_of_existing_version( $result_profile ) {
+        if( 'trash' == $result_profile['post_status'] ) {
+            if( isset( $result_profile['ID'] ) ) {
+                Result_Profile::set_matching_to_trash( $result_profile['ID'] );
+                wp_delete_post( $result_profile['ID'], true );
+            }
+        } else {
+            $result_profile['post_parent'] = $this->version_id;
+            Result_Profile::save_post( $result_profile );
+
+            if( ! isset( $result_profile['ID'] ) ) {
+                $matching_version_ids = Version::get_other_ids_in_parent( $this->version_id );
+
+                foreach( $matching_version_ids as $version_id ) {
+                    $new_result_profile = $result_profile;
+                    $new_result_profile['post_parent'] = $version_id;
+                    Result_Profile::save_post( $new_result_profile, true );
+                }
+            }
+        }
+    }
+
+    private function save_question_group_of_existing_version( $question_group ) {
+        if( 'trash' == $question_group['post_status'] ) {
+            if( isset( $question_group['ID'] ) ) {
+                Question_Group::set_matching_to_trash( $question_group['ID'] );
+                wp_delete_post( $question_group['ID'], true ); // this will also delete all child posts
+            }
+        } else {
+            $stripped_question_group = array_diff_key($question_group, array( 'questions' => '' ) );
+            $stripped_question_group['post_parent'] = $this->version_id;
+
+            if( isset( $stripped_question_group['_kwps_new_sort_order'] ) ) {
+                $this->sort_orders_to_update[] = array( $stripped_question_group['ID'], $stripped_question_group['_kwps_new_sort_order'] );
+                $matching_question_group_ids = Question_Group::get_matches_in_other_versions( $stripped_question_group['ID'] );
+                foreach( $matching_question_group_ids as $question_id ) {
+                    $this->sort_orders_to_update[] = array( $question_id, $stripped_question_group['_kwps_new_sort_order'] );
+                }
+
+                unset( $stripped_question_group['_kwps_new_sort_order'] );
+            }
+
+            $this->question_group_id = Question_Group::save_post($stripped_question_group, true);
+
+            if( ! isset( $question_group['ID'] ) ) {
+                $matching_version_ids = Version::get_other_ids_in_parent( $this->version_id );
+
+                foreach( $matching_version_ids as $version_id ) {
+                    $new_question_group = $stripped_question_group;
+                    $new_question_group['post_parent'] = $version_id;
+                    Question_Group::save_post( $new_question_group, true );
+                }
+            }
+
+            foreach( $question_group['questions'] as $question_key => $question ) {
+                $this->question_key = $question_key;
+                $this->save_question_of_existing_version( $question );
+            }
+        }
+    }
+
+    private function save_question_of_existing_version( $question ) {
+        if( 'trash' == $question['post_status'] ) {
+            if( isset( $question['ID'] ) ) {
+                Question::set_matching_to_trash( $question['ID'] );
+                wp_delete_post( $question['ID'], true );
+            }
+        } else {
+            $stripped_question = array_diff_key($question, array( 'answer_options' => '' ) );
+            $stripped_question['post_parent'] = $this->question_group_id;
+
+            if( isset( $stripped_question['_kwps_new_sort_order'] ) ) {
+                $this->sort_orders_to_update[] = array( $stripped_question['ID'], $stripped_question['_kwps_new_sort_order'] );
+                $matching_question_ids = Question::get_matches_in_other_versions( $stripped_question['ID'] );
+                foreach( $matching_question_ids as $question_id ) {
+                    $this->sort_orders_to_update[] = array( $question_id, $stripped_question['_kwps_new_sort_order'] );
+                }
+
+                unset( $stripped_question['_kwps_new_sort_order'] );
+            }
+
+            $this->question_id = Question::save_post( $stripped_question, true );
+
+            if( ! isset( $question['ID'] ) ) {
+                $matching_question_group_ids = Question_Group::get_matches_in_other_versions( $this->question_group_id );
+                foreach( $matching_question_group_ids as $matched_id ) {
+                    $new_question = $stripped_question;
+                    $new_question['post_parent'] = $matched_id;
+                    Question::save_post( $new_question, true);
+                }
+            }
+
+            foreach( $question['answer_options'] as $answer_option_key => $answer_option ) {
+                $this->answer_option_key = $answer_option_key;
+                $this->save_answer_option_of_existing_version( $answer_option );
+            }
+        }
+    }
+
+    private function save_answer_option_of_existing_version( $answer_option ) {
+        if( 'trash' == $answer_option['post_status'] ) {
+            if( isset( $answer_option['ID'] ) ) {
+                Answer_Option::set_matching_to_trash( $answer_option['ID'] );
+                wp_delete_post( $answer_option['ID'], true );
+            }
+        } else {
+            $answer_option['post_parent'] = $this->question_id;
+
+            if( isset( $answer_option['_kwps_new_sort_order'] ) ) {
+                $this->sort_orders_to_update[] = array( $answer_option['ID'], $answer_option['_kwps_new_sort_order'] );
+                $matching_answer_option_ids = Answer_Option::get_matches_in_other_versions( $answer_option['ID'] );
+                foreach( $matching_answer_option_ids as $answer_option_id ) {
+                    $this->sort_orders_to_update[] = array( $answer_option_id, $answer_option['_kwps_new_sort_order'] );
+                }
+
+                unset( $answer_option['_kwps_new_sort_order'] );
+            }
+
+            Answer_Option::save_post( $answer_option, true );
+
+            if( ! isset($answer_option['ID'] ) ) {
+                $matching_question_ids = Question::get_matches_in_other_versions( $this->question_id );
+                foreach( $matching_question_ids as $matched_id ) {
+                    $new_answer_option = $answer_option;
+                    $new_answer_option['post_parent'] = $matched_id;
+                    Answer_Option::save_post( $new_answer_option, true );
+                }
+            }
+        }
     }
 
     private function update_kwps_sort_order_of_form( $data ) {
+        if( isset( $data['result_profiles'] ) ) {
+            $data['result_profiles'] = $this->update_kwps_sort_order( $data['result_profiles'] );
+        }
+
         $data['question_groups'] = $this->update_kwps_sort_order( $data['question_groups'] );
 
         foreach( $data['question_groups'] as $question_group_key => $question_group ) {
@@ -551,9 +720,9 @@ class Version_Handler {
         }
 
         if( isset( $data['intro_result']['ID'] ) ) {
-            $intro_result_errors = Intro::validate_for_update( $data['intro_result'] );
+            $intro_result_errors = Intro_Result::validate_for_update( $data['intro_result'] );
         } else {
-            $intro_result_errors = Intro::validate_for_insert( $data['intro_result'] );
+            $intro_result_errors = Intro_Result::validate_for_insert( $data['intro_result'] );
         }
         $data['intro_result']['errors'] = $intro_result_errors;
 
@@ -577,6 +746,35 @@ class Version_Handler {
 
         if( sizeof($outro_errors) != 0 ) {
             $data_has_errors = true;
+        }
+
+        if( $answer_options_require_value ) {
+            $set_trashed_result_profiles_to_draft = false;
+
+            $trashed_result_profiles_count = $this->get_trashed_items_count( $data['result_profiles'] );
+
+            if( ( sizeof( $data['result_profiles'] ) - $trashed_result_profiles_count ) < 2 ) {
+                $data_has_errors = true;
+                $test_modus_errors['_kwps_min_result_profiles_per_version'] =
+                    'Minimum 2 result profiles required per version';
+                $set_trashed_result_profiles_to_draft = true;
+            }
+
+            foreach( $data['result_profiles'] as $result_profile_key => $result_profile ) {
+                if( isset( $result_profile['ID'] ) ) {
+                    $result_profile_errors = Result_Profile::validate_for_update( $result_profile );
+                } else {
+                    $result_profile_errors = Result_Profile::validate_for_insert( $result_profile );
+                }
+
+                if( $set_trashed_result_profiles_to_draft && $result_profile['post_status'] == 'trash' ) {
+                    $result_profile_errors['post_status'] = 'Minimum 2 result profiles required per version';
+                    $result_profile['post_status'] = 'draft';
+                    $data['result_profiles'][$result_profile_key]['post_status'] = 'draft';
+                }
+
+                $data['result_profiles'][$result_profile_key]['errors'] = $result_profile_errors;
+            }
         }
 
         $set_trashed_question_groups_to_draft = false;
@@ -716,29 +914,5 @@ class Version_Handler {
         }
 
         return $trashed_items_count;
-    }
-
-
-    private function save_question( $question_group_id, $question ) {
-        $data = array(
-            'post_content' => $question['post_content'],
-            '_kwps_sort_order' => $question['_kwps_sort_order'],
-            'post_parent' => $question_group_id,
-        );
-
-        $question_id = Question::save_post($data, true);
-
-        foreach( $question['answer_options'] as $answer_option ) {
-            $this->save_answer_option( $question_id, $answer_option);
-        }
-    }
-
-    private function save_answer_option( $question_id, $answer_option ) {
-        $data = array(
-            'post_content' => $answer_option['post_content'],
-            '_kwps_sort_order' => $answer_option['_kwps_sort_order'],
-            'post_parent' => $question_id,
-        );
-        $answer_option_id = Answer_Option::save_post($data, true);
     }
 } 

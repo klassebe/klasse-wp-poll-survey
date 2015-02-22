@@ -50,7 +50,7 @@ return array(
             'question_groups' => array(
                 1 => array(
                     'errors' => array(),
-                    '_kwps_sort_order' => 1,
+                    '_kwps_sort_order' => 0,
                     'post_status' => 'draft',
                     'post_title' => '',
                     'post_content' => '',
@@ -59,7 +59,7 @@ return array(
                             'errors' => array(
                                 'post_content' => 'Required',
                             ),
-                            '_kwps_sort_order' => 1,
+                            '_kwps_sort_order' => 0,
                             'post_status' => 'draft',
                             'post_content' => '',
                             'answer_options' => array(
@@ -67,7 +67,7 @@ return array(
                                     'errors' => array(
                                         'post_content' => 'Required',
                                     ),
-                                    '_kwps_sort_order' => 1,
+                                    '_kwps_sort_order' => 0,
                                     'post_content' => '',
                                     'post_status' => 'draft',
                                 ),
@@ -75,7 +75,7 @@ return array(
                                     'errors' => array(
                                         'post_content' => 'Required',
                                     ),
-                                    '_kwps_sort_order' => 2,
+                                    '_kwps_sort_order' => 1,
                                     'post_content' => '',
                                     'post_status' => 'draft',
                                 ),

@@ -1,46 +1,27 @@
 <?php
 
-class Existing_Personality_Test_Version_Handler_Test extends WP_UnitTestCase {
-    protected $test_modus_personality_test;
-    protected $test_collection;
-    protected $existing_version;
+require_once 'kwps-test.php';
 
-    function setUp()
-    {
-        parent::setUp();
+class Existing_Personality_Test_Version_Handler_Test extends Kwps_Test {
 
-        ini_set('xdebug.var_display_max_depth', 25);
-        ini_set('xdebug.var_display_max_children', 256);
-        ini_set('xdebug.var_display_max_data', 2048);
-
-        $this->truncate_tables();
-
-        \kwps_classes\Test_Modus::create_default_test_modi();
-        $personality_tests = get_posts( array(
-                'post_type' => 'kwps_test_modus',
-                'name' => 'kwps-personality-test',
-                'post_status' => 'publish',
-            )
-        );
-
-        $personality_test_modus_id = $personality_tests[0]->ID;
-        $this->test_modus_personality_test = \kwps_classes\Test_Modus::get_as_array( $personality_test_modus_id );
-
-        $this->test_collection = \kwps_classes\Test_Collection::save_post( array(
-            'post_title' => 'Poll collection',
-            'post_parent' => $personality_test_modus_id,
-        ) );
-
-        $test_data = include __DIR__ . '/../form-test-data/existing-version/personality-test/fixture.php';
-
-        $version_handler = new \kwps_classes\Version_Handler();
-        $this->existing_version = $version_handler->save_new_version_form( $test_data );
-
+    function __construct() {
+        parent::__construct();
+        $this->test_modus_name = 'kwps-personality-test';
+        $this->test_data_folder = __DIR__ . '/../form-test-data/existing-version/personality-test/';
     }
 
     function test_validate_remove_answer_option(){
         $this->checkOutPutWithFormTestData( 'removing-answer-option-test.php' );
     }
+
+    function test_validate_remove_result_profile() {
+        $this->checkOutPutWithFormTestData( 'removing-result-profile-test.php' );
+    }
+
+    function test_validate_remove_too_many_result_profiles() {
+        $this->checkOutPutWithFormTestData( 'removing-too-many-result-profiles-test.php' );
+    }
+
 
     function test_validate_remove_too_many_answer_options() {
         $this->checkOutPutWithFormTestData( 'removing-too-many-answer-options-test.php' );
@@ -62,103 +43,52 @@ class Existing_Personality_Test_Version_Handler_Test extends WP_UnitTestCase {
             $this->checkOutPutWithFormTestData( 'add-answer-option-invalid-value.php');
     }
 
-//     test the saving of a personality_test where an answer options is trashed/removed
     function test_save_trashed_answer_option() {
-        $this->checkOutputForSavedVersion( 'save-trashed-answer-option-test.php' );
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['questions'][1]['answer_options'][2]['post_status'] = 'trash';
+
+        $this->check_saved_and_updated_siblings( $input, 'save-trashed-answer-option-test.php' );
     }
 
-    function test_save_trashed_question() {
-        $this->checkOutputForSavedVersion( 'save-trashed-question-test.php' );
+    function test_save_added_answer_option() {
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['questions'][1]['answer_options'][4] = array(
+            '_kwps_sort_order' => 3,
+            'post_content' => 'Answer option 4',
+            'post_status' => 'draft',
+            '_kwps_answer_option_value' => 20,
+//            'post_parent' => 13,
+        );
+
+        $this->check_saved_and_updated_siblings( $input, 'save-added-answer-option-test.php' );
+    }
+
+    function test_save_added_result_profile() {
+        $input = $this->existing_versions[0];
+        $input['result_profiles'][] = array(
+            '_kwps_sort_order' => 3,
+            '_kwps_min_value' => 101,
+            '_kwps_max_value' => 150,
+            'post_title' => 'Result profile 4',
+            'post_status' => 'draft',
+            //            'post_parent' => 5,
+        );
+
+        $this->check_saved_and_updated_siblings( $input, 'save-added-result-profile-test.php');
+    }
+
+    function test_save_trashed_result_profile() {
+        $input = $this->existing_versions[0];
+        $input['result_profiles'][1]['post_status'] = 'trash';
+
+        $this->check_saved_and_updated_siblings( $input, 'save-trashed-result-profile-test.php' );
     }
 
     function test_save_trashed_question_group() {
-        $this->checkOutputForSavedVersion( 'save-trashed-question-group-test.php' );
+        $input = $this->existing_versions[0];
+        $input['question_groups'][2]['post_status'] = 'trash';
+
+        $this->check_saved_and_updated_siblings( $input, 'save-trashed-question-group-test.php' );
     }
-
-    function checkOutputForSavedVersion($file) {
-        $test_data = include __DIR__ . '/../form-test-data/existing-version/personality-test/' . $file;
-        $input = $test_data['input'];
-        $expected_output = $test_data['expected_output'];
-
-        $version_handler = new \kwps_classes\Version_Handler();
-        $output = $version_handler->save_existing_version_form( $input );
-
-        $this->assertTrue( $this->arrays_are_similar( $output, $expected_output['data'] ) );
-
-//         TODO test retrieval from DB as well here
-        $from_db = \kwps_classes\Version::get_with_all_children( $output['ID'] );
-        $this->assertTrue( $this->arrays_are_similar( $expected_output['data'], $from_db ) );
-    }
-
-    function checkOutPutWithFormTestData( $file ){
-        $test_data = include __DIR__ . '/../form-test-data/existing-version/personality-test/' . $file;
-        $input = $test_data['input'];
-        $expected_output = $test_data['expected_output'];
-
-        $version_handler = new \kwps_classes\Version_Handler();
-        $output = $version_handler->validate_existing_version_form( $input );
-
-//        var_dump( $output, $expected_output);
-
-        $this->assertEquals($output['errors'], $expected_output['errors']);
-        $this->assertEquals($output['test_modus_errors'], $expected_output['test_modus_errors']);
-        $this->assertTrue( $this->arrays_are_similar( $output['data'], $expected_output['data'] ) );
-    }
-
-    function tearDown()
-    {
-        parent::tearDown();
-        $this->truncate_tables();
-    }
-
-    function truncate_tables() {
-        global $wpdb;
-
-        $wpdb->query( 'TRUNCATE ' . $wpdb->posts );
-        $wpdb->query( 'TRUNCATE ' . $wpdb->postmeta );
-    }
-
-    /**
-     * Determine if two associative arrays are similar
-     *
-     * Both arrays must have the same indexes with identical values
-     * without respect to key ordering
-     *
-     * @param array $a
-     * @param array $b
-     * @return bool
-     */
-    function arrays_are_similar($a, $b) {
-        if(! is_array( $a) ) {
-            return false;
-        }
-
-        if(! is_array( $b) ) {
-            return false;
-        }
-
-        $sorted_a = $this->sort_array_by_key( $a );
-        $sorted_b = $this->sort_array_by_key( $b );
-
-        if ( $sorted_a === $sorted_b ) {
-            return true;
-        } else {
-            var_dump( $sorted_a, $sorted_b);
-            return false;
-        }
-    }
-
-    function sort_array_by_key( $a ) {
-        ksort( $a );
-
-        foreach( $a as $key => $value ) {
-            if( is_array( $value ) ) {
-                $a[$key] = $this->sort_array_by_key( $value );
-            }
-        }
-
-        return $a;
-    }
-
 }
 

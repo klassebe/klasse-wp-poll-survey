@@ -1,41 +1,14 @@
 <?php
 
-class Existing_Poll_Version_Handler_Test extends WP_UnitTestCase {
-    protected $test_modus_poll;
-    protected $test_collection;
-    protected $existing_version;
+require_once 'kwps-test.php';
 
-    function setUp()
-    {
-        parent::setUp();
+class Existing_Poll_Version_Handler_Test extends Kwps_Test {
 
-        ini_set('xdebug.var_display_max_depth', 25);
-        ini_set('xdebug.var_display_max_children', 256);
-        ini_set('xdebug.var_display_max_data', 2048);
 
-        $this->truncate_tables();
-
-        \kwps_classes\Test_Modus::create_default_test_modi();
-        $polls = get_posts( array(
-                'post_type' => 'kwps_test_modus',
-                'name' => 'kwps-poll',
-                'post_status' => 'publish',
-            )
-        );
-
-        $poll_modus_id = $polls[0]->ID;
-        $this->test_modus_poll = \kwps_classes\Test_Modus::get_as_array( $poll_modus_id );
-
-        $this->test_collection = \kwps_classes\Test_Collection::save_post( array(
-            'post_title' => 'Poll collection',
-            'post_parent' => $poll_modus_id,
-        ) );
-
-        $test_data = include __DIR__ . '/../form-test-data/existing-version/poll/fixture.php';
-
-        $version_handler = new \kwps_classes\Version_Handler();
-        $this->existing_version = $version_handler->save_new_version_form( $test_data );
-
+    function __construct() {
+        parent::__construct();
+        $this->test_modus_name = 'kwps-poll';
+        $this->test_data_folder = __DIR__ . '/../form-test-data/existing-version/poll/';
     }
 
     function test_validate_remove_answer_option(){
@@ -62,89 +35,22 @@ class Existing_Poll_Version_Handler_Test extends WP_UnitTestCase {
         $this->checkOutPutWithFormTestData( 'add-too-many-question-groups-test.php');
     }
 
-    // test the saving of a poll where an answer options is trashed/removed
     function test_save_trashed_answer_option() {
-        $test_data = include __DIR__ . '/../form-test-data/existing-version/poll/save-trashed-answer-option-test.php';
-        $input = $test_data['input'];
-        $expected_output = $test_data['expected_output'];
-
-        $version_handler = new \kwps_classes\Version_Handler();
-        $output = $version_handler->save_existing_version_form( $input );
-
-        $this->assertTrue( $this->arrays_are_similar( $output, $expected_output['data'] ) );
-
-//         TODO test retrieval from DB as well here
-        $from_db = \kwps_classes\Version::get_with_all_children( $output['ID'] );
-        $this->assertTrue( $this->arrays_are_similar( $expected_output['data'], $from_db ) );
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['questions'][1]['answer_options'][2]['post_status'] = 'trash';
+        $this->check_saved_and_updated_siblings($input, 'save-trashed-answer-option-test.php' );
     }
 
-    function checkOutPutWithFormTestData( $file ){
-        $test_data = include __DIR__ . '/../form-test-data/existing-version/poll/' . $file;
-        $input = $test_data['input'];
-        $expected_output = $test_data['expected_output'];
+    function test_save_added_answer_option() {
+        $input = $this->existing_versions[0];
+        $input['question_groups'][1]['questions'][1]['answer_options'][4] = array(
+            '_kwps_sort_order' => 3,
+            'post_content' => 'Answer option 4',
+            'post_status' => 'draft',
+            'post_parent' => 10,
+        );
 
-        $version_handler = new \kwps_classes\Version_Handler();
-        $output = $version_handler->validate_existing_version_form( $input );
-
-        $this->assertEquals($output['errors'], $expected_output['errors']);
-        $this->assertEquals($output['test_modus_errors'], $expected_output['test_modus_errors']);
-        $this->assertTrue( $this->arrays_are_similar( $output['data'], $expected_output['data'] ) );
+        $this->check_saved_and_updated_siblings( $input, 'save-added-answer-option-test.php' );
     }
-
-    function tearDown()
-    {
-        parent::tearDown();
-        $this->truncate_tables();
-    }
-
-    function truncate_tables() {
-        global $wpdb;
-
-        $wpdb->query( 'TRUNCATE ' . $wpdb->posts );
-        $wpdb->query( 'TRUNCATE ' . $wpdb->postmeta );
-    }
-
-    /**
-     * Determine if two associative arrays are similar
-     *
-     * Both arrays must have the same indexes with identical values
-     * without respect to key ordering
-     *
-     * @param array $a
-     * @param array $b
-     * @return bool
-     */
-    function arrays_are_similar($a, $b) {
-        if(! is_array( $a) ) {
-            return false;
-        }
-
-        if(! is_array( $b) ) {
-            return false;
-        }
-
-        $sorted_a = $this->sort_array_by_key( $a );
-        $sorted_b = $this->sort_array_by_key( $b );
-
-        if ( $sorted_a === $sorted_b ) {
-            return true;
-        } else {
-            var_dump( $sorted_a, $sorted_b);
-            return false;
-        }
-    }
-
-    function sort_array_by_key( $a ) {
-        ksort( $a );
-
-        foreach( $a as $key => $value ) {
-            if( is_array( $value ) ) {
-                $a[$key] = $this->sort_array_by_key( $value );
-            }
-        }
-
-        return $a;
-    }
-
 }
 

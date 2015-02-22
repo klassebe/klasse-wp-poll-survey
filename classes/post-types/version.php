@@ -154,12 +154,24 @@ class Version extends Kwps_Post_Type{
             unset( $intro['ID']);
             unset( $intro_result['ID']);
             unset( $outro['ID']);
+            $version['post_title'] =  __( 'Copy of ', 'klasse-wp-poll-survey') . $version['post_title'];
         }
 
 
         $version['intro'] = $intro;
         $version['intro_result'] = $intro_result;
         $version['outro'] = $outro;
+
+        $test_modus = Version::get_test_modus( $id );
+        if( $test_modus['_kwps_answer_options_require_value'] > 0 ) {
+            $result_profiles = Result_Profile::get_all_by_post_parent( $id );
+            foreach( $result_profiles as $result_profile ) {
+                if( $load_as_new ) {
+                    unset( $result_profile['ID'] );
+                }
+                $version['result_profiles'][$result_profile['_kwps_sort_order']] = $result_profile;
+            }
+        }
 
         return $version;
     }
@@ -500,4 +512,6 @@ class Version extends Kwps_Post_Type{
 <?php
         return ob_get_clean();
     }
+
+
 }
