@@ -28,6 +28,7 @@ class Result_Profile extends Kwps_Post_Type {
     public static $form_fields = array(
         'ID',
         'post_title',
+        'post_content',
         'post_parent',
         'post_status',
         '_kwps_sort_order',
