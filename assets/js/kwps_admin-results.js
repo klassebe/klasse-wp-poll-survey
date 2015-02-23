@@ -24,25 +24,29 @@ jQuery(function ($){
 	function getDataAndShowPieChart (version) {
 		elem.text('loading ...');
 		$.ajax({
-			type: "POST",
-			url: url,
-			data: JSON.stringify({ID:version,output_type:'pie-chart-per-question'}),
-			success: function (data) {
-				if (data) {
-					showPieChart(data);
-				} else {
-					elem.empty();
-				}
-			},
-			error: function (data) {
-				var errorText = errorElement.clone();
-				errorText.find('span').html(data.responseText);
-				elem.html(errorText);
-			},
-			dataType: "json",
-			contentType: "application/json",
-			processData: false
-		});
+	        type: "POST",
+	        url: url,
+	        data: JSON.stringify({ID:version,output_type:'pie-chart-per-question'}),
+	        success: function (data) {
+	        	if (data) {
+	        		showPieChart(data);
+	        	} else {
+	        		elem.empty();
+                    var errorText = errorElement.clone();
+                    errorText.find('span').html("No entries yet.");
+                    elem.html(errorText);
+
+                }
+	        },
+	        error: function (data) {
+	        	var errorText = errorElement.clone();
+	        	errorText.find('span').html(data.responseText);
+	        	elem.html(errorText);
+	        },
+	        dataType: "json",
+	        contentType: "application/json",
+	        processData: false
+	    });
 	}
 
 	function showPieChart (data) {
@@ -52,6 +56,7 @@ jQuery(function ($){
 
 	init();
 });
+
 /*
  Highcharts JS v4.0.4 (2014-09-02)
 

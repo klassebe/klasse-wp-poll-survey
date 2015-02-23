@@ -8,7 +8,7 @@ jQuery(function ($){
 		var value = getValueOfSelectBox($(event.currentTarget));
 		console.info('Changed select box to version ' + value);
 		getDataAndShowPieChart(value);
-	})
+	});
 
 	function init () {
 		var value = getValueOfSelectBox();
@@ -55,4 +55,4 @@ jQuery(function ($){
 	}
 
 	init();
-})
+});

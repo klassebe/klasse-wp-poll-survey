@@ -230,7 +230,7 @@ jQuery(document).ready(function($) {
 
   function showEditor(event) {
     event.preventDefault();
-    var kwpsContent = $(this).closest('.kwps-content')
+    var kwpsContent = $(this).closest('.kwps-content');
     kwpsContent.children('.kwps-content-view').hide();
     kwpsContent.children('.kwps-content-editor').show();
   }

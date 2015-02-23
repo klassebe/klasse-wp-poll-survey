@@ -40,7 +40,7 @@ button.kwps-remove-answer-option {
   background-color: #fff;
 }
 .kwps-single,
-.kwps-question_groups,
+.kwps-multi,
 .kwps-box {
   position: relative;
   min-width: 255px;
@@ -56,7 +56,7 @@ button.kwps-remove-answer-option {
   border-color: red;
 }
 .kwps-single h3,
-.kwps-question_groups h3 {
+.kwps-multi h3 {
   font-size: 14px;
   padding: 8px 12px;
   margin: 0;
@@ -85,12 +85,12 @@ button.kwps-remove-answer-option {
   border-width: 3px;
 }
 .kwps-single .inside,
-.kwps-question_groups .inside {
+.kwps-multi .inside {
   padding: 6px 12px 12px;
   line-height: 1.4em;
   font-size: 13px;
 }
-.kwps-question_groups > .inside {
+.kwps-multi > .inside {
   background-color: #fff6ec;
 }
 .kwps-questions > .inside {
