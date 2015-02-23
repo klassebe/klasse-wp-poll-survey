@@ -263,7 +263,13 @@ jQuery(document).ready(function($) {
          * Used for question_groups and nested
          */
       } else if(div.hasClass('kwps-multi')) {
-        formData.question_groups = [];
+          if(div.hasClass('kwps-question_groups')) {
+            formData.question_groups = [];
+          }
+          
+          if(div.hasClass('kwps-result_profiles')) {
+            formData.result_profiles = [];
+          }
 
         /**
          * Loop over question_groups
@@ -333,8 +339,14 @@ jQuery(document).ready(function($) {
               inputData.questions.push(questionData);
             });
           });
-
-          formData.question_groups.push(inputData);
+          
+          if(div.hasClass('kwps-question_groups')) {
+            formData.question_groups.push(inputData);
+          }
+          
+          if(div.hasClass('kwps-result_profiles')) {
+            formData.result_profiles.push(inputData);
+          }
 
         });
       }
