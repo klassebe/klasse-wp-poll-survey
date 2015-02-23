@@ -393,18 +393,24 @@ class Version extends Kwps_Post_Type{
 	    $data['question_groups'] = Question_Group::get_all_by_post_parent($id);
 
         $allowed_to_fill_out_test = false;
+        $show_deleted_notice = false;
 
-        foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
-		    $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
+        if( 'trash' == $version['post_status'] ) {
+            $show_deleted_notice = true;
+        } else {
+            foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
+                $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
 
-		    foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
-			    if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
-				    $data['settings']['first_question_id_allowed'] = $question['ID'];
-				    $allowed_to_fill_out_test = true;
-			    }
-			    $data['question_groups'][$questionGroupKey]['questions'][$questionKey]['answer_options'] = Answer_Option::get_all_by_post_parent($question['ID']);
-		    }
-	    }
+                foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
+                    if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
+                        $data['settings']['first_question_id_allowed'] = $question['ID'];
+                        $allowed_to_fill_out_test = true;
+                    }
+                    $data['question_groups'][$questionGroupKey]['questions'][$questionKey]['answer_options'] = Answer_Option::get_all_by_post_parent($question['ID']);
+                }
+            }
+        }
+
 
         Session::set_version_info($id);
         ob_start();
@@ -413,9 +419,11 @@ class Version extends Kwps_Post_Type{
                 <input type="hidden" class="kwps-version-id" value="<?php echo $version['ID']?>">
                 <input type="hidden" class="admin-url" value="<?php echo admin_url(); ?>">
 <?php
-        if( in_array($test_collection['post_status'], array('locked', 'trash')) || !$allowed_to_fill_out_test) {
+        if( $show_deleted_notice ) {
+            // covered by JS
+        }
+        elseif( ( in_array($test_collection['post_status'], array('locked', 'trash')) || !$allowed_to_fill_out_test ) ) {
             ?>
-
                 <?php if(!empty($data['intro_result'])): ?>
                     <div class="kwps-page kwps-intro-result">
                         <div class="kwps-content">
