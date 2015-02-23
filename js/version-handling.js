@@ -127,6 +127,12 @@ jQuery(document).ready(function($) {
     var divToClone = $(this).prevAll(':visible:first');
     var clonedDiv = divToClone.clone();
     clonedDiv.find("input[name='ID']").remove();
+    var min = clonedDiv.find('input[name="_kwps_min_value"]');
+    var max = clonedDiv.find('input[name="_kwps_max_value"]');
+    var maxValue = parseInt(max.prop('value'));
+    min.prop('value', maxValue+1);
+    max.prop('value', maxValue+10);
+    clonedDiv.find('.kwps-result_profile_head_title').text('Result profile ' + (maxValue+1) + ' - ' + (maxValue+10));
     clonedDiv.insertAfter(divToClone);
     $('#version-save').click();
   }
@@ -452,11 +458,17 @@ jQuery(document).ready(function($) {
     });
 
     $('.kwps-result_profiles').each(function() {
-      var resultProfileCount = $(this).find('.kwps-result_profile:visible').length;
+      var resultProfileCount = $(this).find('.kwps-result_profile:visible');
 
-      if(resultProfileCount > 2) {
+      if(resultProfileCount.length > 2) {
         $(this).find('.kwps-result_profile').children('h3').children('.kwps-remove-item').removeAttr('disabled');
       }
+
+      resultProfileCount.each(function (index, element) {
+        var min = $(element).find('input[name="_kwps_min_value"]').prop('value');
+        var max = $(element).find('input[name="_kwps_max_value"]').prop('value');
+        $(element).find('.kwps-result_profile_head_title').text('Result profile ' + min + ' - ' + max);
+      });
 
     });
 

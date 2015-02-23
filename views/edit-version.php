@@ -369,8 +369,9 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                         <?php foreach( $version['result_profiles'] as $result_profile_key => $result_profile ): ?>
                         <div id="kwps-result_profile-<?php echo $result_profile['_kwps_sort_order'] ?>" class="kwps-result_profile kwps-box <?php if( isset( $result_profile['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                             <h3 class="collapsables">
-                                <span class="kwps-collapse dashicons dashicons-arrow-right">
-                                    </span>Result profile <?php echo $result_profile['_kwps_min_value'] ;?> - <?php echo $result_profile['_kwps_max_value'] ;?><span>
+                                <span class="kwps-collapse dashicons dashicons-arrow-right"></span>
+                                <span class="kwps-result_profile_head_title">
+                                    Result profile<!--  <?php echo $result_profile['_kwps_min_value'] ;?> - <?php echo $result_profile['_kwps_max_value'] ;?> -->
                                 </span> 
                                 <button class="kwps-remove-item button button-small">remove</button>
                             </h3>
