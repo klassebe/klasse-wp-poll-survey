@@ -2,7 +2,7 @@
 $form_action = '?page=' . $_REQUEST['page'] . '&section=edit_version';
 
 if( isset( $_REQUEST['id'] ) ) {
-    $test_modus = \kwps_classes\Test_Collection::get_test_modus( $_REQUEST['id'] );
+    $test_modus = \kwps_classes\Version::get_test_modus( $_REQUEST['id'] );
     if( isset( $_REQUEST['update'] ) && 'true' == $_REQUEST['update'] ) {
         $version = $version_data;
     } else {
@@ -11,7 +11,7 @@ if( isset( $_REQUEST['id'] ) ) {
     $form_action .= '&id=' . $_REQUEST['id'] . '&update=true';
 } else {
     if( isset( $version_data ) ) {
-        $test_modus = \kwps_classes\Test_Collection::get_test_modus( $version_data['ID'] );
+        $test_modus = \kwps_classes\Test_Collection::get_test_modus( $version_data['post_parent'] );
 
         $version = $version_data;
     } else {
@@ -89,7 +89,6 @@ if( isset( $_REQUEST['id'] ) ) {
         }
     }
 }
-
 $required_fields_version = \kwps_classes\Version::$required_fields;
 $required_fields_intro = \kwps_classes\Intro::$required_fields;
 $required_fields_outro = \kwps_classes\Outro::$required_fields;
