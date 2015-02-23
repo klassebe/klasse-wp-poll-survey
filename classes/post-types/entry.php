@@ -19,6 +19,17 @@ class Entry extends Kwps_Post_Type{
         'check_group_exists'
     );
 
+    public static $form_fields = array(
+        'ID',
+        'post_parent',
+        'post_type',
+        '_kwps_sort_order',
+        '_kwps_cookie_value',
+        '_kwps_ip_address',
+        '_kwps_session',
+        '_kwps_group',
+    );
+
     public static $meta_data_fields = array(
         '_kwps_sort_order',
         '_kwps_cookie_value',

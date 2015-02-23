@@ -58,8 +58,8 @@ add_action( 'wp_ajax_nopriv_kwps_get_result_of_version', array('\kwps_classes\re
 //add_action( 'wp_ajax_kwps_get_result_of_test_collection',
 //    array('\kwps_classes\result','get_result_of_version_from_request'));
 //
-//add_action( 'wp_ajax_kwps_get_result_profile', array('\kwps_classes\result_profile','ajax_get_by_entry_id'));
-//add_action( 'wp_ajax_nopriv_kwps_get_result_profile', array('\kwps_classes\result_profile','ajax_get_by_entry_id'));
+add_action( 'wp_ajax_kwps_get_result_profile', array('\kwps_classes\result_profile','ajax_get_by_entry_id'));
+add_action( 'wp_ajax_nopriv_kwps_get_result_profile', array('\kwps_classes\result_profile','ajax_get_by_entry_id'));
 //
 add_action( 'wp_ajax_kwps_get_result_page', array('\kwps_classes\overlay','get_result_page') );
 //add_action( 'wp_ajax_kwps_get_video_page', array('\kwps_classes\overlay','get_video_page') );
