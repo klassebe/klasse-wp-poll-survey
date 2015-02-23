@@ -90,7 +90,7 @@ button.kwps-remove-answer-option {
   line-height: 1.4em;
   font-size: 13px;
 }
-.kwps-multi > .inside {
+.kwps-question_groups > .inside {
   background-color: #fff6ec;
 }
 .kwps-questions > .inside {
@@ -98,4 +98,11 @@ button.kwps-remove-answer-option {
 }
 .kwps-answer_options > .inside {
   background-color: #ecf6ff;
+}
+.kwps-result_profiles > .inside {
+  background-color: #FFFDEC;
+}
+.kwps-result_profiles > .inside .kwps-result_profile > h3 {
+  border-color: #FFE800;
+  border-width: 3px;
 }

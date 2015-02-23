@@ -364,11 +364,16 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
         </div>
         <?php if( isset( $version['result_profiles'] ) ): ?>
                 <div class="kwps kwps-multi kwps-result_profiles" id="kwps-result_profiles">
-                    <h3>Result Profiles <?php if( in_array( 'post_content', $required_fields_result_profile ) ) echo '<span class="kwps-required">*</span>' ?></h3>
+                    <h3>Result profiles <?php if( in_array( 'post_content', $required_fields_result_profile ) ) echo '<span class="kwps-required">*</span>' ?></h3>
                     <div class="inside">
                         <?php foreach( $version['result_profiles'] as $result_profile_key => $result_profile ): ?>
                         <div id="kwps-result_profile-<?php echo $result_profile['_kwps_sort_order'] ?>" class="kwps-result_profile kwps-box <?php if( isset( $result_profile['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
-                            <h3>result Profile</h3>
+                            <h3 class="collapsables">
+                                <span class="kwps-collapse dashicons dashicons-arrow-right">
+                                    </span>Result profile <?php echo $result_profile['_kwps_min_value'] ;?> - <?php echo $result_profile['_kwps_max_value'] ;?><span>
+                                </span> 
+                                <button class="kwps-remove-item button button-small">remove</button>
+                            </h3>
                             <div class="inside">
                                 <?php if( isset( $result_profile['ID'] ) ): ?>
                                     <input type="hidden" name="ID" value="<?php echo $result_profile['ID'] ?>"  class="kwps-question_group_input">
@@ -385,7 +390,9 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                     </div>
                                 </div>
                                 <div>
+                                    <label>Score van</label>
                                     <input type="text" name="_kwps_min_value" value="<?php echo $result_profile['_kwps_min_value'] ?>" class="kwps-question_group_input">
+                                    <label>tot</label>
                                     <input type="text" name="_kwps_max_value" value="<?php echo $result_profile['_kwps_max_value'] ?>" class="kwps-question_group_input">
                                 </div>
                                 <textarea style="display: none" name="post_content" class="kwps-question_group_input"><?php echo (isset($result_profile['post_content']))? $result_profile['post_content'] : "" ?></textarea>
@@ -403,6 +410,9 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                             </div>
                         </div>
                         <?php endforeach; ?>
+                        <button class="kwps-create-item button" data-kwps-max="result_profiles">
+                            + profile toevoegen
+                        </button>
                     </div>
                 </div>
         <?php endif;?>
