@@ -171,7 +171,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                 <?php if( isset( $intro_result['ID'] ) ): ?>
                     <input type="hidden" name="ID" value="<?php echo $intro_result['ID'];?>" class="kwps-single_input">
                 <?php endif;?>
-                <a class="button" id="kwps-add-intro-result-button">Add result</a>
+                <a class="button kwps-add-result-button intro-result-button">Add result</a>
                 <input type="hidden" name="post_status" value="<?php if( isset( $intro_result['post_status'] ) ) echo $intro_result['post_status'];?>" class="kwps-single_input">
                 <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($intro_result['post_content']))? $intro_result['post_content'] : "Intro Result" ?></textarea>
 
@@ -343,7 +343,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                         <p class=""><?php echo $outro['errors']['post_content'] ?></p>
                 </div>
                 <?php endif;?>
-                <a class="button" id="kwps-add-result-button">Add result</a>
+                <a class="button kwps-add-result-button outro-result-button">Add result</a>
                 <?php if( isset( $outro['ID'] ) ): ?>
                     <input type="hidden" name="ID" value="<?php echo $outro['ID'];?>" class="kwps-single_input">
                 <?php endif;?>

@@ -92,7 +92,7 @@ include_once 'enqueue-scripts.php';
 add_action('admin_init', 'kwps_register_styles');
 
 function kwps_register_styles(){
-    wp_register_style( 'klasse_wp_poll_survey_plugin_admin_styles',  plugins_url('admin.css', __DIR__ . '/css/admin.css')  );
+    wp_register_style( 'klasse_wp_poll_survey_plugin_admin_styles',  plugins_url('kwps_admin.css', __DIR__ . '/assets/css/kwps_admin.css')  );
 }
 
 add_action('admin_menu', 'kwps_add_plugin_admin_menu');

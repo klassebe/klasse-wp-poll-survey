@@ -2,18 +2,17 @@
   "use strict";
 
 
-  function GetURLParameter(sParam) {
-   var sPageURL = window.location.search.substring(1);
-   var sURLVariables = sPageURL.split('&');
-   for (var i = 0; i < sURLVariables.length; i++)
-   {
-     var sParameterName = sURLVariables[i].split('=');
-     if (sParameterName[0] === sParam)
-     {
-       return sParameterName[1];
-     }
-   }
- }
+  var getURLParameter = function (sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName;
+    for (var i = 0, l = sURLVariables.length; i < l; i++) {
+      sParameterName = sURLVariables[i].split('=');
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1];
+      }
+    }
+  };
 
  jQuery(function($) {
    $.fn.serializeObject = function(){
@@ -195,7 +194,7 @@
     /* CLICK EVENTS */
     elem.find('.kwps-page').on('click', '.kwps-next' , function () {
       var that = $(this);
-      var _kwps_group = GetURLParameter('_kwps_group');
+      var _kwps_group = getURLParameter('_kwps_group');
       // This is for the intro page, has no radio buttons but needs to go to next page
       var noRadioButtonsOnPage = that.closest('.kwps-page').find('input[type="radio"]').length === 0;
 
@@ -291,7 +290,7 @@ $.fn.groupingPlugin = function ( options ) {
     } else {
       console.log('enter data');
     }
-  })
+  });
 };
 
 $.fn.groupResultPlugin = function ( options ) {
@@ -318,8 +317,8 @@ $.fn.groupResultPlugin = function ( options ) {
 
 
     var requestData = {
-      _kwps_result_hash: GetURLParameter('_kwps_result_hash'),
-      ID: GetURLParameter('test_collection'),
+      _kwps_result_hash: getURLParameter('_kwps_result_hash'),
+      ID: getURLParameter('test_collection'),
       output_type: searchClass
     };
 

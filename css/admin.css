@@ -437,7 +437,7 @@ button.kwps-remove-answer-option {
   background-color: #fff;
 }
 
-.kwps-single, .kwps-multi, .kwps-box {
+.kwps-single, .kwps-question_groups, .kwps-box {
   position: relative;
   min-width: 255px;
   border: 1px solid #e5e5e5;
@@ -453,7 +453,7 @@ button.kwps-remove-answer-option {
   border-color: red;
 }
 
-.kwps-single h3, .kwps-multi h3{
+.kwps-single h3, .kwps-question_groups h3{
   font-size: 14px;
   padding: 8px 12px;
   margin: 0;
@@ -484,7 +484,7 @@ button.kwps-remove-answer-option {
   border-width: 3px;
 }
 
-.kwps-single .inside, .kwps-multi .inside{
+.kwps-single .inside, .kwps-question_groups .inside{
   padding: 6px 12px 12px;
   line-height: 1.4em;
   font-size: 13px;
@@ -501,5 +501,5 @@ button.kwps-remove-answer-option {
 }
 
 .kwps-result_profiles > .inside {
-  background-color: #FDF5DF;
+    background-color: #FDF5DF;
 }
