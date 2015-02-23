@@ -32,7 +32,11 @@ jQuery(function ($){
 	        		showPieChart(data);
 	        	} else {
 	        		elem.empty();
-	        	}
+                    var errorText = errorElement.clone();
+                    errorText.find('span').html("No entries yet.");
+                    elem.html(errorText);
+
+                }
 	        },
 	        error: function (data) {
 	        	var errorText = errorElement.clone();

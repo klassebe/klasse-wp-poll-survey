@@ -42,19 +42,23 @@ class Pie_Chart extends Bar_Chart
 
         $pie_data = array();
 
-        foreach($entry_totals_per_answer_option as $answer_option_info){
-            $percentage = $answer_option_info[1]/$total_entries*100;
-            $pie_data[] = array( $answer_option_info[0] , $percentage );
-        }
-        // samenvoegen van answer option met percentage, array per regel
-        // [['answer option', 'percentage'], ['answer option', 'percentage'], ...]
+        if( $total_entries != 0 ) {
+            foreach($entry_totals_per_answer_option as $answer_option_info){
+                $percentage = $answer_option_info[1]/$total_entries*100;
+                $pie_data[] = array( $answer_option_info[0] , $percentage );
+            }
+            // samenvoegen van answer option met percentage, array per regel
+            // [['answer option', 'percentage'], ['answer option', 'percentage'], ...]
 
 
-        // waar gaat version naartoe?
+            // waar gaat version naartoe?
 //        $version = Entry::get_version($request_data['ID']);
 //            $pie_chart = static::get_chart($question, $pie_data);
-        $data = array( $question, $pie_data );
-        $pie_chart = static::get_chart($data);
+            $data = array( $question, $pie_data );
+            $pie_chart = static::get_chart($data);
+        } else {
+            $pie_chart = null;
+        }
 
         return $pie_chart;
     }
