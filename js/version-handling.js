@@ -451,6 +451,15 @@ jQuery(document).ready(function($) {
       });
     });
 
+    $('.kwps-result_profiles').each(function() {
+      var resultProfileCount = $(this).find('.kwps-result_profile:visible').length;
+
+      if(resultProfileCount > 2) {
+        $(this).find('.kwps-result_profile').children('h3').children('.kwps-remove-item').removeAttr('disabled');
+      }
+
+    });
+
     $('.kwps-create-item').attr('disabled','disabled');
 
     $('.kwps-create-item').each(function() {
@@ -473,6 +482,8 @@ jQuery(document).ready(function($) {
         if((max > 0 && max < count) || max < 0) {
           $(this).removeAttr('disabled');
         }
+      } else if (name === "result_profiles" ) {
+        $(this).removeAttr('disabled');
       }
     });
   }
