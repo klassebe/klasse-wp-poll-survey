@@ -14,7 +14,7 @@
  * Plugin Name:       Klasse WordPress Poll & Survey
  * Plugin URI:        @TODO
  * Description:       Embed polls & surveys on your website
- * Version:           0.9.5
+ * Version:           0.9.6
  * Author:            Toon - Klasse
  * Author URI:        http://klasse.be
  * Text Domain:       klasse-wp-poll-survey
