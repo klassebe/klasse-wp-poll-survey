@@ -293,8 +293,8 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
 
 
         if( $post_id != 0 ){
-            foreach($post_data as $field => $value){
-                if( strpos($field, 'kwps') ) {
+            foreach($post_data as $field => $value ){
+                if( strpos($field, 'kwps') && '_kwps_new_sort_order' != $field ) {
                     update_post_meta($post_id, $field, $value);
                 }
             }
