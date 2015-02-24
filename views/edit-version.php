@@ -383,6 +383,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                     <input type="hidden" name="ID" value="<?php echo $result_profile['ID'] ?>"  class="kwps-question_group_input">
                                 <?php endif;?>
                                 <input type="hidden" name="post_status" value="<?php echo $result_profile['post_status'] ?>"  class="kwps-question_group_input">
+                                <input type="hidden" name="_kwps_sort_order" value="<?php echo $result_profile['_kwps_sort_order'] ?>"  class="kwps-question_group_input">
                                 <div class="titlediv">
                                     <div class="titlewrap">
                                         <input
