@@ -308,7 +308,7 @@ jQuery(document).ready(function($) {
           if(div.hasClass('kwps-question_groups')) {
             formData.question_groups = [];
           }
-          
+
           if(div.hasClass('kwps-result_profiles')) {
             formData.result_profiles = [];
           }
@@ -330,6 +330,9 @@ jQuery(document).ready(function($) {
             var inputName = input.attr('name');
             inputData[inputName] = input.val();
           });
+          if ( inputData._kwps_new_sort_order == inputData._kwps_sort_order ) {
+            delete inputData._kwps_new_sort_order;
+          }
 
           $(this).children('.inside').children('.kwps').each(function(j) {
             if(!inputData.questions) {
@@ -352,6 +355,9 @@ jQuery(document).ready(function($) {
                 var inputName = input.attr('name');
                 questionData[inputName] = input.val();
               });
+              if ( questionData._kwps_new_sort_order == questionData._kwps_sort_order ) {
+                delete questionData._kwps_new_sort_order;
+              }
 
               $(this).find('.kwps-answer_options').each(function() {
                 if(!questionData.answer_options) {
@@ -375,6 +381,9 @@ jQuery(document).ready(function($) {
 
                     answerOptionData[inputName] = input.val();
                   });
+                  if ( answerOptionData._kwps_new_sort_order == answerOptionData._kwps_sort_order ) {
+                    delete answerOptionData._kwps_new_sort_order;
+                  }
                   questionData.answer_options.push(answerOptionData);
                 });
               });
