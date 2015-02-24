@@ -158,7 +158,8 @@ jQuery(document).ready(function($) {
     var divToSwitch = divToMove.next();
     divToMove.insertAfter(divToSwitch);
 
-    updateUi();
+    // updateUi();
+    $('#version-save').click();
   }
 
   function moveUp(event) {
@@ -168,7 +169,8 @@ jQuery(document).ready(function($) {
     var divToSwitch = divToMove.prev();
     divToMove.insertBefore(divToSwitch);
 
-    updateUi();
+    // updateUi();
+    $('#version-save').click();
   }
 
   function collapse(event, id) {
@@ -308,7 +310,7 @@ jQuery(document).ready(function($) {
          */
         div.children('div.inside').children('div').each(function(questionGroupsI) {
           var inputData = {
-            _kwps_sort_order: questionGroupsI
+            _kwps_new_sort_order: questionGroupsI
           };
           var inputs = $(this).find('input.kwps-question_group_input, textarea.kwps-question_group_input');
 
@@ -331,7 +333,7 @@ jQuery(document).ready(function($) {
              */
             $(this).find('.kwps-question').each(function(questionsI) {
               var questionData = {
-                _kwps_sort_order: questionsI
+                _kwps_new_sort_order: questionsI
               };
 
               /**
@@ -353,7 +355,7 @@ jQuery(document).ready(function($) {
                  */
                 $(this).children('.inside').find('div.kwps-answer_option').each(function(answerOptionI) {
                   var answerOptionData = {
-                    _kwps_sort_order: answerOptionI
+                    _kwps_new_sort_order: answerOptionI
                   };
 
                   /**
@@ -404,13 +406,13 @@ jQuery(document).ready(function($) {
 
       $(this).find('.kwps-question_group:visible').each(function(questionGroupI) {
         if(questionGroupI < questionGroupsCount-1) {
-          $(this).find('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
         }
       });
 
       $(this).find('.kwps-question_group:visible').each(function(questionGroupI) {
         if(questionGroupI > 0) {
-          $(this).find('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
         }
       });
 
@@ -425,13 +427,13 @@ jQuery(document).ready(function($) {
 
       $(this).find('.kwps-question:visible').each(function(questionI) {
         if(questionI < questionsCount-1) {
-          $(this).find('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
         }
       });
 
       $(this).find('.kwps-question:visible').each(function(questionI) {
         if(questionI > 0) {
-          $(this).find('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
         }
       });
     });
@@ -446,13 +448,13 @@ jQuery(document).ready(function($) {
 
       $(this).find('.kwps-answer_option:visible').each(function(answerOptionI) {
         if(answerOptionI < answerOptionCount-1) {
-          $(this).find('h3').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
         }
       });
 
       $(this).find('.kwps-answer_option:visible').each(function(answerOptionI) {
         if(answerOptionI > 0) {
-          $(this).find('h3').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
         }
       });
     });

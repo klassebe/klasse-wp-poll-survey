@@ -203,6 +203,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                             <?php if( isset ($question_group['ID'] ) ): ?>
                                 <input type="hidden" name="ID" value="<?php echo $question_group['ID'] ?>" class="kwps-question_group_input"/>
                             <?php endif;?>
+                            <input type="hidden" name="_kwps_sort_order" value="<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question_group_input">
                             <input type="hidden" name="post_status" value="<?php echo $question_group['post_status'] ?>" class="kwps-question_group_input"/>
                             <div class="titlediv">
                                 <div class="titlewrap">
@@ -251,6 +252,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                     name="post_status" 
                                                     value="<?php echo $question['post_status'];?>" class="kwps-question_input" 
                                                 />
+                                                <input type="hidden" name="_kwps_sort_order" value="<?php echo $question['_kwps_sort_order'] ?>" class="kwps-question_input">
                                                 <textarea 
                                                     style="display: none" 
                                                     name="post_content" 
@@ -290,6 +292,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                                         />
                                                                     <?php endif;?>
                                                                     <input type="hidden" name="post_status" value="<?php echo $answer_option['post_status']; ?>" class="kwps-answer_input"/>
+                                                                    <input type="hidden" name="_kwps_sort_order" value="<?php echo $question['_kwps_sort_order'] ?>" class="kwps-answer_input">
                                                                     <?php if( $test_modus['_kwps_answer_options_require_value'] > 0 ): ?>
                                                                         <div>
                                                                             <input type="text" name="_kwps_answer_option_value" value="<?php echo $answer_option['_kwps_answer_option_value'];?>" class="kwps-answer_input">
