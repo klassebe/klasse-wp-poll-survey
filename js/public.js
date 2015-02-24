@@ -162,7 +162,7 @@
           if (data[0] && data[0].message) {
             elem.find('.'+entryData.output_type).html(data[0].message);
           } else {
-            elem.find('.'+entryData.output_type).html(data.post_content);
+            elem.find('.'+entryData.output_type).html('<h3>' + data.post_title + '</h3><p>' + data.post_content + '</p>');
           }
         },
         async: false
