@@ -127,12 +127,16 @@ jQuery(document).ready(function($) {
     var divToClone = $(this).prevAll(':visible:first');
     var clonedDiv = divToClone.clone();
     clonedDiv.find("input[name='ID']").remove();
-    var min = clonedDiv.find('input[name="_kwps_min_value"]');
-    var max = clonedDiv.find('input[name="_kwps_max_value"]');
-    var maxValue = parseInt(max.prop('value'));
-    min.prop('value', maxValue+1);
-    max.prop('value', maxValue+10);
-    clonedDiv.find('.kwps-result_profile_head_title').text('Result profile ' + (maxValue+1) + ' - ' + (maxValue+10));
+    if ( clonedDiv.hasClass('kwps-result_profile') ) {
+      var min = clonedDiv.find('input[name="_kwps_min_value"]');
+      var max = clonedDiv.find('input[name="_kwps_max_value"]');
+      var maxValue = parseInt(max.prop('value'));
+      min.prop('value', maxValue+1);
+      max.prop('value', maxValue+10);
+      clonedDiv.find('.kwps-result_profile_head_title').text('Result profile ' + (maxValue+1) + ' - ' + (maxValue+10));
+    }
+    var sortOrderInput = clonedDiv.find('input[name="_kwps_sort_order"]');
+    sortOrderInput.val(parseInt(sortOrderInput.val())+1);
     clonedDiv.insertAfter(divToClone);
     $('#version-save').click();
   }
@@ -388,6 +392,7 @@ jQuery(document).ready(function($) {
 
     var input = $("<input>").attr('type', 'hidden').attr('name', 'formattedData').val(JSON.stringify(formData));
     $('form').append($(input));
+    console.log(formData);
   }
 
   function updateUi() {
