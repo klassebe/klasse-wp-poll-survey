@@ -136,7 +136,7 @@ jQuery(document).ready(function($) {
       max.prop('value', maxValue+10);
       clonedDiv.find('.kwps-result_profile_head_title').text('Result profile ' + (maxValue+1) + ' - ' + (maxValue+10));
     }
-    var sortOrderInput = clonedDiv.find('input[name="_kwps_sort_order"]');
+    var sortOrderInput = clonedDiv.find('input[name="_kwps_sort_order"]:first');
     sortOrderInput.val(parseInt(sortOrderInput.val())+1);
     clonedDiv.insertAfter(divToClone);
     $('#version-save').click();
@@ -150,7 +150,7 @@ jQuery(document).ready(function($) {
     if( divToHide.find("input[name='ID']").val() === '' ) {
         divToHide.remove();
     } else {
-        divToHide.find("input[name='post_status']").val('trash');
+        divToHide.find("input[name='post_status']:first").val('trash');
         divToHide.hide();
     }
     $('#version-save').click();
