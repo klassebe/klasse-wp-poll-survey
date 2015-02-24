@@ -146,6 +146,9 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                 <?php if( isset( $intro['ID'] ) ): ?>
                     <input type="hidden" name="ID" value="<?php echo $intro['ID'];?>" class="kwps-single_input">
                 <?php endif;?>
+                <?php if( isset( $intro['post_parent'] ) ): ?>
+                    <input type="hidden" name="post_parent" value="<?php echo $intro['post_parent'];?>" class="kwps-single_input">
+                <?php endif;?>
                 <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>" class="kwps-single_input">
 
                 <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
@@ -169,6 +172,9 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
             <div class="inside">
                 <?php if( isset( $intro_result['ID'] ) ): ?>
                     <input type="hidden" name="ID" value="<?php echo $intro_result['ID'];?>" class="kwps-single_input">
+                <?php endif;?>
+                <?php if( isset( $intro_result['post_parent'] ) ): ?>
+                    <input type="hidden" name="post_parent" value="<?php echo $intro_result['post_parent'];?>" class="kwps-single_input">
                 <?php endif;?>
                 <a class="button kwps-add-result-button intro-result-button">Add result</a>
                 <input type="hidden" name="post_status" value="<?php if( isset( $intro_result['post_status'] ) ) echo $intro_result['post_status'];?>" class="kwps-single_input">
@@ -205,6 +211,9 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                             <?php endif;?>
                             <input type="hidden" name="_kwps_sort_order" value="<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question_group_input">
                             <input type="hidden" name="post_status" value="<?php echo $question_group['post_status'] ?>" class="kwps-question_group_input"/>
+                            <?php if( isset( $question_group['post_parent'] ) ) : ?>
+                                <input type="hidden" name="post_parent" value="<?php echo $question_group['post_parent']; ?>" class="kwps-single_input">
+                            <?php endif;?>
                             <div class="titlediv">
                                 <div class="titlewrap">
                                     <input 
@@ -253,12 +262,10 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                     value="<?php echo $question['post_status'];?>" class="kwps-question_input" 
                                                 />
                                                 <input type="hidden" name="_kwps_sort_order" value="<?php echo $question['_kwps_sort_order'] ?>" class="kwps-question_input">
-                                                <textarea 
-                                                    style="display: none" 
-                                                    name="post_content" 
-                                                    class="kwps-question_input">
-                                                    <?php echo (isset($question['post_content']))? $question['post_content'] : "Question " . ($question_key+1) ?>
-                                                </textarea>
+                                                <?php if( isset( $question['post_parent'] ) ) : ?>
+                                                    <input type="hidden" name="post_parent" value="<?php echo $question['post_parent']; ?>" class="kwps-single_input">
+                                                <?php endif; ?>
+                                                <textarea style="display: none" name="post_content" class="kwps-question_input"><?php echo ( isset($question['post_content'] ) ) ? $question['post_content'] : "Question " . ($question_key+1) ?></textarea>
                                                 <div class="kwps-content">
                                                     <div style="display: none" class="kwps-content-editor">
                                                         <?php wp_editor( (isset($question['post_content']))? $question['post_content'] : "Question " . ($question_key+1), 'question_' . $question_group_key . '_' . $question_key, array('teeny' => true ) ); ?>
@@ -293,6 +300,9 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                                     <?php endif;?>
                                                                     <input type="hidden" name="post_status" value="<?php echo $answer_option['post_status']; ?>" class="kwps-answer_input"/>
                                                                     <input type="hidden" name="_kwps_sort_order" value="<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_input">
+                                                                    <?php if( isset( $answer_option['post_parent'] ) ) : ?>
+                                                                        <input type="hidden" name="post_parent" value="<?php echo $answer_option['post_parent']; ?>" class="kwps-single_input">
+                                                                    <?php endif; ?>
                                                                     <?php if( $test_modus['_kwps_answer_options_require_value'] > 0 ): ?>
                                                                         <div>
                                                                             <input type="text" name="_kwps_answer_option_value" value="<?php echo $answer_option['_kwps_answer_option_value'];?>" class="kwps-answer_input">
@@ -349,6 +359,9 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                 <?php if( isset( $outro['ID'] ) ): ?>
                     <input type="hidden" name="ID" value="<?php echo $outro['ID'];?>" class="kwps-single_input">
                 <?php endif;?>
+                <?php if( isset( $outro['post_parent'] ) ): ?>
+                    <input type="hidden" name="post_parent" value="<?php echo $outro['post_parent'];?>" class="kwps-single_input">
+                <?php endif;?>
                 <input type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>" class="kwps-single_input">
                 <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($outro['post_content']))? $outro['post_content'] : "Outro" ?></textarea>
                 <div class="kwps-content<?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
@@ -384,6 +397,9 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                 <?php endif;?>
                                 <input type="hidden" name="post_status" value="<?php echo $result_profile['post_status'] ?>"  class="kwps-question_group_input">
                                 <input type="hidden" name="_kwps_sort_order" value="<?php echo $result_profile['_kwps_sort_order'] ?>"  class="kwps-question_group_input">
+                                <?php if( isset( $result_profile['post_parent'] ) ): ?>
+                                    <input type="hidden" name="post_parent" value="<?php echo $result_profile['post_parent']; ?>" class="kwps-single_input">
+                                <?php endif; ?>
                                 <div class="titlediv">
                                     <div class="titlewrap">
                                         <input
