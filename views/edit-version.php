@@ -292,7 +292,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                                         />
                                                                     <?php endif;?>
                                                                     <input type="hidden" name="post_status" value="<?php echo $answer_option['post_status']; ?>" class="kwps-answer_input"/>
-                                                                    <input type="hidden" name="_kwps_sort_order" value="<?php echo $question['_kwps_sort_order'] ?>" class="kwps-answer_input">
+                                                                    <input type="hidden" name="_kwps_sort_order" value="<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_input">
                                                                     <?php if( $test_modus['_kwps_answer_options_require_value'] > 0 ): ?>
                                                                         <div>
                                                                             <input type="text" name="_kwps_answer_option_value" value="<?php echo $answer_option['_kwps_answer_option_value'];?>" class="kwps-answer_input">
