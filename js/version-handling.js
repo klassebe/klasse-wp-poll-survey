@@ -111,7 +111,8 @@ jQuery(document).ready(function($) {
 
   var openCollapse = function () {
     var objectName = $('#kwps-version');
-    objectName = 'collapseStatusVersionID' + objectName.find('input[name="ID"]').attr('value') + 'post_parent' + objectName.find('input[name="post_parent"]').attr('value');
+    var objectNameId = objectName.find('input[name="ID"]').attr('value');
+    objectName = 'collapseStatusVersionID' + objectNameId + 'post_parent' + objectName.find('input[name="post_parent"]').attr('value');
     var objectData = JSON.parse(localStorage[objectName]||'{}');
     for ( var key in objectData ) {
       if ( objectData[key] === 'open' ) {
@@ -231,13 +232,16 @@ jQuery(document).ready(function($) {
 
   var updateLocalStorage = function (target, status) {
     var objectName = $('#kwps-version');
-    objectName = 'collapseStatusVersionID' + objectName.find('input[name="ID"]').attr('value') + 'post_parent' + objectName.find('input[name="post_parent"]').attr('value');
+    var objectNameId = objectName.find('input[name="ID"]').attr('value');
+    if ( objectNameId ) {
+      objectName = 'collapseStatusVersionID' + objectNameId + 'post_parent' + objectName.find('input[name="post_parent"]').attr('value');
 
-    var objectData = JSON.parse(localStorage[objectName]||'{}');
-    var collapseID = $(target).closest('div').attr('id');
-    var collapseStatus = status;
-    objectData[collapseID] = collapseStatus;
-    localStorage.setItem(objectName, JSON.stringify(objectData));
+      var objectData = JSON.parse(localStorage[objectName]||'{}');
+      var collapseID = $(target).closest('div').attr('id');
+      var collapseStatus = status;
+      objectData[collapseID] = collapseStatus;
+      localStorage.setItem(objectName, JSON.stringify(objectData));
+    }
   };
 
   function showEditor(event) {
@@ -392,7 +396,6 @@ jQuery(document).ready(function($) {
 
     var input = $("<input>").attr('type', 'hidden').attr('name', 'formattedData').val(JSON.stringify(formData));
     $('form').append($(input));
-    console.log(formData);
   }
 
   function updateUi() {
