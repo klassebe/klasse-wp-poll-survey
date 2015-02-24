@@ -214,7 +214,7 @@ class admin_section {
                             $version_data = $validation_result['data'];
                         }
                     } else {
-                        if(! isset( $formattedData['ID'] ) ) {
+                        if( ! isset( $formattedData['ID'] ) ) {
                             $form_handler = new Version_Handler();
                             $validation_result = $form_handler->validate_new_version_form($formattedData);
 //                           var_dump( $validation_result ) ;
@@ -225,7 +225,14 @@ class admin_section {
                                 $version_data = $validation_result['data'];
                             }
                         } else {
-                            $version_data = $formattedData;
+                            $form_handler = new Version_Handler();
+                            $validation_result = $form_handler->validate_existing_version_form($formattedData);
+                            if( ! $validation_result['errors'] ) {
+                                $version_data = $form_handler->save_existing_version_form($formattedData);
+                            } else {
+                                $test_modus_errors = $validation_result['test_modus_errors'];
+                                $version_data = $validation_result['data'];
+                            }
                         }
                     }
                     include_once __DIR__ . '/../views/edit-version.php';

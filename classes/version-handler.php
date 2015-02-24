@@ -361,7 +361,6 @@ class Version_Handler {
     }
 
     public function save_new_version_form($data){
-
         $stripped_version = array_diff_key( $data, array('question_groups' => '') );
         $version_id = Version::save_post($stripped_version, true);
         if( ! isset( $stripped_version['_kwps_view_count'] ) ) {
