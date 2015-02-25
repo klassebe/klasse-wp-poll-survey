@@ -415,7 +415,10 @@ class Version extends Kwps_Post_Type{
         Session::set_version_info($id);
         ob_start();
 ?>
-            <div class="kwps-version">
+        <?php if( user_can( get_current_user(), 'edit_post' ) ) : ?>
+            <div class="kwps-version-status"><?php echo $version['post_status'] ?></div>
+        <?php endif; ?>
+        <div class="kwps-version">
                 <input type="hidden" class="kwps-version-id" value="<?php echo $version['ID']?>">
                 <input type="hidden" class="admin-url" value="<?php echo admin_url(); ?>">
 <?php
