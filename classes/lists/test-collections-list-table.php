@@ -81,6 +81,8 @@ class Test_Collections_List_Table extends Base_List_Table {
                 return $item[$column_name];
             case 'crea_date':
                 return $item[$column_name];
+            case 'post_status':
+                return $item[$column_name];
             default:
                 return print_r($item,true); //Show the whole array for troubleshooting purposes
         }
@@ -163,6 +165,7 @@ class Test_Collections_List_Table extends Base_List_Table {
             'post_title'     => __('Title', 'klasse-wp-poll-survey'),
             'test_modus'     => __('Testmodus', 'klasse-wp-poll-survey'),
             'view_count'    => __('Views', 'klasse-wp-poll-survey'),
+            'post_status'    => __('Status', 'klasse-wp-poll-survey'),
             'shortcode'  => __('Shortcode', 'klasse-wp-poll-survey'),
             'post_modified'    => __('Date', 'klasse-wp-poll-survey'),
         );
@@ -337,6 +340,7 @@ class Test_Collections_List_Table extends Base_List_Table {
             $row_data = array('ID' => $object->ID,
                 'post_title' => $object->post_title,
                 'post_modified' => $object->post_modified,
+                'post_status' => $object->post_status,
             );
 
             $row_data['view_count'] = Test_Collection::get_view_count($object->ID);

@@ -171,6 +171,7 @@ class admin_section {
                         foreach( $versions as $version ) {
                             wp_publish_post( $version['ID']);
                         }
+                        wp_publish_post( $_REQUEST['id'] );
                     }
                 }
                 $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'versions';
