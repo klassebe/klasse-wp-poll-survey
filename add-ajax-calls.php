@@ -46,8 +46,8 @@ add_action( 'wp_ajax_nopriv_kwps_save_entry', array('\kwps_classes\entry','save_
 add_action( 'wp_ajax_kwps_save_entry', array('\kwps_classes\entry','save_from_request'));
 //add_action( 'wp_ajax_kwps_delete_entries_from_version', array('\kwps_classes\entry','delete_from_version'));
 //
-//add_action( 'wp_ajax_kwps_save_result_group', array('\kwps_classes\result_group','save_from_request'));
-//add_action( 'wp_ajax_nopriv_kwps_save_result_group', array('\kwps_classes\result_group','save_from_request'));
+add_action( 'wp_ajax_kwps_save_result_group', array('\kwps_classes\result_group','save_from_request'));
+add_action( 'wp_ajax_nopriv_kwps_save_result_group', array('\kwps_classes\result_group','save_from_request'));
 //
 add_action( 'wp_ajax_kwps_get_result_of_version_by_entry_id', array('\kwps_classes\result','get_result_of_version_by_entry_id'));
 add_action( 'wp_ajax_nopriv_kwps_get_result_of_version_by_entry_id', array('\kwps_classes\result','get_result_of_version_by_entry_id'));

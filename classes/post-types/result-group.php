@@ -11,6 +11,14 @@ class Result_Group extends Kwps_Post_Type{
         'post_parent',
     );
 
+    public static $form_fields = array(
+        'ID',
+        'post_title',
+        'post_parent',
+        '_kwps_hash',
+        '_kwps_result_hash',
+    );
+
     public static $numeric_fields = array(
     );
 

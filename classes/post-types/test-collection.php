@@ -27,6 +27,7 @@ class Test_Collection extends Kwps_Post_Type{
         'post_status',
         '_kwps_logged_in_user_limit',
         '_kwps_logged_out_user_limit',
+        '_kwps_show_grouping_form',
     );
 
     public static $required_fields = array(
@@ -111,7 +112,7 @@ class Test_Collection extends Kwps_Post_Type{
         $test_collection = static::get_as_array($id);
         $test_collection_outro = Coll_Outro::get_one_by_post_parent($id);
 
-        if( $test_collection['_kwps_show_grouping_form'] == 0 ) {
+        if( ! isset( $test_collection['_kwps_show_grouping_form'] ) || $test_collection['_kwps_show_grouping_form'] == 0 ) {
             $output .= '<div class="kwps-error">' ;
             $output .= __('Shortcode cannot be displayed, incorrect settings for Test Collection', 'klasse-wp-poll-survey');
             $output .= '</div>';

@@ -413,6 +413,9 @@ class Versions_List_Table extends Base_List_Table {
 //        $data = get_posts($arguments);
         $post_data = get_posts($arguments);
         $data = array();
+
+        $test_collection = Test_Collection::get_as_array( $post_parent );
+
         foreach($post_data as $object){
             $row_data = array('ID' => $object->ID,
                 'post_title' => $object->post_title,
@@ -420,7 +423,13 @@ class Versions_List_Table extends Base_List_Table {
             );
 
             $row_data['view_count'] = get_post_meta($object->ID, '_kwps_view_count', true);
-            $row_data['shortcode'] = '[kwps_version id=' . $object->ID . ']';
+
+            if( isset( $test_collection['_kwps_show_grouping_form'] ) ) {
+                $row_data['shortcode'] = '[kwps_test_collection id=' . $post_parent . ']';
+            } else {
+                $row_data['shortcode'] = '[kwps_version id=' . $object->ID . ']';
+            }
+
 
             array_push($data, $row_data);
         }
