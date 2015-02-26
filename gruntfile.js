@@ -8,6 +8,10 @@ module.exports = function(grunt) {
 				src : ['./js/admin-results.js', './js/bower_components/highcharts-release/highcharts.js'],
 				dest : './assets/js/kwps_admin-results.js'
 			},
+            admin_settings: {
+                src : ['./js/kwps_admin-settings.js'],
+                dest : './assets/js/kwps_admin-settings.js'
+            },
 			admin_versions: {
 				src : ['./js/version-handling.js', './js/bower_components/jquery.are-you-sure/jquery.are-you-sure.js'],
 				dest : './assets/js/kwps_admin-versions.js'

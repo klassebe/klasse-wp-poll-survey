@@ -152,6 +152,9 @@ class admin_section {
                 )
             );
 
+        } elseif( isset( $_REQUEST['section'] ) && isset( $_REQUEST['tab'] ) && 'edit_test_collection' == $_REQUEST['section'] && 'settings' == $_REQUEST['tab'] ) {
+            wp_register_script('klasse_wp_poll_survey_plugin_admin_settings_scripts', plugins_url('../assets/js/kwps_admin-settings.js', __FILE__));
+            wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_settings_scripts');
         }
     }
 
@@ -181,6 +184,7 @@ class admin_section {
                 } elseif( 'settings' == $active_tab ) {
                     if( sizeof( $_POST ) > 0 ) {
                         // TODO add validation
+                        var_dump( $_POST ); die;
                         Test_Collection::update_meta_data($_REQUEST['id'], $_POST);
                     }
                     $settings = Test_Collection::get_meta_data( $_REQUEST['id'] );

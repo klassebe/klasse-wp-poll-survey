@@ -1,6 +1,8 @@
 <?php
     $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'versions';
     $test_collection = \kwps_classes\Test_Collection::get_as_array( $_REQUEST['id'], true );
+    $required_fields_coll_outro = \kwps_classes\Coll_Outro::$required_fields;
+    $coll_outro = \kwps_classes\Coll_Outro::get_one_by_post_parent( $_REQUEST['id'] );
 ?>
 
 <div class="wrap">
@@ -82,6 +84,41 @@
                     </th>
                     <td>
                         <input id="kwps_show_grouping_form" type="checkbox" name="_kwps_show_grouping_form" value="1"<?php echo $checked; ?> />
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">
+
+                    </th>
+                    <td>
+                        <div class="kwps kwps-single <?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-outro">
+                            <h3>Collection Outro <?php if( in_array( 'post_content', $required_fields_coll_outro ) ) echo '<span class="kwps-required">*</span>' ?></h3>
+                            <div class="inside">
+                                <?php if( isset( $coll_outro['errors']['post_content'] ) ):?>
+                                    <div class="error form-invalid below-h2">
+                                        <p class=""><?php echo $coll_outro['errors']['post_content'] ?></p>
+                                    </div>
+                                <?php endif;?>
+                                <a class="button kwps-add-result-button outro-result-button">Add result</a>
+                                <?php if( isset( $coll_outro['ID'] ) ): ?>
+                                    <input type="hidden" name="collection_outro[ID]" value="<?php echo $coll_outro['ID'];?>" class="kwps-single_input">
+                                <?php endif;?>
+                                <input type="hidden" name="collection_outro[post_parent]" value="<?php echo $test_collection['ID'];?>" class="kwps-single_input">
+                                <input type="hidden" name="collection_outro[post_status]" value="draft" class="kwps-single_input">
+                                <div class="kwps-content<?php if( isset( $coll_outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
+                                    <div style="display: none" class="kwps-content-editor">
+                                        <?php wp_editor( (isset($coll_outro['post_content']))? $coll_outro['post_content'] : "Outro", 'collection_outro[post_content]', array('teeny' => true ) ); ?>
+                                        <button class="kwps-content-editor-save">Save</button>
+                                    </div>
+                                    <div class="kwps-content-view">
+                                        <div class="kwps-content-view-content">
+                                            <?php echo (isset($coll_outro['post_content']))? $coll_outro['post_content'] : "Outro" ?>
+                                        </div>
+                                        <a class="kwps-content-edit button">Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr valign="top">
