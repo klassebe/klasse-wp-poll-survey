@@ -9,6 +9,7 @@ class Result_Group extends Kwps_Post_Type{
     public static $required_fields = array(
         'post_title',
         'post_parent',
+        '_kwps_referer',
     );
 
     public static $form_fields = array(
@@ -17,6 +18,7 @@ class Result_Group extends Kwps_Post_Type{
         'post_parent',
         '_kwps_hash',
         '_kwps_result_hash',
+        '_kwps_referer',
     );
 
     public static $numeric_fields = array(
@@ -25,6 +27,7 @@ class Result_Group extends Kwps_Post_Type{
     public static $meta_data_fields = array(
         '_kwps_hash',
         '_kwps_result_hash',
+        '_kwps_referer',
     );
 
     public static $additional_validation_methods = array();
@@ -38,7 +41,7 @@ class Result_Group extends Kwps_Post_Type{
     public static $post_type = 'kwps_result_group';
 
     public static $post_type_args = array(
-        'public' => false,
+        'public' => true,
         'supports' => array('editor'),
         'labels' => array(
             'name' => 'Result Groups',
@@ -56,7 +59,7 @@ class Result_Group extends Kwps_Post_Type{
         'show_ui' => true,
         'hierarchical' => true,
         'exclude_from_search' => true,
-        'publicly_queryable' => false,
+        'publicly_queryable' => true,
     );
 
     public static function get_test_modus($result_group_id)

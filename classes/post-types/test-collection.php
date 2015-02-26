@@ -131,6 +131,7 @@ class Test_Collection extends Kwps_Post_Type{
                 $output .= '<input type="hidden" name="_kwps_hash" value="' . $group_hash . '" />';
                 $output .= '<input type="hidden" name="_kwps_result_hash" value="' . $result_hash . '" />';
                 $output .= '<input type="hidden" name="post_parent" value="' . $id . '" />';
+                $output .= '<input type="hidden" name="_kwps_referer" value="' . get_permalink() . '">';
                 $output .= '<div class="kwps-button">';
                 $output .= '<button class="kwps-next">';
                 $output .= __('Next', 'klasse-wp-poll-survey');

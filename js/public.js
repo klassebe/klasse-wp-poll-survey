@@ -266,6 +266,7 @@ $.fn.groupingPlugin = function ( options ) {
       dataType: "json",
       success: function(data) {
         console.log('saved', data);
+        window.location.href = WPURLS.siteurl + '?post_type=kwps_result_group&p=' + data.ID ;
       },
       failure: function (errMsg) {
         alert(errMsg);
@@ -285,8 +286,8 @@ $.fn.groupingPlugin = function ( options ) {
     if($('#kwps-result-group').val() !== '') {
       var data = elem.find("input").not(':input[type=button], :input[type=submit], :input[type=reset]');
       saveGroupName(data);
-      $(this).closest('.kwps-page').hide();
-      $(this).closest('.kwps-page').next().show();
+//      $(this).closest('.kwps-page').hide();
+//      $(this).closest('.kwps-page').next().show();
     } else {
       console.log('enter data');
     }

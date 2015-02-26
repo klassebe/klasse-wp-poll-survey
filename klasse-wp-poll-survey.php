@@ -111,6 +111,21 @@ function kwps_add_plugin_admin_menu() {
     add_submenu_page( 'klasse-wp-poll-survey' . '_tests', __( 'Manage entries', 'klasse-wp-poll-survey' ), __( 'Entries', 'klasse-wp-poll-survey' ), "edit_posts", 'klasse-wp-poll-survey' . '_manage_entries', array('\kwps_classes\admin_section', 'manage_entries'));
 }
 
+add_filter( 'single_template', 'kwps_single_template_loading' );
+
+function kwps_single_template_loading( $single_template ) {
+    global $post;
+
+    if ($post->post_type == 'kwps_result_group') {
+        if( file_exists( get_stylesheet_directory() . '/single-result_group.php' ) ) {
+            $single_template = get_stylesheet_directory() . '/single-result_group.php';
+        } else {
+            $single_template = dirname( __FILE__ ) . '/templates/single-result_group.php';
+        }
+    }
+    return $single_template;
+}
+
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
