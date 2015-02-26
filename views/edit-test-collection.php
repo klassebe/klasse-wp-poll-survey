@@ -106,15 +106,8 @@
                                 <input type="hidden" name="collection_outro[post_parent]" value="<?php echo $test_collection['ID'];?>" class="kwps-single_input">
                                 <input type="hidden" name="collection_outro[post_status]" value="draft" class="kwps-single_input">
                                 <div class="kwps-content<?php if( isset( $coll_outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
-                                    <div style="display: none" class="kwps-content-editor">
+                                    <div  class="kwps-content-editor">
                                         <?php wp_editor( (isset($coll_outro['post_content']))? $coll_outro['post_content'] : "Outro", 'collection_outro[post_content]', array('teeny' => true ) ); ?>
-                                        <button class="kwps-content-editor-save">Save</button>
-                                    </div>
-                                    <div class="kwps-content-view">
-                                        <div class="kwps-content-view-content">
-                                            <?php echo (isset($coll_outro['post_content']))? $coll_outro['post_content'] : "Outro" ?>
-                                        </div>
-                                        <a class="kwps-content-edit button">Edit</a>
                                     </div>
                                 </div>
                             </div>
