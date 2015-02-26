@@ -86,11 +86,11 @@
                         <input id="kwps_show_grouping_form" type="checkbox" name="_kwps_show_grouping_form" value="1"<?php echo $checked; ?> />
                     </td>
                 </tr>
-                <tr valign="top">
-                    <th scope="row">
+                <tr class="groupingForm" valign="top">
+<!--                     <th scope="row">
 
-                    </th>
-                    <td>
+                    </th> -->
+                    <td colspan="2">
                         <div class="kwps kwps-single <?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-outro">
                             <h3>Collection Outro <?php if( in_array( 'post_content', $required_fields_coll_outro ) ) echo '<span class="kwps-required">*</span>' ?></h3>
                             <div class="inside">
@@ -99,7 +99,7 @@
                                         <p class=""><?php echo $coll_outro['errors']['post_content'] ?></p>
                                     </div>
                                 <?php endif;?>
-                                <a class="button kwps-add-result-button outro-result-button">Add result</a>
+                                <a class="button kwps-add-result-button">Add result</a>
                                 <?php if( isset( $coll_outro['ID'] ) ): ?>
                                     <input type="hidden" name="collection_outro[ID]" value="<?php echo $coll_outro['ID'];?>" class="kwps-single_input">
                                 <?php endif;?>
@@ -115,10 +115,10 @@
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row">
+<!--                     <th scope="row">
                         
-                    </th>
-                    <td>
+                    </th> -->
+                    <td colspan="2">
                         <button type="submit" class="button button-primary">Opslaan</button>
                     </td>
                 </tr>
