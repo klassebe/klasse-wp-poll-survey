@@ -67,10 +67,18 @@ class Settings_Form {
     }
 
     private function validate_test_collection_meta() {
+        $allowed_dropdown_values = \kwps_classes\Test_Collection::$allowed_dropdown_values;
+
         foreach( Test_Collection::$meta_data_fields as $meta_field ) {
             if( in_array( $meta_field, Test_Collection::$required_fields ) &&
                 ( ! isset( $this->data[$meta_field] ) || empty( $this->data[$meta_field] ) ) ){
                 $this->meta_errors[$meta_field] = __( 'Required' );
+            } else {
+                if( in_array( $meta_field, array_keys( $allowed_dropdown_values ) ) ) {
+                    if( ! in_array( $this->data[$meta_field], $allowed_dropdown_values[$meta_field] ) ) {
+                        $this->meta_errors[$meta_field] = __( 'Invalid limit used' );
+                    }
+                }
             }
         }
     }

@@ -211,6 +211,28 @@ class Test_Settings_Form extends WP_UnitTestCase {
         $this->assertEquals( get_post_meta( 4, '_kwps_logged_out_user_limit', true), 'none' );
     }
 
+    function test_save_no_grouping_form_invalid_limit() {
+        $settings = array (
+            'ID' => "4",
+            '_kwps_logged_in_user_limit' => 'blabla',
+            '_kwps_logged_out_user_limit' => 'none',
+        );
+
+        $expected_settings = array (
+            'ID' => "4",
+            '_kwps_logged_in_user_limit' => 'blabla',
+            '_kwps_logged_out_user_limit' => 'none',
+            'errors' => array(
+                '_kwps_logged_in_user_limit' => __( 'Invalid limit used' ),
+            ),
+        );
+
+        $this->check_form_output( $settings, $expected_settings );
+
+        $this->assertEquals( get_post_meta( 4, '_kwps_logged_in_user_limit', true), 'free' );
+        $this->assertEquals( get_post_meta( 4, '_kwps_logged_out_user_limit', true), 'free' );
+    }
+
     function check_form_output($settings, $expected_settings ){
         $settings_form = new \kwps_classes\Settings_Form( $settings );
         $this->assertTrue( $this->arrays_are_similar( $settings_form->save(), $expected_settings  ) );
