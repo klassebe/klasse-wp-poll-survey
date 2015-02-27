@@ -161,7 +161,8 @@ class admin_section {
             wp_localize_script('klasse_wp_poll_survey_plugin_admin_settings_scripts',
                 'kwpsOutputTypes',
                 array(
-                    'testmodusOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
+                    'siteurl' => admin_url(),
+                    'testCollectionOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
                     'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
                 )
             );
