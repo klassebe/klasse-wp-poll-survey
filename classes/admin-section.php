@@ -154,8 +154,17 @@ class admin_section {
             );
 
         } elseif( isset( $_REQUEST['section'] ) && isset( $_REQUEST['tab'] ) && 'edit_test_collection' == $_REQUEST['section'] && 'settings' == $_REQUEST['tab'] ) {
+            $testmodus = Test_Collection::get_test_modus( $_REQUEST['id']);
+
             wp_register_script('klasse_wp_poll_survey_plugin_admin_settings_scripts', plugins_url('../assets/js/kwps_admin-settings.js', __FILE__));
             wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_settings_scripts');
+            wp_localize_script('klasse_wp_poll_survey_plugin_admin_settings_scripts',
+                'kwpsOutputTypes',
+                array(
+                    'testmodusOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
+                    'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
+                )
+            );
         }
     }
 
