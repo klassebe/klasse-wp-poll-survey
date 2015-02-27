@@ -4,6 +4,7 @@ namespace kwps_classes;
 require_once __DIR__ . '/lists/test-collections-list-table.php';
 require_once __DIR__ . '/../classes/lists/versions-list-table.php';
 require_once __DIR__ . '/../classes/version-handler.php';
+require_once __DIR__ . '/../classes/settings-form.php';
 
 //require_once __DIR__ . '/../classes/post-types/version.php';
 
@@ -184,12 +185,11 @@ class admin_section {
                 } elseif( 'settings' == $active_tab ) {
                     if( sizeof( $_POST ) > 0 ) {
                         // TODO add validation
-                        var_dump( $_POST ); die;
-                        Test_Collection::update_meta_data($_REQUEST['id'], $_POST);
+                        $settings_form = new Settings_Form( $_POST );
+                        $settings = $settings_form->save();
+                    } else {
+                        $settings = Test_Collection::get_meta_data( $_REQUEST['id'] );
                     }
-                    $settings = Test_Collection::get_meta_data( $_REQUEST['id'] );
-
-//                    var_dump($settings, $_POST);
                 }
 
                 include_once __DIR__ . '/../views/edit-test-collection.php';

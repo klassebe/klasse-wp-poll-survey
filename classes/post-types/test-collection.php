@@ -33,7 +33,7 @@ class Test_Collection extends Kwps_Post_Type{
     public static $required_fields = array(
             'post_status',
             'post_parent',
-            '_kwps_sort_order',
+//            '_kwps_sort_order',
             'post_title',
             '_kwps_logged_in_user_limit',
             '_kwps_logged_out_user_limit',

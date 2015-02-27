@@ -44,6 +44,7 @@
     <?php elseif( $active_tab == 'settings'):?>
         <?php $allowed_dropdown_values = \kwps_classes\Test_Collection::$allowed_dropdown_values; ?>
         <form id="kwps-test-collection-settings" method="post" action="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&section=edit_test_collection&tab=settings">
+            <input type="hidden" name="ID" value="<?php echo $_REQUEST['id'] ?>">
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row">
