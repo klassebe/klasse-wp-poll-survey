@@ -57,7 +57,8 @@ jQuery(document).ready(function($) {
 
 			findInIFrame('#add-result-to-editor').on('click', function () {
 				if (selectedResult) {
-					var textarea = $('textarea.wp-editor-area');
+					$('#collection_outro_content_ifr').contents().find('#tinymce').append('[kwps_result result='+ selectedResult + ']');
+					var textarea = $('#collection_outro_content');
 					var newText = textarea.val() + '[kwps_result result=' + selectedResult + ']';
 					textarea.val(newText);
 					tb_remove();
