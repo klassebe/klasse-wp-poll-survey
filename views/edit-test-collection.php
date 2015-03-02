@@ -108,7 +108,7 @@
                                 <input type="hidden" name="collection_outro[post_status]" value="draft" class="kwps-single_input">
                                 <div class="kwps-content<?php if( isset( $coll_outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                                     <div  class="kwps-content-editor">
-                                        <?php wp_editor( (isset($coll_outro['post_content']))? $coll_outro['post_content'] : "Outro", 'collection_outro[post_content]', array('teeny' => true ) ); ?>
+                                        <?php wp_editor( (isset($coll_outro['post_content']))? $coll_outro['post_content'] : "Outro", 'collection_outro_content', array('teeny' => true , 'textarea_name' => 'collection_outro[post_content]') ); ?>
                                     </div>
                                 </div>
                             </div>
