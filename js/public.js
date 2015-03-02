@@ -216,7 +216,6 @@
         var allChecked = true;
         entries = [];
         $.each(answerNames, function (key, value) {
-          console.log(key, value);
           selectChecked = elem.find('input[type="radio"][name=' + value + ']:checked').val();
           if (selectChecked) {
             var data = {
