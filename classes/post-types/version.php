@@ -481,7 +481,7 @@ class Version extends Kwps_Post_Type{
                                 <div class="kwps-answer-option">
                                     <ul>
                                         <?php foreach($question['answer_options'] as $answerOption): ?>
-                                            <li><input id="answer-option-<?php echo $answerOption['ID'] ?>" type="radio" name="question_id_<?php echo $question['ID'] ?>" value="<?php echo $answerOption['ID'] ?>"><label for="answer-option-<?php echo $answerOption['ID'] ?>"><?php echo $answerOption['post_content'] ?></label></li>
+                                            <li><input id="answer-option-<?php echo $answerOption['ID'] ?>" class="kwps-answer-option-input" type="radio" name="question_id_<?php echo $question['ID'] ?>" value="<?php echo $answerOption['ID'] ?>"><label for="answer-option-<?php echo $answerOption['ID'] ?>"><?php echo $answerOption['post_content'] ?></label></li>
                                         <?php endforeach; ?>
                                     </ul>
                                 </div>
