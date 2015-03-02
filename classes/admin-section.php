@@ -199,7 +199,7 @@ class admin_section {
                         $settings = $settings_form->save();
                     } else {
                         $settings = Test_Collection::get_meta_data( $_REQUEST['id'] );
-                        $settings['collection_outro'] = Coll_Outro::get_as_array( $_REQUEST['id'] );
+                        $settings['collection_outro'] = Coll_Outro::get_one_by_post_parent( $_REQUEST['id'] );
                     }
                 }
 
