@@ -53,6 +53,9 @@ class Settings_Form {
         foreach( $meta_data as $meta_key => $meta_value ) {
             update_post_meta( $this->data['ID'], $meta_key, $meta_value );
         }
+        if( ! isset( $meta_data['_kwps_show_grouping_form'] ) ) {
+            delete_post_meta( $this->data['ID'], '_kwps_show_grouping_form' );
+        }
     }
 
     public function validate_data() {
