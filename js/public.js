@@ -203,35 +203,39 @@
         that.closest('.kwps-page').next().show();
       } else {
         // Get the name of the radio buttons that are being displayed now
-        var answers = that.closest('.kwps-page').find('input[type="radio"]');
+        var answers = that.closest('.kwps-page').find('.kwps-answer-option-input');
         // Look if the page has more different input radio buttons within current group
         // Put all possible answer name values in an array
         var answerNames = [];
-        $.each(answers, function (key, value) {
-          if (answerNames.indexOf(value.name) === -1) {
-            answerNames.push(value.name);
+        $.each(answers, function (key, element) {
+          if (answerNames.indexOf(element.name) === -1) {
+            answerNames.push(element.name);
           }
         });
         // Check if there are unselected values and compare with array
+        var allChecked = true;
+        entries = [];
         $.each(answerNames, function (key, value) {
+          console.log(key, value);
           selectChecked = elem.find('input[type="radio"][name=' + value + ']:checked').val();
-          if (!selectChecked) {
-            return !1;
+          if (selectChecked) {
+            var data = {
+              "post_parent": selectChecked,
+              "post_status": "draft",
+              "_kwps_sort_order": 0
+            };
+
+            if(_kwps_group) {
+              data._kwps_group = _kwps_group;
+            }
+
+            entries.push(data);
+          } else {
+            allChecked = false;
           }
         });
 
-        if (selectChecked) {
-          var data = {
-             "post_parent": selectChecked,
-             "post_status": "draft",
-             "_kwps_sort_order": 0
-          };
-
-          if(_kwps_group) {
-            data._kwps_group = _kwps_group;
-          }
-
-          entries.push(data);
+        if (allChecked) {
           saveEntry(entries);
 
           that.closest('.kwps-page').hide();
