@@ -2,7 +2,6 @@
     $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'versions';
     $test_collection = \kwps_classes\Test_Collection::get_as_array( $_REQUEST['id'], true );
     $required_fields_coll_outro = \kwps_classes\Coll_Outro::$required_fields;
-    $coll_outro = \kwps_classes\Coll_Outro::get_one_by_post_parent( $_REQUEST['id'] );
 ?>
 
 <div class="wrap">
@@ -42,6 +41,7 @@
         ?>
     </form>
     <?php elseif( $active_tab == 'settings'):?>
+        <?php     $coll_outro = $settings['collection_outro']; ?>
         <?php $allowed_dropdown_values = \kwps_classes\Test_Collection::$allowed_dropdown_values; ?>
         <form id="kwps-test-collection-settings" method="post" action="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&section=edit_test_collection&tab=settings">
             <input type="hidden" name="ID" value="<?php echo $_REQUEST['id'] ?>">
@@ -92,7 +92,7 @@
 
                     </th> -->
                     <td colspan="2">
-                        <div class="kwps kwps-single <?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-outro">
+                        <div class="kwps kwps-single <?php if( isset( $coll_outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>" id="kwps-coll-outro">
                             <h3>Collection Outro <?php if( in_array( 'post_content', $required_fields_coll_outro ) ) echo '<span class="kwps-required">*</span>' ?></h3>
                             <div class="inside">
                                 <?php if( isset( $coll_outro['errors']['post_content'] ) ):?>
