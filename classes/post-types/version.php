@@ -477,7 +477,7 @@ class Version extends Kwps_Post_Type{
                     <div class="kwps-questions">
                         <?php foreach($questionGroup['questions'] as $question): ?>
                             <div class="kwps-question">
-                                <?php echo $question['post_content'] ?>
+                                <div class="kwps-question-dsc"><?php echo $question['post_content'] ?></div>
                                 <div class="kwps-answer-option">
                                     <ul>
                                         <?php foreach($question['answer_options'] as $answerOption): ?>
