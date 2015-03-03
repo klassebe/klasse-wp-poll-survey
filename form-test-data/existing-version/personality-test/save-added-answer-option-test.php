@@ -38,6 +38,7 @@ return array(
                     '_kwps_max_value' => 25,
                     'post_title' => 'Result profile 1',
                     'post_status' => 'draft',
+                    'post_content' => '',
                 ),
                 1 => array(
                     'ID' => 10,
@@ -47,6 +48,7 @@ return array(
                     '_kwps_max_value' => 50,
                     'post_title' => 'Result profile 2',
                     'post_status' => 'draft',
+                    'post_content' => '',
                 ),
                 2 => array(
                     'ID' => 11,
@@ -56,6 +58,7 @@ return array(
                     '_kwps_max_value' => 100,
                     'post_title' => 'Result profile 3',
                     'post_status' => 'draft',
+                    'post_content' => '',
                 ),
             ),
             'question_groups' => array(
@@ -434,6 +437,7 @@ return array(
                     '_kwps_max_value' => 25,
                     'post_title' => 'Result profile 1',
                     'post_status' => 'draft',
+                    'post_content' => '',
                 ),
                 1 => array(
                     'ID' => 56,
@@ -443,6 +447,7 @@ return array(
                     '_kwps_max_value' => 50,
                     'post_title' => 'Result profile 2',
                     'post_status' => 'draft',
+                    'post_content' => '',
                 ),
                 2 => array(
                     'ID' => 57,
@@ -452,6 +457,7 @@ return array(
                     '_kwps_max_value' => 100,
                     'post_title' => 'Result profile 3',
                     'post_status' => 'draft',
+                    'post_content' => '',
                 ),
             ),
             'question_groups' => array(
@@ -830,6 +836,7 @@ return array(
                     '_kwps_max_value' => 25,
                     'post_title' => 'Result profile 1',
                     'post_status' => 'draft',
+                    'post_content' => '',
                 ),
                 1 => array(
                     'ID' => 102,
@@ -839,6 +846,7 @@ return array(
                     '_kwps_max_value' => 50,
                     'post_title' => 'Result profile 2',
                     'post_status' => 'draft',
+                    'post_content' => '',
                 ),
                 2 => array(
                     'ID' => 103,
@@ -848,6 +856,7 @@ return array(
                     '_kwps_max_value' => 100,
                     'post_title' => 'Result profile 3',
                     'post_status' => 'draft',
+                    'post_content' => '',
                 ),
             ),
             'question_groups' => array(
