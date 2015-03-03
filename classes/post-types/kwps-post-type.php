@@ -83,7 +83,7 @@ abstract class Kwps_Post_Type implements \kwps_classes\Post_Type_Interface {
              $post_as_array = array_merge($post_as_array, static::get_meta_data($post_id));
          }
 
-        if( $filter_form_fields ) {
+        if( $post_as_array &&  $filter_form_fields ) {
             return static::filter_form_fields( $post_as_array );
         } else {
             return $post_as_array;
