@@ -43,6 +43,11 @@ class Existing_Personality_Test_Version_Handler_Test extends Kwps_Test {
             $this->checkOutPutWithFormTestData( 'add-answer-option-invalid-value.php');
     }
 
+    function test_validate_changed_intro_result_but_already_published_version() {
+        $this->checkOutPutWithFormTestData( 'changed-intro-result-but-already-published-test.php');
+
+    }
+
     function test_save_trashed_answer_option() {
         $input = $this->existing_versions[0];
         $input['question_groups'][1]['questions'][1]['answer_options'][2]['post_status'] = 'trash';
@@ -98,6 +103,5 @@ class Existing_Personality_Test_Version_Handler_Test extends Kwps_Test {
 
         $this->check_saved_and_updated_siblings( $input, 'save-updated-min-and-max-value-of-result-profile.php');
     }
-
 }
 

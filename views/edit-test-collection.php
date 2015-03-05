@@ -2,6 +2,7 @@
     $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'versions';
     $test_collection = \kwps_classes\Test_Collection::get_as_array( $_REQUEST['id'], true );
     $required_fields_coll_outro = \kwps_classes\Coll_Outro::$required_fields;
+    $disable_form = ( isset( $test_collection['post_status'] ) && 'publish' == $test_collection['post_status'] );
 ?>
 
 <div class="wrap">
@@ -31,9 +32,9 @@
     <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
     <form id="kwps-filter" method="get" >
         <!-- For plugins, we also need to ensure that the form posts back to our current page -->
-        <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
-        <input type="hidden" name="section" value="<?php echo $_REQUEST['section'] ?>" />
-        <input type="hidden" name="id" value="<?php echo $_REQUEST['id'] ?>" />
+        <input <?php if( $disable_form) echo 'disabled' ?> type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+        <input <?php if( $disable_form) echo 'disabled' ?> type="hidden" name="section" value="<?php echo $_REQUEST['section'] ?>" />
+        <input <?php if( $disable_form) echo 'disabled' ?> type="hidden" name="id" value="<?php echo $_REQUEST['id'] ?>" />
         <!-- Now we can render the completed list table -->
         <?php
 
@@ -44,14 +45,14 @@
         <?php     $coll_outro = $settings['collection_outro']; ?>
         <?php $allowed_dropdown_values = \kwps_classes\Test_Collection::$allowed_dropdown_values; ?>
         <form id="kwps-test-collection-settings" method="post" action="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&section=edit_test_collection&tab=settings">
-            <input type="hidden" name="ID" value="<?php echo $_REQUEST['id'] ?>">
+            <input <?php if( $disable_form) echo 'disabled' ?> type="hidden" name="ID" value="<?php echo $_REQUEST['id'] ?>">
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row">
                         <label for="kwps_logged_in_user_limit">Aangemelde gebruikers</label>
                     </th>
                     <td>
-                        <select id="kwps_logged_in_user_limit" name="_kwps_logged_in_user_limit">
+                        <select <?php if( $disable_form) echo 'disabled' ?> id="kwps_logged_in_user_limit" name="_kwps_logged_in_user_limit">
                             <?php foreach( $allowed_dropdown_values['_kwps_logged_in_user_limit'] as $value ): ?>
                                 <?php $selected = ($settings['_kwps_logged_in_user_limit'] == $value ? 'selected' : '' ) ?>
                                 <option value="<?php echo $value; ?>" <?php echo $selected?> ><?php echo $value; ?></option>
@@ -64,7 +65,7 @@
                         <label for="kwps_logged_out_user_limit">Anonieme gebruikers</label>
                     </th>
                     <td>
-                        <select id="kwps_logged_out_user_limit" name="_kwps_logged_out_user_limit">
+                        <select <?php if( $disable_form) echo 'disabled' ?> id="kwps_logged_out_user_limit" name="_kwps_logged_out_user_limit">
                             <?php foreach( $allowed_dropdown_values['_kwps_logged_out_user_limit'] as $value ): ?>
                                 <?php $selected = ($settings['_kwps_logged_out_user_limit'] == $value ? 'selected' : '' ) ?>
                                 <option value="<?php echo $value; ?>" <?php echo $selected?> ><?php echo $value; ?></option>
@@ -84,7 +85,7 @@
                         <label for="kwps_show_grouping_form">Show grouping form</label>
                     </th>
                     <td>
-                        <input id="kwps_show_grouping_form" type="checkbox" name="_kwps_show_grouping_form" value="1"<?php echo $checked; ?> />
+                        <input <?php if( $disable_form) echo 'disabled' ?> id="kwps_show_grouping_form" type="checkbox" name="_kwps_show_grouping_form" value="1"<?php echo $checked; ?> />
                     </td>
                 </tr>
                 <tr class="groupingForm" valign="top">
@@ -102,13 +103,19 @@
                                 <?php endif;?>
                                 <a class="button kwps-add-result-button">Add result</a>
                                 <?php if( isset( $coll_outro['ID'] ) ): ?>
-                                    <input type="hidden" name="collection_outro[ID]" value="<?php echo $coll_outro['ID'];?>" class="kwps-single_input">
+                                    <input <?php if( $disable_form) echo 'disabled' ?> type="hidden" name="collection_outro[ID]" value="<?php echo $coll_outro['ID'];?>" class="kwps-single_input">
                                 <?php endif;?>
-                                <input type="hidden" name="collection_outro[post_parent]" value="<?php echo $test_collection['ID'];?>" class="kwps-single_input">
-                                <input type="hidden" name="collection_outro[post_status]" value="draft" class="kwps-single_input">
+                                <input <?php if( $disable_form) echo 'disabled' ?> type="hidden" name="collection_outro[post_parent]" value="<?php echo $test_collection['ID'];?>" class="kwps-single_input">
+                                <input <?php if( $disable_form) echo 'disabled' ?> type="hidden" name="collection_outro[post_status]" value="draft" class="kwps-single_input">
                                 <div class="kwps-content<?php if( isset( $coll_outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                                     <div  class="kwps-content-editor">
-                                        <?php wp_editor( (isset($coll_outro['post_content']))? $coll_outro['post_content'] : "Outro", 'collection_outro_content', array('teeny' => true , 'textarea_name' => 'collection_outro[post_content]') ); ?>
+                                        <?php if( $disable_form ): ?>
+                                            <textarea name="collection_outro[post_content" disabled class="kwps-content-disabled">
+                                                <?php echo $coll_outro['post_content'];?>
+                                            </textarea>
+                                        <?php else:?>
+                                            <?php wp_editor( (isset($coll_outro['post_content']))? $coll_outro['post_content'] : "Outro", 'collection_outro_content', array('teeny' => true , 'textarea_name' => 'collection_outro[post_content]') ); ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +139,7 @@
             $versions = \kwps_classes\Version::get_all_by_post_parent( $_REQUEST['id'] );
         ?>
         <p>
-            <select id="showResultVersion">
+            <select <?php if( $disable_form) echo 'disabled' ?> id="showResultVersion">
                 <option value="all">All Versions</option>
                 <?php foreach( $versions as $version ):?>
                     <option value="<?php echo $version['ID']; ?>"><?php echo $version['post_title'];?></option>
@@ -141,7 +148,7 @@
         </p>
 
         <p>
-            <select id="outputTypes">
+            <select <?php if( $disable_form) echo 'disabled' ?> id="outputTypes">
                 <?php foreach( $current_test_modus['_kwps_allowed_output_types_test_collection'] as $output_type ):?>
                     <option value="<?php echo $output_type; ?>"><?php echo $output_type;?></option>
                 <?php endforeach;?>

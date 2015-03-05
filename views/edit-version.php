@@ -89,6 +89,9 @@ if( isset( $_REQUEST['id'] ) ) {
         }
     }
 }
+$test_collection = \kwps_classes\Test_Collection::get_as_array( $version['post_parent'], true );
+$disable_form = ( isset( $test_collection['post_status'] ) && 'publish' == $test_collection['post_status'] );
+
 $required_fields_version = \kwps_classes\Version::$required_fields;
 $required_fields_intro = \kwps_classes\Intro::$required_fields;
 $required_fields_outro = \kwps_classes\Outro::$required_fields;
@@ -118,15 +121,15 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
         <?php if( in_array( 'post_title', $required_fields_version ) ) echo '<span class="kwps-required">*</span>' ?>
         <div class="kwps kwps-single" id="kwps-version">
             <?php if( isset( $version['ID'] ) ):?>
-                <input type="hidden" name="ID" value="<?php echo $version['ID'] ?>" class="kwps-single_input"/>
+                <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="ID" value="<?php echo $version['ID'] ?>" class="kwps-single_input"/>
             <?php endif;?>
-            <input type="hidden" name="_kwps_sort_order" value="<?php echo $version['_kwps_sort_order']; ?>" class="kwps-single_input">
-            <input type="hidden" name="post_parent" value="<?php echo $version['post_parent']; ?>" class="kwps-single_input">
-            <input type="hidden" name="post_status" value="<?php echo $version['post_status']; ?>" class="kwps-single_input">
+            <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="_kwps_sort_order" value="<?php echo $version['_kwps_sort_order']; ?>" class="kwps-single_input">
+            <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_parent" value="<?php echo $version['post_parent']; ?>" class="kwps-single_input">
+            <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_status" value="<?php echo $version['post_status']; ?>" class="kwps-single_input">
             <div class="titlediv ">
                 <div class="titlewrap">
                     <label class="screen-reader-text" id="title-prompt-text" for="kwps-post-title">Enter title here</label>
-                    <input
+                    <input <?php if( $disable_form ) echo 'disabled';?> 
                         type="text"
                         name="post_title"
                         id="kwps-post-title"
@@ -144,12 +147,12 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
             <div class="inside">
                 <?php $intro = $version['intro'];?>
                 <?php if( isset( $intro['ID'] ) ): ?>
-                    <input type="hidden" name="ID" value="<?php echo $intro['ID'];?>" class="kwps-single_input">
+                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="ID" value="<?php echo $intro['ID'];?>" class="kwps-single_input">
                 <?php endif;?>
                 <?php if( isset( $intro['post_parent'] ) ): ?>
-                    <input type="hidden" name="post_parent" value="<?php echo $intro['post_parent'];?>" class="kwps-single_input">
+                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_parent" value="<?php echo $intro['post_parent'];?>" class="kwps-single_input">
                 <?php endif;?>
-                <input type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>" class="kwps-single_input">
+                <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_status" value="<?php if( isset( $intro['post_status'] ) ) echo $intro['post_status'];?>" class="kwps-single_input">
 
                 <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($intro['post_content']))? $intro['post_content'] : "Intro" ?></textarea>
                 <div class="kwps-content<?php if( isset( $intro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
@@ -171,13 +174,13 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
             <h3>Intro result <?php if( in_array( 'post_content', $required_fields_intro_result ) ) echo '<span class="kwps-required">*</span>' ?></h3>
             <div class="inside">
                 <?php if( isset( $intro_result['ID'] ) ): ?>
-                    <input type="hidden" name="ID" value="<?php echo $intro_result['ID'];?>" class="kwps-single_input">
+                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="ID" value="<?php echo $intro_result['ID'];?>" class="kwps-single_input">
                 <?php endif;?>
                 <?php if( isset( $intro_result['post_parent'] ) ): ?>
-                    <input type="hidden" name="post_parent" value="<?php echo $intro_result['post_parent'];?>" class="kwps-single_input">
+                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_parent" value="<?php echo $intro_result['post_parent'];?>" class="kwps-single_input">
                 <?php endif;?>
                 <a class="button kwps-add-result-button intro-result-button">Add result</a>
-                <input type="hidden" name="post_status" value="<?php if( isset( $intro_result['post_status'] ) ) echo $intro_result['post_status'];?>" class="kwps-single_input">
+                <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_status" value="<?php if( isset( $intro_result['post_status'] ) ) echo $intro_result['post_status'];?>" class="kwps-single_input">
                 <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($intro_result['post_content']))? $intro_result['post_content'] : "Intro Result" ?></textarea>
 
                 <div class="kwps-content<?php if( isset( $intro_result['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
@@ -207,16 +210,16 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                         <div class="inside">
                             <?php $question_group_field_index = 'question_groups[' . $question_group['_kwps_sort_order'] .']' ?>
                             <?php if( isset ($question_group['ID'] ) ): ?>
-                                <input type="hidden" name="ID" value="<?php echo $question_group['ID'] ?>" class="kwps-question_group_input"/>
+                                <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="ID" value="<?php echo $question_group['ID'] ?>" class="kwps-question_group_input"/>
                             <?php endif;?>
-                            <input type="hidden" name="_kwps_sort_order" value="<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question_group_input">
-                            <input type="hidden" name="post_status" value="<?php echo $question_group['post_status'] ?>" class="kwps-question_group_input"/>
+                            <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="_kwps_sort_order" value="<?php echo $question_group['_kwps_sort_order'] ?>" class="kwps-question_group_input">
+                            <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_status" value="<?php echo $question_group['post_status'] ?>" class="kwps-question_group_input"/>
                             <?php if( isset( $question_group['post_parent'] ) ) : ?>
-                                <input type="hidden" name="post_parent" value="<?php echo $question_group['post_parent']; ?>" class="kwps-single_input">
+                                <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_parent" value="<?php echo $question_group['post_parent']; ?>" class="kwps-single_input">
                             <?php endif;?>
                             <div class="titlediv">
                                 <div class="titlewrap">
-                                    <input 
+                                    <input <?php if( $disable_form ) echo 'disabled';?>  
                                         type="text" 
                                         name="post_title" 
                                         value="<?php echo $question_group['post_title'] ?>" 
@@ -250,20 +253,20 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                             </h3>
                                             <div class="inside">
                                                 <?php if( isset ($question['ID'] ) ): ?>
-                                                    <input type="hidden"
+                                                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden"
                                                            name="ID"
                                                            value="<?php echo $question['ID'] ?>" 
                                                            class="kwps-question_input"
                                                     />
                                                 <?php endif;?>
-                                                <input 
+                                                <input <?php if( $disable_form ) echo 'disabled';?>  
                                                     type="hidden" 
                                                     name="post_status" 
                                                     value="<?php echo $question['post_status'];?>" class="kwps-question_input" 
                                                 />
-                                                <input type="hidden" name="_kwps_sort_order" value="<?php echo $question['_kwps_sort_order'] ?>" class="kwps-question_input">
+                                                <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="_kwps_sort_order" value="<?php echo $question['_kwps_sort_order'] ?>" class="kwps-question_input">
                                                 <?php if( isset( $question['post_parent'] ) ) : ?>
-                                                    <input type="hidden" name="post_parent" value="<?php echo $question['post_parent']; ?>" class="kwps-single_input">
+                                                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_parent" value="<?php echo $question['post_parent']; ?>" class="kwps-single_input">
                                                 <?php endif; ?>
                                                 <textarea style="display: none" name="post_content" class="kwps-question_input"><?php echo ( isset($question['post_content'] ) ) ? $question['post_content'] : "Question " . ($question_key+1) ?></textarea>
                                                 <div class="kwps-content">
@@ -291,21 +294,21 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                                 </h3>
                                                                 <div class="inside">
                                                                     <?php if( isset ($answer_option['ID'] ) ): ?>
-                                                                        <input 
+                                                                        <input <?php if( $disable_form ) echo 'disabled';?>  
                                                                             type="hidden" 
                                                                             name="ID" 
                                                                             value="<?php echo $answer_option['ID'] ?>"
                                                                             class="kwps-answer_input "
                                                                         />
                                                                     <?php endif;?>
-                                                                    <input type="hidden" name="post_status" value="<?php echo $answer_option['post_status']; ?>" class="kwps-answer_input"/>
-                                                                    <input type="hidden" name="_kwps_sort_order" value="<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_input">
+                                                                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_status" value="<?php echo $answer_option['post_status']; ?>" class="kwps-answer_input"/>
+                                                                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="_kwps_sort_order" value="<?php echo $answer_option['_kwps_sort_order'] ?>" class="kwps-answer_input">
                                                                     <?php if( isset( $answer_option['post_parent'] ) ) : ?>
-                                                                        <input type="hidden" name="post_parent" value="<?php echo $answer_option['post_parent']; ?>" class="kwps-single_input">
+                                                                        <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_parent" value="<?php echo $answer_option['post_parent']; ?>" class="kwps-single_input">
                                                                     <?php endif; ?>
                                                                     <?php if( $test_modus['_kwps_answer_options_require_value'] > 0 ): ?>
                                                                         <div>
-                                                                            <input type="text" name="_kwps_answer_option_value" value="<?php echo $answer_option['_kwps_answer_option_value'];?>" class="kwps-answer_input">
+                                                                            <input <?php if( $disable_form ) echo 'disabled';?>  type="text" name="_kwps_answer_option_value" value="<?php echo $answer_option['_kwps_answer_option_value'];?>" class="kwps-answer_input">
                                                                         </div>
                                                                     <?php endif;?>
                                                                     <textarea style="display: none" name="post_content" class="kwps-answer_input"><?php echo (isset($answer_option['post_content']))? $answer_option['post_content'] : "Answer " . ($answer_option_key+1) ?></textarea>
@@ -357,12 +360,12 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                 <?php endif;?>
                 <a class="button kwps-add-result-button outro-result-button">Add result</a>
                 <?php if( isset( $outro['ID'] ) ): ?>
-                    <input type="hidden" name="ID" value="<?php echo $outro['ID'];?>" class="kwps-single_input">
+                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="ID" value="<?php echo $outro['ID'];?>" class="kwps-single_input">
                 <?php endif;?>
                 <?php if( isset( $outro['post_parent'] ) ): ?>
-                    <input type="hidden" name="post_parent" value="<?php echo $outro['post_parent'];?>" class="kwps-single_input">
+                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_parent" value="<?php echo $outro['post_parent'];?>" class="kwps-single_input">
                 <?php endif;?>
-                <input type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>" class="kwps-single_input">
+                <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_status" value="<?php if( isset( $outro['post_status'] ) ) echo $outro['post_status'];?>" class="kwps-single_input">
                 <textarea style="display: none" name="post_content" class="kwps-single_input"><?php echo (isset($outro['post_content']))? $outro['post_content'] : "Outro" ?></textarea>
                 <div class="kwps-content<?php if( isset( $outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                     <div style="display: none" class="kwps-content-editor">
@@ -393,16 +396,16 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                             </h3>
                             <div class="inside">
                                 <?php if( isset( $result_profile['ID'] ) ): ?>
-                                    <input type="hidden" name="ID" value="<?php echo $result_profile['ID'] ?>"  class="kwps-question_group_input">
+                                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="ID" value="<?php echo $result_profile['ID'] ?>"  class="kwps-question_group_input">
                                 <?php endif;?>
-                                <input type="hidden" name="post_status" value="<?php echo $result_profile['post_status'] ?>"  class="kwps-question_group_input">
-                                <input type="hidden" name="_kwps_sort_order" value="<?php echo $result_profile['_kwps_sort_order'] ?>"  class="kwps-question_group_input">
+                                <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_status" value="<?php echo $result_profile['post_status'] ?>"  class="kwps-question_group_input">
+                                <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="_kwps_sort_order" value="<?php echo $result_profile['_kwps_sort_order'] ?>"  class="kwps-question_group_input">
                                 <?php if( isset( $result_profile['post_parent'] ) ): ?>
-                                    <input type="hidden" name="post_parent" value="<?php echo $result_profile['post_parent']; ?>" class="kwps-single_input">
+                                    <input <?php if( $disable_form ) echo 'disabled';?>  type="hidden" name="post_parent" value="<?php echo $result_profile['post_parent']; ?>" class="kwps-single_input">
                                 <?php endif; ?>
                                 <div class="titlediv">
                                     <div class="titlewrap">
-                                        <input
+                                        <input <?php if( $disable_form ) echo 'disabled';?> 
                                             type="text"
                                             name="post_title"
                                             value="<?php echo $result_profile['post_title'] ?>"
@@ -412,9 +415,9 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                 </div>
                                 <div>
                                     <label>Score van</label>
-                                    <input type="text" name="_kwps_min_value" value="<?php echo $result_profile['_kwps_min_value'] ?>" class="kwps-question_group_input">
+                                    <input <?php if( $disable_form ) echo 'disabled';?>  type="text" name="_kwps_min_value" value="<?php echo $result_profile['_kwps_min_value'] ?>" class="kwps-question_group_input">
                                     <label>tot</label>
-                                    <input type="text" name="_kwps_max_value" value="<?php echo $result_profile['_kwps_max_value'] ?>" class="kwps-question_group_input">
+                                    <input <?php if( $disable_form ) echo 'disabled';?>  type="text" name="_kwps_max_value" value="<?php echo $result_profile['_kwps_max_value'] ?>" class="kwps-question_group_input">
                                 </div>
                                 <textarea style="display: none" name="post_content" class="kwps-question_group_input"><?php echo (isset($result_profile['post_content']))? $result_profile['post_content'] : "" ?></textarea>
                                 <div class="kwps-content">

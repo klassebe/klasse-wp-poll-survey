@@ -134,7 +134,23 @@ class admin_section {
 
             wp_register_script('klasse_wp_poll_survey_plugin_admin_ays', plugins_url('../js/bower_components/jquery.are-you-sure/jquery.are-you-sure.js', __FILE__));
             wp_register_script('klasse_wp_poll_survey_plugin_admin_scripts', plugins_url('../assets/js/kwps_admin-versions.js', __FILE__));
-            wp_localize_script('klasse_wp_poll_survey_plugin_admin_scripts', 'WPURLS', array( 'siteurl' => get_option('siteurl') ));
+
+            if( isset( $_REQUEST['id'] ) ) {
+                $test_collection = Version::get_test_collection( $_REQUEST['id'] );
+                $disable_form = ( isset( $test_collection['post_status'] ) && 'publish' == $test_collection['post_status'] );
+            } else {
+                $disable_form = false;
+            }
+
+            wp_localize_script(
+                'klasse_wp_poll_survey_plugin_admin_scripts',
+                'WPURLS',
+                array(
+                    'siteurl' => get_option('siteurl'),
+                    'disableForm' => $disable_form,
+                )
+            );
+
 
             wp_enqueue_script('klasse_wp_poll_survey_plugin_admin_ays');
             wp_enqueue_script('klasse_wp_poll_survey_plugin_admin_scripts');

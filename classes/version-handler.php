@@ -702,6 +702,10 @@ class Version_Handler {
 
         $test_modus_errors = $this->validate_for_test_modus($data);
 
+        if( isset( $data['post_status'] ) && 'publish' == $data['post_status'] ) {
+            $test_modus_errors['post_status'] = __( 'Can not update a test that is published' );
+        }
+
         if( sizeof( $test_modus_errors ) != 0 ) {
             $data_has_errors = true;
         }
