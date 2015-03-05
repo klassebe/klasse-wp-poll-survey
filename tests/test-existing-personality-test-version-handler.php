@@ -63,6 +63,13 @@ class Existing_Personality_Test_Version_Handler_Test extends Kwps_Test {
         $this->check_saved_and_updated_siblings( $input, 'save-added-answer-option-test.php' );
     }
 
+    function test_save_trashed_question_group() {
+        $input = $this->existing_versions[0];
+        $input['question_groups'][2]['post_status'] = 'trash';
+
+        $this->check_saved_and_updated_siblings( $input, 'save-trashed-question-group-test.php' );
+    }
+
     function test_save_added_result_profile() {
         $input = $this->existing_versions[0];
         $input['result_profiles'][] = array(
@@ -84,11 +91,13 @@ class Existing_Personality_Test_Version_Handler_Test extends Kwps_Test {
         $this->check_saved_and_updated_siblings( $input, 'save-trashed-result-profile-test.php' );
     }
 
-    function test_save_trashed_question_group() {
+    function test_updated_min_and_max_value_of_result_profile() {
         $input = $this->existing_versions[0];
-        $input['question_groups'][2]['post_status'] = 'trash';
+        $input['result_profiles'][1]['_kwps_max_value'] = 28;
+        $input['result_profiles'][2]['_kwps_min_value'] = 29;
 
-        $this->check_saved_and_updated_siblings( $input, 'save-trashed-question-group-test.php' );
+        $this->check_saved_and_updated_siblings( $input, 'save-updated-min-and-max-value-of-result-profile.php');
     }
+
 }
 

@@ -504,6 +504,18 @@ class Version_Handler {
                 wp_delete_post( $result_profile['ID'], true );
             }
         } else {
+            if( isset( $result_profile['ID'] ) ) {
+                $old_min_value = get_post_meta( $result_profile['ID'], '_kwps_min_value', true);
+                $old_max_value = get_post_meta( $result_profile['ID'], '_kwps_max_value', true);
+
+                if( $result_profile['_kwps_min_value'] != $old_min_value || $result_profile['_kwps_max_value'] != $old_max_value) {
+                    foreach( Result_Profile::get_matches_in_other_versions( $result_profile['ID']) as $result_profile_id ) {
+                        update_post_meta( $result_profile_id, '_kwps_min_value', $result_profile['_kwps_min_value'] );
+                        update_post_meta( $result_profile_id, '_kwps_max_value', $result_profile['_kwps_max_value'] );
+                    }
+                }
+            }
+
             $result_profile['post_parent'] = $this->version_id;
             Result_Profile::save_post( $result_profile );
 

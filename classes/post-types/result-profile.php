@@ -219,7 +219,7 @@ class Result_Profile extends Kwps_Post_Type {
         foreach( $version_ids as $tmp_version_id ) {
             $tmp_result_profiles = static::get_all_by_post_parent( $tmp_version_id );
             foreach( $tmp_result_profiles as $tmp_result_profile ) {
-                if( $result_profile['_kwps_sort_order'] == $tmp_result_profile['_kwps_sort_order'] ) {
+                if( $result_profile['_kwps_min_value'] == $tmp_result_profile['_kwps_min_value'] ) {
                     $matching_ids[] = $tmp_result_profile['ID'];
                 }
             }
