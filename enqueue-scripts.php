@@ -15,7 +15,7 @@ function enqueue_scripts() {
     wp_enqueue_script( 'backbone' );
 
     wp_register_script('klasse-wp-poll-survey-plugin-script', plugins_url('assets/js/kwps_public.js', __FILE__));
-    wp_localize_script('klasse-wp-poll-survey-plugin-script', 'WPURLS', array( 'siteurl' => get_option('siteurl') ));
+    wp_localize_script('klasse-wp-poll-survey-plugin-script', 'kwpsInfo', array( 'siteurl' => get_option('siteurl') ));
     wp_enqueue_script( 'klasse-wp-poll-survey-plugin-script' );
 }
 

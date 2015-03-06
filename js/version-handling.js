@@ -16,7 +16,7 @@ jQuery(document).ready(function($) {
 
   $('#version-save').click(versionSave);
 
-  if ( !WPURLS.disableForm ) {
+  if ( !kwpsInfo.disableForm ) {
     $(document).on('click','.kwps-create-item', createItem);
     $(document).on('click','.kwps-remove-item', removeItem);
     $(document).on('click','.kwps-move-down', moveDown);
@@ -53,7 +53,7 @@ jQuery(document).ready(function($) {
 			allowedTypes = testModus._kwps_allowed_output_types;
 		}
 
-		tb_show('', WPURLS.siteurl + '/wp-content/plugins/klasse-wp-poll-survey/classes/show-charts.php?type=image&amp;TB_iframe=true');
+		tb_show('', kwpsInfo.siteurl + '/wp-content/plugins/klasse-wp-poll-survey/classes/show-charts.php?type=image&amp;TB_iframe=true');
 
 		var request = $.ajax({
 										url: 'admin-ajax.php?action=kwps_get_result_page',
@@ -429,13 +429,13 @@ jQuery(document).ready(function($) {
 
       $(this).find('.kwps-question_group:visible').each(function(questionGroupI) {
         if(questionGroupI < questionGroupsCount-1) {
-          $(this).find('h3:first').append("<button class='kwps-move-down kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-down'></span></button>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
         }
       });
 
       $(this).find('.kwps-question_group:visible').each(function(questionGroupI) {
         if(questionGroupI > 0) {
-          $(this).find('h3:first').append("<button class='kwps-move-up kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-up'></span></button>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
         }
       });
 
@@ -450,13 +450,13 @@ jQuery(document).ready(function($) {
 
       $(this).find('.kwps-question:visible').each(function(questionI) {
         if(questionI < questionsCount-1) {
-          $(this).find('h3:first').append("<button class='kwps-move-down kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-down'></span></button>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
         }
       });
 
       $(this).find('.kwps-question:visible').each(function(questionI) {
         if(questionI > 0) {
-          $(this).find('h3:first').append("<button class='kwps-move-up kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-up'></span></button>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
         }
       });
     });
@@ -471,13 +471,13 @@ jQuery(document).ready(function($) {
 
       $(this).find('.kwps-answer_option:visible').each(function(answerOptionI) {
         if(answerOptionI < answerOptionCount-1) {
-          $(this).find('h3:first').append("<button class='kwps-move-down kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-down'></span></button>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
         }
       });
 
       $(this).find('.kwps-answer_option:visible').each(function(answerOptionI) {
         if(answerOptionI > 0) {
-          $(this).find('h3:first').append("<button class='kwps-move-up kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-up'></span></button>");
+          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
         }
       });
     });

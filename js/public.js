@@ -269,7 +269,7 @@ $.fn.groupingPlugin = function ( options ) {
       dataType: "json",
       success: function(data) {
         console.log('saved', data);
-        window.location.href = WPURLS.siteurl + '?post_type=kwps_result_group&p=' + data.ID ;
+        window.location.href = kwpsInfo.siteurl + '?post_type=kwps_result_group&p=' + data.ID ;
       },
       failure: function (errMsg) {
         alert(errMsg);

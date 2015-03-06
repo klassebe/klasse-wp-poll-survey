@@ -141,7 +141,7 @@ class admin_section {
 
             wp_localize_script(
                 'klasse_wp_poll_survey_plugin_admin_scripts',
-                'WPURLS',
+                'kwpsInfo',
                 array(
                     'siteurl' => get_option('siteurl'),
                     'disableForm' => $disable_form,
@@ -159,7 +159,7 @@ class admin_section {
             wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_results_scripts');
             wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_results_highcharts');
             wp_localize_script('klasse_wp_poll_survey_plugin_admin_results_highcharts',
-                'WPURLS',
+                'kwpsInfo',
                 array(
                     'siteurl' => admin_url(),
                     'testmodusOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
