@@ -55,6 +55,7 @@ require_once __DIR__ . '/classes/session.php';
 require_once __DIR__ . '/classes/post-types/result-group.php';
 require_once __DIR__ . '/classes/overlay.php';
 require_once __DIR__ . '/classes/admin-section.php';
+require_once __DIR__ . '/classes/edit_lock.php';
 
 require_once(ABSPATH . 'wp-admin/includes/screen.php');
 

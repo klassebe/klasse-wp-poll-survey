@@ -63,3 +63,6 @@ add_action( 'wp_ajax_nopriv_kwps_get_result_profile', array('\kwps_classes\resul
 //
 add_action( 'wp_ajax_kwps_get_result_page', array('\kwps_classes\overlay','get_result_page') );
 //add_action( 'wp_ajax_kwps_get_video_page', array('\kwps_classes\overlay','get_video_page') );
+
+add_action( 'wp_ajax_kwps_unlock_by_test_collection_id', array( '\kwps_classes\edit_lock', 'unlock_by_test_collection_id' ) );
+add_action( 'wp_ajax_kwps_unlock_by_version_id', array( '\kwps_classes\edit_lock', 'unlock_by_version_id' ) );

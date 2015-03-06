@@ -310,6 +310,25 @@ class Test_Collection extends Kwps_Post_Type{
 
     }
 
+    public static function is_updating_forbidden( $test_collection_id ) {
+        $test_collection = static::get_as_array($test_collection_id, true );
+
+        $disable_form = (
+            ( isset( $test_collection['post_status'] ) && 'publish' == $test_collection['post_status'] )
+            ||
+            static::is_being_edited_by_other_user( $test_collection_id )
+        );
+
+        return $disable_form;
+    }
+
+    public static function is_being_edited_by_other_user( $test_collection_id ) {
+        $current_user_id = get_current_user();
+        $in_use_by = get_post_meta( $test_collection_id, '_kwps_in_use_by', true);
+
+        return (! empty( $in_use_by ) && $in_use_by != $current_user_id );
+    }
+
     public static function validate_for_delete($post_id = 0)
     {
         // TODO: Implement validate_for_delete() method.

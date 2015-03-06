@@ -1,10 +1,3 @@
-<?php
-    $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'versions';
-    $test_collection = \kwps_classes\Test_Collection::get_as_array( $_REQUEST['id'], true );
-    $required_fields_coll_outro = \kwps_classes\Coll_Outro::$required_fields;
-    $disable_form = ( isset( $test_collection['post_status'] ) && 'publish' == $test_collection['post_status'] );
-?>
-
 <div class="wrap">
     <h2 class="nav-tab-wrapper">
         <a href="?page=klasse-wp-poll-survey_edit&id=<?php echo $_REQUEST['id']; ?>&section=edit_test_collection&tab=versions" class="nav-tab <?php echo $active_tab == 'versions' ? 'nav-tab-active' : ''; ?>">Versions</a>

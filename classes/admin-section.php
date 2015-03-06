@@ -135,12 +135,9 @@ class admin_section {
             wp_register_script('klasse_wp_poll_survey_plugin_admin_ays', plugins_url('../js/bower_components/jquery.are-you-sure/jquery.are-you-sure.js', __FILE__));
             wp_register_script('klasse_wp_poll_survey_plugin_admin_scripts', plugins_url('../assets/js/kwps_admin-versions.js', __FILE__));
 
-            if( isset( $_REQUEST['id'] ) ) {
-                $test_collection = Version::get_test_collection( $_REQUEST['id'] );
-                $disable_form = ( isset( $test_collection['post_status'] ) && 'publish' == $test_collection['post_status'] );
-            } else {
-                $disable_form = false;
-            }
+            $version = Version::get_as_array( $_REQUEST['id'] );
+            $disable_form = Test_Collection::is_updating_forbidden( $version['post_parent'] );
+            $show_locked_notice = Test_Collection::is_being_edited_by_other_user( $version['post_parent'] );
 
             wp_localize_script(
                 'klasse_wp_poll_survey_plugin_admin_scripts',
@@ -148,6 +145,7 @@ class admin_section {
                 array(
                     'siteurl' => get_option('siteurl'),
                     'disableForm' => $disable_form,
+                    'showLockedNotice' => $show_locked_notice,
                 )
             );
 
@@ -172,6 +170,9 @@ class admin_section {
         } elseif( isset( $_REQUEST['section'] ) && isset( $_REQUEST['tab'] ) && 'edit_test_collection' == $_REQUEST['section'] && 'settings' == $_REQUEST['tab'] ) {
             $testmodus = Test_Collection::get_test_modus( $_REQUEST['id']);
 
+            $disable_form = Test_Collection::is_updating_forbidden( $_REQUEST['id'] );
+            $show_locked_notice = Test_Collection::is_being_edited_by_other_user( $_REQUEST['id'] );
+
             wp_register_script('klasse_wp_poll_survey_plugin_admin_settings_scripts', plugins_url('../assets/js/kwps_admin-settings.js', __FILE__));
             wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_settings_scripts');
             wp_localize_script('klasse_wp_poll_survey_plugin_admin_settings_scripts',
@@ -180,6 +181,8 @@ class admin_section {
                     'siteurl' => get_option('siteurl'),
                     'testCollectionOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
                     'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
+                    'disableForm' => $disable_form,
+                    'showLockedNotice' => $show_locked_notice,
                 )
             );
         }
@@ -217,6 +220,16 @@ class admin_section {
                         $settings = Test_Collection::get_meta_data( $_REQUEST['id'] );
                         $settings['collection_outro'] = Coll_Outro::get_one_by_post_parent( $_REQUEST['id'] );
                     }
+                }
+
+                $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'versions';
+                $test_collection = \kwps_classes\Test_Collection::get_as_array( $_REQUEST['id'], true );
+                $required_fields_coll_outro = \kwps_classes\Coll_Outro::$required_fields;
+
+                $disable_form = Test_Collection::is_updating_forbidden( $_REQUEST['id'] );
+
+                if(! Test_Collection::is_being_edited_by_other_user( $_REQUEST['id'] ) ) {
+                    update_post_meta( $_REQUEST['id'], '_kwps_in_use_by', get_current_user() );
                 }
 
                 include_once __DIR__ . '/../views/edit-test-collection.php';
