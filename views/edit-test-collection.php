@@ -103,7 +103,7 @@
                                 <div class="kwps-content<?php if( isset( $coll_outro['errors']['post_content'] ) )  echo ' kwps_error'; ?>">
                                     <div  class="kwps-content-editor">
                                         <?php if( $disable_form ): ?>
-                                            <textarea name="collection_outro[post_content" disabled class="kwps-content-disabled">
+                                            <textarea id="publishedTextarea" name="collection_outro[post_content" disabled class="kwps-content-disabled">
                                                 <?php echo $coll_outro['post_content'];?>
                                             </textarea>
                                         <?php else:?>
