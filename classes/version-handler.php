@@ -706,6 +706,10 @@ class Version_Handler {
             $test_modus_errors['post_status'] = __( 'Can not update a test that is published' );
         }
 
+        if( Test_Collection::is_being_edited_by_other_user( $data['post_parent'] ) ) {
+            $test_modus_errors['lock'] = __( 'Can not update a test while another user is working on it' );
+        }
+
         if( sizeof( $test_modus_errors ) != 0 ) {
             $data_has_errors = true;
         }
