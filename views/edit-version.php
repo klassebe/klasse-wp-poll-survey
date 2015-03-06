@@ -205,7 +205,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                             <span class="kwps-collapse dashicons dashicons-arrow-right"></span> 
                                 Pagina <?php echo $question_group['_kwps_sort_order'] ?> 
                                 <?php if( in_array( 'post_content', $required_fields_question_group ) ) echo '<span class="kwps-required">*</span>' ?> 
-                            <button class="kwps-remove-item button button-small">remove</button>
+                            <button class="kwps-remove-item button button-small" type="button">remove</button>
                         </h3>
                         <div class="inside">
                             <?php $question_group_field_index = 'question_groups[' . $question_group['_kwps_sort_order'] .']' ?>
@@ -249,7 +249,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                 <span class="kwps-collapse dashicons dashicons-arrow-right"></span> Vraag 
                                                 <span><?php echo $question['_kwps_sort_order'] ?></span> 
                                                 <?php if( in_array( 'post_content', $required_fields_question ) ) echo '<span class="kwps-required">*</span>' ?>
-                                                <button class="kwps-remove-item button button-small">remove</button>
+                                                <button class="kwps-remove-item button button-small" type="button">remove</button>
                                             </h3>
                                             <div class="inside">
                                                 <?php if( isset ($question['ID'] ) ): ?>
@@ -290,7 +290,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                                     <span class="kwps-collapse dashicons dashicons-arrow-right"></span> Antwoord 
                                                                     <span><?php echo $answer_option['_kwps_sort_order'] ;?></span> 
                                                                     <?php if( in_array( 'post_content', $required_fields_answer_option ) ) echo '<span class="kwps-required">*</span>' ?>
-                                                                    <button class="kwps-remove-item button button-small">remove</button>
+                                                                    <button class="kwps-remove-item button button-small" type="button">remove</button>
                                                                 </h3>
                                                                 <div class="inside">
                                                                     <?php if( isset ($answer_option['ID'] ) ): ?>
@@ -327,7 +327,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                                                 </div>
                                                             </div>
                                                         <?php endforeach; ?>
-                                                        <button class="kwps-create-item button" data-kwps-max="answer_options_per_question">
+                                                        <button class="kwps-create-item button" type="button" data-kwps-max="answer_options_per_question">
                                                             + Antwoord toevoegen
                                                         </button>
                                                     </div>
@@ -335,7 +335,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                             </div>
                                         </div>
                                     <?php endforeach; ?>
-                                    <button class="kwps-create-item button" data-kwps-max="questions_per_question_group">
+                                    <button class="kwps-create-item button" type="button" data-kwps-max="questions_per_question_group">
                                         + Vraag toevoegen
                                     </button>
                                 </div>
@@ -344,7 +344,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                         
                     </div>
                 <?php endforeach; ?>
-                <button class="kwps-create-item button" data-kwps-max="question_groups">
+                <button class="kwps-create-item button" type="button" data-kwps-max="question_groups">
                     + Pagina toevoegen
                 </button>
             </div>
@@ -392,7 +392,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                                 <span class="kwps-result_profile_head_title">
                                     Result profile<!--  <?php echo $result_profile['_kwps_min_value'] ;?> - <?php echo $result_profile['_kwps_max_value'] ;?> -->
                                 </span> 
-                                <button class="kwps-remove-item button button-small">remove</button>
+                                <button class="kwps-remove-item button button-small" type="button">remove</button>
                             </h3>
                             <div class="inside">
                                 <?php if( isset( $result_profile['ID'] ) ): ?>
@@ -434,7 +434,7 @@ $test_collection_url = get_admin_url() .'/admin.php?page=klasse-wp-poll-survey_e
                             </div>
                         </div>
                         <?php endforeach; ?>
-                        <button class="kwps-create-item button" data-kwps-max="result_profiles">
+                        <button class="kwps-create-item button" type="button" data-kwps-max="result_profiles">
                             + profile toevoegen
                         </button>
                     </div>

@@ -16,13 +16,19 @@ jQuery(document).ready(function($) {
 
   $('#version-save').click(versionSave);
 
-  $(document).on('click','.kwps-create-item', createItem);
-  $(document).on('click','.kwps-remove-item', removeItem);
-  $(document).on('click','.kwps-move-down', moveDown);
-  $(document).on('click','.kwps-move-up', moveUp);
+  if ( !WPURLS.disableForm ) {
+    $(document).on('click','.kwps-create-item', createItem);
+    $(document).on('click','.kwps-remove-item', removeItem);
+    $(document).on('click','.kwps-move-down', moveDown);
+    $(document).on('click','.kwps-move-up', moveUp);
+    $(document).on('click','.kwps-content-edit', showEditor);
+    $(document).on('click','.kwps-content-editor-save', updateValues);
+  } else {
+    $('#edit-version').on('submit', function (event) {
+      event.preventDefault();
+    });
+  }
   $(document).on('click','.kwps-collapse', collapse);
-  $(document).on('click','.kwps-content-edit', showEditor);
-  $(document).on('click','.kwps-content-editor-save', updateValues);
 
 
 	var button = $('.kwps-add-result-button.outro-result-button').detach();
@@ -423,13 +429,13 @@ jQuery(document).ready(function($) {
 
       $(this).find('.kwps-question_group:visible').each(function(questionGroupI) {
         if(questionGroupI < questionGroupsCount-1) {
-          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
+          $(this).find('h3:first').append("<button class='kwps-move-down kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-down'></span></button>");
         }
       });
 
       $(this).find('.kwps-question_group:visible').each(function(questionGroupI) {
         if(questionGroupI > 0) {
-          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
+          $(this).find('h3:first').append("<button class='kwps-move-up kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-up'></span></button>");
         }
       });
 
@@ -444,13 +450,13 @@ jQuery(document).ready(function($) {
 
       $(this).find('.kwps-question:visible').each(function(questionI) {
         if(questionI < questionsCount-1) {
-          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
+          $(this).find('h3:first').append("<button class='kwps-move-down kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-down'></span></button>");
         }
       });
 
       $(this).find('.kwps-question:visible').each(function(questionI) {
         if(questionI > 0) {
-          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
+          $(this).find('h3:first').append("<button class='kwps-move-up kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-up'></span></button>");
         }
       });
     });
@@ -465,13 +471,13 @@ jQuery(document).ready(function($) {
 
       $(this).find('.kwps-answer_option:visible').each(function(answerOptionI) {
         if(answerOptionI < answerOptionCount-1) {
-          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-down kwps-action button'><span class='dashicons dashicons-arrow-down'></span></a>");
+          $(this).find('h3:first').append("<button class='kwps-move-down kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-down'></span></button>");
         }
       });
 
       $(this).find('.kwps-answer_option:visible').each(function(answerOptionI) {
         if(answerOptionI > 0) {
-          $(this).find('h3:first').append("<a href=\'\' class='kwps-move-up kwps-action button'><span class='dashicons dashicons-arrow-up'></span></a>");
+          $(this).find('h3:first').append("<button class='kwps-move-up kwps-action button button-small' type='button'><span class='dashicons dashicons-arrow-up'></span></button>");
         }
       });
     });
