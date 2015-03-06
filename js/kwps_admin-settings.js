@@ -79,4 +79,20 @@ jQuery(document).ready(function($) {
 		return $('iframe').contents().find(element);
 	};
 
+	//if test is published there's a textarea on this page instead of tiny mce
+	//this sets the textarea size to show the content properly
+	var textarea = $('#publishedTextarea');
+	if ( textarea.length > 0 ) {
+		var parentLength = textarea.closest('div.kwps-content-editor').innerWidth();
+
+		var height = 20;
+		textarea.val().split('\n').forEach(function (string, index, array) {
+			height += 19;
+		});
+
+		textarea.innerWidth(parentLength);
+		textarea.innerHeight(height);
+
+	}
+
 });
