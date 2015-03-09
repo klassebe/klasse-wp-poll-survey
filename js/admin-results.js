@@ -1,6 +1,6 @@
 console.log('admin results js file loaded'); 
 jQuery(function ($){
-	var url = kwpsInfo.siteurl + "admin-ajax.php?action=kwps_get_result_of_version";
+	var url = kwpsInfo.adminurl + "admin-ajax.php?action=kwps_get_result_of_version";
 	var elem = $('#kwps-results-container');
 	var errorElement = $('<div class="error form-invalid"><p><h2>Error:</h2> <span></span></p></div>');
 

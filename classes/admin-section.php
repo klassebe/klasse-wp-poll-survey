@@ -128,6 +128,15 @@ class admin_section {
 	}
 
     public static function enqueue_scripts() {
+        $kwps_info = array(
+//            'siteurl' => get_option('siteurl'),
+//            'disableForm' => $disable_form,
+//            'showLockedNotice' => $show_locked_notice,
+//            'testmodusOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
+//            'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
+//            'testCollectionOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
+
+        );
         if( isset( $_REQUEST['section']) && 'edit_version' == $_REQUEST['section'] ) {
             wp_enqueue_script( 'jquery' );
             wp_enqueue_script( 'jquery-ui-core' );
@@ -150,6 +159,7 @@ class admin_section {
                 'kwpsInfo',
                 array(
                     'siteurl' => get_option('siteurl'),
+                    'adminurl' => get_admin_url(),
                     'disableForm' => $disable_form,
                     'showLockedNotice' => $show_locked_notice,
                 )
@@ -167,7 +177,8 @@ class admin_section {
             wp_localize_script('klasse_wp_poll_survey_plugin_admin_results_highcharts',
                 'kwpsInfo',
                 array(
-                    'siteurl' => admin_url(),
+                    'siteurl' => get_option('siteurl'),
+                    'adminurl' => admin_url(),
                     'testmodusOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
                     'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
                 )
@@ -185,12 +196,27 @@ class admin_section {
                 'kwpsInfo',
                 array(
                     'siteurl' => get_option('siteurl'),
+                    'adminurl' => admin_url(),
                     'testCollectionOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
                     'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
                     'disableForm' => $disable_form,
                     'showLockedNotice' => $show_locked_notice,
                 )
             );
+        } else {
+            $disable_form = Test_Collection::is_updating_forbidden( $_REQUEST['id'] );
+            $show_locked_notice = Test_Collection::is_being_edited_by_other_user( $_REQUEST['id'] );
+
+            wp_register_script( 'klasse_wp_poll_survey_plugin_admin_unlocker_scripts', plugins_url( '../assets/js/kwps_admin-unlocker.js', __FILE__ ) );
+            wp_localize_script( 'klasse_wp_poll_survey_plugin_admin_unlocker_scripts',
+                'kwpsInfo', array(
+                    'siteurl' => get_option('siteurl'),
+                    'adminurl' => get_admin_url(),
+                    'disableForm' => $disable_form,
+                    'showLockedNotice' => $show_locked_notice,
+                )
+            );
+            wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_unlocker_scripts' );
         }
     }
 
