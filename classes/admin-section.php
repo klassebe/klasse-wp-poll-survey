@@ -274,6 +274,16 @@ class admin_section {
 
                 include_once __DIR__ . '/../views/edit-test-collection.php';
             } elseif( 'edit_version' == $_REQUEST['section'] ) {
+                if( isset( $_REQUEST['post_parent'] ) ) {
+                    update_post_meta( $_REQUEST['post_parent'], '_kwps_in_use_by', get_current_user() );
+                } elseif( isset( $_REQUEST['id'] ) ) {
+                    $version = Version::get_as_array( $_REQUEST['id'] );
+                    update_post_meta( $version['post_parent'], '_kwps_in_use_by', get_current_user() );
+                }
+
+//                if(! Test_Collection::is_being_edited_by_other_user( $_REQUEST['id'] ) ) {
+//                    update_post_meta( $_REQUEST['id'], '_kwps_in_use_by', get_current_user() );
+//                }
                 if( sizeof( $_POST ) == 0  ) {
                     if( isset( $_REQUEST['post_parent'])) {
                         $versions = Version::get_all_by_post_parent( $_REQUEST['post_parent']);
