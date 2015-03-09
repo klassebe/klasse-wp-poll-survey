@@ -16,7 +16,7 @@ jQuery(document).ready(function($) {
 
   $('#version-save').click(versionSave);
 
-  if ( !kwpsInfo.disableForm ) {
+  if ( kwpsInfo.disableForm === "0" ) {
     $(document).on('click','.kwps-create-item', createItem);
     $(document).on('click','.kwps-remove-item', removeItem);
     $(document).on('click','.kwps-move-down', moveDown);
