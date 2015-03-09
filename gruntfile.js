@@ -19,6 +19,10 @@ module.exports = function(grunt) {
 			public: {
 				src : ['./js/public.js', './js/bower_components/highcharts-release/highcharts.js'],
 				dest : './assets/js/kwps_public.js'
+			},
+			unlocker: {
+				src : ['./js/kwps_admin-unlocker.js'],
+				dest : './assets/js/kwps_admin-unlocker.js'
 			}
 		},
 		jshint : {
