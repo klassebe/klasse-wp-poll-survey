@@ -9,10 +9,18 @@ class Edit_Lock {
         $request_data = static::get_post_data_from_request();
 
         if( isset( $request_data['ID'] ) ) {
-            $test_collection = Test_Collection::get_as_array( $request_data['ID'], true);
+            $requested_post = get_post( $request_data['ID']);
 
-            if( $test_collection ) {
-                $in_use_by = get_post_meta( $request_data['ID'], '_kwps_in_use_by', true );
+            if( $requested_post ) {
+                if( get_post_type( $request_data['ID'] ) == Version::$post_type ) {
+                    $version = Version::get_as_array( $request_data['ID'] );
+                    $test_collection_id = $version['post_parent'];
+                } elseif( get_post_type( $request_data['ID'] ) == Test_Collection::$post_type ) {
+                    $test_collection_id = $request_data['ID'];
+                }
+
+
+                $in_use_by = get_post_meta( $test_collection_id, '_kwps_in_use_by', true );
                 if( empty( $in_use_by ) ) {
                     wp_send_json_error(
                         array(
@@ -21,14 +29,8 @@ class Edit_Lock {
                     );
                 } else {
                     if( $in_use_by == get_current_user()  ) {
-                        if( get_post_type( $_REQUEST['ID'] ) == Version::$post_type ) {
-                            $version = Version::get_as_array( $_REQUEST['ID'] );
-                            delete_post_meta( $version['post_parent'], '_kwps_in_use_by' );
-                            wp_send_json_success( array( 'message' => 'Test collection with id ' .$version['post_parent'] . ' unlocked.') );
-                        } elseif( get_post_type( $_REQUEST['ID'] ) == Test_Collection::$post_type ) {
-                            delete_post_meta( $request_data['ID'], '_kwps_in_use_by' );
-                            wp_send_json_success( array( 'message' => 'Test collection with id ' .$request_data['ID'] . ' unlocked.') );
-                        }
+                        delete_post_meta( $test_collection_id, '_kwps_in_use_by' );
+                        wp_send_json_success( array( 'message' => 'Test collection with id ' . $test_collection_id . ' unlocked.') );
                     } else {
                         header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request', true, 400);
                         wp_send_json_error( array( 'message' => 'nice try!') );
