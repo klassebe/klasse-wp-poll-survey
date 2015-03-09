@@ -132,7 +132,7 @@
             $versions = \kwps_classes\Version::get_all_by_post_parent( $_REQUEST['id'] );
         ?>
         <p>
-            <select <?php if( $disable_form) echo 'disabled' ?> id="showResultVersion">
+            <select id="showResultVersion">
                 <option value="all">All Versions</option>
                 <?php foreach( $versions as $version ):?>
                     <option value="<?php echo $version['ID']; ?>"><?php echo $version['post_title'];?></option>
@@ -141,7 +141,7 @@
         </p>
 
         <p>
-            <select <?php if( $disable_form) echo 'disabled' ?> id="outputTypes">
+            <select id="outputTypes">
                 <?php foreach( $current_test_modus['_kwps_allowed_output_types_test_collection'] as $output_type ):?>
                     <option value="<?php echo $output_type; ?>"><?php echo $output_type;?></option>
                 <?php endforeach;?>
