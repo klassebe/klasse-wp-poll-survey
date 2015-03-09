@@ -5,7 +5,6 @@ jQuery(document).ready(function($) {
 		var entry = {
 			ID : parseInt(kwpsInfo.id)
 		};
-		console.log(entry);
 		$.ajax({
 			type: "POST",
 			url: url,
