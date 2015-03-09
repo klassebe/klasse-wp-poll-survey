@@ -367,161 +367,168 @@ class Version extends Kwps_Post_Type{
 
     public static function get_html($id){
 	    $version = Version::get_as_array($id);
-        $view_count = (int) $version['_kwps_view_count'];
-        $view_count++;
-	    $version['_kwps_view_count'] = $view_count;
-        $test_collection = Test_Collection::get_as_array($version['post_parent']);
+        if( $version ) {
+            $view_count = (int) $version['_kwps_view_count'];
+            $view_count++;
+            $version['_kwps_view_count'] = $view_count;
+            $test_collection = Test_Collection::get_as_array($version['post_parent']);
 
-        static::save_post($version);
-	    $limitations = Test_Collection::get_meta_data($version['post_parent']);
+            static::save_post($version);
+            $limitations = Test_Collection::get_meta_data($version['post_parent']);
 
-	    if( is_user_logged_in() ){
-		    $limit_to_apply = $limitations['_kwps_logged_in_user_limit'];
-	    } else {
-		    $limit_to_apply = $limitations['_kwps_logged_out_user_limit'];
-	    }
+            if( is_user_logged_in() ){
+                $limit_to_apply = $limitations['_kwps_logged_in_user_limit'];
+            } else {
+                $limit_to_apply = $limitations['_kwps_logged_out_user_limit'];
+            }
 
 
-	    $data = array(
-		    'settings' => array(
-			    'first_question_id_allowed' => -1
-		    )
-	    );
-	    $data['intro'] = Intro::get_one_by_post_parent($id);
-	    $data['outro'] = Outro::get_one_by_post_parent($id);
-	    $data['intro_result'] = Intro_Result::get_one_by_post_parent($id);
-	    $data['question_groups'] = Question_Group::get_all_by_post_parent($id);
+            $data = array(
+                'settings' => array(
+                    'first_question_id_allowed' => -1
+                )
+            );
+            $data['intro'] = Intro::get_one_by_post_parent($id);
+            $data['outro'] = Outro::get_one_by_post_parent($id);
+            $data['intro_result'] = Intro_Result::get_one_by_post_parent($id);
+            $data['question_groups'] = Question_Group::get_all_by_post_parent($id);
 
-        $allowed_to_fill_out_test = false;
-        $show_deleted_notice = false;
+            $allowed_to_fill_out_test = false;
+            $show_deleted_notice = false;
 
-        if( 'trash' == $version['post_status'] ) {
-            $show_deleted_notice = true;
-        } else {
-            foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
-                $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
+            if( 'trash' == $version['post_status'] ) {
+                $show_deleted_notice = true;
+            } else {
+                foreach($data['question_groups'] as $questionGroupKey => $questionGroup) {
+                    $data['question_groups'][$questionGroupKey]['questions'] = Question::get_all_by_post_parent($questionGroup['ID']);
 
-                foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
-                    if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
-                        $data['settings']['first_question_id_allowed'] = $question['ID'];
-                        $allowed_to_fill_out_test = true;
+                    foreach($data['question_groups'][$questionGroupKey]['questions'] as $questionKey => $question) {
+                        if( Uniqueness::is_allowed($question['ID'], $limit_to_apply) && $data['settings']['first_question_id_allowed'] < 0 ){
+                            $data['settings']['first_question_id_allowed'] = $question['ID'];
+                            $allowed_to_fill_out_test = true;
+                        }
+                        $data['question_groups'][$questionGroupKey]['questions'][$questionKey]['answer_options'] = Answer_Option::get_all_by_post_parent($question['ID']);
                     }
-                    $data['question_groups'][$questionGroupKey]['questions'][$questionKey]['answer_options'] = Answer_Option::get_all_by_post_parent($question['ID']);
                 }
             }
-        }
 
 
-        Session::set_version_info($id);
-        ob_start();
-?>
-        <?php if( user_can( get_current_user(), 'edit_post' ) ) : ?>
-            <div class="kwps-version-status"><?php echo $version['post_status'] ?></div>
-        <?php endif; ?>
-        <div class="kwps-version">
+            Session::set_version_info($id);
+            ob_start();
+            ?>
+            <?php if( user_can( get_current_user(), 'edit_post' ) ) : ?>
+                <div class="kwps-version-status"><?php echo $version['post_status'] ?></div>
+            <?php endif; ?>
+            <div class="kwps-version">
                 <input type="hidden" class="kwps-version-id" value="<?php echo $version['ID']?>">
                 <input type="hidden" class="admin-url" value="<?php echo admin_url(); ?>">
-<?php
-        if( $show_deleted_notice ) {
-            // covered by JS
-        }
-        elseif( ( in_array($test_collection['post_status'], array('locked', 'trash')) || !$allowed_to_fill_out_test ) ) {
-            ?>
-                <?php if(!empty($data['intro_result'])): ?>
-                    <div class="kwps-page kwps-intro-result">
-                        <div class="kwps-content">
-                            <?php
-                            /* SEARCH THE SHORTCODE AND REPLACE IT */
-                            $replacement_arr = [];
-                            $pattern_arr = [];
-                            $pattern = '/\[kwps_result.*\]/';
-                            $subject = $data['intro_result']['post_content'];
-                            preg_match_all($pattern, $subject, $kwps_result_matches);
-                            foreach ($kwps_result_matches[0] as $kwps_result_match) {
-                                $replacement_arr[] = do_shortcode($kwps_result_match);
-                                $pattern_arr[] = '/\\' . substr($kwps_result_match,0,-1) . '\]/';
-                            }
-                            $output = preg_replace($pattern_arr, $replacement_arr, $subject);
-                            echo $output;
-                        ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-        <?php
-        }
-        elseif( $test_collection['post_status'] === 'draft' && !current_user_can('edit_posts') ) {
-            ?>
-            <div class="kwps-version"><?php echo __( 'You need to be logged in to view this version', 'klasse-wp-poll-survey' ); ?></div>
-        <?php
-        } else {
-?>
-
-            <?php if(!empty($data['intro'])): ?>
-                <div class="kwps-page kwps-intro">
-                    <div class="kwps-content">
-                        <?php echo $data['intro']['post_content']; ?>
-                    </div>
-                    <div class="kwps-button">
-                        <button class="kwps-next"><?php _e('Next', 'klasse-wp-poll-survey') ?></button>
-                    </div>
-                </div>
-            <?php endif; ?>
-
-
-            <?php foreach($data['question_groups'] as $questionGroup): ?>
-                <div class="kwps-page kwps-question-group ">
-                    <div class="kwps-question-group-title">
-                        <?php echo $questionGroup['post_title']; ?>
-                    </div>
-                    <div class="kwps-questions">
-                        <?php foreach($questionGroup['questions'] as $question): ?>
-                            <div class="kwps-question">
-                                <div class="kwps-question-dsc"><?php echo $question['post_content'] ?></div>
-                                <div class="kwps-answer-option">
-                                    <ul>
-                                        <?php foreach($question['answer_options'] as $answerOption): ?>
-                                            <li><input id="answer-option-<?php echo $answerOption['ID'] ?>" class="kwps-answer-option-input" type="radio" name="question_id_<?php echo $question['ID'] ?>" value="<?php echo $answerOption['ID'] ?>"><label for="answer-option-<?php echo $answerOption['ID'] ?>"><?php echo $answerOption['post_content'] ?></label></li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                </div>
+                <?php
+                if( $show_deleted_notice ) {
+                    // covered by JS
+                }
+                elseif( ( in_array($test_collection['post_status'], array('locked', 'trash')) || !$allowed_to_fill_out_test ) ) {
+                    ?>
+                    <?php if(!empty($data['intro_result'])): ?>
+                        <div class="kwps-page kwps-intro-result">
+                            <div class="kwps-content">
+                                <?php
+                                /* SEARCH THE SHORTCODE AND REPLACE IT */
+                                $replacement_arr = [];
+                                $pattern_arr = [];
+                                $pattern = '/\[kwps_result.*\]/';
+                                $subject = $data['intro_result']['post_content'];
+                                preg_match_all($pattern, $subject, $kwps_result_matches);
+                                foreach ($kwps_result_matches[0] as $kwps_result_match) {
+                                    $replacement_arr[] = do_shortcode($kwps_result_match);
+                                    $pattern_arr[] = '/\\' . substr($kwps_result_match,0,-1) . '\]/';
+                                }
+                                $output = preg_replace($pattern_arr, $replacement_arr, $subject);
+                                echo $output;
+                                ?>
                             </div>
+                        </div>
+                    <?php endif; ?>
 
-                        <?php endforeach; ?>
-                    </div>
-                    <div class="kwps-button">
-                        <button class="kwps-next"><?php _e('Next', 'klasse-wp-poll-survey') ?></button>
-                    </div>
-                </div>
-            <?php endforeach; ?>
+                <?php
+                }
+                elseif( $test_collection['post_status'] === 'draft' && !current_user_can('edit_posts') ) {
+                    ?>
+                    <div class="kwps-version"><?php echo __( 'You need to be logged in to view this version', 'klasse-wp-poll-survey' ); ?></div>
+                <?php
+                } else {
+                    ?>
 
-            <?php if(!empty($data['outro'])): ?>
-                <div class="kwps-page kwps-outro">
-                    <div class="kwps-content">
-                        <?php
-                            /* SEARCH THE SHORTCODE AND REPLACE IT */
-                            $replacement_arr = [];
-                            $pattern_arr = [];
-                            $pattern = '/\[kwps_result.*\]/';
-                            $subject = $data['outro']['post_content'];
-                            preg_match_all($pattern, $subject, $kwps_result_matches);
-                            foreach ($kwps_result_matches[0] as $kwps_result_match) {
-	                            $replacement_arr[] = do_shortcode($kwps_result_match);
-                                $pattern_arr[] = '/\\' . substr($kwps_result_match,0,-1) . '\]/';
-                            }
-                            $output = preg_replace($pattern_arr, $replacement_arr, $subject);
-                            echo $output;
-                        ?>
-                    </div>
-                </div>
-            <?php endif; ?>
-        
-<?php
+                    <?php if(!empty($data['intro'])): ?>
+                        <div class="kwps-page kwps-intro">
+                            <div class="kwps-content">
+                                <?php echo $data['intro']['post_content']; ?>
+                            </div>
+                            <div class="kwps-button">
+                                <button class="kwps-next"><?php _e('Next', 'klasse-wp-poll-survey') ?></button>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+
+                    <?php foreach($data['question_groups'] as $questionGroup): ?>
+                        <div class="kwps-page kwps-question-group ">
+                            <div class="kwps-question-group-title">
+                                <?php echo $questionGroup['post_title']; ?>
+                            </div>
+                            <div class="kwps-questions">
+                                <?php foreach($questionGroup['questions'] as $question): ?>
+                                    <div class="kwps-question">
+                                        <div class="kwps-question-dsc"><?php echo $question['post_content'] ?></div>
+                                        <div class="kwps-answer-option">
+                                            <ul>
+                                                <?php foreach($question['answer_options'] as $answerOption): ?>
+                                                    <li><input id="answer-option-<?php echo $answerOption['ID'] ?>" class="kwps-answer-option-input" type="radio" name="question_id_<?php echo $question['ID'] ?>" value="<?php echo $answerOption['ID'] ?>"><label for="answer-option-<?php echo $answerOption['ID'] ?>"><?php echo $answerOption['post_content'] ?></label></li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                <?php endforeach; ?>
+                            </div>
+                            <div class="kwps-button">
+                                <button class="kwps-next"><?php _e('Next', 'klasse-wp-poll-survey') ?></button>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+
+                    <?php if(!empty($data['outro'])): ?>
+                        <div class="kwps-page kwps-outro">
+                            <div class="kwps-content">
+                                <?php
+                                /* SEARCH THE SHORTCODE AND REPLACE IT */
+                                $replacement_arr = [];
+                                $pattern_arr = [];
+                                $pattern = '/\[kwps_result.*\]/';
+                                $subject = $data['outro']['post_content'];
+                                preg_match_all($pattern, $subject, $kwps_result_matches);
+                                foreach ($kwps_result_matches[0] as $kwps_result_match) {
+                                    $replacement_arr[] = do_shortcode($kwps_result_match);
+                                    $pattern_arr[] = '/\\' . substr($kwps_result_match,0,-1) . '\]/';
+                                }
+                                $output = preg_replace($pattern_arr, $replacement_arr, $subject);
+                                echo $output;
+                                ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                <?php
+                }
+                ?>
+            </div> <!-- END KWPS VERSION DIV -->
+            <?php
+            return ob_get_clean();
+        } else {
+            ?>
+            <div>Not a valid ID!</div>
+        <?php
         }
-        ?>
-        </div> <!-- END KWPS VERSION DIV -->
-<?php
-        return ob_get_clean();
+
     }
 
 
