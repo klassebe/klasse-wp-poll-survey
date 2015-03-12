@@ -92,7 +92,7 @@ class Grouped_Bar_Chart
         return $bar_chart;
     }
 
-    public static function get_chart_per_question_per_test_collection( $test_collection_id, $result_hash ) {
+    public static function get_distribution_of_result_profiles_per_test_collection( $test_collection_id, $result_hash ) {
         $result_group = Result_Group::get_by_result_hash( $result_hash );
         // var_dump( 'result group: ', $result_group );
         if( ! $result_group) {

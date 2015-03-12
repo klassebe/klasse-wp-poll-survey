@@ -95,7 +95,7 @@ class Result {
                 $results = Pie_Chart::get_chart_per_question_per_test_collection($id, $filter);
                 break;
             case 'grouped-bar-chart-per-profile' :
-                $results = Grouped_Bar_Chart::get_chart_per_question_per_test_collection($id, $filter);
+                $results = Grouped_Bar_Chart::get_distribution_of_result_profiles_per_test_collection($id, $filter);
                 break;
             default:
                 $results = 0;
