@@ -291,6 +291,7 @@ class Entry extends Kwps_Post_Type{
                     'value' => Session::get_version_info($version_id),
                 ),
             ),
+            'numberposts' => -1,
             'post_status' => array( 'draft', 'publish'),
         );
         $entries_by_user_hash = get_posts( $args );
