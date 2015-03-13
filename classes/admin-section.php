@@ -186,6 +186,8 @@ class admin_section {
 
         } elseif( isset( $_REQUEST['section'] ) && isset( $_REQUEST['tab'] ) && 'edit_test_collection' == $_REQUEST['section'] && 'settings' == $_REQUEST['tab'] ) {
             $testmodus = Test_Collection::get_test_modus( $_REQUEST['id']);
+            $version_ids = Version::get_all_by_post_parent( $_REQUEST['id'] );
+
 
             $disable_form = Test_Collection::is_updating_forbidden( $_REQUEST['id'] );
             $show_locked_notice = Test_Collection::is_being_edited_by_other_user( $_REQUEST['id'] );
@@ -201,6 +203,7 @@ class admin_section {
                     'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
                     'disableForm' => (int) $disable_form,
                     'showLockedNotice' => (int) $show_locked_notice,
+                    'version_ids' => $version_ids,
                 )
             );
         } elseif(
@@ -214,6 +217,7 @@ class admin_section {
             )
         ) {
             $testmodus = Test_Collection::get_test_modus( $_REQUEST['id']);
+            $version_ids = Version::get_all_by_post_parent( $_REQUEST['id'] );
 
             $disable_form = Test_Collection::is_updating_forbidden( $_REQUEST['id'] );
             $show_locked_notice = Test_Collection::is_being_edited_by_other_user( $_REQUEST['id'] );
@@ -228,6 +232,7 @@ class admin_section {
                     'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
                     'disableForm' => (int) $disable_form,
                     'showLockedNotice' => (int) $show_locked_notice,
+                    'version_ids' => $version_ids,
                 )
             );
             wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_unlocker_scripts' );
