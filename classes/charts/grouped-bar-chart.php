@@ -94,7 +94,6 @@ class Grouped_Bar_Chart
 
     public static function get_distribution_of_result_profiles_per_test_collection( $test_collection_id, $result_hash ) {
         $result_group = Result_Group::get_by_result_hash( $result_hash );
-        // var_dump( 'result group: ', $result_group );
         if( ! $result_group) {
             return 0;
         }
@@ -103,8 +102,6 @@ class Grouped_Bar_Chart
         $first_version = Version::get_one_by_post_parent($test_collection_id);
 
         $versions = Version::get_all_by_post_parent($test_collection_id);
-
-        // var_dump( $versions );
 
         $result_profiles_of_first_version = Result_Profile::get_all_by_post_parent($first_version['ID']);
 
@@ -138,11 +135,10 @@ class Grouped_Bar_Chart
         foreach( $versions as $version ) {
 
             $version_totals = array_fill(0, sizeof(  $grouped_result_profiles ), 0 );
-            $user_hashes = Entry::get_all_user_hashes_per_version( $version['ID'] , $result_group['_kwps_hash']);
-            // var_dump( 'user_hashes for result group hash: ' .  $result_group['_kwps_hash'], $user_hashes );
+            $user_hashes = Entry::get_all_session_hashes_per_version( $version['ID'] , $result_group['_kwps_hash']);
 
             foreach( $user_hashes as $user_hash ) {
-                $result_profile = Result_Profile::get_result_profile_by_version_and_hash($version['ID'] , $user_hash);
+                $result_profile = Result_Profile::get_result_profile_by_version_and_session_hash( $version['ID'] , $user_hash );
 
                 for($index = 0; $index < sizeof( $grouped_result_profiles ); $index++ ) {
                     if( isset( $result_profile['ID'] ) ) {
@@ -161,7 +157,8 @@ class Grouped_Bar_Chart
 
             foreach( $version_totals as $key => $value ) {
                 if( $value > 0 ) {
-                    $version_totals[$key] = $total_result_profiles_of_version * 100 / $value;
+                    $percentage = $value * 100 / $total_result_profiles_of_version;
+                    $version_totals[$key] = $percentage;
                 }
             }
 

@@ -251,6 +251,32 @@ class Entry extends Kwps_Post_Type{
         return array_unique($user_hashes);
     }
 
+    static function get_all_session_hashes_per_version($version_id, $group=''){
+        $user_hashes = array();
+
+        $question_groups = Question_Group::get_all_by_post_parent($version_id);
+        foreach($question_groups as $question_group){
+            $questions = Question::get_all_by_post_parent($question_group['ID']);
+            foreach($questions as $question){
+                $answer_options = Answer_Option::get_all_by_post_parent($question['ID']);
+                foreach($answer_options as $answer_option){
+                    $entries = Entry::get_all_by_post_parent($answer_option['ID']);
+                    foreach($entries as $entry){
+                        if( sizeof( $group ) > 0 ) {
+                            if( isset( $entry['_kwps_group'] ) && $entry['_kwps_group'] == $group) {
+                                array_push( $user_hashes,  $entry['_kwps_session']);
+                            }
+                        } else {
+                            array_push( $user_hashes,  $entry['_kwps_session']);
+                        }
+                    }
+                }
+            }
+        }
+
+        return array_unique($user_hashes);
+    }
+
     static function get_all_by_user_hash_and_version($user_hash, $version_id){
         $args = array(
             'post_type' => static::$post_type,
@@ -282,13 +308,16 @@ class Entry extends Kwps_Post_Type{
         return $entries;
     }
 
-    static function get_all_by_session_hash_and_version($version_id){
+    static function get_all_by_session_hash_and_version($session_hash = '', $version_id){
+        if( empty( $session_hash ) ) {
+            $session_hash = Session::get_version_info($version_id);
+        }
         $args = array(
             'post_type' => static::$post_type,
             'meta_query' => array(
                 array(
                     'key' => '_kwps_session',
-                    'value' => Session::get_version_info($version_id),
+                    'value' => $session_hash,
                 ),
             ),
             'numberposts' => -1,
