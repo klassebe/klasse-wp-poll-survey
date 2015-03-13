@@ -160,8 +160,8 @@ class admin_section {
                 array(
                     'siteurl' => get_option('siteurl'),
                     'adminurl' => get_admin_url(),
-                    'disableForm' => $disable_form,
-                    'showLockedNotice' => $show_locked_notice,
+                    'disableForm' => (int) $disable_form,
+                    'showLockedNotice' => (int) $show_locked_notice,
                 )
             );
 
@@ -199,33 +199,62 @@ class admin_section {
                     'adminurl' => admin_url(),
                     'testCollectionOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
                     'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
-                    'disableForm' => $disable_form,
-                    'showLockedNotice' => $show_locked_notice,
+                    'disableForm' => (int) $disable_form,
+                    'showLockedNotice' => (int) $show_locked_notice,
                 )
             );
-        }
+        } elseif(
+            ( isset( $_REQUEST['section'] ) && 'edit_test_collection' == $_REQUEST['section'] )
+                &&
+            (
+                (
+                    isset( $_REQUEST['tab'] ) && 'versions' == $_REQUEST['tab']
+                )
+                || ! isset( $_REQUEST['tab'] )
+            )
+        ) {
+            $testmodus = Test_Collection::get_test_modus( $_REQUEST['id']);
 
-        if( isset( $_REQUEST['id'] ) ) {
-            if( ! isset( $disable_form ) ) {
-                $disable_form = Test_Collection::is_updating_forbidden( $_REQUEST['id'] );
-            }
-
-            if( ! isset( $show_locked_notice ) ) {
-                $show_locked_notice = Test_Collection::is_being_edited_by_other_user( $_REQUEST['id'] );
-            }
+            $disable_form = Test_Collection::is_updating_forbidden( $_REQUEST['id'] );
+            $show_locked_notice = Test_Collection::is_being_edited_by_other_user( $_REQUEST['id'] );
 
             wp_register_script( 'klasse_wp_poll_survey_plugin_admin_unlocker_scripts', plugins_url( '../assets/js/kwps_admin-unlocker.js', __FILE__ ) );
-            wp_localize_script( 'klasse_wp_poll_survey_plugin_admin_unlocker_scripts',
-                'kwpsInfo', array(
+            wp_localize_script('klasse_wp_poll_survey_plugin_admin_unlocker_scripts',
+                'kwpsInfo',
+                array(
                     'siteurl' => get_option('siteurl'),
-                    'adminurl' => get_admin_url(),
-                    'disableForm' => $disable_form,
-                    'showLockedNotice' => $show_locked_notice,
-                    'id' => $_REQUEST['id'],
+                    'adminurl' => admin_url(),
+                    'testCollectionOutputTypes' => $testmodus['_kwps_allowed_output_types_test_collection'],
+                    'versionOutputTypes' => $testmodus['_kwps_allowed_output_types'],
+                    'disableForm' => (int) $disable_form,
+                    'showLockedNotice' => (int) $show_locked_notice,
                 )
             );
             wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_unlocker_scripts' );
+
         }
+
+//        if( isset( $_REQUEST['id'] ) ) {
+//            if( ! isset( $disable_form ) ) {
+//                $disable_form = Test_Collection::is_updating_forbidden( $_REQUEST['id'] );
+//            }
+//
+//            if( ! isset( $show_locked_notice ) ) {
+//                $show_locked_notice = Test_Collection::is_being_edited_by_other_user( $_REQUEST['id'] );
+//            }
+
+//            wp_register_script( 'klasse_wp_poll_survey_plugin_admin_unlocker_scripts', plugins_url( '../assets/js/kwps_admin-unlocker.js', __FILE__ ) );
+//            wp_localize_script( 'klasse_wp_poll_survey_plugin_admin_unlocker_scripts',
+//                'kwpsInfo', array(
+//                    'siteurl' => get_option('siteurl'),
+//                    'adminurl' => get_admin_url(),
+//                    'disableForm' => (int) $disable_form,
+//                    'showLockedNotice' => (int) $show_locked_notice,
+//                    'id' => $_REQUEST['id'],
+//                )
+//            );
+//            wp_enqueue_script( 'klasse_wp_poll_survey_plugin_admin_unlocker_scripts' );
+//        }
     }
 
     /**

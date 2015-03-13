@@ -285,9 +285,11 @@ class Result {
         
         extract( shortcode_atts( array(
             'result' => 0,
+            'level' => 'version',
+            'id' => 0,
         ), $atts ) );
 
-        return '<div class="kwps-result ' . $result . '"></div>';
+        return '<div class="kwps-result ' . $result . '" data-level="'  . $level  .'" data-id="' . $id . '"></div>';
     }
 }
 /* EOF */
