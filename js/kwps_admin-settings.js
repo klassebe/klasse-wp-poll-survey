@@ -42,11 +42,11 @@ jQuery(document).ready(function($) {
 		$.each(allowedTypes, function (key, value) {
 			output += '<div id="' + value + '" class="media-item left"><label><h4>' + value.charAt(0).toUpperCase() + value.slice(1).split('-').join(' ') + '</h4><input type="radio" name="results" value="' + value + '"><img class="thumbnail" src="images/' + value + '.png" alt="' + value + '" height="128" width="128"></label></div>';
 		});
-		kwpsInfo.version_ids.forEach(function (object) {
-			$.each(allowedTypes, function (key, value) {
-				output += '<div id="' + value + '" class="media-item left versionCharts" data-id="' + object.ID + '"><label><h4>' + value.charAt(0).toUpperCase() + value.slice(1).split('-').join(' ').slice(0, -8) + object.post_title + '</h4><input type="radio" name="results" value="' + value + '"><img class="thumbnail" src="images/' + value + '.png" alt="' + value.slice(0, -8) + object.post_title + '" height="128" width="128"></label></div>';
-			});
-		});
+		// kwpsInfo.version_ids.forEach(function (object) {
+		// 	$.each(allowedTypes, function (key, value) {
+		// 		output += '<div id="' + value + '" class="media-item left versionCharts" data-id="' + object.ID + '"><label><h4>' + value.charAt(0).toUpperCase() + value.slice(1).split('-').join(' ').slice(0, -8) + object.post_title + '</h4><input type="radio" name="results" value="' + value + '"><img class="thumbnail" src="images/' + value + '.png" alt="' + value.slice(0, -8) + object.post_title + '" height="128" width="128"></label></div>';
+		// 	});
+		// });
 
 		var selectedResult;
 		var versionChartDiv;
