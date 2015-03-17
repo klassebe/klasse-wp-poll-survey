@@ -308,7 +308,7 @@ class Entry extends Kwps_Post_Type{
         return $entries;
     }
 
-    static function get_all_by_session_hash_and_version($session_hash = '', $version_id){
+    static function get_all_by_session_hash_and_version( $version_id, $session_hash = ''){
         if( empty( $session_hash ) ) {
             $session_hash = Session::get_version_info($version_id);
         }

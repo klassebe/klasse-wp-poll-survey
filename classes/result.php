@@ -86,6 +86,13 @@ class Result {
         die;
     }
 
+    public static function send_distribution_of_result_profiles_per_version() {
+        $request_data = static::get_post_data_from_request();
+        $results = Grouped_Bar_Chart::get_distribution_of_result_profiles_per_version( $request_data['ID'], $request_data['_kwps_result_hash'] );
+        wp_send_json( $results );
+        die;
+    }
+
     public static function send_result_of_test_collection($id, $output_type, $filter){
         switch($output_type){
             case 'bar-chart-per-question' :

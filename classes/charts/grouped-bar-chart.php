@@ -175,6 +175,69 @@ class Grouped_Bar_Chart
         return $bar_chart;
     }
 
+
+    public static function get_distribution_of_result_profiles_per_version( $version_id, $result_hash ) {
+        $result_group = Result_Group::get_by_result_hash( $result_hash );
+        if( ! $result_group) {
+            return 0;
+        }
+
+        $versions = Version::get_all_by_post_parent($version_id);
+
+        $titles = array();
+
+        $titles[] = 'No result profile';
+
+        $result_profiles = Result_Profile::get_all_by_post_parent( $version_id );
+        foreach( $result_profiles as $result_profile ) {
+            $titles[] = $result_profile['post_title'];
+        }
+
+        $grouped_result_profiles[] = array(-1);
+
+        $version = Version::get_as_array( $version_id, true );
+
+
+        $version_totals = array_fill(0, sizeof(  $grouped_result_profiles ), 0 );
+        $user_hashes = Entry::get_all_session_hashes_per_version( $version['ID'] , $result_group['_kwps_hash']);
+
+        foreach( $user_hashes as $user_hash ) {
+            $result_profile = Result_Profile::get_result_profile_by_version_and_session_hash( $version_id , $user_hash );
+
+            for($index = 0; $index < sizeof( $grouped_result_profiles ); $index++ ) {
+                if( isset( $result_profile['ID'] ) ) {
+                    if( in_array($result_profile['ID'], $grouped_result_profiles[$index]) ) {
+                        $version_totals[$index] = $version_totals[$index] + 1;
+                    }
+                } else {
+                    if( in_array(-1, $grouped_result_profiles[$index]) ) {
+                        $version_totals[$index] = $version_totals[$index] + 1;
+                    }
+                }
+
+            }
+        }
+        $total_result_profiles_of_version = array_sum($version_totals);
+
+        foreach( $version_totals as $key => $value ) {
+            if( $value > 0 ) {
+                $percentage = $value * 100 / $total_result_profiles_of_version;
+                $version_totals[$key] = $percentage;
+            }
+        }
+
+        $versions_data = array( 'name' => $version['post_title'] , 'data' => $version_totals );
+
+
+        // var_dump( $versions_data ); die;
+
+        $data = array( $version['post_title'], $titles, $versions_data);
+
+        $bar_chart = static::get_chart($data);
+
+        return $bar_chart;
+    }
+
     public static function get_post_data_from_request(){
         $json = file_get_contents("php://input");
         $request_data = json_decode($json, true);
